@@ -1,0 +1,44 @@
+name: Deploy Next.js to Azure App Service
+ 
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+ 
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    # Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v3
+ 
+    # Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Set the Node.js version to match your app's version
+ 
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        npm install
+ 
+    # Build the Next.js app
+    - name: Build Next.js app
+      run: |
+        npm run build
+ 
+    # Archive build folder (optional)
+    - name: Archive Build Folder
+      run: |
+        tar -czf nextjs-build.tar.gz .next
+ 
+    # Deploy to Azure App Service
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: <your-app-name>  # Replace with your Azure App Service name
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        package: .  # Deploy everything from the root directory
