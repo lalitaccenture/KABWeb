@@ -28,7 +28,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 
   return (
     <div className="w-full h-full">
-      <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }}>
+      <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {markers.map((marker, index) => (
           <Marker key={index} position={marker.position}>

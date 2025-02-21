@@ -61,3 +61,25 @@ export const resetPassword = async (payload:any) => {
   }
 };
 
+
+export const getAnalysisExternalData = async () => {
+  try {
+    //const response = await axios.get(`${API_BASE_URL}${endpoint}`, payload);
+    //return response.data; 
+    return true; 
+  } catch (error) {
+    console.error("Error reseting password", error);
+    throw error;  
+  }
+};
+
+export const applyFilter = async (payload:any) => {
+  try {
+    //const response = await axios.post(`${API_BASE_URL}${endpoint}`, payload);
+    //return response.data; 
+    return true; 
+  } catch (error) {
+    console.error("Error reseting password", error);
+    throw error;  
+  }
+};

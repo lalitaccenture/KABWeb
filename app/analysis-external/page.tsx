@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
@@ -11,8 +11,22 @@ import {
 import { Doughnut, Bar } from 'react-chartjs-2';
 //import Select from 'react-select';
 import { Button } from "@/components/ui/button";
+import { applyFilter, getAnalysisExternalData } from "../utils/api";
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
+
+interface FilterOption {
+  value: string | null;  // Assuming values are strings or null if not selected
+  label: string;
+}
+
+// Define the type for the filters state
+interface Filters {
+  state: FilterOption | null;
+  county: FilterOption | null;
+  tract: FilterOption | null;
+  year: FilterOption | null;
+}
 
 interface MarkerData {
   position: [number, number]; // Coordinates
@@ -26,9 +40,54 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
 
 const Analysis = () => {
 
+  const [filters, setFilters] = useState<Filters>({
+    state: null,
+    county: null,
+    tract: null,
+    year: null,
+  });
+
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [zoom, setZoom] = useState<number>(4);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
+
+  useEffect(()=>{
+    getAnalysisExternalData()
+  },[])
+
+  const handleFilterChange = (filter: string, selectedOption: any) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filter]: selectedOption,
+    }));
+  };
+
+  const handleApply = async () => {
+    // Create the payload from the filters state
+    const payload = {
+      state: filters.state?.value || null,
+      county: filters.county?.value || null,
+      tract: filters.tract?.value || null,
+      year: filters.year?.value || null,
+    };
+
+    console.log("payload",payload)
+
+    try {
+      const res = applyFilter(payload);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleClear = () => {
+    setFilters({
+      state: null,
+      county: null,
+      tract: null,
+      year: null,
+    });
+  };
 
   const options = {
     responsive: true,
@@ -104,11 +163,13 @@ const Analysis = () => {
         {/* Filters section with 4 select dropdowns */}
         <div className="flex flex-col gap-4">
 
-         
+
           <div>
             <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
             <Select
               id="state"
+              value={filters.state}
+              onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
               options={[
                 { value: 'state1', label: 'State 1' },
                 { value: 'state2', label: 'State 2' },
@@ -118,11 +179,13 @@ const Analysis = () => {
             />
           </div>
 
-          
+
           <div>
             <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
             <Select
               id="county"
+              value={filters.county}
+              onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
               options={[
                 { value: 'county1', label: 'County 1' },
                 { value: 'county2', label: 'County 2' },
@@ -132,11 +195,13 @@ const Analysis = () => {
             />
           </div>
 
-          
+
           <div>
             <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract ID</label>
             <Select
               id="tract"
+              value={filters.tract}
+              onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
               options={[
                 { value: 'tract1', label: 'Tract 1' },
                 { value: 'tract2', label: 'Tract 2' },
@@ -146,11 +211,13 @@ const Analysis = () => {
             />
           </div>
 
-          
+
           <div>
             <label htmlFor="year" className="block text-sm font-medium text-gray-700">Year</label>
             <Select
               id="year"
+              value={filters.year}
+              onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
               options={[
                 { value: '2020', label: '2020' },
                 { value: '2021', label: '2021' },
@@ -161,10 +228,13 @@ const Analysis = () => {
             />
           </div>
 
-          
-          <div className="mt-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]">
+
+          <div className="mt-4 flex gap-4">
+            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
               Apply
+            </Button>
+            <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
+              Clear
             </Button>
           </div>
         </div>
