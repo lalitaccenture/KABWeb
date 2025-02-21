@@ -1,2 +1,2 @@
-import { auth } from "@/auth" 
-export const { GET, POST } = auth
+import auth from "../../../../auth";
+export { auth as GET, auth as POST };

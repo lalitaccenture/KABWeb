@@ -9,7 +9,6 @@ type User = {
   token: string;
 };
 
-
 declare module "next-auth" {
   interface User {
     token: string;  
@@ -21,7 +20,7 @@ declare module "next-auth" {
   }
 }
 
-export const auth = NextAuth({
+const auth = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -30,21 +29,19 @@ export const auth = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        
+        console.log("inside", credentials)
         if (!credentials?.email || !credentials?.password) {
           console.error("Missing credentials");
           return null;
         }
 
         try {
-          // API call to authenticate the user
           const response = await login(credentials.email, credentials.password);
 
-          // Ensure the response contains user and token
           if (response?.user && response?.token) {
-            return { ...response.user, token: response.token };  // Add token to user object
+            return { ...response.user, token: response.token };
           }
-          return null; // Authentication failed
+          return null;
         } catch (error) {
           console.error("Authentication failed", error);
           return null;
@@ -53,27 +50,27 @@ export const auth = NextAuth({
     }),
   ],
   pages: {
-    signIn: '/login',  
+    signIn: '/login',
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // Store the user and token in the JWT
         token = {
           ...token,
-          user,  // Store the user in the token
-          token: user.token,  // Store the token separately
+          user,
+          token: user.token,
         };
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        // Explicitly typing session to allow for token
-        session.user = token.user as User;  // Ensure user is properly typed
-        session.token = token.token ? String(token.token) : "";  // Add token to session (with fallback)
+        session.user = token.user as User;
+        session.token = token.token ? String(token.token) : "";
       }
       return session;
     },
   },
 });
+
+export default auth;

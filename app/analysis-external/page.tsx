@@ -175,17 +175,17 @@ const Analysis = () => {
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
         {/* AnalysisMap section */}
-        <div className="w-full h-96 p-4 bg-gray-200">
+        <div className="w-full h-96 p-4 bg-gray-200 rounded">
           <AnalysisMap markers={markers} zoom={zoom} center={center} />
         </div>
 
         <div className="w-full flex gap-4">
-          <div className="w-1/2 p-4 bg-gray-200">
+          <div className="w-1/2 p-4 bg-gray-200 rounded">
             {/* Explanation text for Bar chart */}
             <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
             <Bar options={options} data={dataForBar} />
           </div>
-          <div className="w-1/2 p-4 bg-gray-200">
+          <div className="w-1/2 p-4 bg-gray-200 rounded">
             {/* Explanation text for Doughnut chart */}
             <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
             <Doughnut data={data} />
@@ -198,14 +198,14 @@ const Analysis = () => {
       <div className="w-1/5 p-4 space-y-6">
 
         {/* Total Cleanup Section */}
-        <div className="p-4 bg-gray-200">
+        <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Total Cleanup</h3>
           <span className="block text-lg font-bold">8768</span>
           <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
         </div>
 
         {/* Top 3 States Section */}
-        <div className="p-4 bg-gray-200">
+        <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 States</h3>
           {topStates.map((state, index) => (
             <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
@@ -216,7 +216,7 @@ const Analysis = () => {
         </div>
 
         {/* Top 3 Counties Section */}
-        <div className="p-4 bg-gray-200">
+        <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 Counties</h3>
           {topCounties.map((county, index) => (
             <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">

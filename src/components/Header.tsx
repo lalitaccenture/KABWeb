@@ -4,13 +4,17 @@ import Image from "next/image"
 import Link from "next/link"
 import UserIcon from "./UserIcon";
 import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 const Header = () => {
 
     const router = useRouter();
     const pathname = usePathname();
-    // ${pathname === '/home' ? 'border-b-2 border-[#3AAD73]' : ''} 
+    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const handleAnalysisClick = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevents navigation when "Analysis" is clicked
+      };
     return (
         <div className="w-full flex">
             <div className="w-1/3 p-2">
@@ -49,7 +53,7 @@ const Header = () => {
         </span>
     </Link>
 </li>
-<li>
+{/* <li>
     <Link href="/analysis" className="text-gray-500 hover:text-black focus:text-black hover:border-b-2 hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76]">
     <span
             className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76] px-2 py-1 rounded-md ${pathname === '/analysis' ? 'bg-[#5BAA76] text-white' : ''}`}
@@ -58,8 +62,46 @@ const Header = () => {
         Analysis
         </span>
     </Link>
-</li>
+</li> */}
+<li
+      className="relative"
+      onMouseEnter={() => setIsDropdownVisible(true)} // Show dropdown on hover
+      onMouseLeave={() => setIsDropdownVisible(false)} // Hide dropdown on mouse leave
+    >
+      {/* Main Link for Analysis */}
+      <Link
+        href="/analysis"
+        className={`text-gray-500 hover:text-black focus:text-black hover:border-b-2 hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76]`}
+        onClick={handleAnalysisClick}
+      >
+        <span
+          className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76] px-2 py-1 rounded-md ${
+            pathname === '/analysis' ? 'bg-[#5BAA76] text-white' : ''
+          }`}
+        >
+          Analysis
+        </span>
+      </Link>
 
+      {/* Dropdown Menu */}
+      {isDropdownVisible && (
+        <div className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-md border w-48">
+          {/* Links inside the dropdown */}
+          <Link
+            href="/analysis-external"
+            className="block px-4 py-2 text-gray-700 hover:bg-[#5BAA76] hover:text-white"
+          >
+            Analysis - External
+          </Link>
+          <Link
+            href="/analysis-kab"
+            className="block px-4 py-2 text-gray-700 hover:bg-[#5BAA76] hover:text-white"
+          >
+            Analysis - KAB
+          </Link>
+        </div>
+      )}
+    </li>
                         {/* <li>
                             <Link href="/scenario-modeling" className="text-gray-500 hover:text-black focus:text-black">
                                 Scenario Modeling
