@@ -133,6 +133,20 @@ const AnalysisKAB = () => {
         //setMarkers
     };
 
+    const heatmapData: [number, number, number][] = [
+        [34.0522, -118.2437, 1.0],  // Los Angeles
+        [36.7783, -119.4179, 0.8],  // Central California
+        [37.7749, -122.4194, 0.7],  // San Francisco
+        [32.7157, -117.1611, 0.6],  // San Diego
+        [38.5816, -121.4944, 0.5],  // Sacramento
+        [33.4484, -112.0740, 0.4],  // Phoenix (near California border)
+        [35.3733, -119.0187, 0.3],  // Fresno
+        [39.7392, -104.9903, 0.2],  // Denver (just for variation, outside California)
+        [34.0522, -118.2437, 0.6],  // Los Angeles (again to vary intensity)
+        [37.3382, -121.8863, 0.7],  // San Jose
+        [40.7128, -74.0060, 0.1]    // New York (for testing, outside California)
+      ];
+
     return (
 
         <div className="flex w-full gap-4 mt-4">
@@ -189,7 +203,7 @@ const AnalysisKAB = () => {
 
                 {/* AnalysisMap section */}
                 <div className="w-full h-96 p-4 bg-gray-200 rounded">
-                    <AnalysisKABMap markers={markers} zoom={zoom} center={center} />
+                    <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData}/>
                 </div>
 
                 <div className="w-full flex gap-4">

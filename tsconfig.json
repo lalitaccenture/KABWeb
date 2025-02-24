@@ -13,6 +13,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "typeRoots": [
+      "node_modules/@types",   // Ensure this points to the @types folder in node_modules
+      "src/types"               // Your custom types directory
+    ],
     "plugins": [
       {
         "name": "next"
@@ -22,6 +26,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts","src/**/*", "types/**/*"],
   "exclude": ["node_modules"]
 }
