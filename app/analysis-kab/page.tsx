@@ -12,7 +12,8 @@ import {
 import { Doughnut, Scatter } from 'react-chartjs-2';
 //import Select from 'react-select';
 import { Button } from "@/components/ui/button";
-const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
+import { applyFilter } from "../utils/api";
+const AnalysisKABMap = dynamic(() => import("../../src/components/AnalysisKABMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface MarkerData {
@@ -25,12 +26,24 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     PointElement,
     LineElement,
     Title);
+interface FilterOption {
+    value: string | null;
+    label: string;
+}
+interface Filters {
+    state: FilterOption | null;
+    parameter: FilterOption | null;
+}
 
 const AnalysisKAB = () => {
 
     const [markers, setMarkers] = useState<MarkerData[]>([]);
     const [zoom, setZoom] = useState<number>(4);
     const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
+    const [filters, setFilters] = useState<Filters>({
+        state: null,
+        parameter: null,
+    });
 
     const options = {
         scales: {
@@ -87,14 +100,45 @@ const AnalysisKAB = () => {
         { name: "State 3", placeholder: "State 3 Info" },
     ];
 
+    const handleClear = () => {
+        setFilters({
+            state: null,
+            parameter: null,
+        });
+    };
 
+    const handleApply = async () => {
+
+        const payload = {
+            state: filters.state?.value || null,
+            county: filters.parameter?.value || null,
+        };
+
+        console.log("payload", payload)
+
+        try {
+            const res = applyFilter(payload);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    const handleFilterChange = (filter: string, selectedOption: any) => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [filter]: selectedOption,
+        }));
+        //setZoom
+        //setCenter
+        //setMarkers
+    };
 
     return (
 
         <div className="flex w-full gap-4 mt-4">
 
             <div className="w-1/5 p-4">
-                {/* Filters section with 4 select dropdowns */}
+                
                 <div className="flex flex-col gap-4">
 
 
@@ -102,6 +146,8 @@ const AnalysisKAB = () => {
                         <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
                         <Select
                             id="state"
+                            value={filters.state}
+                            onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
                             options={[
                                 { value: 'state1', label: 'State 1' },
                                 { value: 'state2', label: 'State 2' },
@@ -115,6 +161,8 @@ const AnalysisKAB = () => {
                         <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
                         <Select
                             id="parameterName"
+                            value={filters.parameter}
+                            onChange={(selectedOption) => handleFilterChange('parameter', selectedOption)}
                             options={[
                                 { value: 'bins_density', label: 'Bins Density' },
                                 { value: 'random', label: 'Random' },
@@ -124,10 +172,12 @@ const AnalysisKAB = () => {
                         />
                     </div>
 
-
-                    <div className="mt-4">
-                        <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]">
+                    <div className="mt-4 flex gap-4">
+                        <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
                             Apply
+                        </Button>
+                        <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
+                            Clear
                         </Button>
                     </div>
                 </div>
@@ -139,12 +189,12 @@ const AnalysisKAB = () => {
 
                 {/* AnalysisMap section */}
                 <div className="w-full h-96 p-4 bg-gray-200 rounded">
-                    <AnalysisMap markers={markers} zoom={zoom} center={center} />
+                    <AnalysisKABMap markers={markers} zoom={zoom} center={center} />
                 </div>
 
                 <div className="w-full flex gap-4">
                     <div className="w-1/2 p-4 bg-gray-200 rounded">
-                        {/* Explanation text for Bar chart */}
+                        
                         <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
                         <Scatter options={options} data={dataForScatter} />
                     </div>

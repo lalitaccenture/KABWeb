@@ -50,7 +50,7 @@ const Home = () => {
                         <div className="space-y-4">
                             <Button
                                 className="w-full px-6 py-6 bg-[#3AAD73] text-white rounded-lg hover:bg-[#3AAD73] transition duration-200 text-2xl"
-                                onClick={() => router.push('/analysis')}
+                                onClick={() => router.push('/analysis-external')}
                             >
                                 <span className="font-neris">Analysis</span>
                             </Button>

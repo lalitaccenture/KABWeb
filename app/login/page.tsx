@@ -45,7 +45,7 @@ const Login = () => {
     };
 
     return (
-        <div className="flex justify-center bg-[url('/test.jpg')] bg-cover w-full h-[584] mb-8 pb-8">
+        <div className="flex justify-center bg-[url('/test.jpg')] bg-cover w-full mb-8 pb-8">
             <div className="container mx-auto px-3 pt-2 w-100 mt-16 rounded-lg flex" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
                 {/* Left Section (Login Form) */}
                 <div className="w-1/2 p-6 space-y-6">

@@ -60,10 +60,13 @@ const Analysis = () => {
       ...prevFilters,
       [filter]: selectedOption,
     }));
+    //setZoom
+    //setCenter
+    //setMarkers
   };
 
   const handleApply = async () => {
-    // Create the payload from the filters state
+    
     const payload = {
       state: filters.state?.value || null,
       county: filters.county?.value || null,
