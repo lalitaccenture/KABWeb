@@ -31,7 +31,7 @@ const auth = NextAuth({
       async authorize(credentials) {
         console.log("inside", credentials)
         if (!credentials?.email || !credentials?.password) {
-          console.error("Missing credentials");
+          
           return null;
         }
 
