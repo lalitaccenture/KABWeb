@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { applyFilter, getAnalysisExternalData } from "../utils/api";
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
+import value from "../../public/GetDropdown.json"
 
 interface FilterOption {
   value: string | null;  // Assuming values are strings or null if not selected
@@ -40,6 +41,8 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
 
 const Analysis = () => {
 
+  console.log("value",value);
+
   const [filters, setFilters] = useState<Filters>({
     state: null,
     county: null,
@@ -51,9 +54,29 @@ const Analysis = () => {
   const [zoom, setZoom] = useState<number>(4);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
 
-  useEffect(()=>{
-    getAnalysisExternalData()
-  },[])
+  const [statesData, setStatesData] = useState<any[]>([]); // For States
+  const [countiesData, setCountiesData] = useState<any[]>([]); // For Counties
+  const [tractsData, setTractsData] = useState<any[]>([]); // For Tracts
+  const [yearsData, setYearsData] = useState<any[]>([]); // For Years
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        
+        const data = await getAnalysisExternalData();
+                
+        // setStatesData(data.States); 
+        // setCountiesData(data.Counties); 
+        // setTractsData(data.Tracts); 
+        // setYearsData(data.Years); 
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); 
+
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
     setFilters(prevFilters => ({
@@ -173,11 +196,12 @@ const Analysis = () => {
               id="state"
               value={filters.state}
               onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-              options={[
-                { value: 'state1', label: 'State 1' },
-                { value: 'state2', label: 'State 2' },
-                // Add more state options
-              ]}
+              // options={[
+              //   { value: 'state1', label: 'State 1' },
+              //   { value: 'state2', label: 'State 2' },
+              //   // Add more state options
+              // ]}
+              options={value.States}
               placeholder="Select a State"
             />
           </div>
@@ -189,11 +213,12 @@ const Analysis = () => {
               id="county"
               value={filters.county}
               onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
-              options={[
-                { value: 'county1', label: 'County 1' },
-                { value: 'county2', label: 'County 2' },
-                // Add more county options
-              ]}
+              // options={[
+              //   { value: 'county1', label: 'County 1' },
+              //   { value: 'county2', label: 'County 2' },
+              //   // Add more county options
+              // ]}
+              options={value.Counties}
               placeholder="Select a County"
             />
           </div>
@@ -205,11 +230,12 @@ const Analysis = () => {
               id="tract"
               value={filters.tract}
               onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
-              options={[
-                { value: 'tract1', label: 'Tract 1' },
-                { value: 'tract2', label: 'Tract 2' },
-                // Add more tract options
-              ]}
+              // options={[
+              //   { value: 'tract1', label: 'Tract 1' },
+              //   { value: 'tract2', label: 'Tract 2' },
+              //   // Add more tract options
+              // ]}
+              options={value.TractIDs}
               placeholder="Select a Tract ID"
             />
           </div>
@@ -221,12 +247,13 @@ const Analysis = () => {
               id="year"
               value={filters.year}
               onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-              options={[
-                { value: '2020', label: '2020' },
-                { value: '2021', label: '2021' },
-                { value: '2022', label: '2022' },
-                // Add more year options
-              ]}
+              // options={[
+              //   { value: '2020', label: '2020' },
+              //   { value: '2021', label: '2021' },
+              //   { value: '2022', label: '2022' },
+              //   // Add more year options
+              // ]}
+              options={value.Years}
               placeholder="Select a Year"
             />
           </div>
