@@ -64,11 +64,10 @@ export const resetPassword = async (payload:any) => {
 
 export const getAnalysisExternalData = async () => {
   try {
-    //const response = await axios.get(`${API_BASE_URL}${endpoint}`, payload);
-    //return response.data; 
-    return true; 
+    const response = await axios.get(`https://lees1ddoaifunc02.azurewebsites.net/api/dropdowns?code=FoePhKLvfWH_LGw8OJZb4R7RvT-OVu3feFZMqXgMzyG4AzFuTxt59w==`);
+    return response.data; 
   } catch (error) {
-    console.error("Error reseting password", error);
+    console.error("Error calling analysis data", error);
     throw error;  
   }
 };

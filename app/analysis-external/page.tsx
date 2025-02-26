@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { applyFilter, getAnalysisExternalData } from "../utils/api";
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
-import value from "../../public/GetDropdown.json"
+import value from "../../public/analysisdata.json"
 
 interface FilterOption {
   value: string | null;  // Assuming values are strings or null if not selected
@@ -30,9 +30,12 @@ interface Filters {
 }
 
 interface MarkerData {
-  position: [number, number]; // Coordinates
-  label: string; // Label for the marker
+  latitude: number;       // Latitude of the marker
+  longitude: number;      // Longitude of the marker
+  litter_quantity: number; // Amount of litter at the marker
+  cleanup_year: number;   // Year of the cleanup event
 }
+
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
@@ -41,8 +44,6 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
 
 const Analysis = () => {
 
-  console.log("value",value);
-
   const [filters, setFilters] = useState<Filters>({
     state: null,
     county: null,
@@ -50,31 +51,31 @@ const Analysis = () => {
     year: null,
   });
 
-  const [markers, setMarkers] = useState<MarkerData[]>([]);
+  const [markers, setMarkers] = useState<MarkerData[]>(value?.map_data);
   const [zoom, setZoom] = useState<number>(4);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
 
-  const [statesData, setStatesData] = useState<any[]>([]); // For States
-  const [countiesData, setCountiesData] = useState<any[]>([]); // For Counties
-  const [tractsData, setTractsData] = useState<any[]>([]); // For Tracts
-  const [yearsData, setYearsData] = useState<any[]>([]); // For Years
+  const [statesData, setStatesData] = useState<any[]>([]); 
+  const [countiesData, setCountiesData] = useState<any[]>([]); 
+  const [tractsData, setTractsData] = useState<any[]>([]); 
+  const [yearsData, setYearsData] = useState<any[]>([]); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         
         const data = await getAnalysisExternalData();
-                
-        // setStatesData(data.States); 
-        // setCountiesData(data.Counties); 
-        // setTractsData(data.Tracts); 
-        // setYearsData(data.Years); 
+        
+        setStatesData(data.States); 
+        setCountiesData(data.Counties); 
+        setTractsData(data.TractIDs); 
+        setYearsData(data.Years); 
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
+
   }, []); 
 
 
@@ -121,48 +122,48 @@ const Analysis = () => {
       legend: {
         position: 'top' as const,
       },
-      title: {
-        display: true,
-        text: 'Chart.js Bar Chart',
-      },
+      // title: {
+      //   display: true,
+      //   text: '',
+      // },
     },
   };
 
   const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: Object.keys(value?.analytics?.pie_chart),
     datasets: [
       {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# of Litter',
+        data: Object.values(value?.analytics?.pie_chart),
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 99, 132, 0.2)',   // light pink
+          'rgba(54, 162, 235, 0.2)',   // light blue
+          'rgba(255, 159, 64, 0.2)',   // light orange
+          'rgba(75, 192, 192, 0.2)',   // light teal
+          'rgba(153, 102, 255, 0.2)',  // light purple
+          'rgba(255, 205, 86, 0.2)',   // light yellow
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          'rgba(255, 99, 132, 1)',    // pink
+          'rgba(54, 162, 235, 1)',    // blue
+          'rgba(255, 159, 64, 1)',    // orange
+          'rgba(75, 192, 192, 1)',    // teal
+          'rgba(153, 102, 255, 1)',   // purple
+          'rgba(255, 205, 86, 1)',    // yellow
         ],
         borderWidth: 1,
       },
     ],
   };
 
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const labels = Object.keys(value?.analytics?.trend_chart);
 
   const dataForBar = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
-        data: [800, 700, 600, 500, 400, 300, 200],
+        label: 'Years',
+        data: Object.values(value?.analytics?.trend_chart),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
@@ -196,12 +197,7 @@ const Analysis = () => {
               id="state"
               value={filters.state}
               onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-              // options={[
-              //   { value: 'state1', label: 'State 1' },
-              //   { value: 'state2', label: 'State 2' },
-              //   // Add more state options
-              // ]}
-              options={value.States}
+              options={statesData}
               placeholder="Select a State"
             />
           </div>
@@ -213,12 +209,7 @@ const Analysis = () => {
               id="county"
               value={filters.county}
               onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
-              // options={[
-              //   { value: 'county1', label: 'County 1' },
-              //   { value: 'county2', label: 'County 2' },
-              //   // Add more county options
-              // ]}
-              options={value.Counties}
+              options={countiesData}
               placeholder="Select a County"
             />
           </div>
@@ -230,12 +221,7 @@ const Analysis = () => {
               id="tract"
               value={filters.tract}
               onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
-              // options={[
-              //   { value: 'tract1', label: 'Tract 1' },
-              //   { value: 'tract2', label: 'Tract 2' },
-              //   // Add more tract options
-              // ]}
-              options={value.TractIDs}
+              options={tractsData}
               placeholder="Select a Tract ID"
             />
           </div>
@@ -247,13 +233,7 @@ const Analysis = () => {
               id="year"
               value={filters.year}
               onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-              // options={[
-              //   { value: '2020', label: '2020' },
-              //   { value: '2021', label: '2021' },
-              //   { value: '2022', label: '2022' },
-              //   // Add more year options
-              // ]}
-              options={value.Years}
+              options={yearsData}
               placeholder="Select a Year"
             />
           </div>
@@ -276,7 +256,7 @@ const Analysis = () => {
 
         {/* AnalysisMap section */}
         <div className="w-full h-96 p-4 bg-gray-200 rounded">
-          <AnalysisMap markers={markers} zoom={zoom} center={center} />
+          <AnalysisMap markers={markers.slice(0, 100)} zoom={zoom} center={center} />
         </div>
 
         <div className="w-full flex gap-4">
@@ -300,30 +280,42 @@ const Analysis = () => {
         {/* Total Cleanup Section */}
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Total Cleanup</h3>
-          <span className="block text-lg font-bold">8768</span>
+          <span className="block text-lg font-bold">{value?.analytics?.total_cleanups}</span>
           <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
         </div>
 
         {/* Top 3 States Section */}
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 States</h3>
-          {topStates.map((state, index) => (
+          {/* {value?.analytics?.top_3_states.map((state, index) => (
             <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
               <h4 className="text-lg font-medium">{state.name}</h4>
               <p className="text-sm text-gray-500">{state.placeholder}</p>
             </div>
-          ))}
+          ))} */}
+          {Object.entries(value?.analytics?.top_3_states).map(([key, value]) => (
+        <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+          <h4 className="text-lg font-medium">{key}</h4>
+          <p className="text-sm text-gray-500">{value}</p>
+        </div>
+      ))}
         </div>
 
         {/* Top 3 Counties Section */}
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 Counties</h3>
-          {topCounties.map((county, index) => (
+          {/* {topCounties.map((county, index) => (
             <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
               <h4 className="text-lg font-medium">{county.name}</h4>
               <p className="text-sm text-gray-500">{county.placeholder}</p>
             </div>
-          ))}
+          ))} */}
+          {Object.entries(value?.analytics?.top_3_counties).map(([key, value]) => (
+        <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+          <h4 className="text-lg font-medium">{key}</h4>
+          <p className="text-sm text-gray-500">{value}</p>
+        </div>
+      ))}
         </div>
       </div>
 
