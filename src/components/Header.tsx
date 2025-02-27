@@ -12,13 +12,17 @@ const Header = () => {
     const router = useRouter();
     const pathname = usePathname();
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+    const [activeTab, setActiveTab] = useState(pathname);
+
     const handleAnalysisClick = (e: React.MouseEvent) => {
         e.preventDefault(); // Prevents navigation when "Analysis" is clicked
+        setIsDropdownVisible((prev) => !prev);
+        setActiveTab('/analysis');
       };
     return (
         <div className="w-full flex">
             <div className="w-1/3 p-2">
-                <h2 className="text-[#5BAA76] text-2xl font-semibold cursor-pointer font-neris" onClick={()=>router.push('/')}>Litter Prediction Tool</h2>
+                <h2 className="text-[#3AAD73] text-2xl font-semibold cursor-pointer font-neris" onClick={()=>router.push('/')}>Litter Prediction Tool</h2>
                 <div className="flex">
         <Image
             src="/powered.png"
@@ -33,30 +37,29 @@ const Header = () => {
                 <nav className="w-full">
                     <ul className="flex justify-start gap-12 w-full">
                         <li>
-    <Link href="/home">
-        <span
-            className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76] px-2 py-1 rounded-md ${pathname === '/home' ? 'bg-[#5BAA76] text-white' : ''}`}
+                        <Link href="/home" onClick={() => setActiveTab('/home')}>
+    <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
+    hover:bg-[#3AAD73] focus:bg-[#3AAD73] hover:border-[#3AAD73] focus:border-b-2 
+    focus:border-[#3AAD73] px-2 py-1 rounded-md ${activeTab === '/home' ? 'bg-[#3AAD73] text-white' : ''}`}>
+        Home
+    </span>
+</Link>
 
-        >
-            
-            Home
-        </span>
-    </Link>
 </li>
 <li>
-    <Link href="/prediction">
-        <span
-            className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76] px-2 py-1 rounded-md ${pathname === '/prediction' ? 'bg-[#5BAA76] text-white' : ''}`}
+<Link href="/prediction" onClick={() => setActiveTab('/prediction')}>
+    <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
+    hover:bg-[#3AAD73] focus:bg-[#3AAD73] hover:border-[#3AAD73] focus:border-b-2 
+    focus:border-[#3AAD73] px-2 py-1 rounded-md ${activeTab === '/prediction' ? 'bg-[#3AAD73] text-white' : ''}`}>
+        Prediction
+    </span>
+</Link>
 
-        >
-            Prediction
-        </span>
-    </Link>
 </li>
 {/* <li>
-    <Link href="/analysis" className="text-gray-500 hover:text-black focus:text-black hover:border-b-2 hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76]">
+    <Link href="/analysis" className="text-gray-500 hover:text-black focus:text-black hover:border-b-2 hover:border-[#3AAD73] focus:border-b-2 focus:border-[#3AAD73]">
     <span
-            className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76] px-2 py-1 rounded-md ${pathname === '/analysis' ? 'bg-[#5BAA76] text-white' : ''}`}
+            className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#3AAD73] focus:bg-[#3AAD73] hover:border-[#3AAD73] focus:border-b-2 focus:border-[#3AAD73] px-2 py-1 rounded-md ${pathname === '/analysis' ? 'bg-[#3AAD73] text-white' : ''}`}
 
         >
         Analysis
@@ -65,23 +68,17 @@ const Header = () => {
 </li> */}
 <li
       className="relative"
-      onMouseEnter={() => setIsDropdownVisible(true)} // Show dropdown on hover
-      onMouseLeave={() => setIsDropdownVisible(false)} // Hide dropdown on mouse leave
+     
     >
       {/* Main Link for Analysis */}
-      <Link
-        href="/analysis"
-        className={`text-gray-500 hover:text-black focus:text-black hover:border-b-2 hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76]`}
-        onClick={handleAnalysisClick}
-      >
-        <span
-          className={`text-gray-500 font-neris hover:text-white focus:text-white hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 focus:border-[#5BAA76] px-2 py-1 rounded-md ${
-            pathname === '/analysis' ? 'bg-[#5BAA76] text-white' : ''
-          }`}
-        >
-          Analysis
-        </span>
-      </Link>
+      <button  onClick={handleAnalysisClick}>
+    <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
+    hover:bg-[#3AAD73] focus:bg-[#3AAD73] hover:border-[#3AAD73] focus:border-b-2 
+    focus:border-[#3AAD73] px-2 py-1 rounded-md ${activeTab === '/analysis' ? 'bg-[#3AAD73] text-white' : ''}`}>
+        Analysis
+    </span>
+</button>
+
 
       {/* Dropdown Menu */}
       {isDropdownVisible && (
@@ -89,13 +86,13 @@ const Header = () => {
           {/* Links inside the dropdown */}
           <Link
             href="/analysis-external"
-            className="block px-4 py-2 text-gray-700 hover:bg-[#5BAA76] hover:text-white"
+            className="block px-4 py-2 text-gray-700 hover:bg-[#3AAD73] hover:text-white"
           >
             Analysis - External
           </Link>
           <Link
             href="/analysis-kab"
-            className="block px-4 py-2 text-gray-700 hover:bg-[#5BAA76] hover:text-white"
+            className="block px-4 py-2 text-gray-700 hover:bg-[#3AAD73] hover:text-white"
           >
             Analysis - KAB
           </Link>
