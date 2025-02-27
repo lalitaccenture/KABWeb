@@ -1,35 +1,35 @@
 name: Deploy Next.js to Azure App Service
-
+ 
 on:
   push:
     branches:
       - master  # Trigger the workflow on push to the master branch
-
+ 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-
+ 
     steps:
     # Checkout code
     - name: Checkout code
       uses: actions/checkout@v3
-
+ 
     # Set up Node.js environment
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '22'  # Set the Node.js version to match your app's version
-
+ 
     # Install dependencies
     - name: Install dependencies
       run: |
         npm install
-
+ 
     # Build the Next.js app
     - name: Build Next.js app
       run: |
         npm run build
-
+ 
     # Deploy to Azure Web App (with pre-configured Node.js runtime in Azure)
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
@@ -37,3 +37,10 @@ jobs:
         app-name: lees1ddoaiwebapp01  # Replace with your Azure App Service name
         publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}  # Ensure this secret is set
         package: .  # Deploy everything from the root directory
+ 
+    # Restart the App Service after deployment
+    - name: Restart Azure Web App
+      uses: azure/azure-cli-action@v1
+      with:
+        inlineScript: |
+          az webapp restart --name lees1ddoaiwebapp01 --resource-group lees1ddoarg  # Replace with your resource group name
