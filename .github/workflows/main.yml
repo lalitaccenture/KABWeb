@@ -39,8 +39,8 @@ jobs:
         package: .  # Deploy everything from the root directory
  
     # Restart the App Service after deployment
-    - name: Restart Azure Web App
-      uses: azure/azure-cli-action@v1
-      with:
-        inlineScript: |
-          az webapp restart --name lees1ddoaiwebapp01 --resource-group lees1ddoarg  # Replace with your resource group name
+    # - name: Restart Azure Web App
+    #   uses: azure/azure-cli-action@v1
+    #   with:
+    #     inlineScript: |
+    #       az webapp restart --name lees1ddoaiwebapp01 --resource-group lees1ddoarg  # Replace with your resource group name
