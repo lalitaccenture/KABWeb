@@ -15,7 +15,7 @@ const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { 
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface FilterOption {
-  value: string | null;  
+  value: string | null;
   label: string;
 }
 
@@ -27,10 +27,10 @@ interface Filters {
 }
 
 interface MarkerData {
-  latitude: number;       
-  longitude: number;      
-  litter_quantity: number; 
-  cleanup_year: number;   
+  latitude: number;
+  longitude: number;
+  litter_quantity: number;
+  cleanup_year: number;
 }
 
 
@@ -51,48 +51,49 @@ const Analysis = () => {
   const [zoom, setZoom] = useState<number>(4);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
 
-  const [statesData, setStatesData] = useState<any[]>([]); 
-  const [countiesData, setCountiesData] = useState<any[]>([]); 
-  const [tractsData, setTractsData] = useState<any[]>([]); 
-  const [yearsData, setYearsData] = useState<any[]>([]); 
+  const [statesData, setStatesData] = useState<any[]>([]);
+  const [countiesData, setCountiesData] = useState<any[]>([]);
+  const [tractsData, setTractsData] = useState<any[]>([]);
+  const [yearsData, setYearsData] = useState<any[]>([]);
   const [analysisData, setAnalysisData] = useState<any>({});
-  const [loadingAnalysisData, setLoadingAnalysisData] = useState<boolean>(false); 
+  const [loadingAnalysisData, setLoadingAnalysisData] = useState<boolean>(false);
   const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null); 
+  const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoadingExternalData(true);
-      setLoadingAnalysisData(true); 
-      setError(null); 
-  
+      setLoadingAnalysisData(true);
+      setError(null);
+
       try {
-        
+
         const data = await getAnalysisExternalData();
-        setStatesData(data.States); 
-        setCountiesData(data.Counties); 
-        setTractsData(data.TractIDs); 
+        setStatesData(data.States);
+        setCountiesData(data.Counties);
+        setTractsData(data.TractIDs);
         setYearsData(data.Years);
-  
-        setLoadingExternalData(false); 
-  
-        
+
+        setLoadingExternalData(false);
+
+
         const value = await applyFilter();
         setAnalysisData(value);
         //setMarkers(value?.map_data)
-        setLoadingAnalysisData(false); 
+        setLoadingAnalysisData(false);
       } catch (error) {
         setError("Failed to fetch data, please try again later.");
-        
+
         setLoadingAnalysisData(false);
         setLoadingExternalData(false);
       } finally {
-       
+
       }
     };
-  
+
     fetchData();
-  }, []); 
+  }, []);
 
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
@@ -103,7 +104,7 @@ const Analysis = () => {
   };
 
   const handleApply = async () => {
-    
+
     const queryParams = {
       state: filters.state?.value || null,
       county: filters.county?.value || null,
@@ -112,20 +113,23 @@ const Analysis = () => {
     };
 
     // Filter out undefined values
-const cleanedQueryParams = Object.fromEntries(
-  Object.entries(queryParams).filter(([_, v]) => v !== undefined)
-);
+    const cleanedQueryParams = Object.fromEntries(
+      Object.entries(queryParams).filter(([_, v]) => v !== undefined)
+    );
 
     setLoadingAnalysisData(true);
+    setLoadingMapData(true);
     try {
       const res = await applyFilter(queryParams);
       setAnalysisData(res);
       setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
+      setLoadingMapData(false);
       //setZoom()
       //setCenter()
     } catch (error) {
-      setLoadingAnalysisData(false); 
+      setLoadingAnalysisData(false);
+      setLoadingMapData(false);
     }
   };
 
@@ -191,20 +195,20 @@ const cleanedQueryParams = Object.fromEntries(
     ],
   };
 
-  
+
   return (
 
     <div className="flex w-full gap-4 mt-4">
 
       <div className="w-1/5 p-4">
-        
+
         <div className="flex flex-col gap-4">
 
 
           <div>
             <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
             {loadingExternalData ? (
-              <div>Loading states...</div> 
+              <div>Loading states...</div>
             ) : (
               <Select
                 id="state"
@@ -220,7 +224,7 @@ const cleanedQueryParams = Object.fromEntries(
           <div>
             <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
             {loadingExternalData ? (
-              <div>Loading counties...</div> 
+              <div>Loading counties...</div>
             ) : (
               <Select
                 id="county"
@@ -236,7 +240,7 @@ const cleanedQueryParams = Object.fromEntries(
           <div>
             <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract ID</label>
             {loadingExternalData ? (
-              <div>Loading tracts...</div> 
+              <div>Loading tracts...</div>
             ) : (
               <Select
                 id="tract"
@@ -277,29 +281,35 @@ const cleanedQueryParams = Object.fromEntries(
       </div>
 
 
-      
+
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
-        
+
         <div className="w-full h-96 p-4 bg-gray-200 rounded">
-          <AnalysisMap markers={markers.slice(0, 100)} zoom={zoom} center={center} />
+          {loadingMapData ? (
+            <div className="flex justify-center items-center h-full">
+              <span className="text-xl text-gray-600">Loading map...</span>
+            </div>
+          ) : (
+            <AnalysisMap markers={markers.slice(0, 100)} zoom={zoom} center={center} />
+          )}
         </div>
 
         <div className="w-full flex gap-4">
           <div className="w-1/2 p-4 bg-gray-200 rounded">
-            
+
             <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
             {loadingAnalysisData ? (
-              <div>Loading bar chart...</div> 
+              <div>Loading bar chart...</div>
             ) : (
               <Bar options={options} data={dataForBar} />
             )}
           </div>
           <div className="w-1/2 p-4 bg-gray-200 rounded">
-           
+
             <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
             {loadingAnalysisData ? (
-              <div>Loading doughnut chart...</div> 
+              <div>Loading doughnut chart...</div>
             ) : (
               <Doughnut data={data} />
             )}
@@ -308,21 +318,21 @@ const cleanedQueryParams = Object.fromEntries(
 
       </div>
 
-      
+
       <div className="w-1/5 p-4 space-y-6">
 
-        
+
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Total Cleanup</h3>
           <span className="block text-lg font-bold">{analysisData?.analytics?.total_cleanups}</span>
           <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
         </div>
 
-        
+
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 States</h3>
           {loadingAnalysisData ? (
-            <div>Loading top states...</div> 
+            <div>Loading top states...</div>
           ) : (
             Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
               <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
@@ -333,11 +343,11 @@ const cleanedQueryParams = Object.fromEntries(
           )}
         </div>
 
-        
+
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 Counties</h3>
           {loadingAnalysisData ? (
-            <div>Loading top counties...</div> 
+            <div>Loading top counties...</div>
           ) : (
             Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
               <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
