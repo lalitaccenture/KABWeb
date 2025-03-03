@@ -335,7 +335,7 @@ console.log("analysisData",analysisData)
             Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
               <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
                 <h4 className="text-lg font-medium">{key}</h4>
-                <p className="text-sm text-gray-500">{value}</p>
+                <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
               </div>
             ))
           )}
@@ -350,7 +350,7 @@ console.log("analysisData",analysisData)
             Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
               <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
                 <h4 className="text-lg font-medium">{key}</h4>
-                <p className="text-sm text-gray-500">{value}</p>
+                <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
               </div>
             ))
           )}
