@@ -72,13 +72,16 @@ export const getAnalysisExternalData = async () => {
   }
 };
 
-export const applyFilter = async (payload:any) => {
+export const applyFilter = async (queryParams: any = {}) => {
   try {
-    //const response = await axios.post(`${API_BASE_URL}${endpoint}`, payload);
-    //return response.data; 
-    return true; 
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/analytics-map?code=w4wKU6JA5ZMnukZbMXoMDR2pvkAnjp-ffhaOLzwHgE4aAzFufDYkEg==`,
+      { params: queryParams } 
+    );
+    return response.data;
   } catch (error) {
-    console.error("Error reseting password", error);
-    throw error;  
+    console.error("Error applying filter", error);
+    throw error;
   }
 };

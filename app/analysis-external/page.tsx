@@ -50,8 +50,8 @@ const Analysis = () => {
     tract: null,
     year: null,
   });
-
-  const [markers, setMarkers] = useState<MarkerData[]>(value?.map_data);
+  //value?.map_data
+  const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [zoom, setZoom] = useState<number>(4);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
 
@@ -59,23 +59,43 @@ const Analysis = () => {
   const [countiesData, setCountiesData] = useState<any[]>([]); 
   const [tractsData, setTractsData] = useState<any[]>([]); 
   const [yearsData, setYearsData] = useState<any[]>([]); 
+  const [analysisData, setAnalysisData] = useState<any>({});
+  const [loadingAnalysisData, setLoadingAnalysisData] = useState<boolean>(false); // Loading state for applyFilter
+  const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false); // Loading state for getAnalysisExternalData
+  const [error, setError] = useState<string | null>(null); // Track error state
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingExternalData(true);
+      setLoadingAnalysisData(true); 
+      setError(null); 
+  
       try {
         
         const data = await getAnalysisExternalData();
-        
         setStatesData(data.States); 
         setCountiesData(data.Counties); 
         setTractsData(data.TractIDs); 
-        setYearsData(data.Years); 
+        setYearsData(data.Years);
+  
+        setLoadingExternalData(false); 
+  
+        
+        const value = await applyFilter();
+        setAnalysisData(value);
+  
+        setLoadingAnalysisData(false); 
       } catch (error) {
+        setError("Failed to fetch data, please try again later.");
         console.error("Error fetching data:", error);
+        setLoadingAnalysisData(false);
+        setLoadingExternalData(false);
+      } finally {
+       
       }
     };
+  
     fetchData();
-
   }, []); 
 
 
@@ -91,19 +111,29 @@ const Analysis = () => {
 
   const handleApply = async () => {
     
-    const payload = {
+    const queryParams = {
       state: filters.state?.value || null,
       county: filters.county?.value || null,
       tract: filters.tract?.value || null,
       year: filters.year?.value || null,
     };
 
-    console.log("payload",payload)
+    // Filter out undefined values
+const cleanedQueryParams = Object.fromEntries(
+  Object.entries(queryParams).filter(([_, v]) => v !== undefined)
+);
 
+    console.log("payload",queryParams)
+    setLoadingAnalysisData(true);
     try {
-      const res = applyFilter(payload);
+      const res = await applyFilter(queryParams);
+      console.log("res",res)
+      setAnalysisData(res);
+      setMarkers(res?.map_data)
+      setLoadingAnalysisData(false); 
     } catch (error) {
       console.error("Error:", error);
+      setLoadingAnalysisData(false); 
     }
   };
 
@@ -130,11 +160,11 @@ const Analysis = () => {
   };
 
   const data = {
-    labels: Object.keys(value?.analytics?.pie_chart),
+    labels: Object.keys(analysisData?.analytics?.pie_chart || {}),
     datasets: [
       {
         label: '# of Litter',
-        data: Object.values(value?.analytics?.pie_chart),
+        data: Object.values(analysisData?.analytics?.pie_chart || {}),
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',   // light pink
           'rgba(54, 162, 235, 0.2)',   // light blue
@@ -155,33 +185,21 @@ const Analysis = () => {
       },
     ],
   };
-
-  const labels = Object.keys(value?.analytics?.trend_chart);
+console.log("analysisData",analysisData)
+  const labels = Object.keys(analysisData?.analytics?.trend_chart || {});
 
   const dataForBar = {
     labels,
     datasets: [
       {
         label: 'Years',
-        data: Object.values(value?.analytics?.trend_chart),
+        data: Object.values(analysisData?.analytics?.trend_chart || {}),
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
   };
 
-  const topStates = [
-    { name: "State 1", placeholder: "State 1 Info" },
-    { name: "State 2", placeholder: "State 2 Info" },
-    { name: "State 3", placeholder: "State 3 Info" },
-  ];
-
-  const topCounties = [
-    { name: "County 1", placeholder: "County 1 Info" },
-    { name: "County 2", placeholder: "County 2 Info" },
-    { name: "County 3", placeholder: "County 3 Info" },
-  ];
-
-
+  
   return (
 
     <div className="flex w-full gap-4 mt-4">
@@ -193,49 +211,65 @@ const Analysis = () => {
 
           <div>
             <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
-            <Select
-              id="state"
-              value={filters.state}
-              onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-              options={statesData}
-              placeholder="Select a State"
-            />
+            {loadingExternalData ? (
+              <div>Loading states...</div> // Show loading state if fetching states data
+            ) : (
+              <Select
+                id="state"
+                value={filters.state}
+                onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
+                options={statesData}
+                placeholder="Select a State"
+              />
+            )}
           </div>
 
 
           <div>
             <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
-            <Select
-              id="county"
-              value={filters.county}
-              onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
-              options={countiesData}
-              placeholder="Select a County"
-            />
+            {loadingExternalData ? (
+              <div>Loading counties...</div> // Show loading state if fetching counties data
+            ) : (
+              <Select
+                id="county"
+                value={filters.county}
+                onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
+                options={countiesData}
+                placeholder="Select a County"
+              />
+            )}
           </div>
 
 
           <div>
             <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract ID</label>
-            <Select
-              id="tract"
-              value={filters.tract}
-              onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
-              options={tractsData}
-              placeholder="Select a Tract ID"
-            />
+            {loadingExternalData ? (
+              <div>Loading tracts...</div> // Show loading state if fetching tracts data
+            ) : (
+              <Select
+                id="tract"
+                value={filters.tract}
+                onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
+                options={tractsData}
+                placeholder="Select a Tract ID"
+              />
+            )}
           </div>
 
 
           <div>
             <label htmlFor="year" className="block text-sm font-medium text-gray-700">Year</label>
-            <Select
-              id="year"
-              value={filters.year}
-              onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-              options={yearsData}
-              placeholder="Select a Year"
-            />
+            {loadingExternalData ? (
+              <div>Loading years...</div> // Show loading state if fetching years data
+            ) : (
+              <Select
+                id="year"
+                value={filters.year}
+                onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
+                options={yearsData}
+                placeholder="Select a Year"
+              />
+            )}
           </div>
 
 
@@ -263,12 +297,20 @@ const Analysis = () => {
           <div className="w-1/2 p-4 bg-gray-200 rounded">
             {/* Explanation text for Bar chart */}
             <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
-            <Bar options={options} data={dataForBar} />
+            {loadingAnalysisData ? (
+              <div>Loading bar chart...</div> // Show loading while fetching bar chart data
+            ) : (
+              <Bar options={options} data={dataForBar} />
+            )}
           </div>
           <div className="w-1/2 p-4 bg-gray-200 rounded">
             {/* Explanation text for Doughnut chart */}
             <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
-            <Doughnut data={data} />
+            {loadingAnalysisData ? (
+              <div>Loading doughnut chart...</div> // Show loading while fetching doughnut chart data
+            ) : (
+              <Doughnut data={data} />
+            )}
           </div>
         </div>
 
@@ -280,42 +322,38 @@ const Analysis = () => {
         {/* Total Cleanup Section */}
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Total Cleanup</h3>
-          <span className="block text-lg font-bold">{value?.analytics?.total_cleanups}</span>
+          <span className="block text-lg font-bold">{analysisData?.analytics?.total_cleanups}</span>
           <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
         </div>
 
         {/* Top 3 States Section */}
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 States</h3>
-          {/* {value?.analytics?.top_3_states.map((state, index) => (
-            <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-              <h4 className="text-lg font-medium">{state.name}</h4>
-              <p className="text-sm text-gray-500">{state.placeholder}</p>
-            </div>
-          ))} */}
-          {Object.entries(value?.analytics?.top_3_states).map(([key, value]) => (
-        <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-          <h4 className="text-lg font-medium">{key}</h4>
-          <p className="text-sm text-gray-500">{value}</p>
-        </div>
-      ))}
+          {loadingAnalysisData ? (
+            <div>Loading top states...</div> // Show loading while fetching top states data
+          ) : (
+            Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
+              <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+                <h4 className="text-lg font-medium">{key}</h4>
+                <p className="text-sm text-gray-500">{value}</p>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Top 3 Counties Section */}
         <div className="p-4 bg-gray-200 rounded">
           <h3 className="text-xl font-semibold">Top 3 Counties</h3>
-          {/* {topCounties.map((county, index) => (
-            <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-              <h4 className="text-lg font-medium">{county.name}</h4>
-              <p className="text-sm text-gray-500">{county.placeholder}</p>
-            </div>
-          ))} */}
-          {Object.entries(value?.analytics?.top_3_counties).map(([key, value]) => (
-        <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-          <h4 className="text-lg font-medium">{key}</h4>
-          <p className="text-sm text-gray-500">{value}</p>
-        </div>
-      ))}
+          {loadingAnalysisData ? (
+            <div>Loading top counties...</div> // Show loading while fetching top counties data
+          ) : (
+            Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
+              <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+                <h4 className="text-lg font-medium">{key}</h4>
+                <p className="text-sm text-gray-500">{value}</p>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
