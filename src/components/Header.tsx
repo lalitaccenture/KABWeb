@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import UserIcon from "./UserIcon";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 
 const Header = () => {
@@ -19,6 +19,23 @@ const Header = () => {
         setIsDropdownVisible((prev) => !prev);
         setActiveTab('/analysis');
       };
+
+      useEffect(() => {
+        // Close dropdown when navigating away from /analysis or its children
+        if (!pathname.startsWith('/analysis')) {
+            setIsDropdownVisible(false);
+        }
+
+        // Keep Analysis tab active when visiting dropdown links
+        if (pathname.startsWith('/analysis')) {
+            setActiveTab('/analysis');
+        } else {
+            setActiveTab(pathname);
+        }
+    }, [pathname]);
+
+
+
     return (
         <div className="w-full flex">
             <div className="w-1/3 p-2">
@@ -82,17 +99,20 @@ const Header = () => {
 
       {/* Dropdown Menu */}
       {isDropdownVisible && (
-        <div className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-md border w-48">
+        <div className="absolute left-0 top-full mt-1 bg-white shadow-lg rounded-md border w-48 h-30 z-[555]">
           {/* Links inside the dropdown */}
           <Link
             href="/analysis-external"
             className="block px-4 py-2 text-gray-700 hover:bg-[#3AAD73] hover:text-white"
+            onClick={()  =>{  setIsDropdownVisible(false)}} 
           >
             Analysis - External
           </Link>
           <Link
             href="/analysis-kab"
             className="block px-4 py-2 text-gray-700 hover:bg-[#3AAD73] hover:text-white"
+            onClick={() => {setIsDropdownVisible(false)}}
+
           >
             Analysis - KAB
           </Link>
