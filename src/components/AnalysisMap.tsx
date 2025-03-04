@@ -20,14 +20,6 @@ interface MapAnalysisProps {
 }
 
 const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
-  useEffect(() => {
-    delete (L.Icon.Default.prototype as any)._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-      iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-      shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-    });
-  }, []);
 
   console.log("markers",markers)
 
@@ -36,7 +28,13 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {markers?.map((marker, index) => (
-          <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }}>
+          <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
+          icon={L.divIcon({
+            html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold">${marker.litter_quantity}</div>`,
+            iconSize: [32, 32], // Size of the bubble
+            iconAnchor: [16, 16], // Center the icon
+          })}
+          >
             <Popup>
               {/* Display relevant information about the marker */}
       Litter Quantity: {marker.litter_quantity} <br />
