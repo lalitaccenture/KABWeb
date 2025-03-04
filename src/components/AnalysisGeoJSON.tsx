@@ -16,19 +16,19 @@ interface StateInfo {
   };
 }
 
-interface MarkerData {
-    latitude: number;       // Latitude of the marker
-    longitude: number;      // Longitude of the marker
-    litter_quantity: number; // Amount of litter at the marker
-    cleanup_year: number;   // Year of the cleanup event
-  }
+interface RawMarkerData {
+  Latitude: number;
+  Longitude: number;
+  "All Item Type": number;
+  "Date and Time:": string;
+}
 
 interface MapAnalysisProps {
   stateInfo: StateInfo;
   zoom: number;
   center: [number, number];
   showGeoJSON: boolean; // New boolean prop to toggle GeoJSON layer
-  markers: MarkerData[];
+  markers: RawMarkerData[];
 }
 
 // Function to style each state based on its data
@@ -81,17 +81,17 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
           />
         )}
         {markers?.map((marker, index) => (
-                  <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
+                  <Marker key={index} position={{ lat: marker.Latitude, lng: marker.Longitude }} 
                   icon={L.divIcon({
-                    html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold">${marker.litter_quantity}</div>`,
+                    html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
                     iconSize: [32, 32], // Size of the bubble
                     iconAnchor: [16, 16], // Center the icon
                   })}
                   >
                     <Popup>
-                      {/* Display relevant information about the marker */}
-              Litter Quantity: {marker.litter_quantity} <br />
-              Cleanup Year: {marker.cleanup_year}
+                      
+              Item type: {marker["All Item Type"]} <br />
+              Date & Time: {marker["Date and Time:"]}
                       </Popup>
                   </Marker>
                 ))}

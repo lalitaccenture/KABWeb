@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
@@ -15,13 +15,30 @@ import { applyFilter } from "../utils/api";
 const AnalysisKABMap = dynamic(() => import("../../src/components/AnalysisKABMap"), { ssr: false });
 const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGeoJSON"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
+import value from "../../public/KABAnalytics 1.json"
 
-interface MarkerData {
-    latitude: number;       // Latitude of the marker
-    longitude: number;      // Longitude of the marker
-    litter_quantity: number; // Amount of litter at the marker
-    cleanup_year: number;   // Year of the cleanup event
-  }
+// Define the types for the correlation analysis and selected coefficient
+type CorrelationAnalysis = Record<string, { scatter_plot: { [key: string]: number }[] }>;
+
+type CorrelationCoeff = {
+    value: keyof CorrelationAnalysis | undefined;  // Allow value to be undefined
+    label: string;
+};
+
+type Value = {
+    correlation_analysis: CorrelationAnalysis;
+    litter_pie_chart: Record<string, number>;
+    total_estimated_litter: number;
+    estimated_litter_density: number;
+    top_3_states: { State: string; Estimated: number; "Litter density": number }[];
+};
+
+interface RawMarkerData {
+    Latitude: number;
+    Longitude: number;
+    "All Item Type": number;
+    "Date and Time:": string;
+}
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
@@ -37,55 +54,74 @@ interface Filters {
     parameter: FilterOption | null;
 }
 
-const markersTest: MarkerData[] = [
-    {
-      latitude: 34.0522,
-      longitude: -118.2437,
-      litter_quantity: 120,
-      cleanup_year: 2023,
-    },
-    {
-      latitude: 40.7128,
-      longitude: -74.0060,
-      litter_quantity: 85,
-      cleanup_year: 2022,
-    },
-    {
-      latitude: 41.8781,
-      longitude: -87.6298,
-      litter_quantity: 200,
-      cleanup_year: 2024,
-    },
-    {
-      latitude: 29.7604,
-      longitude: -95.3698,
-      litter_quantity: 50,
-      cleanup_year: 2021,
-    },
-    {
-      latitude: 47.6062,
-      longitude: -122.3321,
-      litter_quantity: 150,
-      cleanup_year: 2023,
-    },
-  ];
+
+// const markersTest: MarkerData[] = [
+//     {
+//       latitude: 34.0522,
+//       longitude: -118.2437,
+//       litter_quantity: 120,
+//       cleanup_year: 2023,
+//     },
+//     {
+//       latitude: 40.7128,
+//       longitude: -74.0060,
+//       litter_quantity: 85,
+//       cleanup_year: 2022,
+//     },
+//     {
+//       latitude: 41.8781,
+//       longitude: -87.6298,
+//       litter_quantity: 200,
+//       cleanup_year: 2024,
+//     },
+//     {
+//       latitude: 29.7604,
+//       longitude: -95.3698,
+//       litter_quantity: 50,
+//       cleanup_year: 2021,
+//     },
+//     {
+//       latitude: 47.6062,
+//       longitude: -122.3321,
+//       litter_quantity: 150,
+//       cleanup_year: 2023,
+//     },
+//   ];
 
 const AnalysisKAB = () => {
-
-    const [markers, setMarkers] = useState<MarkerData[]>(markersTest);
+console.log("value",value)
+    const [markers, setMarkers] = useState<RawMarkerData[]>(value?.gps_data);
     const [zoom, setZoom] = useState<number>(4);
     const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
     const [filters, setFilters] = useState<Filters>({
         state: null,
         parameter: null,
     });
+
     const [showGeoJSON, setShowGeoJSON] = useState(true);
+    const [correlationCoeff, setCorrelationCoeff] = useState<any>(null);
+    const [dataForScatterChart,setDataForScatterChart]  = useState([])
+    const isFirstRender = useRef(true);
+
+    interface DataItem {
+        [key: string]: number | string; // Assuming the values are either numbers or strings
+      }
+
+    const transformData = (data: DataItem[]) => {
+        // Get the keys of the first item in the data (assuming all objects have the same structure)
+        const keys = Object.keys(data[0]);
+        
+        return data.map(item => ({
+          x: item[keys[0]],  
+          y: item[keys[1]]   // Use the second key for y (education density)
+        }));
+      };
 
     const options = {
         scales: {
-            y: {
-                beginAtZero: true,
-            },
+            // y: {
+            //     beginAtZero: true,
+            // },
         },
     };
 
@@ -93,21 +129,30 @@ const AnalysisKAB = () => {
         datasets: [
             {
                 label: 'A dataset',
-                data: Array.from({ length: 100 }, () => ({
-                    x: 74,
-                    y: 87,
-                })),
+                data: dataForScatterChart || [],
                 backgroundColor: 'rgba(255, 99, 132, 1)',
             },
         ],
     };
 
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return; // Skip the effect on first render
+        }
+// @ts-ignore: Ignore TypeScript error
+        const val = transformData(value?.correlation_analysis[correlationCoeff?.value]?.scatter_plot);
+        // @ts-ignore: Ignore TypeScript error
+        setDataForScatterChart(val);
+    }, [correlationCoeff]); 
+    // Only trigger when `correlationCoeff` changes
+
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: Object.keys(value?.litter_pie_chart || {}),
         datasets: [
             {
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: Object.values(value?.litter_pie_chart || {}),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -128,6 +173,8 @@ const AnalysisKAB = () => {
             },
         ],
     };
+// console.log("test",correlationCoeff,value?.all_correlation_coefficients[correlationCoeff],value?.correlation_analysis[correlationCoeff]?.scatter_plot)
+
 
 
     const topStates = [
@@ -269,7 +316,39 @@ const AnalysisKAB = () => {
       };
       
       
-      
+     const dropDown = [
+        {
+            "value": "Population_Density",
+            "label": "Population_Density"
+        },
+        {
+            "value": "Education amenities_density",
+            "label": "Education amenities_density"
+        },
+        {
+            "value": "Entertainment amenities_density",
+            "label": "Entertainment amenities_density"
+        },
+        {
+            "value": "Food amenities_density",
+            "label": "Food amenities_density"
+        },
+        {
+            "value": "Leisure amenities_density",
+            "label": "Leisure amenities_density"
+        },
+        {
+            "value": "Shopping amenities_density",
+            "label": "Shopping amenities_density"
+        },
+        {
+            "value": "bins_density",
+            "label": "bins_density"
+        }
+    ]
+
+   
+    
       
 
     return (
@@ -296,20 +375,7 @@ const AnalysisKAB = () => {
                         />
                     </div>
 
-                    <div>
-                        <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
-                        <Select
-                            id="parameterName"
-                            value={filters.parameter}
-                            onChange={(selectedOption) => handleFilterChange('parameter', selectedOption)}
-                            options={[
-                                { value: 'bins_density', label: 'Bins Density' },
-                                { value: 'random', label: 'Random' },
-                                
-                            ]}
-                            placeholder="Select a State"
-                        />
-                    </div>
+                    
 
                     <div className="mt-4 flex gap-4">
                         <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
@@ -318,12 +384,22 @@ const AnalysisKAB = () => {
                         <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
                             Clear
                         </Button>
-                        <Button 
+                        {/* <Button 
     className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" 
     onClick={() => setShowGeoJSON(prev => !prev)}
   >
     {showGeoJSON ? "Hide GeoJSON" : "Show GeoJSON"}
-  </Button>
+  </Button> */}
+                    </div>
+                    <div>
+                        <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
+                        <Select
+                            id="parameterName"
+                            value={correlationCoeff}
+                            onChange={(selectedOption) => setCorrelationCoeff(selectedOption)}
+                            options={dropDown}
+                            placeholder="Select coefficient"
+                        />
                     </div>
                 </div>
             </div>
@@ -347,7 +423,7 @@ const AnalysisKAB = () => {
                 <div className="w-full flex gap-4">
                     <div className="w-1/2 p-4 bg-gray-200 rounded">
                         
-                        <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
+                        <h3 className="text-xl font-semibold mb-2 text-center">Correlation Coefficient</h3>
                         <Scatter options={options} data={dataForScatter} />
                     </div>
                     <div className="w-1/2 p-4 bg-gray-200 rounded">
@@ -365,25 +441,33 @@ const AnalysisKAB = () => {
                 {/* Total Cleanup Section */}
                 <div className="p-4 bg-gray-200 rounded">
                     <h3 className="text-xl font-semibold">Total Estimated Litter</h3>
-                    <span className="block text-lg font-bold">8768</span>
+                    <span className="block text-lg font-bold">{value?.total_estimated_litter}</span>
                 </div>
 
 
                 <div className="p-4 bg-gray-200 rounded">
                     <h3 className="text-xl font-semibold">Estimated Litter Density</h3>
-                    <span className="block text-lg font-bold">8768</span>
+                    <span className="block text-lg font-bold">{value?.estimated_litter_density}</span>
                 </div>
 
 
                 {/* Top 3 States Section */}
                 <div className="p-4 bg-gray-200 rounded">
                     <h3 className="text-xl font-semibold">Top 3 States</h3>
-                    {topStates.map((state, index) => (
+                    {/* {topStates.map((state, index) => (
                         <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
                             <h4 className="text-lg font-medium">{state.name}</h4>
                             <p className="text-sm text-gray-500">{state.placeholder}</p>
+                            <p className="text-sm text-gray-500">{state.placeholder}</p>
                         </div>
-                    ))}
+                    ))} */}
+                    {value?.top_3_states.map((state, index) => (
+        <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+          <h4 className="text-lg font-medium">{state.State}</h4>
+          <p className="text-sm text-gray-500">Estimated: {state.Estimated.toFixed(2)}</p>
+          <p className="text-sm text-gray-500">Litter Density: {state["Litter density"].toFixed(2)}</p>
+        </div>
+      ))}
                 </div>
 
             </div>

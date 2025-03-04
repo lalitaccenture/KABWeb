@@ -30,7 +30,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
         {markers?.map((marker, index) => (
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
           icon={L.divIcon({
-            html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold">${marker.litter_quantity}</div>`,
+            html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
             iconSize: [32, 32], // Size of the bubble
             iconAnchor: [16, 16], // Center the icon
           })}

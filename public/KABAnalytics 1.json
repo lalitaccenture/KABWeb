@@ -1,0 +1,3614 @@
+{
+    "top_3_states": [
+        {
+            "State": "California",
+            "Estimated": 436124629.2,
+            "Litter density": 2692.396265
+        },
+        {
+            "State": "Nebraska",
+            "Estimated": 349773130.3,
+            "Litter density": 4522.10604
+        },
+        {
+            "State": "Illinois",
+            "Estimated": 308751334.7,
+            "Litter density": 5331.271739
+        }
+    ],
+    "total_estimated_litter": 5366625999.106001,
+    "estimated_litter_density": 3838.5680917,
+    "all_correlation_coefficients": {
+        "Population_Density": 0.554599,
+        "Education amenities_density": 0.648121,
+        "Entertainment amenities_density": 0.656699,
+        "Food amenities_density": 0.531851,
+        "Leisure amenities_density": 0.364167,
+        "Shopping amenities_density": 0.45997,
+        "bins_density": 0.304421
+    },
+    "litter_pie_chart": {
+        "Rubber": 86732192.7014,
+        "Glass": 264875217.65159997,
+        "Plastic": 1958155447.358,
+        "Cigarette Butts": 1288511495.38,
+        "Paper": 914316230.4810001,
+        "Metal": 406074782.90940005,
+        "Other": 371313207.2318,
+        "Organic": 76647425.429
+    },
+    "correlation_analysis": {
+        "Population_Density": {
+            "scatter_plot": [
+                {
+                    "Litter density": 2112.341411,
+                    "Population_Density": 62.93862086
+                },
+                {
+                    "Litter density": 2692.396265,
+                    "Population_Density": 242.9009468
+                },
+                {
+                    "Litter density": 936.3213426,
+                    "Population_Density": 54.61294036
+                },
+                {
+                    "Litter density": 10812.61499,
+                    "Population_Density": 644.0736028
+                },
+                {
+                    "Litter density": 815.309806,
+                    "Population_Density": 388.8167168
+                },
+                {
+                    "Litter density": 3028.058551,
+                    "Population_Density": 298.8623794
+                },
+                {
+                    "Litter density": 3095.603111,
+                    "Population_Density": 176.9781838
+                },
+                {
+                    "Litter density": 5331.271739,
+                    "Population_Density": 219.5725755
+                },
+                {
+                    "Litter density": 7206.318692,
+                    "Population_Density": 183.8733196
+                },
+                {
+                    "Litter density": 614.0111241,
+                    "Population_Density": 55.97760235
+                },
+                {
+                    "Litter density": 2793.822138,
+                    "Population_Density": 35.39966952
+                },
+                {
+                    "Litter density": 2095.253158,
+                    "Population_Density": 37.89796634
+                },
+                {
+                    "Litter density": 1679.86947,
+                    "Population_Density": 486.6747148
+                },
+                {
+                    "Litter density": 10225.84588,
+                    "Population_Density": 651.2152951
+                },
+                {
+                    "Litter density": 3150.568928,
+                    "Population_Density": 103.1287853
+                },
+                {
+                    "Litter density": 1008.791917,
+                    "Population_Density": 61.56240765
+                },
+                {
+                    "Litter density": 1675.045902,
+                    "Population_Density": 87.85585695
+                },
+                {
+                    "Litter density": 1639.760579,
+                    "Population_Density": 7.220359772
+                },
+                {
+                    "Litter density": 4522.10604,
+                    "Population_Density": 24.87253714
+                },
+                {
+                    "Litter density": 1059.334939,
+                    "Population_Density": 27.40581972
+                },
+                {
+                    "Litter density": 5474.939981,
+                    "Population_Density": 144.9477624
+                },
+                {
+                    "Litter density": 4038.514955,
+                    "Population_Density": 1019.061257
+                },
+                {
+                    "Litter density": 5058.320032,
+                    "Population_Density": 357.6869577
+                },
+                {
+                    "Litter density": 580.1477809,
+                    "Population_Density": 192.9860498
+                },
+                {
+                    "Litter density": 5941.554268,
+                    "Population_Density": 260.4588111
+                },
+                {
+                    "Litter density": 1632.004905,
+                    "Population_Density": 42.4518233
+                },
+                {
+                    "Litter density": 778.4544204,
+                    "Population_Density": 277.8241555
+                },
+                {
+                    "Litter density": 23080.08371,
+                    "Population_Density": 736.9040033
+                },
+                {
+                    "Litter density": 4340.878183,
+                    "Population_Density": 158.9932807
+                },
+                {
+                    "Litter density": 1623.177343,
+                    "Population_Density": 160.7474173
+                },
+                {
+                    "Litter density": 959.8071116,
+                    "Population_Density": 106.6104047
+                },
+                {
+                    "Litter density": 6882.020091,
+                    "Population_Density": 64.93267072
+                },
+                {
+                    "Litter density": 565.3080239,
+                    "Population_Density": 198.9339268
+                },
+                {
+                    "Litter density": 3022.610549,
+                    "Population_Density": 105.3632008
+                },
+                {
+                    "Litter density": 3877.415873,
+                    "Population_Density": 88.66058221
+                }
+            ]
+        },
+        "Education amenities_density": {
+            "scatter_plot": [
+                {
+                    "Litter density": 2112.341411,
+                    "education_density": 0.005974466
+                },
+                {
+                    "Litter density": 2692.396265,
+                    "education_density": 0.032614369
+                },
+                {
+                    "Litter density": 936.3213426,
+                    "education_density": 0.008636354
+                },
+                {
+                    "Litter density": 10812.61499,
+                    "education_density": 0.048162804
+                },
+                {
+                    "Litter density": 815.309806,
+                    "education_density": 0.009643282
+                },
+                {
+                    "Litter density": 3028.058551,
+                    "education_density": 0.041032626
+                },
+                {
+                    "Litter density": 3095.603111,
+                    "education_density": 0.034027214
+                },
+                {
+                    "Litter density": 5331.271739,
+                    "education_density": 0.042529119
+                },
+                {
+                    "Litter density": 7206.318692,
+                    "education_density": 0.032892901
+                },
+                {
+                    "Litter density": 614.0111241,
+                    "education_density": 0.014714061
+                },
+                {
+                    "Litter density": 2793.822138,
+                    "education_density": 0.022253784
+                },
+                {
+                    "Litter density": 2095.253158,
+                    "education_density": 0.015913005
+                },
+                {
+                    "Litter density": 1679.86947,
+                    "education_density": 0.104305449
+                },
+                {
+                    "Litter density": 10225.84588,
+                    "education_density": 0.113036448
+                },
+                {
+                    "Litter density": 3150.568928,
+                    "education_density": 0.02844495
+                },
+                {
+                    "Litter density": 1008.791917,
+                    "education_density": 0.02780991
+                },
+                {
+                    "Litter density": 1675.045902,
+                    "education_density": 0.050999251
+                },
+                {
+                    "Litter density": 1639.760579,
+                    "education_density": 0.002835901
+                },
+                {
+                    "Litter density": 4522.10604,
+                    "education_density": 0.030847838
+                },
+                {
+                    "Litter density": 1059.334939,
+                    "education_density": 0.00294834
+                },
+                {
+                    "Litter density": 5474.939981,
+                    "education_density": 0.025347922
+                },
+                {
+                    "Litter density": 4038.514955,
+                    "education_density": 0.268028601
+                },
+                {
+                    "Litter density": 5058.320032,
+                    "education_density": 0.06136537
+                },
+                {
+                    "Litter density": 580.1477809,
+                    "education_density": 0.033259915
+                },
+                {
+                    "Litter density": 5941.554268,
+                    "education_density": 0.042163217
+                },
+                {
+                    "Litter density": 1632.004905,
+                    "education_density": 0.004848621
+                },
+                {
+                    "Litter density": 778.4544204,
+                    "education_density": 0.088201005
+                },
+                {
+                    "Litter density": 23080.08371,
+                    "education_density": 0.289802084
+                },
+                {
+                    "Litter density": 4340.878183,
+                    "education_density": 0.040688904
+                },
+                {
+                    "Litter density": 1623.177343,
+                    "education_density": 0.060598334
+                },
+                {
+                    "Litter density": 959.8071116,
+                    "education_density": 0.01251308
+                },
+                {
+                    "Litter density": 6882.020091,
+                    "education_density": 0.046280934
+                },
+                {
+                    "Litter density": 565.3080239,
+                    "education_density": 0.024336762
+                },
+                {
+                    "Litter density": 3022.610549,
+                    "education_density": 0.013337886
+                },
+                {
+                    "Litter density": 3877.415873,
+                    "education_density": 0.030016782
+                }
+            ]
+        },
+        "Entertainment amenities_density": {
+            "scatter_plot": [
+                {
+                    "Litter density": 2112.341411,
+                    "entertainment_density": 0.000543931
+                },
+                {
+                    "Litter density": 2692.396265,
+                    "entertainment_density": 0.004148563
+                },
+                {
+                    "Litter density": 936.3213426,
+                    "entertainment_density": 0.001104762
+                },
+                {
+                    "Litter density": 10812.61499,
+                    "entertainment_density": 0.011725027
+                },
+                {
+                    "Litter density": 815.309806,
+                    "entertainment_density": 0.00241082
+                },
+                {
+                    "Litter density": 3028.058551,
+                    "entertainment_density": 0.002887638
+                },
+                {
+                    "Litter density": 3095.603111,
+                    "entertainment_density": 0.001396765
+                },
+                {
+                    "Litter density": 5331.271739,
+                    "entertainment_density": 0.002624615
+                },
+                {
+                    "Litter density": 7206.318692,
+                    "entertainment_density": 0.002141608
+                },
+                {
+                    "Litter density": 614.0111241,
+                    "entertainment_density": 0.001243942
+                },
+                {
+                    "Litter density": 2793.822138,
+                    "entertainment_density": 0.000510464
+                },
+                {
+                    "Litter density": 2095.253158,
+                    "entertainment_density": 0.001017528
+                },
+                {
+                    "Litter density": 1679.86947,
+                    "entertainment_density": 0.00588431
+                },
+                {
+                    "Litter density": 10225.84588,
+                    "entertainment_density": 0.01515996
+                },
+                {
+                    "Litter density": 3150.568928,
+                    "entertainment_density": 0.00144758
+                },
+                {
+                    "Litter density": 1008.791917,
+                    "entertainment_density": 0.000227104
+                },
+                {
+                    "Litter density": 1675.045902,
+                    "entertainment_density": 0.001276774
+                },
+                {
+                    "Litter density": 1639.760579,
+                    "entertainment_density": 0.000244826
+                },
+                {
+                    "Litter density": 4522.10604,
+                    "entertainment_density": 0.000478361
+                },
+                {
+                    "Litter density": 1059.334939,
+                    "entertainment_density": 0.000416023
+                },
+                {
+                    "Litter density": 5474.939981,
+                    "entertainment_density": 0.003850317
+                },
+                {
+                    "Litter density": 4038.514955,
+                    "entertainment_density": 0.009633891
+                },
+                {
+                    "Litter density": 5058.320032,
+                    "entertainment_density": 0.008907876
+                },
+                {
+                    "Litter density": 580.1477809,
+                    "entertainment_density": 0.00252701
+                },
+                {
+                    "Litter density": 5941.554268,
+                    "entertainment_density": 0.004127087
+                },
+                {
+                    "Litter density": 1632.004905,
+                    "entertainment_density": 0.001036812
+                },
+                {
+                    "Litter density": 778.4544204,
+                    "entertainment_density": 0.004820439
+                },
+                {
+                    "Litter density": 23080.08371,
+                    "entertainment_density": 0.010449594
+                },
+                {
+                    "Litter density": 4340.878183,
+                    "entertainment_density": 0.001811171
+                },
+                {
+                    "Litter density": 1623.177343,
+                    "entertainment_density": 0.001542848
+                },
+                {
+                    "Litter density": 959.8071116,
+                    "entertainment_density": 0.000863741
+                },
+                {
+                    "Litter density": 6882.020091,
+                    "entertainment_density": 0.002600052
+                },
+                {
+                    "Litter density": 565.3080239,
+                    "entertainment_density": 0.002782012
+                },
+                {
+                    "Litter density": 3022.610549,
+                    "entertainment_density": 0.002819049
+                },
+                {
+                    "Litter density": 3877.415873,
+                    "entertainment_density": 0.003099393
+                }
+            ]
+        },
+        "Food amenities_density": {
+            "scatter_plot": [
+                {
+                    "Litter density": 2112.341411,
+                    "Food_density": 0.025748983
+                },
+                {
+                    "Litter density": 2692.396265,
+                    "Food_density": 0.136939604
+                },
+                {
+                    "Litter density": 936.3213426,
+                    "Food_density": 0.045852411
+                },
+                {
+                    "Litter density": 10812.61499,
+                    "Food_density": 0.353915437
+                },
+                {
+                    "Litter density": 815.309806,
+                    "Food_density": 0.175588088
+                },
+                {
+                    "Litter density": 3028.058551,
+                    "Food_density": 0.104264847
+                },
+                {
+                    "Litter density": 3095.603111,
+                    "Food_density": 0.059421411
+                },
+                {
+                    "Litter density": 5331.271739,
+                    "Food_density": 0.106417767
+                },
+                {
+                    "Litter density": 7206.318692,
+                    "Food_density": 0.05831763
+                },
+                {
+                    "Litter density": 614.0111241,
+                    "Food_density": 0.024612288
+                },
+                {
+                    "Litter density": 2793.822138,
+                    "Food_density": 0.012372667
+                },
+                {
+                    "Litter density": 2095.253158,
+                    "Food_density": 0.023148759
+                },
+                {
+                    "Litter density": 1679.86947,
+                    "Food_density": 0.277529877
+                },
+                {
+                    "Litter density": 10225.84588,
+                    "Food_density": 0.373787752
+                },
+                {
+                    "Litter density": 3150.568928,
+                    "Food_density": 0.040097971
+                },
+                {
+                    "Litter density": 1008.791917,
+                    "Food_density": 0.012449425
+                },
+                {
+                    "Litter density": 1675.045902,
+                    "Food_density": 0.03168983
+                },
+                {
+                    "Litter density": 1639.760579,
+                    "Food_density": 0.005535787
+                },
+                {
+                    "Litter density": 4522.10604,
+                    "Food_density": 0.013484617
+                },
+                {
+                    "Litter density": 1059.334939,
+                    "Food_density": 0.016957474
+                },
+                {
+                    "Litter density": 5474.939981,
+                    "Food_density": 0.082354009
+                },
+                {
+                    "Litter density": 4038.514955,
+                    "Food_density": 0.469996238
+                },
+                {
+                    "Litter density": 5058.320032,
+                    "Food_density": 0.258493374
+                },
+                {
+                    "Litter density": 580.1477809,
+                    "Food_density": 0.09598923
+                },
+                {
+                    "Litter density": 5941.554268,
+                    "Food_density": 0.112412937
+                },
+                {
+                    "Litter density": 1632.004905,
+                    "Food_density": 0.03470271
+                },
+                {
+                    "Litter density": 778.4544204,
+                    "Food_density": 0.146176555
+                },
+                {
+                    "Litter density": 23080.08371,
+                    "Food_density": 0.330903822
+                },
+                {
+                    "Litter density": 4340.878183,
+                    "Food_density": 0.0890909
+                },
+                {
+                    "Litter density": 1623.177343,
+                    "Food_density": 0.048706534
+                },
+                {
+                    "Litter density": 959.8071116,
+                    "Food_density": 0.03010064
+                },
+                {
+                    "Litter density": 6882.020091,
+                    "Food_density": 0.057305157
+                },
+                {
+                    "Litter density": 565.3080239,
+                    "Food_density": 0.146441379
+                },
+                {
+                    "Litter density": 3022.610549,
+                    "Food_density": 0.092944451
+                },
+                {
+                    "Litter density": 3877.415873,
+                    "Food_density": 0.050964405
+                }
+            ]
+        },
+        "Leisure amenities_density": {
+            "scatter_plot": [
+                {
+                    "Litter density": 2112.341411,
+                    "leisure_density": 0.002947754
+                },
+                {
+                    "Litter density": 2692.396265,
+                    "leisure_density": 0.008179829
+                },
+                {
+                    "Litter density": 936.3213426,
+                    "leisure_density": 0.002699461
+                },
+                {
+                    "Litter density": 10812.61499,
+                    "leisure_density": 0.02904199
+                },
+                {
+                    "Litter density": 815.309806,
+                    "leisure_density": 0.008839675
+                },
+                {
+                    "Litter density": 3028.058551,
+                    "leisure_density": 0.010141947
+                },
+                {
+                    "Litter density": 3095.603111,
+                    "leisure_density": 0.01307574
+                },
+                {
+                    "Litter density": 5331.271739,
+                    "leisure_density": 0.013537487
+                },
+                {
+                    "Litter density": 7206.318692,
+                    "leisure_density": 0.011559191
+                },
+                {
+                    "Litter density": 614.0111241,
+                    "leisure_density": 0.001084007
+                },
+                {
+                    "Litter density": 2793.822138,
+                    "leisure_density": 0.002382164
+                },
+                {
+                    "Litter density": 2095.253158,
+                    "leisure_density": 0.003278701
+                },
+                {
+                    "Litter density": 1679.86947,
+                    "leisure_density": 0.030388836
+                },
+                {
+                    "Litter density": 10225.84588,
+                    "leisure_density": 0.022834689
+                },
+                {
+                    "Litter density": 3150.568928,
+                    "leisure_density": 0.000630731
+                },
+                {
+                    "Litter density": 1008.791917,
+                    "leisure_density": 0.005842765
+                },
+                {
+                    "Litter density": 1675.045902,
+                    "leisure_density": 0.005896116
+                },
+                {
+                    "Litter density": 1639.760579,
+                    "leisure_density": 0.002427857
+                },
+                {
+                    "Litter density": 4522.10604,
+                    "leisure_density": 0.0065807
+                },
+                {
+                    "Litter density": 1059.334939,
+                    "leisure_density": 0.00142895
+                },
+                {
+                    "Litter density": 5474.939981,
+                    "leisure_density": 0.003957271
+                },
+                {
+                    "Litter density": 4038.514955,
+                    "leisure_density": 0.046105048
+                },
+                {
+                    "Litter density": 5058.320032,
+                    "leisure_density": 0.016716015
+                },
+                {
+                    "Litter density": 580.1477809,
+                    "leisure_density": 0.006707726
+                },
+                {
+                    "Litter density": 5941.554268,
+                    "leisure_density": 0.012805125
+                },
+                {
+                    "Litter density": 1632.004905,
+                    "leisure_density": 0.005387357
+                },
+                {
+                    "Litter density": 778.4544204,
+                    "leisure_density": 0.014331035
+                },
+                {
+                    "Litter density": 23080.08371,
+                    "leisure_density": 0.016719351
+                },
+                {
+                    "Litter density": 4340.878183,
+                    "leisure_density": 0.00849377
+                },
+                {
+                    "Litter density": 1623.177343,
+                    "leisure_density": 0.012247842
+                },
+                {
+                    "Litter density": 959.8071116,
+                    "leisure_density": 0.001518993
+                },
+                {
+                    "Litter density": 6882.020091,
+                    "leisure_density": 0.007592153
+                },
+                {
+                    "Litter density": 565.3080239,
+                    "leisure_density": 0.007153746
+                },
+                {
+                    "Litter density": 3022.610549,
+                    "leisure_density": 0.001542763
+                },
+                {
+                    "Litter density": 3877.415873,
+                    "leisure_density": 0.013802223
+                }
+            ]
+        },
+        "Shopping amenities_density": {
+            "scatter_plot": [
+                {
+                    "Litter density": 2112.341411,
+                    "shopping_density": 0.002193269
+                },
+                {
+                    "Litter density": 2692.396265,
+                    "shopping_density": 0.013038339
+                },
+                {
+                    "Litter density": 936.3213426,
+                    "shopping_density": 0.002833954
+                },
+                {
+                    "Litter density": 10812.61499,
+                    "shopping_density": 0.041308173
+                },
+                {
+                    "Litter density": 815.309806,
+                    "shopping_density": 0.024108204
+                },
+                {
+                    "Litter density": 3028.058551,
+                    "shopping_density": 0.021340346
+                },
+                {
+                    "Litter density": 3095.603111,
+                    "shopping_density": 0.009541756
+                },
+                {
+                    "Litter density": 5331.271739,
+                    "shopping_density": 0.008495464
+                },
+                {
+                    "Litter density": 7206.318692,
+                    "shopping_density": 0.007358345
+                },
+                {
+                    "Litter density": 614.0111241,
+                    "shopping_density": 0.002274637
+                },
+                {
+                    "Litter density": 2793.822138,
+                    "shopping_density": 0.001701545
+                },
+                {
+                    "Litter density": 2095.253158,
+                    "shopping_density": 0.004833257
+                },
+                {
+                    "Litter density": 1679.86947,
+                    "shopping_density": 0.027325771
+                },
+                {
+                    "Litter density": 10225.84588,
+                    "shopping_density": 0.03363616
+                },
+                {
+                    "Litter density": 3150.568928,
+                    "shopping_density": 0.005779981
+                },
+                {
+                    "Litter density": 1008.791917,
+                    "shopping_density": 0.002209102
+                },
+                {
+                    "Litter density": 1675.045902,
+                    "shopping_density": 0.002883502
+                },
+                {
+                    "Litter density": 1639.760579,
+                    "shopping_density": 0.000748079
+                },
+                {
+                    "Litter density": 4522.10604,
+                    "shopping_density": 0.001512656
+                },
+                {
+                    "Litter density": 1059.334939,
+                    "shopping_density": 0.001284246
+                },
+                {
+                    "Litter density": 5474.939981,
+                    "shopping_density": 0.006524149
+                },
+                {
+                    "Litter density": 4038.514955,
+                    "shopping_density": 0.049545723
+                },
+                {
+                    "Litter density": 5058.320032,
+                    "shopping_density": 0.026448695
+                },
+                {
+                    "Litter density": 580.1477809,
+                    "shopping_density": 0.01666712
+                },
+                {
+                    "Litter density": 5941.554268,
+                    "shopping_density": 0.011912782
+                },
+                {
+                    "Litter density": 1632.004905,
+                    "shopping_density": 0.001738185
+                },
+                {
+                    "Litter density": 778.4544204,
+                    "shopping_density": 0.016415549
+                },
+                {
+                    "Litter density": 23080.08371,
+                    "shopping_density": 0.029955504
+                },
+                {
+                    "Litter density": 4340.878183,
+                    "shopping_density": 0.01171016
+                },
+                {
+                    "Litter density": 1623.177343,
+                    "shopping_density": 0.00747688
+                },
+                {
+                    "Litter density": 959.8071116,
+                    "shopping_density": 0.002382735
+                },
+                {
+                    "Litter density": 6882.020091,
+                    "shopping_density": 0.006344128
+                },
+                {
+                    "Litter density": 565.3080239,
+                    "shopping_density": 0.013232091
+                },
+                {
+                    "Litter density": 3022.610549,
+                    "shopping_density": 0.005413695
+                },
+                {
+                    "Litter density": 3877.415873,
+                    "shopping_density": 0.004244489
+                }
+            ]
+        }
+    },
+    "gps_data": [
+        {
+            "Latitude": 33.543296,
+            "Longitude": -84.850941,
+            "All Item Type": 84,
+            "Date and Time:": "11-09-2020 13:22"
+        },
+        {
+            "Latitude": 33.695673,
+            "Longitude": -85.081055,
+            "All Item Type": 85,
+            "Date and Time:": "14-10-2020 18:59"
+        },
+        {
+            "Latitude": 34.00348,
+            "Longitude": -84.639455,
+            "All Item Type": 16,
+            "Date and Time:": "15-10-2020 14:30"
+        },
+        {
+            "Latitude": 33.591697,
+            "Longitude": -83.969468,
+            "All Item Type": 248,
+            "Date and Time:": "14-10-2020 13:38"
+        },
+        {
+            "Latitude": 33.543296,
+            "Longitude": -84.850941,
+            "All Item Type": 2,
+            "Date and Time:": "11-09-2020 13:21"
+        },
+        {
+            "Latitude": 33.695673,
+            "Longitude": -85.081055,
+            "All Item Type": 11,
+            "Date and Time:": "14-10-2020 18:58"
+        },
+        {
+            "Latitude": 33.854173,
+            "Longitude": -84.943407,
+            "All Item Type": 3,
+            "Date and Time:": "10-09-2020 14:20"
+        },
+        {
+            "Latitude": 34.00348,
+            "Longitude": -84.639455,
+            "All Item Type": 8,
+            "Date and Time:": "15-10-2020 14:34"
+        },
+        {
+            "Latitude": 33.591697,
+            "Longitude": -83.969468,
+            "All Item Type": 17,
+            "Date and Time:": "14-10-2020 13:36"
+        },
+        {
+            "Latitude": 39.487915,
+            "Longitude": -74.880105,
+            "All Item Type": 11,
+            "Date and Time:": "16-09-2020 18:00"
+        },
+        {
+            "Latitude": 39.349544,
+            "Longitude": -74.596782,
+            "All Item Type": 4,
+            "Date and Time:": "14-09-2020 19:29"
+        },
+        {
+            "Latitude": 39.413334,
+            "Longitude": -74.549641,
+            "All Item Type": 89,
+            "Date and Time:": "15-09-2020 14:42"
+        },
+        {
+            "Latitude": 39.410537,
+            "Longitude": -74.565824,
+            "All Item Type": 17,
+            "Date and Time:": "14-09-2020 13:44"
+        },
+        {
+            "Latitude": 39.660246,
+            "Longitude": -74.773452,
+            "All Item Type": 4,
+            "Date and Time:": "16-09-2020 15:44"
+        },
+        {
+            "Latitude": 39.487915,
+            "Longitude": -74.880105,
+            "All Item Type": 17,
+            "Date and Time:": "16-09-2020 17:51"
+        },
+        {
+            "Latitude": 39.349544,
+            "Longitude": -74.596782,
+            "All Item Type": 3,
+            "Date and Time:": "14-09-2020 19:30"
+        },
+        {
+            "Latitude": 39.413334,
+            "Longitude": -74.549641,
+            "All Item Type": 8,
+            "Date and Time:": "15-09-2020 14:35"
+        },
+        {
+            "Latitude": 39.410537,
+            "Longitude": -74.565824,
+            "All Item Type": 3,
+            "Date and Time:": "14-09-2020 13:37"
+        },
+        {
+            "Latitude": 39.660246,
+            "Longitude": -74.773452,
+            "All Item Type": 5,
+            "Date and Time:": "16-09-2020 15:45"
+        },
+        {
+            "Latitude": 30.347159,
+            "Longitude": -97.750528,
+            "All Item Type": 21,
+            "Date and Time:": "06-10-2020 20:55"
+        },
+        {
+            "Latitude": 30.826896,
+            "Longitude": -97.603532,
+            "All Item Type": 26,
+            "Date and Time:": "05-10-2020 16:31"
+        },
+        {
+            "Latitude": 30.183226,
+            "Longitude": -97.066132,
+            "All Item Type": 8,
+            "Date and Time:": "05-10-2020 22:53"
+        },
+        {
+            "Latitude": 30.6164,
+            "Longitude": -97.6695,
+            "All Item Type": 17,
+            "Date and Time:": "05-10-2020 18:50"
+        },
+        {
+            "Latitude": 29.8927,
+            "Longitude": -97.5899,
+            "All Item Type": 89,
+            "Date and Time:": "06-10-2020 13:46"
+        },
+        {
+            "Latitude": 30.5136,
+            "Longitude": -97.5341,
+            "All Item Type": 27,
+            "Date and Time:": "05-10-2020 20:09"
+        },
+        {
+            "Latitude": 30.347159,
+            "Longitude": -97.750528,
+            "All Item Type": 10,
+            "Date and Time:": "06-10-2020 21:55"
+        },
+        {
+            "Latitude": 30.826896,
+            "Longitude": -97.603532,
+            "All Item Type": 9,
+            "Date and Time:": "05-10-2020 16:34"
+        },
+        {
+            "Latitude": 30.6164,
+            "Longitude": -97.6695,
+            "All Item Type": 10,
+            "Date and Time:": "05-10-2020 18:50"
+        },
+        {
+            "Latitude": 29.8927,
+            "Longitude": -97.5899,
+            "All Item Type": 9,
+            "Date and Time:": "06-10-2020 13:44"
+        },
+        {
+            "Latitude": 30.5136,
+            "Longitude": -97.5341,
+            "All Item Type": 1,
+            "Date and Time:": "05-10-2020 20:09"
+        },
+        {
+            "Latitude": 39.397196,
+            "Longitude": -76.405203,
+            "All Item Type": 25,
+            "Date and Time:": "06-10-2020 14:14"
+        },
+        {
+            "Latitude": 39.313235,
+            "Longitude": -76.453907,
+            "All Item Type": 44,
+            "Date and Time:": "06-10-2020 13:18"
+        },
+        {
+            "Latitude": 39.266494,
+            "Longitude": -76.718657,
+            "All Item Type": 8,
+            "Date and Time:": "05-10-2020 13:38"
+        },
+        {
+            "Latitude": 39.57651,
+            "Longitude": -76.119349,
+            "All Item Type": 26,
+            "Date and Time:": "06-10-2020 16:26"
+        },
+        {
+            "Latitude": 39.397196,
+            "Longitude": -76.405203,
+            "All Item Type": 16,
+            "Date and Time:": "06-10-2020 14:20"
+        },
+        {
+            "Latitude": 39.313235,
+            "Longitude": -76.453907,
+            "All Item Type": 10,
+            "Date and Time:": "06-10-2020 13:26"
+        },
+        {
+            "Latitude": 39.266494,
+            "Longitude": -76.718657,
+            "All Item Type": 3,
+            "Date and Time:": "05-10-2020 13:40"
+        },
+        {
+            "Latitude": 39.57651,
+            "Longitude": -76.119349,
+            "All Item Type": 30,
+            "Date and Time:": "06-10-2020 16:25"
+        },
+        {
+            "Latitude": 41.238935,
+            "Longitude": -73.34165,
+            "All Item Type": 31,
+            "Date and Time:": "06-10-2020 12:25"
+        },
+        {
+            "Latitude": 41.011323,
+            "Longitude": -73.64259,
+            "All Item Type": 502,
+            "Date and Time:": "07-10-2020 15:18"
+        },
+        {
+            "Latitude": 41.354663,
+            "Longitude": -73.469572,
+            "All Item Type": 74,
+            "Date and Time:": "06-10-2020 20:04"
+        },
+        {
+            "Latitude": 41.104824,
+            "Longitude": -73.652308,
+            "All Item Type": 23,
+            "Date and Time:": "07-10-2020 12:32"
+        },
+        {
+            "Latitude": 41.120324,
+            "Longitude": -73.345987,
+            "All Item Type": 50,
+            "Date and Time:": "05-10-2020 14:43"
+        },
+        {
+            "Latitude": 41.158316,
+            "Longitude": -73.464631,
+            "All Item Type": 22,
+            "Date and Time:": "05-10-2020 13:00"
+        },
+        {
+            "Latitude": 41.35098,
+            "Longitude": -73.335768,
+            "All Item Type": 16,
+            "Date and Time:": "06-10-2020 15:48"
+        },
+        {
+            "Latitude": 41.238935,
+            "Longitude": -73.34165,
+            "All Item Type": 1,
+            "Date and Time:": "06-10-2020 12:11"
+        },
+        {
+            "Latitude": 41.011323,
+            "Longitude": -73.64259,
+            "All Item Type": 174,
+            "Date and Time:": "07-10-2020 15:15"
+        },
+        {
+            "Latitude": 41.354663,
+            "Longitude": -73.469572,
+            "All Item Type": 24,
+            "Date and Time:": "06-10-2020 20:03"
+        },
+        {
+            "Latitude": 41.104824,
+            "Longitude": -73.652308,
+            "All Item Type": 4,
+            "Date and Time:": "07-10-2020 12:31"
+        },
+        {
+            "Latitude": 41.120324,
+            "Longitude": -73.345987,
+            "All Item Type": 14,
+            "Date and Time:": "05-10-2020 14:43"
+        },
+        {
+            "Latitude": 41.158316,
+            "Longitude": -73.464631,
+            "All Item Type": 6,
+            "Date and Time:": "05-10-2020 13:02"
+        },
+        {
+            "Latitude": 41.35098,
+            "Longitude": -73.335768,
+            "All Item Type": 4,
+            "Date and Time:": "06-10-2020 15:45"
+        },
+        {
+            "Latitude": 44.491366,
+            "Longitude": -73.184226,
+            "All Item Type": 13,
+            "Date and Time:": "14-10-2020 19:28"
+        },
+        {
+            "Latitude": 44.516141,
+            "Longitude": -73.037663,
+            "All Item Type": 18,
+            "Date and Time:": "14-10-2020 18:25"
+        },
+        {
+            "Latitude": 44.605184,
+            "Longitude": -73.169662,
+            "All Item Type": 32,
+            "Date and Time:": "15-10-2020 17:09"
+        },
+        {
+            "Latitude": 44.9324,
+            "Longitude": -73.085593,
+            "All Item Type": 262,
+            "Date and Time:": "15-10-2020 14:57"
+        },
+        {
+            "Latitude": 45.012438,
+            "Longitude": -73.085032,
+            "All Item Type": 19,
+            "Date and Time:": "15-10-2020 12:53"
+        },
+        {
+            "Latitude": 44.491366,
+            "Longitude": -73.184226,
+            "All Item Type": 4,
+            "Date and Time:": "14-10-2020 19:28"
+        },
+        {
+            "Latitude": 44.516141,
+            "Longitude": -73.037663,
+            "All Item Type": 8,
+            "Date and Time:": "14-10-2020 18:25"
+        },
+        {
+            "Latitude": 44.605184,
+            "Longitude": -73.169662,
+            "All Item Type": 35,
+            "Date and Time:": "15-10-2020 17:06"
+        },
+        {
+            "Latitude": 44.9324,
+            "Longitude": -73.085593,
+            "All Item Type": 46,
+            "Date and Time:": "15-10-2020 14:57"
+        },
+        {
+            "Latitude": 45.012438,
+            "Longitude": -73.085032,
+            "All Item Type": 10,
+            "Date and Time:": "15-10-2020 12:52"
+        },
+        {
+            "Latitude": 44.302946,
+            "Longitude": -73.163968,
+            "All Item Type": 1,
+            "Date and Time:": "16-10-2020 16:12"
+        },
+        {
+            "Latitude": 42.064216,
+            "Longitude": -91.599425,
+            "All Item Type": 4,
+            "Date and Time:": "18-09-2020 18:10"
+        },
+        {
+            "Latitude": 42.007613,
+            "Longitude": -91.67125,
+            "All Item Type": 6,
+            "Date and Time:": "15-09-2020 21:42"
+        },
+        {
+            "Latitude": 42.227149,
+            "Longitude": -91.864286,
+            "All Item Type": 56,
+            "Date and Time:": "17-09-2020 21:02"
+        },
+        {
+            "Latitude": 41.992239,
+            "Longitude": -91.141446,
+            "All Item Type": 2,
+            "Date and Time:": "16-09-2020 19:07"
+        },
+        {
+            "Latitude": 42.29614,
+            "Longitude": -91.306156,
+            "All Item Type": 3,
+            "Date and Time:": "16-09-2020 20:43"
+        },
+        {
+            "Latitude": 42.064216,
+            "Longitude": -91.599425,
+            "All Item Type": 7,
+            "Date and Time:": "18-09-2020 18:14"
+        },
+        {
+            "Latitude": 42.007613,
+            "Longitude": -91.67125,
+            "All Item Type": 2,
+            "Date and Time:": "15-09-2020 21:44"
+        },
+        {
+            "Latitude": 42.227149,
+            "Longitude": -91.864286,
+            "All Item Type": 12,
+            "Date and Time:": "17-09-2020 20:52"
+        },
+        {
+            "Latitude": 41.992239,
+            "Longitude": -91.141446,
+            "All Item Type": 6,
+            "Date and Time:": "16-09-2020 19:05"
+        },
+        {
+            "Latitude": 42.29614,
+            "Longitude": -91.306156,
+            "All Item Type": 1,
+            "Date and Time:": "16-09-2020 20:50"
+        },
+        {
+            "Latitude": 32.79022,
+            "Longitude": -80.032562,
+            "All Item Type": 6,
+            "Date and Time:": "18-09-2020 12:48"
+        },
+        {
+            "Latitude": 32.788833,
+            "Longitude": -79.786922,
+            "All Item Type": 14,
+            "Date and Time:": "17-09-2020 19:08"
+        },
+        {
+            "Latitude": 33.052016,
+            "Longitude": -80.381702,
+            "All Item Type": 220,
+            "Date and Time:": "17-09-2020 16:37"
+        },
+        {
+            "Latitude": 33.382745,
+            "Longitude": -80.105645,
+            "All Item Type": 7,
+            "Date and Time:": "16-09-2020 23:05"
+        },
+        {
+            "Latitude": 33.22303,
+            "Longitude": -80.425608,
+            "All Item Type": 57,
+            "Date and Time:": "17-09-2020 14:49"
+        },
+        {
+            "Latitude": 32.79022,
+            "Longitude": -80.032562,
+            "All Item Type": 12,
+            "Date and Time:": "18-09-2020 12:49"
+        },
+        {
+            "Latitude": 32.788833,
+            "Longitude": -79.786922,
+            "All Item Type": 6,
+            "Date and Time:": "17-09-2020 19:07"
+        },
+        {
+            "Latitude": 33.052016,
+            "Longitude": -80.381702,
+            "All Item Type": 9,
+            "Date and Time:": "17-09-2020 16:45"
+        },
+        {
+            "Latitude": 33.382745,
+            "Longitude": -80.105645,
+            "All Item Type": 2,
+            "Date and Time:": "16-09-2020 23:02"
+        },
+        {
+            "Latitude": 33.22303,
+            "Longitude": -80.425608,
+            "All Item Type": 11,
+            "Date and Time:": "17-09-2020 14:52"
+        },
+        {
+            "Latitude": 35.080832,
+            "Longitude": -85.630078,
+            "All Item Type": 6,
+            "Date and Time:": "24-09-2020 17:03"
+        },
+        {
+            "Latitude": 35.021356,
+            "Longitude": -85.021105,
+            "All Item Type": 45,
+            "Date and Time:": "23-09-2020 17:31"
+        },
+        {
+            "Latitude": 35.027892,
+            "Longitude": -85.693974,
+            "All Item Type": 10,
+            "Date and Time:": "24-09-2020 17:32"
+        },
+        {
+            "Latitude": 35.326681,
+            "Longitude": -85.016795,
+            "All Item Type": 44,
+            "Date and Time:": "23-09-2020 18:07"
+        },
+        {
+            "Latitude": 35.080832,
+            "Longitude": -85.630078,
+            "All Item Type": 1,
+            "Date and Time:": "24-09-2020 17:07"
+        },
+        {
+            "Latitude": 35.021356,
+            "Longitude": -85.021105,
+            "All Item Type": 3,
+            "Date and Time:": "23-09-2020 17:09"
+        },
+        {
+            "Latitude": 35.027892,
+            "Longitude": -85.693974,
+            "All Item Type": 8,
+            "Date and Time:": "24-09-2020 17:30"
+        },
+        {
+            "Latitude": 35.326681,
+            "Longitude": -85.016795,
+            "All Item Type": 3,
+            "Date and Time:": "23-09-2020 18:27"
+        },
+        {
+            "Latitude": 41.334595,
+            "Longitude": -81.834576,
+            "All Item Type": 18,
+            "Date and Time:": "16-09-2020 13:28"
+        },
+        {
+            "Latitude": 41.516463,
+            "Longitude": -81.664314,
+            "All Item Type": 39,
+            "Date and Time:": "17-09-2020 18:10"
+        },
+        {
+            "Latitude": 41.398177,
+            "Longitude": -81.453657,
+            "All Item Type": 83,
+            "Date and Time:": "15-09-2020 13:29"
+        },
+        {
+            "Latitude": 41.416526,
+            "Longitude": -81.575404,
+            "All Item Type": 106,
+            "Date and Time:": "17-09-2020 14:09"
+        },
+        {
+            "Latitude": 41.184874,
+            "Longitude": -82.022626,
+            "All Item Type": 21,
+            "Date and Time:": "14-09-2020 17:43"
+        },
+        {
+            "Latitude": 41.295381,
+            "Longitude": -82.274226,
+            "All Item Type": 4,
+            "Date and Time:": "14-09-2020 16:32"
+        },
+        {
+            "Latitude": 41.036319,
+            "Longitude": -81.880044,
+            "All Item Type": 95,
+            "Date and Time:": "14-09-2020 20:13"
+        },
+        {
+            "Latitude": 41.334595,
+            "Longitude": -81.834576,
+            "All Item Type": 11,
+            "Date and Time:": "16-09-2020 13:35"
+        },
+        {
+            "Latitude": 41.516463,
+            "Longitude": -81.664314,
+            "All Item Type": 75,
+            "Date and Time:": "10-09-2020 18:22"
+        },
+        {
+            "Latitude": 41.398177,
+            "Longitude": -81.453657,
+            "All Item Type": 82,
+            "Date and Time:": "15-09-2020 13:33"
+        },
+        {
+            "Latitude": 41.416526,
+            "Longitude": -81.575404,
+            "All Item Type": 4,
+            "Date and Time:": "10-09-2020 14:06"
+        },
+        {
+            "Latitude": 41.184874,
+            "Longitude": -82.022626,
+            "All Item Type": 11,
+            "Date and Time:": "14-09-2020 17:38"
+        },
+        {
+            "Latitude": 41.036319,
+            "Longitude": -81.880044,
+            "All Item Type": 33,
+            "Date and Time:": "14-09-2020 20:18"
+        },
+        {
+            "Latitude": 28.928999,
+            "Longitude": -80.875872,
+            "All Item Type": 21,
+            "Date and Time:": "28-09-2020 21:24"
+        },
+        {
+            "Latitude": 29.171854,
+            "Longitude": -81.073404,
+            "All Item Type": 33,
+            "Date and Time:": "29-09-2020 18:21"
+        },
+        {
+            "Latitude": 29.227257,
+            "Longitude": -81.30633,
+            "All Item Type": 50,
+            "Date and Time:": "28-09-2020 13:45"
+        },
+        {
+            "Latitude": 29.236996,
+            "Longitude": -81.013935,
+            "All Item Type": 27,
+            "Date and Time:": "29-09-2020 14:13"
+        },
+        {
+            "Latitude": 28.928999,
+            "Longitude": -80.875872,
+            "All Item Type": 8,
+            "Date and Time:": "28-09-2020 21:22"
+        },
+        {
+            "Latitude": 29.171854,
+            "Longitude": -81.073404,
+            "All Item Type": 8,
+            "Date and Time:": "29-09-2020 18:19"
+        },
+        {
+            "Latitude": 29.227257,
+            "Longitude": -81.30633,
+            "All Item Type": 6,
+            "Date and Time:": "28-09-2020 13:53"
+        },
+        {
+            "Latitude": 29.236996,
+            "Longitude": -81.013935,
+            "All Item Type": 14,
+            "Date and Time:": "29-09-2020 14:13"
+        },
+        {
+            "Latitude": 39.122044,
+            "Longitude": -75.481812,
+            "All Item Type": 21,
+            "Date and Time:": "07-10-2020 18:19"
+        },
+        {
+            "Latitude": 38.990319,
+            "Longitude": -75.494148,
+            "All Item Type": 59,
+            "Date and Time:": "07-10-2020 19:16"
+        },
+        {
+            "Latitude": 39.306164,
+            "Longitude": -75.59045,
+            "All Item Type": 8,
+            "Date and Time:": "07-10-2020 14:48"
+        },
+        {
+            "Latitude": 39.122044,
+            "Longitude": -75.481812,
+            "All Item Type": 11,
+            "Date and Time:": "07-10-2020 18:18"
+        },
+        {
+            "Latitude": 39.113357,
+            "Longitude": -75.555491,
+            "All Item Type": 2,
+            "Date and Time:": "07-10-2020 17:59"
+        },
+        {
+            "Latitude": 38.990319,
+            "Longitude": -75.494148,
+            "All Item Type": 4,
+            "Date and Time:": "07-10-2020 19:15"
+        },
+        {
+            "Latitude": 39.306164,
+            "Longitude": -75.59045,
+            "All Item Type": 5,
+            "Date and Time:": "07-10-2020 14:52"
+        },
+        {
+            "Latitude": 40.390159,
+            "Longitude": -104.99322,
+            "All Item Type": 121,
+            "Date and Time:": "04-10-2020 17:44"
+        },
+        {
+            "Latitude": 40.411239,
+            "Longitude": -105.102899,
+            "All Item Type": 3,
+            "Date and Time:": "04-10-2020 18:47"
+        },
+        {
+            "Latitude": 40.617657,
+            "Longitude": -105.055944,
+            "All Item Type": 13,
+            "Date and Time:": "04-10-2020 21:09"
+        },
+        {
+            "Latitude": 40.558182,
+            "Longitude": -105.03918,
+            "All Item Type": 16,
+            "Date and Time:": "04-10-2020 20:27"
+        },
+        {
+            "Latitude": 40.714848,
+            "Longitude": -104.993824,
+            "All Item Type": 288,
+            "Date and Time:": "05-10-2020 17:22"
+        },
+        {
+            "Latitude": 40.415495,
+            "Longitude": -105.374451,
+            "All Item Type": 17,
+            "Date and Time:": "05-10-2020 20:50"
+        },
+        {
+            "Latitude": 40.560811,
+            "Longitude": -105.296832,
+            "All Item Type": 12,
+            "Date and Time:": "05-10-2020 19:22"
+        },
+        {
+            "Latitude": 40.390159,
+            "Longitude": -104.99322,
+            "All Item Type": 56,
+            "Date and Time:": "04-10-2020 17:50"
+        },
+        {
+            "Latitude": 40.411239,
+            "Longitude": -105.102899,
+            "All Item Type": 3,
+            "Date and Time:": "04-10-2020 19:36"
+        },
+        {
+            "Latitude": 40.617657,
+            "Longitude": -105.055944,
+            "All Item Type": 29,
+            "Date and Time:": "04-10-2020 20:04"
+        },
+        {
+            "Latitude": 40.558182,
+            "Longitude": -105.03918,
+            "All Item Type": 31,
+            "Date and Time:": "04-10-2020 20:23"
+        },
+        {
+            "Latitude": 40.714848,
+            "Longitude": -104.993824,
+            "All Item Type": 66,
+            "Date and Time:": "05-10-2020 18:19"
+        },
+        {
+            "Latitude": 40.415495,
+            "Longitude": -105.374451,
+            "All Item Type": 3,
+            "Date and Time:": "05-10-2020 20:51"
+        },
+        {
+            "Latitude": 40.560811,
+            "Longitude": -105.296832,
+            "All Item Type": 6,
+            "Date and Time:": "05-10-2020 19:24"
+        },
+        {
+            "Latitude": 39.868209,
+            "Longitude": -76.98363,
+            "All Item Type": 2,
+            "Date and Time:": "13-10-2020 14:56"
+        },
+        {
+            "Latitude": 39.786859,
+            "Longitude": -77.21622,
+            "All Item Type": 47,
+            "Date and Time:": "14-10-2020 14:07"
+        },
+        {
+            "Latitude": 39.829704,
+            "Longitude": -77.240222,
+            "All Item Type": 6,
+            "Date and Time:": "14-10-2020 16:21"
+        },
+        {
+            "Latitude": 39.921285,
+            "Longitude": -77.054134,
+            "All Item Type": 6,
+            "Date and Time:": "13-10-2020 17:35"
+        },
+        {
+            "Latitude": 39.990438,
+            "Longitude": -77.118009,
+            "All Item Type": 38,
+            "Date and Time:": "14-10-2020 19:18"
+        },
+        {
+            "Latitude": 39.954415,
+            "Longitude": -77.170033,
+            "All Item Type": 1,
+            "Date and Time:": "14-10-2020 19:01"
+        },
+        {
+            "Latitude": 39.868209,
+            "Longitude": -76.98363,
+            "All Item Type": 5,
+            "Date and Time:": "13-10-2020 14:54"
+        },
+        {
+            "Latitude": 39.786859,
+            "Longitude": -77.21622,
+            "All Item Type": 4,
+            "Date and Time:": "14-10-2020 14:06"
+        },
+        {
+            "Latitude": 39.829704,
+            "Longitude": -77.240222,
+            "All Item Type": 18,
+            "Date and Time:": "14-10-2020 16:22"
+        },
+        {
+            "Latitude": 39.921285,
+            "Longitude": -77.054134,
+            "All Item Type": 7,
+            "Date and Time:": "13-10-2020 17:34"
+        },
+        {
+            "Latitude": 39.990438,
+            "Longitude": -77.118009,
+            "All Item Type": 6,
+            "Date and Time:": "14-10-2020 19:19"
+        },
+        {
+            "Latitude": 42.818622,
+            "Longitude": -85.861944,
+            "All Item Type": 15,
+            "Date and Time:": "15-09-2020 16:00"
+        },
+        {
+            "Latitude": 42.878654,
+            "Longitude": -85.745604,
+            "All Item Type": 17,
+            "Date and Time:": "22-09-2020 21:33"
+        },
+        {
+            "Latitude": 42.878955,
+            "Longitude": -85.023268,
+            "All Item Type": 47,
+            "Date and Time:": "21-09-2020 13:31"
+        },
+        {
+            "Latitude": 42.972369,
+            "Longitude": -86.083604,
+            "All Item Type": 43,
+            "Date and Time:": "23-09-2020 16:09"
+        },
+        {
+            "Latitude": 43.197333,
+            "Longitude": -85.601111,
+            "All Item Type": 24,
+            "Date and Time:": "21-09-2020 19:13"
+        },
+        {
+            "Latitude": 42.818622,
+            "Longitude": -85.861944,
+            "All Item Type": 9,
+            "Date and Time:": "22-09-2020 16:17"
+        },
+        {
+            "Latitude": 42.878654,
+            "Longitude": -85.745604,
+            "All Item Type": 34,
+            "Date and Time:": "22-09-2020 21:35"
+        },
+        {
+            "Latitude": 42.878955,
+            "Longitude": -85.023268,
+            "All Item Type": 38,
+            "Date and Time:": "21-09-2020 13:32"
+        },
+        {
+            "Latitude": 42.972369,
+            "Longitude": -86.083604,
+            "All Item Type": 33,
+            "Date and Time:": "23-09-2020 16:08"
+        },
+        {
+            "Latitude": 43.197333,
+            "Longitude": -85.601111,
+            "All Item Type": 8,
+            "Date and Time:": "21-09-2020 19:15"
+        },
+        {
+            "Latitude": 30.434818,
+            "Longitude": -89.085362,
+            "All Item Type": 60,
+            "Date and Time:": "22-09-2020 18:45"
+        },
+        {
+            "Latitude": 30.838112,
+            "Longitude": -88.973938,
+            "All Item Type": 21,
+            "Date and Time:": "21-09-2020 18:19"
+        },
+        {
+            "Latitude": 30.640195,
+            "Longitude": -88.754675,
+            "All Item Type": 50,
+            "Date and Time:": "21-09-2020 23:15"
+        },
+        {
+            "Latitude": 30.359238,
+            "Longitude": -89.419736,
+            "All Item Type": 52,
+            "Date and Time:": "22-09-2020 21:19"
+        },
+        {
+            "Latitude": 30.434818,
+            "Longitude": -89.085362,
+            "All Item Type": 39,
+            "Date and Time:": "22-09-2020 18:47"
+        },
+        {
+            "Latitude": 30.838112,
+            "Longitude": -88.973938,
+            "All Item Type": 4,
+            "Date and Time:": "21-09-2020 18:15"
+        },
+        {
+            "Latitude": 30.640195,
+            "Longitude": -88.754675,
+            "All Item Type": 3,
+            "Date and Time:": "21-09-2020 23:20"
+        },
+        {
+            "Latitude": 30.359238,
+            "Longitude": -89.419736,
+            "All Item Type": 31,
+            "Date and Time:": "22-09-2020 21:08"
+        },
+        {
+            "Latitude": 34.768709,
+            "Longitude": -77.309053,
+            "All Item Type": 43,
+            "Date and Time:": "15-09-2020 22:13"
+        },
+        {
+            "Latitude": 34.745094,
+            "Longitude": -77.408521,
+            "All Item Type": 32,
+            "Date and Time:": "16-09-2020 12:27"
+        },
+        {
+            "Latitude": 34.767189,
+            "Longitude": -77.430842,
+            "All Item Type": 6,
+            "Date and Time:": "16-09-2020 13:27"
+        },
+        {
+            "Latitude": 34.919613,
+            "Longitude": -77.594703,
+            "All Item Type": 29,
+            "Date and Time:": "15-09-2020 14:12"
+        },
+        {
+            "Latitude": 34.768709,
+            "Longitude": -77.309053,
+            "All Item Type": 8,
+            "Date and Time:": "15-09-2020 21:57"
+        },
+        {
+            "Latitude": 34.745094,
+            "Longitude": -77.408521,
+            "All Item Type": 11,
+            "Date and Time:": "16-09-2020 12:11"
+        },
+        {
+            "Latitude": 34.767189,
+            "Longitude": -77.430842,
+            "All Item Type": 1,
+            "Date and Time:": "16-09-2020 13:29"
+        },
+        {
+            "Latitude": 34.919613,
+            "Longitude": -77.594703,
+            "All Item Type": 6,
+            "Date and Time:": "15-09-2020 14:17"
+        },
+        {
+            "Latitude": 40.456105,
+            "Longitude": -86.847451,
+            "All Item Type": 139,
+            "Date and Time:": "22-09-2020 17:05"
+        },
+        {
+            "Latitude": 40.451288,
+            "Longitude": -86.892157,
+            "All Item Type": 34,
+            "Date and Time:": "29-09-2020 18:27"
+        },
+        {
+            "Latitude": 40.352617,
+            "Longitude": -86.80751,
+            "All Item Type": 27,
+            "Date and Time:": "29-09-2020 12:09"
+        },
+        {
+            "Latitude": 40.432073,
+            "Longitude": -86.934497,
+            "All Item Type": 2,
+            "Date and Time:": "30-09-2020 13:35"
+        },
+        {
+            "Latitude": 40.543959,
+            "Longitude": -86.919012,
+            "All Item Type": 156,
+            "Date and Time:": "01-10-2020 13:30"
+        },
+        {
+            "Latitude": 40.253864,
+            "Longitude": -87.38665,
+            "All Item Type": 6,
+            "Date and Time:": "28-09-2020 14:55"
+        },
+        {
+            "Latitude": 40.561576,
+            "Longitude": -86.410821,
+            "All Item Type": 11,
+            "Date and Time:": "29-09-2020 13:52"
+        },
+        {
+            "Latitude": 40.456105,
+            "Longitude": -86.847451,
+            "All Item Type": 147,
+            "Date and Time:": "29-09-2020 17:11"
+        },
+        {
+            "Latitude": 40.352617,
+            "Longitude": -86.80751,
+            "All Item Type": 20,
+            "Date and Time:": "29-09-2020 12:06"
+        },
+        {
+            "Latitude": 40.543959,
+            "Longitude": -86.919012,
+            "All Item Type": 84,
+            "Date and Time:": "01-10-2020 13:30"
+        },
+        {
+            "Latitude": 40.253864,
+            "Longitude": -87.38665,
+            "All Item Type": 3,
+            "Date and Time:": "28-09-2020 14:55"
+        },
+        {
+            "Latitude": 40.561576,
+            "Longitude": -86.410821,
+            "All Item Type": 3,
+            "Date and Time:": "29-09-2020 13:51"
+        },
+        {
+            "Latitude": 40.45109828,
+            "Longitude": -86.89161563,
+            "All Item Type": 51,
+            "Date and Time:": "30-09-2020 15:31"
+        },
+        {
+            "Latitude": 36.134896,
+            "Longitude": -115.124831,
+            "All Item Type": 8,
+            "Date and Time:": "01-10-2020 00:09"
+        },
+        {
+            "Latitude": 36.023788,
+            "Longitude": -115.084941,
+            "All Item Type": 166,
+            "Date and Time:": "26-09-2020 18:00"
+        },
+        {
+            "Latitude": 36.085355,
+            "Longitude": -115.227493,
+            "All Item Type": 75,
+            "Date and Time:": "30-09-2020 20:47"
+        },
+        {
+            "Latitude": 36.026268,
+            "Longitude": -115.044782,
+            "All Item Type": 23,
+            "Date and Time:": "26-09-2020 19:44"
+        },
+        {
+            "Latitude": 36.429252,
+            "Longitude": -114.951018,
+            "All Item Type": 19,
+            "Date and Time:": "27-09-2020 18:30"
+        },
+        {
+            "Latitude": 36.392554,
+            "Longitude": -115.589495,
+            "All Item Type": 18,
+            "Date and Time:": "29-09-2020 18:39"
+        },
+        {
+            "Latitude": 35.977502,
+            "Longitude": -114.834933,
+            "All Item Type": 4,
+            "Date and Time:": "26-09-2020 23:44"
+        },
+        {
+            "Latitude": 36.134896,
+            "Longitude": -115.124831,
+            "All Item Type": 12,
+            "Date and Time:": "01-10-2020 00:09"
+        },
+        {
+            "Latitude": 36.023788,
+            "Longitude": -115.084941,
+            "All Item Type": 100,
+            "Date and Time:": "26-09-2020 18:10"
+        },
+        {
+            "Latitude": 36.085355,
+            "Longitude": -115.227493,
+            "All Item Type": 23,
+            "Date and Time:": "30-09-2020 20:46"
+        },
+        {
+            "Latitude": 36.026268,
+            "Longitude": -115.044782,
+            "All Item Type": 10,
+            "Date and Time:": "26-09-2020 19:46"
+        },
+        {
+            "Latitude": 36.429252,
+            "Longitude": -114.951018,
+            "All Item Type": 21,
+            "Date and Time:": "27-09-2020 18:27"
+        },
+        {
+            "Latitude": 36.392554,
+            "Longitude": -115.589495,
+            "All Item Type": 4,
+            "Date and Time:": "29-09-2020 18:37"
+        },
+        {
+            "Latitude": 35.977502,
+            "Longitude": -114.834933,
+            "All Item Type": 6,
+            "Date and Time:": "26-09-2020 23:41"
+        },
+        {
+            "Latitude": 40.848186,
+            "Longitude": -96.730354,
+            "All Item Type": 129,
+            "Date and Time:": "10-10-2020 14:38"
+        },
+        {
+            "Latitude": 40.813567,
+            "Longitude": -96.696544,
+            "All Item Type": 17,
+            "Date and Time:": "09-10-2020 21:42"
+        },
+        {
+            "Latitude": 40.765678,
+            "Longitude": -96.682662,
+            "All Item Type": 20,
+            "Date and Time:": "08-10-2020 21:10"
+        },
+        {
+            "Latitude": 40.802805,
+            "Longitude": -96.784976,
+            "All Item Type": 21,
+            "Date and Time:": "08-10-2020 20:07"
+        },
+        {
+            "Latitude": 40.822056,
+            "Longitude": -97.279609,
+            "All Item Type": 39,
+            "Date and Time:": "08-10-2020 16:30"
+        },
+        {
+            "Latitude": 40.903125,
+            "Longitude": -96.553223,
+            "All Item Type": 4,
+            "Date and Time:": "09-10-2020 15:40"
+        },
+        {
+            "Latitude": 40.698147,
+            "Longitude": -97.017885,
+            "All Item Type": 1,
+            "Date and Time:": "08-10-2020 15:01"
+        },
+        {
+            "Latitude": 40.800207,
+            "Longitude": -97.101814,
+            "All Item Type": 25,
+            "Date and Time:": "08-10-2020 15:50"
+        },
+        {
+            "Latitude": 40.848186,
+            "Longitude": -96.730354,
+            "All Item Type": 78,
+            "Date and Time:": "10-10-2020 14:40"
+        },
+        {
+            "Latitude": 40.813567,
+            "Longitude": -96.696544,
+            "All Item Type": 30,
+            "Date and Time:": "09-10-2020 21:42"
+        },
+        {
+            "Latitude": 40.765678,
+            "Longitude": -96.682662,
+            "All Item Type": 22,
+            "Date and Time:": "08-10-2020 21:14"
+        },
+        {
+            "Latitude": 40.802805,
+            "Longitude": -96.784976,
+            "All Item Type": 4,
+            "Date and Time:": "08-10-2020 20:12"
+        },
+        {
+            "Latitude": 40.822056,
+            "Longitude": -97.279609,
+            "All Item Type": 19,
+            "Date and Time:": "08-10-2020 16:33"
+        },
+        {
+            "Latitude": 40.903125,
+            "Longitude": -96.553223,
+            "All Item Type": 8,
+            "Date and Time:": "09-10-2020 15:39"
+        },
+        {
+            "Latitude": 40.800207,
+            "Longitude": -97.101814,
+            "All Item Type": 13,
+            "Date and Time:": "08-10-2020 15:43"
+        },
+        {
+            "Latitude": 43.065248,
+            "Longitude": -89.277672,
+            "All Item Type": 83,
+            "Date and Time:": "12-10-2020 18:52"
+        },
+        {
+            "Latitude": 43.098305,
+            "Longitude": -89.334325,
+            "All Item Type": 8,
+            "Date and Time:": "11-10-2020 17:39"
+        },
+        {
+            "Latitude": 43.03535,
+            "Longitude": -89.422672,
+            "All Item Type": 252,
+            "Date and Time:": "09-10-2020 20:18"
+        },
+        {
+            "Latitude": 43.226113,
+            "Longitude": -89.159976,
+            "All Item Type": 35,
+            "Date and Time:": "04-10-2020 14:35"
+        },
+        {
+            "Latitude": 43.250181,
+            "Longitude": -89.507691,
+            "All Item Type": 1,
+            "Date and Time:": "13-10-2020 14:46"
+        },
+        {
+            "Latitude": 42.643403,
+            "Longitude": -89.832153,
+            "All Item Type": 14,
+            "Date and Time:": "09-10-2020 16:24"
+        },
+        {
+            "Latitude": 43.065248,
+            "Longitude": -89.277672,
+            "All Item Type": 112,
+            "Date and Time:": "12-10-2020 17:15"
+        },
+        {
+            "Latitude": 43.098305,
+            "Longitude": -89.334325,
+            "All Item Type": 7,
+            "Date and Time:": "11-10-2020 17:24"
+        },
+        {
+            "Latitude": 43.03535,
+            "Longitude": -89.422672,
+            "All Item Type": 130,
+            "Date and Time:": "09-10-2020 20:18"
+        },
+        {
+            "Latitude": 43.226113,
+            "Longitude": -89.159976,
+            "All Item Type": 25,
+            "Date and Time:": "11-10-2020 14:38"
+        },
+        {
+            "Latitude": 42.643403,
+            "Longitude": -89.832153,
+            "All Item Type": 7,
+            "Date and Time:": "09-10-2020 16:26"
+        },
+        {
+            "Latitude": 42.857742,
+            "Longitude": -71.491238,
+            "All Item Type": 33,
+            "Date and Time:": "23-09-2020 20:33"
+        },
+        {
+            "Latitude": 42.760723,
+            "Longitude": -71.458006,
+            "All Item Type": 4,
+            "Date and Time:": "23-09-2020 19:50"
+        },
+        {
+            "Latitude": 42.932901,
+            "Longitude": -71.960506,
+            "All Item Type": 19,
+            "Date and Time:": "23-09-2020 16:44"
+        },
+        {
+            "Latitude": 42.726587,
+            "Longitude": -71.786416,
+            "All Item Type": 19,
+            "Date and Time:": "23-09-2020 17:35"
+        },
+        {
+            "Latitude": 42.999751,
+            "Longitude": -71.922062,
+            "All Item Type": 8,
+            "Date and Time:": "23-09-2020 15:37"
+        },
+        {
+            "Latitude": 42.857742,
+            "Longitude": -71.491238,
+            "All Item Type": 30,
+            "Date and Time:": "23-09-2020 20:33"
+        },
+        {
+            "Latitude": 42.760723,
+            "Longitude": -71.458006,
+            "All Item Type": 9,
+            "Date and Time:": "23-09-2020 19:51"
+        },
+        {
+            "Latitude": 42.932901,
+            "Longitude": -71.960506,
+            "All Item Type": 22,
+            "Date and Time:": "23-09-2020 16:45"
+        },
+        {
+            "Latitude": 42.726587,
+            "Longitude": -71.786416,
+            "All Item Type": 17,
+            "Date and Time:": "23-09-2020 17:34"
+        },
+        {
+            "Latitude": 42.999751,
+            "Longitude": -71.922062,
+            "All Item Type": 7,
+            "Date and Time:": "23-09-2020 15:38"
+        },
+        {
+            "Latitude": 26.445237,
+            "Longitude": -97.782824,
+            "All Item Type": 27,
+            "Date and Time:": "07-10-2020 18:59"
+        },
+        {
+            "Latitude": 26.172524,
+            "Longitude": -97.980926,
+            "All Item Type": 100,
+            "Date and Time:": "08-10-2020 12:34"
+        },
+        {
+            "Latitude": 26.22199,
+            "Longitude": -98.305407,
+            "All Item Type": 3,
+            "Date and Time:": "08-10-2020 14:07"
+        },
+        {
+            "Latitude": 26.426105,
+            "Longitude": -97.926473,
+            "All Item Type": 14,
+            "Date and Time:": "07-10-2020 17:49"
+        },
+        {
+            "Latitude": 26.591,
+            "Longitude": -98.195,
+            "All Item Type": 16,
+            "Date and Time:": "07-10-2020 16:58"
+        },
+        {
+            "Latitude": 26.445237,
+            "Longitude": -97.782824,
+            "All Item Type": 2,
+            "Date and Time:": "07-10-2020 18:59"
+        },
+        {
+            "Latitude": 26.172524,
+            "Longitude": -97.980926,
+            "All Item Type": 13,
+            "Date and Time:": "08-10-2020 12:35"
+        },
+        {
+            "Latitude": 26.426105,
+            "Longitude": -97.926473,
+            "All Item Type": 5,
+            "Date and Time:": "07-10-2020 17:54"
+        },
+        {
+            "Latitude": 26.591,
+            "Longitude": -98.195,
+            "All Item Type": 1,
+            "Date and Time:": "07-10-2020 17:01"
+        },
+        {
+            "Latitude": 42.400175,
+            "Longitude": -122.816772,
+            "All Item Type": 17,
+            "Date and Time:": "08-09-2020 21:59"
+        },
+        {
+            "Latitude": 42.204587,
+            "Longitude": -122.725928,
+            "All Item Type": 3,
+            "Date and Time:": "07-09-2020 17:20"
+        },
+        {
+            "Latitude": 42.491064,
+            "Longitude": -123.166353,
+            "All Item Type": 34,
+            "Date and Time:": "09-09-2020 16:51"
+        },
+        {
+            "Latitude": 42.280801,
+            "Longitude": -122.81166,
+            "All Item Type": 29,
+            "Date and Time:": "07-09-2020 14:58"
+        },
+        {
+            "Latitude": 42.081483,
+            "Longitude": -122.599542,
+            "All Item Type": 28,
+            "Date and Time:": "07-09-2020 22:19"
+        },
+        {
+            "Latitude": 42.400175,
+            "Longitude": -122.816772,
+            "All Item Type": 11,
+            "Date and Time:": "08-09-2020 21:46"
+        },
+        {
+            "Latitude": 42.204587,
+            "Longitude": -122.725928,
+            "All Item Type": 3,
+            "Date and Time:": "07-09-2020 17:20"
+        },
+        {
+            "Latitude": 42.491064,
+            "Longitude": -123.166353,
+            "All Item Type": 24,
+            "Date and Time:": "09-09-2020 16:51"
+        },
+        {
+            "Latitude": 42.280801,
+            "Longitude": -122.81166,
+            "All Item Type": 39,
+            "Date and Time:": "07-09-2020 15:03"
+        },
+        {
+            "Latitude": 42.081483,
+            "Longitude": -122.599542,
+            "All Item Type": 16,
+            "Date and Time:": "07-09-2020 22:22"
+        },
+        {
+            "Latitude": 46.845256,
+            "Longitude": -113.845118,
+            "All Item Type": 41,
+            "Date and Time:": "10-09-2020 17:47"
+        },
+        {
+            "Latitude": 46.84573,
+            "Longitude": -114.022484,
+            "All Item Type": 13,
+            "Date and Time:": "10-09-2020 21:49"
+        },
+        {
+            "Latitude": 46.91625,
+            "Longitude": -114.042597,
+            "All Item Type": 16,
+            "Date and Time:": "09-09-2020 21:14"
+        },
+        {
+            "Latitude": 46.773153,
+            "Longitude": -113.711271,
+            "All Item Type": 26,
+            "Date and Time:": "10-09-2020 01:07"
+        },
+        {
+            "Latitude": 46.752455,
+            "Longitude": -114.505811,
+            "All Item Type": 10,
+            "Date and Time:": "11-09-2020 00:14"
+        },
+        {
+            "Latitude": 46.951395,
+            "Longitude": -114.193966,
+            "All Item Type": 64,
+            "Date and Time:": "09-09-2020 18:39"
+        },
+        {
+            "Latitude": 46.921528,
+            "Longitude": -113.439485,
+            "All Item Type": 8,
+            "Date and Time:": "09-09-2020 23:42"
+        },
+        {
+            "Latitude": 46.845256,
+            "Longitude": -113.845118,
+            "All Item Type": 12,
+            "Date and Time:": "10-09-2020 17:48"
+        },
+        {
+            "Latitude": 46.84573,
+            "Longitude": -114.022484,
+            "All Item Type": 5,
+            "Date and Time:": "10-09-2020 21:52"
+        },
+        {
+            "Latitude": 46.91625,
+            "Longitude": -114.042597,
+            "All Item Type": 5,
+            "Date and Time:": "09-09-2020 21:13"
+        },
+        {
+            "Latitude": 46.773153,
+            "Longitude": -113.711271,
+            "All Item Type": 4,
+            "Date and Time:": "10-09-2020 01:21"
+        },
+        {
+            "Latitude": 46.752455,
+            "Longitude": -114.505811,
+            "All Item Type": 7,
+            "Date and Time:": "11-09-2020 00:17"
+        },
+        {
+            "Latitude": 46.951395,
+            "Longitude": -114.193966,
+            "All Item Type": 9,
+            "Date and Time:": "09-09-2020 18:35"
+        },
+        {
+            "Latitude": 46.921528,
+            "Longitude": -113.439485,
+            "All Item Type": 9,
+            "Date and Time:": "09-09-2020 23:40"
+        },
+        {
+            "Latitude": 41.408696,
+            "Longitude": -73.845389,
+            "All Item Type": 2,
+            "Date and Time:": "21-09-2020 13:51"
+        },
+        {
+            "Latitude": 40.793726,
+            "Longitude": -73.514742,
+            "All Item Type": 31,
+            "Date and Time:": "17-09-2020 13:44"
+        },
+        {
+            "Latitude": 40.715341,
+            "Longitude": -73.517445,
+            "All Item Type": 7,
+            "Date and Time:": "17-09-2020 16:01"
+        },
+        {
+            "Latitude": 41.397942,
+            "Longitude": -73.915923,
+            "All Item Type": 70,
+            "Date and Time:": "21-09-2020 14:24"
+        },
+        {
+            "Latitude": 41.416251,
+            "Longitude": -73.792207,
+            "All Item Type": 150,
+            "Date and Time:": "21-09-2020 12:53"
+        },
+        {
+            "Latitude": 41.408696,
+            "Longitude": -73.845389,
+            "All Item Type": 2,
+            "Date and Time:": "21-09-2020 13:51"
+        },
+        {
+            "Latitude": 40.793726,
+            "Longitude": -73.514742,
+            "All Item Type": 15,
+            "Date and Time:": "17-09-2020 13:43"
+        },
+        {
+            "Latitude": 40.715341,
+            "Longitude": -73.517445,
+            "All Item Type": 11,
+            "Date and Time:": "17-09-2020 15:59"
+        },
+        {
+            "Latitude": 41.397942,
+            "Longitude": -73.915923,
+            "All Item Type": 14,
+            "Date and Time:": "21-09-2020 14:31"
+        },
+        {
+            "Latitude": 41.416251,
+            "Longitude": -73.792207,
+            "All Item Type": 15,
+            "Date and Time:": "21-09-2020 12:46"
+        },
+        {
+            "Latitude": 27.51833,
+            "Longitude": -82.503362,
+            "All Item Type": 124,
+            "Date and Time:": "01-10-2020 14:12"
+        },
+        {
+            "Latitude": 27.47226,
+            "Longitude": -82.640237,
+            "All Item Type": 4,
+            "Date and Time:": "01-10-2020 15:39"
+        },
+        {
+            "Latitude": 27.623549,
+            "Longitude": -82.476443,
+            "All Item Type": 54,
+            "Date and Time:": "01-10-2020 12:47"
+        },
+        {
+            "Latitude": 27.110093,
+            "Longitude": -82.337723,
+            "All Item Type": 15,
+            "Date and Time:": "30-09-2020 20:15"
+        },
+        {
+            "Latitude": 27.51833,
+            "Longitude": -82.503362,
+            "All Item Type": 16,
+            "Date and Time:": "01-10-2020 14:21"
+        },
+        {
+            "Latitude": 27.47226,
+            "Longitude": -82.640237,
+            "All Item Type": 3,
+            "Date and Time:": "01-10-2020 15:38"
+        },
+        {
+            "Latitude": 27.623549,
+            "Longitude": -82.476443,
+            "All Item Type": 9,
+            "Date and Time:": "01-10-2020 12:47"
+        },
+        {
+            "Latitude": 27.110093,
+            "Longitude": -82.337723,
+            "All Item Type": 3,
+            "Date and Time:": "30-09-2020 20:16"
+        },
+        {
+            "Latitude": 40.630213,
+            "Longitude": -89.56627,
+            "All Item Type": 65,
+            "Date and Time:": "06-10-2020 20:38"
+        },
+        {
+            "Latitude": 40.769751,
+            "Longitude": -89.651861,
+            "All Item Type": 119,
+            "Date and Time:": "05-10-2020 17:33"
+        },
+        {
+            "Latitude": 40.629172,
+            "Longitude": -89.478624,
+            "All Item Type": 5,
+            "Date and Time:": "06-10-2020 20:10"
+        },
+        {
+            "Latitude": 40.707446,
+            "Longitude": -89.604885,
+            "All Item Type": 21,
+            "Date and Time:": "05-10-2020 19:30"
+        },
+        {
+            "Latitude": 40.796085,
+            "Longitude": -89.80573,
+            "All Item Type": 18,
+            "Date and Time:": "05-10-2020 16:45"
+        },
+        {
+            "Latitude": 40.735716,
+            "Longitude": -89.094535,
+            "All Item Type": 18,
+            "Date and Time:": "06-10-2020 16:11"
+        },
+        {
+            "Latitude": 40.48255,
+            "Longitude": -89.425746,
+            "All Item Type": 16,
+            "Date and Time:": "04-10-2020 19:26"
+        },
+        {
+            "Latitude": 40.424746,
+            "Longitude": -90.286719,
+            "All Item Type": 11,
+            "Date and Time:": "04-10-2020 15:39"
+        },
+        {
+            "Latitude": 40.630213,
+            "Longitude": -89.56627,
+            "All Item Type": 25,
+            "Date and Time:": "06-10-2020 20:38"
+        },
+        {
+            "Latitude": 40.769751,
+            "Longitude": -89.651861,
+            "All Item Type": 58,
+            "Date and Time:": "05-10-2020 17:36"
+        },
+        {
+            "Latitude": 40.629172,
+            "Longitude": -89.478624,
+            "All Item Type": 11,
+            "Date and Time:": "06-10-2020 20:09"
+        },
+        {
+            "Latitude": 40.707446,
+            "Longitude": -89.604885,
+            "All Item Type": 7,
+            "Date and Time:": "05-10-2020 19:30"
+        },
+        {
+            "Latitude": 40.796085,
+            "Longitude": -89.80573,
+            "All Item Type": 20,
+            "Date and Time:": "05-10-2020 16:45"
+        },
+        {
+            "Latitude": 40.735716,
+            "Longitude": -89.094535,
+            "All Item Type": 15,
+            "Date and Time:": "06-10-2020 16:02"
+        },
+        {
+            "Latitude": 40.48255,
+            "Longitude": -89.425746,
+            "All Item Type": 8,
+            "Date and Time:": "04-10-2020 19:29"
+        },
+        {
+            "Latitude": 33.409885,
+            "Longitude": -112.578248,
+            "All Item Type": 9,
+            "Date and Time:": "18-09-2020 16:33"
+        },
+        {
+            "Latitude": 33.45255,
+            "Longitude": -111.983032,
+            "All Item Type": 46,
+            "Date and Time:": "23-09-2020 15:48"
+        },
+        {
+            "Latitude": 33.387102,
+            "Longitude": -111.692913,
+            "All Item Type": 18,
+            "Date and Time:": "19-09-2020 16:54"
+        },
+        {
+            "Latitude": 33.552138,
+            "Longitude": -113.240361,
+            "All Item Type": 33,
+            "Date and Time:": "17-09-2020 22:54"
+        },
+        {
+            "Latitude": 33.348433,
+            "Longitude": -112.480637,
+            "All Item Type": 101,
+            "Date and Time:": "18-09-2020 17:55"
+        },
+        {
+            "Latitude": 33.409885,
+            "Longitude": -112.578248,
+            "All Item Type": 13,
+            "Date and Time:": "18-09-2020 16:47"
+        },
+        {
+            "Latitude": 33.45255,
+            "Longitude": -111.983032,
+            "All Item Type": 74,
+            "Date and Time:": "23-09-2020 15:45"
+        },
+        {
+            "Latitude": 33.387102,
+            "Longitude": -111.692913,
+            "All Item Type": 5,
+            "Date and Time:": "19-09-2020 16:51"
+        },
+        {
+            "Latitude": 33.552138,
+            "Longitude": -113.240361,
+            "All Item Type": 48,
+            "Date and Time:": "17-09-2020 22:53"
+        },
+        {
+            "Latitude": 33.348433,
+            "Longitude": -112.480637,
+            "All Item Type": 26,
+            "Date and Time:": "18-09-2020 17:52"
+        },
+        {
+            "Latitude": 43.67272,
+            "Longitude": -70.348853,
+            "All Item Type": 16,
+            "Date and Time:": "14-09-2020 18:06"
+        },
+        {
+            "Latitude": 43.710487,
+            "Longitude": -70.308573,
+            "All Item Type": 86,
+            "Date and Time:": "21-09-2020 19:19"
+        },
+        {
+            "Latitude": 43.499372,
+            "Longitude": -70.449721,
+            "All Item Type": 14,
+            "Date and Time:": "24-09-2020 17:13"
+        },
+        {
+            "Latitude": 43.883983,
+            "Longitude": -69.949905,
+            "All Item Type": 55,
+            "Date and Time:": "24-09-2020 18:45"
+        },
+        {
+            "Latitude": 44.030051,
+            "Longitude": -69.911051,
+            "All Item Type": 36,
+            "Date and Time:": "24-09-2020 19:44"
+        },
+        {
+            "Latitude": 43.691106,
+            "Longitude": -70.869808,
+            "All Item Type": 1,
+            "Date and Time:": "21-09-2020 15:49"
+        },
+        {
+            "Latitude": 43.67272,
+            "Longitude": -70.348853,
+            "All Item Type": 12,
+            "Date and Time:": "21-09-2020 18:06"
+        },
+        {
+            "Latitude": 43.710487,
+            "Longitude": -70.308573,
+            "All Item Type": 18,
+            "Date and Time:": "21-09-2020 19:22"
+        },
+        {
+            "Latitude": 43.499372,
+            "Longitude": -70.449721,
+            "All Item Type": 23,
+            "Date and Time:": "24-09-2020 17:14"
+        },
+        {
+            "Latitude": 43.883983,
+            "Longitude": -69.949905,
+            "All Item Type": 33,
+            "Date and Time:": "24-09-2020 18:44"
+        },
+        {
+            "Latitude": 44.030051,
+            "Longitude": -69.911051,
+            "All Item Type": 29,
+            "Date and Time:": "24-09-2020 19:43"
+        },
+        {
+            "Latitude": 41.866198,
+            "Longitude": -73.682636,
+            "All Item Type": 5,
+            "Date and Time:": "23-09-2020 14:36"
+        },
+        {
+            "Latitude": 41.691284,
+            "Longitude": -73.93754,
+            "All Item Type": 62,
+            "Date and Time:": "23-09-2020 12:50"
+        },
+        {
+            "Latitude": 41.329638,
+            "Longitude": -74.163907,
+            "All Item Type": 174,
+            "Date and Time:": "22-09-2020 13:35"
+        },
+        {
+            "Latitude": 41.518518,
+            "Longitude": -74.034041,
+            "All Item Type": 139,
+            "Date and Time:": "21-09-2020 20:58"
+        },
+        {
+            "Latitude": 41.498359,
+            "Longitude": -74.103199,
+            "All Item Type": 6,
+            "Date and Time:": "22-09-2020 16:57"
+        },
+        {
+            "Latitude": 41.312386,
+            "Longitude": -74.051021,
+            "All Item Type": 192,
+            "Date and Time:": "22-09-2020 15:35"
+        },
+        {
+            "Latitude": 41.811613,
+            "Longitude": -73.764657,
+            "All Item Type": 26,
+            "Date and Time:": "23-09-2020 15:09"
+        },
+        {
+            "Latitude": 41.866198,
+            "Longitude": -73.682636,
+            "All Item Type": 6,
+            "Date and Time:": "23-09-2020 14:34"
+        },
+        {
+            "Latitude": 41.691284,
+            "Longitude": -73.93754,
+            "All Item Type": 8,
+            "Date and Time:": "23-09-2020 12:48"
+        },
+        {
+            "Latitude": 41.329638,
+            "Longitude": -74.163907,
+            "All Item Type": 65,
+            "Date and Time:": "22-09-2020 13:35"
+        },
+        {
+            "Latitude": 41.518518,
+            "Longitude": -74.034041,
+            "All Item Type": 50,
+            "Date and Time:": "21-09-2020 20:58"
+        },
+        {
+            "Latitude": 41.498359,
+            "Longitude": -74.103199,
+            "All Item Type": 9,
+            "Date and Time:": "22-09-2020 16:56"
+        },
+        {
+            "Latitude": 41.312386,
+            "Longitude": -74.051021,
+            "All Item Type": 24,
+            "Date and Time:": "22-09-2020 15:32"
+        },
+        {
+            "Latitude": 41.811613,
+            "Longitude": -73.764657,
+            "All Item Type": 3,
+            "Date and Time:": "23-09-2020 15:11"
+        },
+        {
+            "Latitude": 42.012785,
+            "Longitude": -71.479159,
+            "All Item Type": 319,
+            "Date and Time:": "13-10-2020 17:49"
+        },
+        {
+            "Latitude": 41.91515,
+            "Longitude": -71.671415,
+            "All Item Type": 27,
+            "Date and Time:": "13-10-2020 13:31"
+        },
+        {
+            "Latitude": 41.42675,
+            "Longitude": -71.728108,
+            "All Item Type": 45,
+            "Date and Time:": "12-10-2020 12:48"
+        },
+        {
+            "Latitude": 41.445917,
+            "Longitude": -71.791177,
+            "All Item Type": 24,
+            "Date and Time:": "12-10-2020 13:34"
+        },
+        {
+            "Latitude": 41.821657,
+            "Longitude": -71.421535,
+            "All Item Type": 63,
+            "Date and Time:": "12-10-2020 20:09"
+        },
+        {
+            "Latitude": 41.777728,
+            "Longitude": -71.41701,
+            "All Item Type": 176,
+            "Date and Time:": "12-10-2020 17:41"
+        },
+        {
+            "Latitude": 41.410136,
+            "Longitude": -71.465791,
+            "All Item Type": 1,
+            "Date and Time:": "09-10-2020 13:02"
+        },
+        {
+            "Latitude": 41.42675,
+            "Longitude": -71.728108,
+            "All Item Type": 29,
+            "Date and Time:": "12-10-2020 12:49"
+        },
+        {
+            "Latitude": 41.445917,
+            "Longitude": -71.791177,
+            "All Item Type": 44,
+            "Date and Time:": "12-10-2020 13:33"
+        },
+        {
+            "Latitude": 41.91515,
+            "Longitude": -71.671415,
+            "All Item Type": 8,
+            "Date and Time:": "13-10-2020 13:30"
+        },
+        {
+            "Latitude": 41.821657,
+            "Longitude": -71.421535,
+            "All Item Type": 42,
+            "Date and Time:": "12-10-2020 20:10"
+        },
+        {
+            "Latitude": 42.012785,
+            "Longitude": -71.479159,
+            "All Item Type": 53,
+            "Date and Time:": "13-10-2020 17:53"
+        },
+        {
+            "Latitude": 41.777728,
+            "Longitude": -71.41701,
+            "All Item Type": 66,
+            "Date and Time:": "12-10-2020 17:43"
+        },
+        {
+            "Latitude": 37.17916,
+            "Longitude": -77.456741,
+            "All Item Type": 18,
+            "Date and Time:": "01-10-2020 13:47"
+        },
+        {
+            "Latitude": 37.690807,
+            "Longitude": -77.427052,
+            "All Item Type": 1,
+            "Date and Time:": "30-09-2020 14:44"
+        },
+        {
+            "Latitude": 37.423651,
+            "Longitude": -76.897588,
+            "All Item Type": 24,
+            "Date and Time:": "02-10-2020 14:53"
+        },
+        {
+            "Latitude": 36.83549,
+            "Longitude": -77.445154,
+            "All Item Type": 33,
+            "Date and Time:": "01-10-2020 17:26"
+        },
+        {
+            "Latitude": 37.17916,
+            "Longitude": -77.456741,
+            "All Item Type": 3,
+            "Date and Time:": "01-10-2020 13:47"
+        },
+        {
+            "Latitude": 37.690807,
+            "Longitude": -77.427052,
+            "All Item Type": 2,
+            "Date and Time:": "30-09-2020 14:44"
+        },
+        {
+            "Latitude": 37.423651,
+            "Longitude": -76.897588,
+            "All Item Type": 7,
+            "Date and Time:": "02-10-2020 14:59"
+        },
+        {
+            "Latitude": 36.83549,
+            "Longitude": -77.445154,
+            "All Item Type": 17,
+            "Date and Time:": "01-10-2020 17:25"
+        },
+        {
+            "Latitude": 34.130599,
+            "Longitude": -117.201707,
+            "All Item Type": 83,
+            "Date and Time:": "16-09-2020 15:57"
+        },
+        {
+            "Latitude": 33.932572,
+            "Longitude": -116.891134,
+            "All Item Type": 6,
+            "Date and Time:": "12-09-2020 23:27"
+        },
+        {
+            "Latitude": 34.157602,
+            "Longitude": -117.247098,
+            "All Item Type": 10,
+            "Date and Time:": "13-09-2020 23:45"
+        },
+        {
+            "Latitude": 33.833575,
+            "Longitude": -116.799891,
+            "All Item Type": 10,
+            "Date and Time:": "16-09-2020 17:48"
+        },
+        {
+            "Latitude": 34.247664,
+            "Longitude": -116.900078,
+            "All Item Type": 86,
+            "Date and Time:": "12-09-2020 22:13"
+        },
+        {
+            "Latitude": 33.927858,
+            "Longitude": -117.426401,
+            "All Item Type": 9,
+            "Date and Time:": "11-09-2020 00:00"
+        },
+        {
+            "Latitude": 34.130599,
+            "Longitude": -117.201707,
+            "All Item Type": 34,
+            "Date and Time:": "16-09-2020 15:49"
+        },
+        {
+            "Latitude": 34.157602,
+            "Longitude": -117.247098,
+            "All Item Type": 14,
+            "Date and Time:": "13-09-2020 23:46"
+        },
+        {
+            "Latitude": 33.833575,
+            "Longitude": -116.799891,
+            "All Item Type": 8,
+            "Date and Time:": "16-09-2020 17:44"
+        },
+        {
+            "Latitude": 34.247664,
+            "Longitude": -116.900078,
+            "All Item Type": 23,
+            "Date and Time:": "12-09-2020 22:09"
+        },
+        {
+            "Latitude": 33.927858,
+            "Longitude": -117.426401,
+            "All Item Type": 8,
+            "Date and Time:": "12-09-2020 00:32"
+        },
+        {
+            "Latitude": 37.76108,
+            "Longitude": -122.214152,
+            "All Item Type": 36,
+            "Date and Time:": "11-09-2020 20:15"
+        },
+        {
+            "Latitude": 37.547346,
+            "Longitude": -122.283916,
+            "All Item Type": 4,
+            "Date and Time:": "08-09-2020 19:46"
+        },
+        {
+            "Latitude": 37.727345,
+            "Longitude": -122.198966,
+            "All Item Type": 20,
+            "Date and Time:": "10-09-2020 23:45"
+        },
+        {
+            "Latitude": 37.715474,
+            "Longitude": -122.443797,
+            "All Item Type": 13,
+            "Date and Time:": "07-09-2020 16:19"
+        },
+        {
+            "Latitude": 37.566829,
+            "Longitude": -121.898323,
+            "All Item Type": 49,
+            "Date and Time:": "09-09-2020 16:02"
+        },
+        {
+            "Latitude": 37.45313,
+            "Longitude": -122.431251,
+            "All Item Type": 22,
+            "Date and Time:": "08-09-2020 23:14"
+        },
+        {
+            "Latitude": 37.604622,
+            "Longitude": -121.83921,
+            "All Item Type": 48,
+            "Date and Time:": "09-09-2020 20:06"
+        },
+        {
+            "Latitude": 37.76108,
+            "Longitude": -122.214152,
+            "All Item Type": 15,
+            "Date and Time:": "11-09-2020 20:15"
+        },
+        {
+            "Latitude": 37.547346,
+            "Longitude": -122.283916,
+            "All Item Type": 12,
+            "Date and Time:": "08-09-2020 19:47"
+        },
+        {
+            "Latitude": 37.727345,
+            "Longitude": -122.198966,
+            "All Item Type": 19,
+            "Date and Time:": "10-09-2020 23:45"
+        },
+        {
+            "Latitude": 37.566829,
+            "Longitude": -121.898323,
+            "All Item Type": 5,
+            "Date and Time:": "09-09-2020 16:03"
+        },
+        {
+            "Latitude": 37.45313,
+            "Longitude": -122.431251,
+            "All Item Type": 1,
+            "Date and Time:": "08-09-2020 23:12"
+        },
+        {
+            "Latitude": 37.604622,
+            "Longitude": -121.83921,
+            "All Item Type": 12,
+            "Date and Time:": "09-09-2020 20:06"
+        },
+        {
+            "Latitude": 37.55313,
+            "Longitude": -122.331251,
+            "All Item Type": 13,
+            "Date and Time:": "07-09-2020 16:19"
+        },
+        {
+            "Latitude": 34.388431,
+            "Longitude": -119.497918,
+            "All Item Type": 270,
+            "Date and Time:": "08-09-2020 18:16"
+        },
+        {
+            "Latitude": 34.446443,
+            "Longitude": -119.759795,
+            "All Item Type": 40,
+            "Date and Time:": "09-09-2020 00:05"
+        },
+        {
+            "Latitude": 34.422778,
+            "Longitude": -119.631492,
+            "All Item Type": 27,
+            "Date and Time:": "08-09-2020 20:58"
+        },
+        {
+            "Latitude": 34.832746,
+            "Longitude": -120.367094,
+            "All Item Type": 61,
+            "Date and Time:": "07-09-2020 00:00"
+        },
+        {
+            "Latitude": 34.535487,
+            "Longitude": -119.861466,
+            "All Item Type": 48,
+            "Date and Time:": "07-09-2020 00:00"
+        },
+        {
+            "Latitude": 34.557379,
+            "Longitude": -120.142933,
+            "All Item Type": 8,
+            "Date and Time:": "09-09-2020 17:35"
+        },
+        {
+            "Latitude": 34.971822,
+            "Longitude": -120.570811,
+            "All Item Type": 7,
+            "Date and Time:": "07-09-2020 18:55"
+        },
+        {
+            "Latitude": 34.388431,
+            "Longitude": -119.497918,
+            "All Item Type": 50,
+            "Date and Time:": "08-09-2020 18:12"
+        },
+        {
+            "Latitude": 34.446443,
+            "Longitude": -119.759795,
+            "All Item Type": 45,
+            "Date and Time:": "09-09-2020 00:04"
+        },
+        {
+            "Latitude": 34.425765,
+            "Longitude": -119.643858,
+            "All Item Type": 3,
+            "Date and Time:": "09-09-2020 21:16"
+        },
+        {
+            "Latitude": 34.422778,
+            "Longitude": -119.631492,
+            "All Item Type": 10,
+            "Date and Time:": "08-09-2020 20:59"
+        },
+        {
+            "Latitude": 34.832746,
+            "Longitude": -120.367094,
+            "All Item Type": 10,
+            "Date and Time:": "07-09-2020 00:00"
+        },
+        {
+            "Latitude": 34.535487,
+            "Longitude": -119.861466,
+            "All Item Type": 11,
+            "Date and Time:": "07-09-2020 16:00"
+        },
+        {
+            "Latitude": 34.971822,
+            "Longitude": -120.570811,
+            "All Item Type": 10,
+            "Date and Time:": "07-09-2020 18:55"
+        },
+        {
+            "Latitude": 47.924534,
+            "Longitude": -122.286821,
+            "All Item Type": 43,
+            "Date and Time:": "08-10-2020 21:27"
+        },
+        {
+            "Latitude": 48.012578,
+            "Longitude": -122.191601,
+            "All Item Type": 22,
+            "Date and Time:": "08-10-2020 19:05"
+        },
+        {
+            "Latitude": 47.610374,
+            "Longitude": -122.284873,
+            "All Item Type": 4,
+            "Date and Time:": "09-10-2020 22:16"
+        },
+        {
+            "Latitude": 47.531857,
+            "Longitude": -121.947717,
+            "All Item Type": 42,
+            "Date and Time:": "13-10-2020 20:08"
+        },
+        {
+            "Latitude": 47.026976,
+            "Longitude": -121.542674,
+            "All Item Type": 22,
+            "Date and Time:": "06-10-2020 19:34"
+        },
+        {
+            "Latitude": 47.186817,
+            "Longitude": -122.124437,
+            "All Item Type": 21,
+            "Date and Time:": "06-10-2020 23:10"
+        },
+        {
+            "Latitude": 47.269963,
+            "Longitude": -122.059625,
+            "All Item Type": 48,
+            "Date and Time:": "07-10-2020 18:12"
+        },
+        {
+            "Latitude": 47.924534,
+            "Longitude": -122.286821,
+            "All Item Type": 34,
+            "Date and Time:": "08-10-2020 21:27"
+        },
+        {
+            "Latitude": 48.012578,
+            "Longitude": -122.191601,
+            "All Item Type": 10,
+            "Date and Time:": "08-10-2020 19:19"
+        },
+        {
+            "Latitude": 47.610374,
+            "Longitude": -122.284873,
+            "All Item Type": 2,
+            "Date and Time:": "09-10-2020 22:14"
+        },
+        {
+            "Latitude": 47.531857,
+            "Longitude": -121.947717,
+            "All Item Type": 5,
+            "Date and Time:": "13-10-2020 20:07"
+        },
+        {
+            "Latitude": 47.026976,
+            "Longitude": -121.542674,
+            "All Item Type": 4,
+            "Date and Time:": "06-10-2020 19:39"
+        },
+        {
+            "Latitude": 47.186817,
+            "Longitude": -122.124437,
+            "All Item Type": 6,
+            "Date and Time:": "06-10-2020 23:01"
+        },
+        {
+            "Latitude": 47.269963,
+            "Longitude": -122.059625,
+            "All Item Type": 15,
+            "Date and Time:": "07-10-2020 18:11"
+        },
+        {
+            "Latitude": 38.242159,
+            "Longitude": -90.633732,
+            "All Item Type": 9,
+            "Date and Time:": "21-09-2020 22:06"
+        },
+        {
+            "Latitude": 38.62975,
+            "Longitude": -90.34386,
+            "All Item Type": 136,
+            "Date and Time:": "23-09-2020 21:00"
+        },
+        {
+            "Latitude": 38.768761,
+            "Longitude": -90.185224,
+            "All Item Type": 52,
+            "Date and Time:": "22-09-2020 21:10"
+        },
+        {
+            "Latitude": 38.106404,
+            "Longitude": -90.305387,
+            "All Item Type": 35,
+            "Date and Time:": "21-09-2020 22:50"
+        },
+        {
+            "Latitude": 38.437333,
+            "Longitude": -90.923076,
+            "All Item Type": 50,
+            "Date and Time:": "21-09-2020 17:20"
+        },
+        {
+            "Latitude": 38.62975,
+            "Longitude": -90.34386,
+            "All Item Type": 69,
+            "Date and Time:": "23-09-2020 21:19"
+        },
+        {
+            "Latitude": 38.768761,
+            "Longitude": -90.185224,
+            "All Item Type": 17,
+            "Date and Time:": "22-09-2020 21:10"
+        },
+        {
+            "Latitude": 38.106404,
+            "Longitude": -90.305387,
+            "All Item Type": 13,
+            "Date and Time:": "21-09-2020 22:57"
+        },
+        {
+            "Latitude": 38.437333,
+            "Longitude": -90.923076,
+            "All Item Type": 17,
+            "Date and Time:": "21-09-2020 17:21"
+        },
+        {
+            "Latitude": 38.208468,
+            "Longitude": -91.161652,
+            "All Item Type": 1,
+            "Date and Time:": "21-09-2020 18:36"
+        },
+        {
+            "Latitude": 30.51440859,
+            "Longitude": -84.07990038,
+            "All Item Type": 17,
+            "Date and Time:": "12-10-2020 12:51"
+        },
+        {
+            "Latitude": 30.43453102,
+            "Longitude": -84.32558902,
+            "All Item Type": 48,
+            "Date and Time:": "12-10-2020 15:05"
+        },
+        {
+            "Latitude": 30.61904364,
+            "Longitude": -84.66354058,
+            "All Item Type": 59,
+            "Date and Time:": "12-10-2020 20:08"
+        },
+        {
+            "Latitude": 30.48712005,
+            "Longitude": -84.31692363,
+            "All Item Type": 31,
+            "Date and Time:": "12-10-2020 21:42"
+        },
+        {
+            "Latitude": 30.42394572,
+            "Longitude": -84.28064317,
+            "All Item Type": 17,
+            "Date and Time:": "13-10-2020 12:42"
+        },
+        {
+            "Latitude": 30.54440859,
+            "Longitude": -84.09990038,
+            "All Item Type": 12,
+            "Date and Time:": "12-10-2020 12:53"
+        },
+        {
+            "Latitude": 30.43454577,
+            "Longitude": -84.32558576,
+            "All Item Type": 12,
+            "Date and Time:": "12-10-2020 15:06"
+        },
+        {
+            "Latitude": 30.47848373,
+            "Longitude": -84.33512714,
+            "All Item Type": 8,
+            "Date and Time:": "12-10-2020 21:44"
+        },
+        {
+            "Latitude": 30.42403949,
+            "Longitude": -84.28064381,
+            "All Item Type": 14,
+            "Date and Time:": "13-10-2020 12:42"
+        },
+        {
+            "Latitude": 30.61906612,
+            "Longitude": -84.6633022,
+            "All Item Type": 15,
+            "Date and Time:": "12-10-2020 20:08"
+        },
+        {
+            "Latitude": 39.023828,
+            "Longitude": -95.738057,
+            "All Item Type": 8,
+            "Date and Time:": "25-09-2020 23:17"
+        },
+        {
+            "Latitude": 39.340789,
+            "Longitude": -95.721087,
+            "All Item Type": 9,
+            "Date and Time:": "28-09-2020 18:21"
+        },
+        {
+            "Latitude": 39.043866,
+            "Longitude": -95.816661,
+            "All Item Type": 77,
+            "Date and Time:": "28-09-2020 21:41"
+        },
+        {
+            "Latitude": 39.117033,
+            "Longitude": -95.594802,
+            "All Item Type": 9,
+            "Date and Time:": "28-09-2020 19:09"
+        },
+        {
+            "Latitude": 39.0653,
+            "Longitude": -96.228326,
+            "All Item Type": 71,
+            "Date and Time:": "29-09-2020 18:46"
+        },
+        {
+            "Latitude": 38.637422,
+            "Longitude": -95.64326,
+            "All Item Type": 31,
+            "Date and Time:": "30-09-2020 18:23"
+        },
+        {
+            "Latitude": 39.023828,
+            "Longitude": -95.738057,
+            "All Item Type": 8,
+            "Date and Time:": "25-09-2020 23:29"
+        },
+        {
+            "Latitude": 39.340789,
+            "Longitude": -95.721087,
+            "All Item Type": 6,
+            "Date and Time:": "28-09-2020 18:23"
+        },
+        {
+            "Latitude": 39.043866,
+            "Longitude": -95.816661,
+            "All Item Type": 8,
+            "Date and Time:": "28-09-2020 21:42"
+        },
+        {
+            "Latitude": 39.117033,
+            "Longitude": -95.594802,
+            "All Item Type": 1,
+            "Date and Time:": "28-09-2020 19:11"
+        },
+        {
+            "Latitude": 39.0653,
+            "Longitude": -96.228326,
+            "All Item Type": 6,
+            "Date and Time:": "29-09-2020 18:58"
+        },
+        {
+            "Latitude": 38.637422,
+            "Longitude": -95.64326,
+            "All Item Type": 6,
+            "Date and Time:": "30-09-2020 18:23"
+        },
+        {
+            "Latitude": 42.43709,
+            "Longitude": -72.041293,
+            "All Item Type": 31,
+            "Date and Time:": "22-09-2020 20:02"
+        },
+        {
+            "Latitude": 42.52358,
+            "Longitude": -71.579236,
+            "All Item Type": 91,
+            "Date and Time:": "22-09-2020 21:15"
+        },
+        {
+            "Latitude": 42.374357,
+            "Longitude": -71.959967,
+            "All Item Type": 4,
+            "Date and Time:": "22-09-2020 19:18"
+        },
+        {
+            "Latitude": 42.154647,
+            "Longitude": -71.663567,
+            "All Item Type": 1,
+            "Date and Time:": "22-09-2020 14:58"
+        },
+        {
+            "Latitude": 42.232104,
+            "Longitude": -71.7445,
+            "All Item Type": 44,
+            "Date and Time:": "22-09-2020 17:43"
+        },
+        {
+            "Latitude": 42.207934,
+            "Longitude": -71.780404,
+            "All Item Type": 86,
+            "Date and Time:": "22-09-2020 16:56"
+        },
+        {
+            "Latitude": 42.43709,
+            "Longitude": -72.041293,
+            "All Item Type": 6,
+            "Date and Time:": "15-09-2020 20:06"
+        },
+        {
+            "Latitude": 42.52358,
+            "Longitude": -71.579236,
+            "All Item Type": 22,
+            "Date and Time:": "22-09-2020 21:21"
+        },
+        {
+            "Latitude": 42.374357,
+            "Longitude": -71.959967,
+            "All Item Type": 4,
+            "Date and Time:": "22-09-2020 19:18"
+        },
+        {
+            "Latitude": 42.232104,
+            "Longitude": -71.7445,
+            "All Item Type": 37,
+            "Date and Time:": "22-09-2020 17:46"
+        },
+        {
+            "Latitude": 42.207934,
+            "Longitude": -71.780404,
+            "All Item Type": 49,
+            "Date and Time:": "15-09-2020 16:56"
+        }
+    ]
+}
