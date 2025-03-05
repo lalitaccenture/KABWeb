@@ -29,7 +29,7 @@ const auth = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("i", credentials)
+        console.log("in", credentials)
         if (!credentials?.email || !credentials?.password) {
           
           return null;
