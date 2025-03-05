@@ -16,11 +16,23 @@ interface StateInfo {
   };
 }
 
+// interface RawMarkerData {
+//   Latitude: number;
+//   Longitude: number;
+//   "All Item Type": number;
+//   "Date and Time:": string;
+// }
+
 interface RawMarkerData {
   Latitude: number;
   Longitude: number;
-  "All Item Type": number;
-  "Date and Time:": string;
+  "Litter Quantity": number;  // Sum of All Item Type (renamed)
+  "Date and Time": string;
+  City: string;  // First City
+  "Site Area": string;  // First Site Area
+  "Site Type": string;  // First Site Type
+  "Roadway Type": string;  // First Roadway Type
+  "Survey Type": string;  // First Survey Type
 }
 
 interface MapAnalysisProps {
@@ -89,9 +101,14 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
                   })}
                   >
                     <Popup>
-                      
-              Item type: {marker["All Item Type"]} <br />
-              Date & Time: {marker["Date and Time:"]}
+                    Latitude: {marker?.Latitude} <br />
+                    Longitude: {marker?.Longitude} <br />
+                    Sum of All Item Type: {marker["Litter Quantity"]} <br />   
+                    First City: {marker?.City} <br /> 
+                    First Site Area: {marker["Site Area"]} <br /> 
+                    First Site Type: {marker["Site Type"]} <br /> 
+                    First Roadway Type: {marker["Roadway Type"]} <br />      
+              First Survey Type: {marker["Survey Type"]} <br />
                       </Popup>
                   </Marker>
                 ))}

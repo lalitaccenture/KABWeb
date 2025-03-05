@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { toast } from 'react-toastify';
 import {
     Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
@@ -11,7 +12,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Scatter } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { applyFilter } from "../utils/api";
+import { applyFilter, getAnalysisKABData, getAnalysisKABDropdown } from "../utils/api";
 const AnalysisKABMap = dynamic(() => import("../../src/components/AnalysisKABMap"), { ssr: false });
 const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGeoJSON"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -36,9 +37,14 @@ type Value = {
 interface RawMarkerData {
     Latitude: number;
     Longitude: number;
-    "All Item Type": number;
-    "Date and Time:": string;
-}
+    "Litter Quantity": number;  // Sum of All Item Type (renamed)
+    "Date and Time": string;
+    City: string;  // First City
+    "Site Area": string;  // First Site Area
+    "Site Type": string;  // First Site Type
+    "Roadway Type": string;  // First Roadway Type
+    "Survey Type": string;  // First Survey Type
+  }
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
@@ -89,8 +95,7 @@ interface Filters {
 //   ];
 
 const AnalysisKAB = () => {
-console.log("value",value)
-    const [markers, setMarkers] = useState<RawMarkerData[]>(value?.gps_data);
+    const [markers, setMarkers] = useState<RawMarkerData[]>([]);
     const [zoom, setZoom] = useState<number>(4);
     const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
     const [filters, setFilters] = useState<Filters>({
@@ -101,12 +106,52 @@ console.log("value",value)
     const [showGeoJSON, setShowGeoJSON] = useState(true);
     const [correlationCoeff, setCorrelationCoeff] = useState<any>(null);
     const [dataForScatterChart,setDataForScatterChart]  = useState([])
+    const [statesData, setStatesData] = useState<any[]>([]);
+    const [dropDown,setDropDown] = useState([])
+    const [analysisData,setAnalysisData] = useState<any>([])
+    const [loadingAnalysisData, setLoadingAnalysisData] = useState<boolean>(false);
+  const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
+  const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
+  const [forScatter,setForscatter] = useState<any>([]);
     const isFirstRender = useRef(true);
 
     interface DataItem {
         [key: string]: number | string; // Assuming the values are either numbers or strings
       }
 
+      const fetchData = async ()=>{
+        setLoadingExternalData(true);
+  setLoadingAnalysisData(true);
+        try{
+const data = await getAnalysisKABDropdown();
+setStatesData(data?.States)
+setDropDown(data["Parameter Name"])
+setLoadingExternalData(false);
+const dataForAnalytics = await getAnalysisKABData();
+setAnalysisData(dataForAnalytics)
+setMarkers(dataForAnalytics?.gps_data)
+setForscatter(dataForAnalytics?.correlation_analysis)
+// @ts-ignore: Ignore TypeScript error
+const val = transformData(dataForAnalytics?.correlation_analysis[correlationCoeff?.value]?.scatter_plot);
+    // @ts-ignore: Ignore TypeScript error
+    setDataForScatterChart(val);
+    
+setLoadingAnalysisData(false);
+
+        }
+
+        catch(error){
+            setLoadingAnalysisData(false);
+            setLoadingExternalData(false);
+        }
+
+    }
+    useEffect(()=>{
+        
+
+        fetchData()
+    },[])
+console.log("markers",markers)
     const transformData = (data: DataItem[]) => {
         // Get the keys of the first item in the data (assuming all objects have the same structure)
         const keys = Object.keys(data[0]);
@@ -136,23 +181,29 @@ console.log("value",value)
     };
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return; // Skip the effect on first render
+        try{
+            if (isFirstRender.current) {
+                isFirstRender.current = false;
+                return; // Skip the effect on first render
+            }
+    // @ts-ignore: Ignore TypeScript error
+            const val = transformData(forScatter[correlationCoeff?.value]?.scatter_plot);
+            // @ts-ignore: Ignore TypeScript error
+            setDataForScatterChart(val);
         }
-// @ts-ignore: Ignore TypeScript error
-        const val = transformData(value?.correlation_analysis[correlationCoeff?.value]?.scatter_plot);
-        // @ts-ignore: Ignore TypeScript error
-        setDataForScatterChart(val);
+        catch(error){
+            toast.error('There was some issue with fetching data');
+        }
+        
     }, [correlationCoeff]); 
     // Only trigger when `correlationCoeff` changes
 
     const data = {
-        labels: Object.keys(value?.litter_pie_chart || {}),
+        labels: Object.keys(analysisData?.litter_pie_chart || {}),
         datasets: [
             {
                 label: '# of Votes',
-                data: Object.values(value?.litter_pie_chart || {}),
+                data: Object.values(analysisData?.litter_pie_chart || {}),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -188,20 +239,25 @@ console.log("value",value)
             state: null,
             parameter: null,
         });
+        fetchData();
     };
 
     const handleApply = async () => {
 
-        const payload = {
+        const queryParams = {
             state: filters.state?.value || null,
-            county: filters.parameter?.value || null,
-        };
+          };
 
-        console.log("payload", payload)
-
+        console.log("payload", queryParams)
+        setLoadingAnalysisData(true);
         try {
-            const res = await applyFilter(payload);
+            const res = await getAnalysisKABData(queryParams);
+      setAnalysisData(res);
+      setMarkers(res?.gps_data)
+            setLoadingAnalysisData(false);
+
         } catch (error) {
+            setLoadingAnalysisData(false);
             console.error("Error:", error);
         }
     };
@@ -316,36 +372,36 @@ console.log("value",value)
       };
       
       
-     const dropDown = [
-        {
-            "value": "Population_Density",
-            "label": "Population_Density"
-        },
-        {
-            "value": "Education amenities_density",
-            "label": "Education amenities_density"
-        },
-        {
-            "value": "Entertainment amenities_density",
-            "label": "Entertainment amenities_density"
-        },
-        {
-            "value": "Food amenities_density",
-            "label": "Food amenities_density"
-        },
-        {
-            "value": "Leisure amenities_density",
-            "label": "Leisure amenities_density"
-        },
-        {
-            "value": "Shopping amenities_density",
-            "label": "Shopping amenities_density"
-        },
-        {
-            "value": "bins_density",
-            "label": "bins_density"
-        }
-    ]
+    //  const dropDown = [
+    //     {
+    //         "value": "Population_Density",
+    //         "label": "Population_Density"
+    //     },
+    //     {
+    //         "value": "Education amenities_density",
+    //         "label": "Education amenities_density"
+    //     },
+    //     {
+    //         "value": "Entertainment amenities_density",
+    //         "label": "Entertainment amenities_density"
+    //     },
+    //     {
+    //         "value": "Food amenities_density",
+    //         "label": "Food amenities_density"
+    //     },
+    //     {
+    //         "value": "Leisure amenities_density",
+    //         "label": "Leisure amenities_density"
+    //     },
+    //     {
+    //         "value": "Shopping amenities_density",
+    //         "label": "Shopping amenities_density"
+    //     },
+    //     {
+    //         "value": "bins_density",
+    //         "label": "bins_density"
+    //     }
+    // ]
 
    
     
@@ -362,17 +418,17 @@ console.log("value",value)
 
                     <div>
                         <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+                        {loadingExternalData ? (
+              <div>Loading states...</div>
+            ) : (
                         <Select
                             id="state"
                             value={filters.state}
                             onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-                            options={[
-                                { value: 'state1', label: 'State 1' },
-                                { value: 'state2', label: 'State 2' },
-                                
-                            ]}
+                            options={statesData}
                             placeholder="Select a State"
                         />
+                    )}
                     </div>
 
                     
@@ -381,7 +437,7 @@ console.log("value",value)
                         <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
                             Apply
                         </Button>
-                        <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
+                        <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]"  disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
                             Clear
                         </Button>
                         {/* <Button 
@@ -391,8 +447,11 @@ console.log("value",value)
     {showGeoJSON ? "Hide GeoJSON" : "Show GeoJSON"}
   </Button> */}
                     </div>
-                    <div>
+                    {/* <div>
                         <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
+                        {loadingExternalData ? (
+              <div>Loading coefficients...</div>
+            ) : (
                         <Select
                             id="parameterName"
                             value={correlationCoeff}
@@ -400,7 +459,8 @@ console.log("value",value)
                             options={dropDown}
                             placeholder="Select coefficient"
                         />
-                    </div>
+                        )}
+                    </div> */}
                 </div>
             </div>
 
@@ -411,6 +471,11 @@ console.log("value",value)
                 {/* AnalysisMap section */}
                 <div className="w-full h-96 p-4 bg-gray-200 rounded">
                     {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
+                    {loadingAnalysisData ? (
+            <div className="flex justify-center items-center h-full">
+              <span className="text-xl text-gray-600">Loading map...</span>
+            </div>
+          ) : (
                 <MapAnalysisGEOJSON
                 stateInfo={stateInfoFORGEOJSON} 
                 zoom={4} 
@@ -418,9 +483,25 @@ console.log("value",value)
                 showGeoJSON={showGeoJSON}
                 markers = {markers}
                 />
+          )}
                 </div>
 
+                <div>
+                        <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
+                        {loadingExternalData ? (
+              <div>Loading coefficients...</div>
+            ) : (
+                        <Select
+                            id="parameterName"
+                            value={correlationCoeff}
+                            onChange={(selectedOption) => setCorrelationCoeff(selectedOption)}
+                            options={dropDown}
+                            placeholder="Select coefficient"
+                        />
+                        )}
+                    </div>
                 <div className="w-full flex gap-4">
+                
                     <div className="w-1/2 p-4 bg-gray-200 rounded">
                         
                         <h3 className="text-xl font-semibold mb-2 text-center">Correlation Coefficient</h3>
@@ -429,7 +510,11 @@ console.log("value",value)
                     <div className="w-1/2 p-4 bg-gray-200 rounded">
                        
                         <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
+                        {loadingAnalysisData ? (
+              <div>Loading doughnut chart...</div>
+            ) : (
                         <Doughnut data={data} />
+            )}
                     </div>
                 </div>
 
@@ -441,14 +526,22 @@ console.log("value",value)
                 {/* Total Cleanup Section */}
                 <div className="p-4 bg-gray-200 rounded">
                     <h3 className="text-xl font-semibold">Total Estimated Litter</h3>
-                    <span className="block text-lg font-bold">{value?.total_estimated_litter}</span>
-                </div>
+                    {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+                    <span className="block text-lg font-bold">{analysisData?.total_estimated_litter?.toFixed(2)}</span>
+            )}
+                    </div>
 
 
                 <div className="p-4 bg-gray-200 rounded">
                     <h3 className="text-xl font-semibold">Estimated Litter Density</h3>
-                    <span className="block text-lg font-bold">{value?.estimated_litter_density}</span>
-                </div>
+                    {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+                    <span className="block text-lg font-bold">{analysisData?.estimated_litter_density?.toFixed(2)}</span>
+            )}
+                    </div>
 
 
                 {/* Top 3 States Section */}
@@ -461,13 +554,18 @@ console.log("value",value)
                             <p className="text-sm text-gray-500">{state.placeholder}</p>
                         </div>
                     ))} */}
-                    {value?.top_3_states.map((state, index) => (
+                    {loadingAnalysisData ? (
+            <div>Loading top states...</div>
+          ) : (<>
+                    {analysisData?.top_3_states?.map((state:any, index:any) => (
         <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
           <h4 className="text-lg font-medium">{state.State}</h4>
           <p className="text-sm text-gray-500">Estimated: {state.Estimated.toFixed(2)}</p>
           <p className="text-sm text-gray-500">Litter Density: {state["Litter density"].toFixed(2)}</p>
         </div>
       ))}
+      </>
+    )}
                 </div>
 
             </div>
