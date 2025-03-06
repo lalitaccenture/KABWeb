@@ -206,23 +206,61 @@ const Analysis = () => {
 
 
           <div>
-            <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2">State</label>
             {loadingExternalData ? (
               <div>Loading states...</div>
             ) : (
               <Select
-                id="state"
-                value={filters.state}
-                onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-                options={statesData}
-                placeholder="Select a State"
-              />
+              id="state"
+              value={filters.state}
+              onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
+              options={statesData}
+              placeholder="Select a State"
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                  boxShadow:
+                    state.isFocused || state.hasValue
+                      ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                      : "none",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    borderColor: "#5BAA76",
+                  },
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: "#C5C5C5",
+                }),
+                option: (base, { isSelected, isFocused }) => ({
+                  ...base,
+                  backgroundColor: isSelected
+                    ? "#5BAA76" // ✅ Selected item stays green
+                    : isFocused
+                    ? "#A5D6A7" // ✅ Light green on hover
+                    : "white",
+                  color: isSelected ? "white" : "black",
+                 
+                  "&:active": {
+                    backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
+                  },
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: "#black",
+                  fontWeight: "semibold",
+                }),
+              }}
+            />
+            
+            
             )}
           </div>
 
 
           <div>
-            <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
+            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2">County</label>
             {loadingExternalData ? (
               <div>Loading counties...</div>
             ) : (
@@ -232,13 +270,52 @@ const Analysis = () => {
                 onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
                 options={countiesData}
                 placeholder="Select a County"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76", // ✅ Prevents blue flash when dragging
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black",
+                    fontWeight: "semibold",
+                  }),
+                }}
               />
             )}
           </div>
 
 
           <div>
-            <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract ID</label>
+            <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2">Tract</label>
             {loadingExternalData ? (
               <div>Loading tracts...</div>
             ) : (
@@ -248,13 +325,53 @@ const Analysis = () => {
                 onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
                 options={tractsData}
                 placeholder="Select a Tract ID"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
 
 
           <div>
-            <label htmlFor="year" className="block text-sm font-medium text-gray-700">Year</label>
+            <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2">Year</label>
             {loadingExternalData ? (
               <div>Loading years...</div>
             ) : (
@@ -264,18 +381,59 @@ const Analysis = () => {
                 onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
                 options={yearsData}
                 placeholder="Select a Year"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // ✅ Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "#000000", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
 
 
-          <div className="mt-4 flex gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
+          <div className="mt-4 flex flex-col gap-4">
+            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#5BAA76]" onClick={handleApply}>
               Apply
             </Button>
-            <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
-              Clear
-            </Button>
+           <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" onClick={handleClear}>
+  Clear
+</Button>
+
           </div>
         </div>
       </div>
@@ -322,15 +480,35 @@ const Analysis = () => {
       <div className="w-1/5 p-4 space-y-6">
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Total Cleanup</h3>
-          <span className="block text-lg font-bold">{analysisData?.analytics?.total_cleanups}</span>
-          <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
-        </div>
+      <div className="p-2">
+  <p className="text-base font-bold">Total Cleanup :</p>
+  <p className="text-sm text-[#9d9d9d]">
+    Sum number of cleanups conducted in the US in the year 2022.
+  </p>
+
+  <div className="flex items-center gap-2 mt-2">
+    <span className="text-green-600">📅</span> 
+    <span className="text-base font-semibold">2022</span>
+  </div>
+
+  <div className="flex items-center gap-2 mt-1">
+    <span className="text-green-600">🧹</span> 
+    <span className="text-lg font-bold text-green-700">
+      {analysisData?.analytics?.total_cleanups}
+    </span>
+  </div>
+
+  {/* Horizontal Line */}
+  <div className="relative mt-4">
+    <hr className="border-t border-green-500 w-full" />
+    <span className="absolute right-0 -bottom-2 transform rotate-45 bg-green-500 w-1.5 h-1.5"></span>
+  </div>
+</div>
 
 
+
         <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Top 3 States</h3>
+          <h3 className="text-base font-bold">Top 3 States</h3>
           {loadingAnalysisData ? (
             <div>Loading top states...</div>
           ) : (
@@ -345,7 +523,7 @@ const Analysis = () => {
 
 
         <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Top 3 Counties</h3>
+          <h3 className="text-base font-bold">Top 3 Counties</h3>
           {loadingAnalysisData ? (
             <div>Loading top counties...</div>
           ) : (

@@ -39,7 +39,7 @@ const Header = () => {
     return (
         <div className="w-full flex">
             <div className="w-1/3 p-2">
-                <h2 className="text-[#3AAD73] text-2xl font-semibold cursor-pointer font-neris" onClick={()=>router.push('/')}>Litter Prediction Tool</h2>
+                <h2 className="text-[#3AAD73] text-2xl font-semibold cursor-pointer font-neris" onClick={()=>router.push('/')}>LitterSense</h2>
                 <div className="flex">
         <Image
             src="/powered.png"
