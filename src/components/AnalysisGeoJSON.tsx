@@ -16,19 +16,31 @@ interface StateInfo {
   };
 }
 
-interface MarkerData {
-    latitude: number;       // Latitude of the marker
-    longitude: number;      // Longitude of the marker
-    litter_quantity: number; // Amount of litter at the marker
-    cleanup_year: number;   // Year of the cleanup event
-  }
+// interface RawMarkerData {
+//   Latitude: number;
+//   Longitude: number;
+//   "All Item Type": number;
+//   "Date and Time:": string;
+// }
+
+interface RawMarkerData {
+  Latitude: number;
+  Longitude: number;
+  "Litter Quantity": number;  // Sum of All Item Type (renamed)
+  "Date and Time": string;
+  City: string;  // First City
+  "Site Area": string;  // First Site Area
+  "Site Type": string;  // First Site Type
+  "Roadway Type": string;  // First Roadway Type
+  "Survey Type": string;  // First Survey Type
+}
 
 interface MapAnalysisProps {
   stateInfo: StateInfo;
   zoom: number;
   center: [number, number];
   showGeoJSON: boolean; // New boolean prop to toggle GeoJSON layer
-  markers: MarkerData[];
+  markers: RawMarkerData[];
 }
 
 // Function to style each state based on its data
@@ -81,17 +93,22 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
           />
         )}
         {markers?.map((marker, index) => (
-                  <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
+                  <Marker key={index} position={{ lat: marker.Latitude, lng: marker.Longitude }} 
                   icon={L.divIcon({
-                    html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold">${marker.litter_quantity}</div>`,
+                    html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
                     iconSize: [32, 32], // Size of the bubble
                     iconAnchor: [16, 16], // Center the icon
                   })}
                   >
                     <Popup>
-                      {/* Display relevant information about the marker */}
-              Litter Quantity: {marker.litter_quantity} <br />
-              Cleanup Year: {marker.cleanup_year}
+                    Latitude: {marker?.Latitude} <br />
+                    Longitude: {marker?.Longitude} <br />
+                    Sum of All Item Type: {marker["Litter Quantity"]} <br />   
+                    First City: {marker?.City} <br /> 
+                    First Site Area: {marker["Site Area"]} <br /> 
+                    First Site Type: {marker["Site Type"]} <br /> 
+                    First Roadway Type: {marker["Roadway Type"]} <br />      
+              First Survey Type: {marker["Survey Type"]} <br />
                       </Popup>
                   </Marker>
                 ))}

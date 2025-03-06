@@ -6,10 +6,10 @@ import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
 
 interface MarkerData {
-  latitude: number;       // Latitude of the marker
-  longitude: number;      // Longitude of the marker
-  litter_quantity: number; // Amount of litter at the marker
-  cleanup_year: number;   // Year of the cleanup event
+  latitude: number;
+  longitude: number;
+  litter_quantity: number;
+  cleanup_date: string;
 }
 
 
@@ -22,7 +22,7 @@ interface MapAnalysisProps {
 const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 
   console.log("markers",markers)
-
+//new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
     <div className="w-full h-full">
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false}>
@@ -30,15 +30,21 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
         {markers?.map((marker, index) => (
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
           icon={L.divIcon({
-            html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold">${marker.litter_quantity}</div>`,
+            html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
             iconSize: [32, 32], // Size of the bubble
             iconAnchor: [16, 16], // Center the icon
           })}
           >
             <Popup>
               {/* Display relevant information about the marker */}
-      Litter Quantity: {marker.litter_quantity} <br />
-      Cleanup Year: {marker.cleanup_year}
+              Latitude: {marker?.latitude} <br />
+              Longitude: {marker?.longitude} <br />
+      Sum of Litter Quantity: {marker?.litter_quantity} <br />
+      Latest Cleanup Date: {new Date(marker?.cleanup_date).toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+})}
               </Popup>
           </Marker>
         ))}

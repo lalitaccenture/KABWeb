@@ -6,9 +6,11 @@ import {
   Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
-  Title
+  Title,
+  PointElement,
+  LineElement,
 } from 'chart.js';
-import { Doughnut, Bar } from 'react-chartjs-2';
+import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { applyFilter, getAnalysisExternalData } from "../utils/api";
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
@@ -30,13 +32,15 @@ interface MarkerData {
   latitude: number;
   longitude: number;
   litter_quantity: number;
-  cleanup_year: number;
+  cleanup_date: string;
 }
 
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
+  PointElement,
+  LineElement,
   Title);
 
 const Analysis = () => {
@@ -190,6 +194,34 @@ const Analysis = () => {
       {
         label: 'Years',
         data: Object.values(analysisData?.analytics?.trend_chart || {}),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      },
+    ],
+  };
+
+  const optionsLine = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Line Chart',
+      },
+    },
+  };
+
+
+  const labelsLine = Object.keys(analysisData?.analytics?.trend_chart || {});
+
+  const dataLine = {
+    labels:labelsLine,
+    datasets: [
+      {
+        label: 'Dataset',
+        data: Object.values(analysisData?.analytics?.trend_chart || {}),
+        borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
@@ -458,9 +490,10 @@ const Analysis = () => {
 
             <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
             {loadingAnalysisData ? (
-              <div>Loading bar chart...</div>
+              <div>Loading line chart...</div>
             ) : (
-              <Bar options={options} data={dataForBar} />
+              // <Bar options={options} data={dataForBar} />
+              <Line options={optionsLine} data={dataLine} />
             )}
           </div>
           <div className="w-1/2 p-4 bg-gray-200 rounded">

@@ -85,3 +85,30 @@ export const applyFilter = async (queryParams: any = {}) => {
     throw error;
   }
 };
+
+export const getAnalysisKABDropdown = async () => {
+  try {
+    const response = await axios.get(`https://lees1ddoaifunc02.azurewebsites.net/api/kabdropdowns?code=hJErV5lp0GAnYqyAVTSG8Yvl4ubs_oEuhNVmHSST0AKaAzFuNGrVIA==`);
+    return response.data;
+  } catch (error) {
+    console.error("Error calling analysis data", error);
+    throw error;  
+  }
+};
+
+
+
+
+export const getAnalysisKABData =async (queryParams: any = {}) =>{
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/analytics-mapkab?code=3LKHP94BmzdoV3U0Cdommu9mb8mcdnTPTtDFFWFpOKogAzFuWyQjRA==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+}
