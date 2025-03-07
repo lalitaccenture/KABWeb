@@ -24,13 +24,26 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
   console.log("markers",markers)
 //new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
-    <div className="w-full h-full">
+    <>
+<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[110px] flex gap-4">
+  <button className="w-[237px] h-[36px] text-white font-semibold rounded-md bg-[#5BAA76]">
+    Litter Cleanup Analysis
+  </button>
+  <button className="w-[237px] h-[36px] text-black font-semibold border-2 border-[#5BAA76] rounded-md bg-white">
+    Litter Survey Analysis
+  </button>
+</div>
+
+
+    <div className="w-full h-full mt-12">
+    
+
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {markers?.map((marker, index) => (
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
           icon={L.divIcon({
-            html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
+            html: `<div class="bg-blue-700 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
             iconSize: [32, 32], // Size of the bubble
             iconAnchor: [16, 16], // Center the icon
           })}
@@ -50,6 +63,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
         ))}
       </MapContainer>
     </div>
+    </>
   );
 };
 
