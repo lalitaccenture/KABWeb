@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { applyFilter, getAnalysisExternalData } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -64,43 +64,73 @@ const Analysis = () => {
   const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
   const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null);
+  const [statesNewData,setStatesNewData] = useState<any>([]);
+  const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
+  const [countiesNewData, setCountiesNewData] = useState<any[]>([]);
+  const [tractsNewData, setTractsNewData] = useState<any[]>([]);
+  const [yearsNewData, setYearsNewData] = useState<any[]>([]);
 
+
+  const fetchData = async () => {
+    setLoadingExternalData(true);
+    setLoadingAnalysisData(true);
+    setLoadingAnalysisNewData(true);
+    setError(null);
+
+    try {
+
+      // const data = await getAnalysisExternalData();
+      // setStatesData(data.States);
+      // setCountiesData(data.Counties);
+      // setTractsData(data.TractIDs);
+      // setYearsData(data.Years);
+
+      setLoadingExternalData(false);
+      const dropD = await analysisNewDropdown();
+      setStatesNewData(dropD?.Dropdown)
+      setYearsNewData(dropD?.Years)
+      setLoadingAnalysisNewData(false)
+
+      const value = await applyFilter();
+      setAnalysisData(value);
+      //setMarkers(value?.map_data)
+      
+      setLoadingAnalysisData(false);
+    } catch (error) {
+      setError("Failed to fetch data, please try again later.");
+
+      setLoadingAnalysisData(false);
+      setLoadingAnalysisNewData(false)
+      setLoadingExternalData(false);
+    } finally {
+
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      setLoadingExternalData(true);
-      setLoadingAnalysisData(true);
-      setError(null);
-
-      try {
-
-        const data = await getAnalysisExternalData();
-        setStatesData(data.States);
-        setCountiesData(data.Counties);
-        setTractsData(data.TractIDs);
-        setYearsData(data.Years);
-
-        setLoadingExternalData(false);
-
-
-        const value = await applyFilter();
-        setAnalysisData(value);
-        //setMarkers(value?.map_data)
-        setLoadingAnalysisData(false);
-      } catch (error) {
-        setError("Failed to fetch data, please try again later.");
-
-        setLoadingAnalysisData(false);
-        setLoadingExternalData(false);
-      } finally {
-
-      }
-    };
+    
 
     fetchData();
   }, []);
 
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
+    if(filter=='state'){
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: selectedOption,
+        county: null,
+        tract: null
+      }));
+    }
+    else if(filter=='county'){
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: selectedOption,
+        tract: null
+      }));
+    }
+
+    else 
     setFilters(prevFilters => ({
       ...prevFilters,
       [filter]: selectedOption,
@@ -127,6 +157,16 @@ const Analysis = () => {
       const res = await applyFilter(queryParams);
       setAnalysisData(res);
       setMarkers(res?.map_data)
+      if (queryParams.state && !queryParams.county && !queryParams.tract) {
+        // If state is present and county and tract are null
+        setZoom(5);
+      } else if (queryParams.state && queryParams.county && !queryParams.tract) {
+        // If state and county are present and tract is null
+        setZoom(6);
+      } else if (queryParams.state && queryParams.county && queryParams.tract) {
+        // If state, county, and tract are all present
+        setZoom(7);
+      }
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
       //setZoom()
@@ -144,6 +184,10 @@ const Analysis = () => {
       tract: null,
       year: null,
     });
+    fetchData();
+    setCenter([37.0902, -95.7129])
+    setZoom(4)
+    
   };
 
   const options = {
@@ -232,6 +276,44 @@ const Analysis = () => {
     ],
   };
 
+  const handleDropdownFurther = async (val:string,selectedOption:any)=>{
+    try{
+      setLoadingAnalysisNewData(true)
+      console.log("selectedOption",selectedOption)
+      let queryParams;
+      if((val=="state")){
+      queryParams = {
+          state: selectedOption?.value || null,
+        };
+      }
+      else if (val=="county"){
+        //setFilters({...filters,tract:null})
+        queryParams = {
+          state: filters?.state?.value || null,
+          county: selectedOption?.value || null,
+        };
+      }
+      
+      const dropD = await analysisNewDropdown(queryParams);
+      if(val=="state"){
+        
+        setCountiesNewData(dropD?.Dropdown)
+        setLoadingAnalysisNewData(false)
+      }
+      else if (val=="county"){
+        setTractsNewData(dropD?.Dropdown)
+        setLoadingAnalysisNewData(false)
+      }
+    }
+    catch(error){
+      alert("error")
+      setLoadingAnalysisNewData(false)
+    }
+  }
+
+  const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
+
+
 
   return (
 <div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
@@ -248,15 +330,18 @@ const Analysis = () => {
 
           <div>
             <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2">State</label>
-            {loadingExternalData ? (
+            {loadingAnalysisNewData ? (
               <div>Loading states...</div>
             ) : (
               <Select
               id="state"
               value={filters.state}
-              onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-              options={statesData}
               placeholder="Select a State"
+              onChange={(selectedOption) => {
+                handleFilterChange('state', selectedOption)
+              handleDropdownFurther('state',selectedOption)
+              }}
+              options={statesNewData}
               styles={{
                 control: (base, state) => ({
                   ...base,
@@ -302,14 +387,18 @@ const Analysis = () => {
 
           <div>
             <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2">County</label>
-            {loadingExternalData ? (
+            {loadingAnalysisNewData ? (
               <div>Loading counties...</div>
             ) : (
               <Select
                 id="county"
                 value={filters.county}
-                onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
-                options={countiesData}
+                onChange={(selectedOption) => {
+                  handleFilterChange('county', selectedOption)
+                  handleDropdownFurther('county',selectedOption)
+                }}
+                options={countiesNewData}
+isDisabled={!filters?.state?.value}
                 placeholder="Select a County"
                 styles={{
                   control: (base, state) => ({
@@ -357,14 +446,15 @@ const Analysis = () => {
 
           <div>
             <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2">Tract</label>
-            {loadingExternalData ? (
+            {loadingAnalysisNewData ? (
               <div>Loading tracts...</div>
             ) : (
               <Select
                 id="tract"
                 value={filters.tract}
                 onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
-                options={tractsData}
+                options={tractsNewData}
+isDisabled={!filters?.county?.value}
                 placeholder="Select a Tract ID"
                 styles={{
                   control: (base, state) => ({
@@ -413,14 +503,14 @@ const Analysis = () => {
 
           <div>
             <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2">Year</label>
-            {loadingExternalData ? (
+            {loadingAnalysisNewData ? (
               <div>Loading years...</div>
             ) : (
               <Select
                 id="year"
                 value={filters.year}
                 onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-                options={yearsData}
+                options={yearsNewData}
                 placeholder="Select a Year"
                 styles={{
                   control: (base, state) => ({
@@ -468,10 +558,10 @@ const Analysis = () => {
 
 
           <div className="mt-4 flex flex-col gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#5BAA76]" onClick={handleApply}>
+            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
               Apply
             </Button>
-           <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" onClick={handleClear}>
+           <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
   Clear
 </Button>
 

@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Scatter } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { applyFilter, getAnalysisKABData, getAnalysisKABDropdown } from "../utils/api";
+import { applyFilter, getAnalysisKABData, getAnalysisKABDropdown, getHeatMap } from "../utils/api";
 const AnalysisKABMap = dynamic(() => import("../../src/components/AnalysisKABMap"), { ssr: false });
 const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGeoJSON"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -113,6 +113,7 @@ const AnalysisKAB = () => {
   const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
   const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
   const [forScatter,setForscatter] = useState<any>([]);
+  const [stateInfoFORGEOJSON,setStateInfoFORGEOJSON] = useState<any>([]);
     const isFirstRender = useRef(true);
 
     interface DataItem {
@@ -131,6 +132,8 @@ const dataForAnalytics = await getAnalysisKABData();
 setAnalysisData(dataForAnalytics)
 setMarkers(dataForAnalytics?.gps_data)
 setForscatter(dataForAnalytics?.correlation_analysis)
+const heatMapData = await getHeatMap();
+setStateInfoFORGEOJSON(heatMapData);
 // @ts-ignore: Ignore TypeScript error
 const val = transformData(dataForAnalytics?.correlation_analysis[correlationCoeff?.value]?.scatter_plot);
     // @ts-ignore: Ignore TypeScript error
@@ -240,6 +243,8 @@ console.log("markers",markers)
             parameter: null,
         });
         fetchData();
+        setCenter([37.0902, -95.7129]);
+        setZoom(4)
     };
 
     const handleApply = async () => {
@@ -254,6 +259,8 @@ console.log("markers",markers)
             const res = await getAnalysisKABData(queryParams);
       setAnalysisData(res);
       setMarkers(res?.gps_data)
+      setZoom(5)
+      setCenter(res?.centroid)
             setLoadingAnalysisData(false);
 
         } catch (error) {
@@ -318,58 +325,58 @@ console.log("markers",markers)
         // Add more states with their info...
       };
 
-      const stateInfoFORGEOJSON = {
-        Alabama: { value: 0.4, info: "Alabama is known for its rich Civil Rights history." },
-        Alaska: { value: 0.2, info: "Alaska is the largest state by area and has vast wilderness." },
-        Arizona: { value: 0.5, info: "Arizona is home to the Grand Canyon." },
-        Arkansas: { value: 0.3, info: "Arkansas is the birthplace of Walmart." },
-        California: { value: 0.9, info: "California's population is over 39 million." },
-        Colorado: { value: 0.6, info: "Colorado is known for the Rocky Mountains." },
-        Connecticut: { value: 0.5, info: "Connecticut is home to Yale University." },
-        Delaware: { value: 0.3, info: "Delaware was the first state to ratify the U.S. Constitution." },
-        Florida: { value: 0.7, info: "Florida is known for its beaches and warm climate." },
-        Georgia: { value: 0.6, info: "Georgia is famous for peaches and Coca-Cola." },
-        Hawaii: { value: 0.4, info: "Hawaii is the only U.S. state made up entirely of islands." },
-        Idaho: { value: 0.3, info: "Idaho is known for its potato production." },
-        Illinois: { value: 0.5, info: "Illinois is home to the city of Chicago." },
-        Indiana: { value: 0.4, info: "Indiana hosts the Indianapolis 500 race." },
-        Iowa: { value: 0.3, info: "Iowa is known for its corn production." },
-        Kansas: { value: 0.3, info: "Kansas is the geographical center of the U.S." },
-        Kentucky: { value: 0.4, info: "Kentucky is famous for bourbon and the Kentucky Derby." },
-        Louisiana: { value: 0.5, info: "Louisiana is known for its Creole and Cajun culture." },
-        Maine: { value: 0.3, info: "Maine is famous for its lobster industry." },
-        Maryland: { value: 0.5, info: "Maryland is home to the U.S. Naval Academy." },
-        Massachusetts: { value: 0.6, info: "Massachusetts is known for Harvard University." },
-        Michigan: { value: 0.5, info: "Michigan is famous for the Great Lakes and the auto industry." },
-        Minnesota: { value: 0.4, info: "Minnesota is known as the Land of 10,000 Lakes." },
-        Mississippi: { value: 0.3, info: "Mississippi is the birthplace of blues music." },
-        Missouri: { value: 0.4, info: "Missouri is home to the Gateway Arch in St. Louis." },
-        Montana: { value: 0.2, info: "Montana is known for Yellowstone National Park." },
-        Nebraska: { value: 0.3, info: "Nebraska is famous for its cornfields and prairies." },
-        Nevada: { value: 0.5, info: "Nevada is home to Las Vegas, the entertainment capital." },
-        NewHampshire: { value: 0.4, info: "New Hampshire is known for its fall foliage and mountains." },
-        NewJersey: { value: 0.6, info: "New Jersey has the highest population density in the U.S." },
-        NewMexico: { value: 0.4, info: "New Mexico is famous for its deserts and Roswell UFO incident." },
-        NewYork: { value: 0.6, info: "New York is known for the Statue of Liberty and Times Square." },
-        NorthCarolina: { value: 0.5, info: "North Carolina is known for the Wright brothers' first flight." },
-        NorthDakota: { value: 0.3, info: "North Dakota has the lowest unemployment rate in the U.S." },
-        Ohio: { value: 0.5, info: "Ohio is the birthplace of aviation pioneers, the Wright brothers." },
-        Oklahoma: { value: 0.4, info: "Oklahoma is known for its Native American heritage." },
-        Oregon: { value: 0.5, info: "Oregon is home to Crater Lake, the deepest lake in the U.S." },
-        Pennsylvania: { value: 0.6, info: "Pennsylvania is home to the Liberty Bell and Hershey's Chocolate." },
-        RhodeIsland: { value: 0.3, info: "Rhode Island is the smallest U.S. state by area." },
-        SouthCarolina: { value: 0.5, info: "South Carolina is known for its historic Charleston district." },
-        SouthDakota: { value: 0.3, info: "South Dakota is home to Mount Rushmore." },
-        Tennessee: { value: 0.5, info: "Tennessee is famous for country music and Elvis Presley." },
-        Texas: { value: 0.8, info: "Texas is the second-largest state by population." },
-        Utah: { value: 0.4, info: "Utah is known for its national parks and Mormon heritage." },
-        Vermont: { value: 0.3, info: "Vermont is famous for maple syrup production." },
-        Virginia: { value: 0.6, info: "Virginia is home to many historical American landmarks." },
-        Washington: { value: 0.6, info: "Washington state is known for tech companies like Microsoft and Amazon." },
-        WestVirginia: { value: 0.3, info: "West Virginia is known for its Appalachian Mountains." },
-        Wisconsin: { value: 0.4, info: "Wisconsin is famous for cheese production." },
-        Wyoming: { value: 0.2, info: "Wyoming has the lowest population of any U.S. state." }
-      };
+    //   const stateInfoFORGEOJSON = {
+    //     Alabama: { value: 0.4, info: "Alabama is known for its rich Civil Rights history." },
+    //     Alaska: { value: 0.2, info: "Alaska is the largest state by area and has vast wilderness." },
+    //     Arizona: { value: 0.5, info: "Arizona is home to the Grand Canyon." },
+    //     Arkansas: { value: 0.3, info: "Arkansas is the birthplace of Walmart." },
+    //     California: { value: 0.9, info: "California's population is over 39 million." },
+    //     Colorado: { value: 0.6, info: "Colorado is known for the Rocky Mountains." },
+    //     Connecticut: { value: 0.5, info: "Connecticut is home to Yale University." },
+    //     Delaware: { value: 0.3, info: "Delaware was the first state to ratify the U.S. Constitution." },
+    //     Florida: { value: 0.7, info: "Florida is known for its beaches and warm climate." },
+    //     Georgia: { value: 0.6, info: "Georgia is famous for peaches and Coca-Cola." },
+    //     Hawaii: { value: 0.4, info: "Hawaii is the only U.S. state made up entirely of islands." },
+    //     Idaho: { value: 0.3, info: "Idaho is known for its potato production." },
+    //     Illinois: { value: 0.5, info: "Illinois is home to the city of Chicago." },
+    //     Indiana: { value: 0.4, info: "Indiana hosts the Indianapolis 500 race." },
+    //     Iowa: { value: 0.3, info: "Iowa is known for its corn production." },
+    //     Kansas: { value: 0.3, info: "Kansas is the geographical center of the U.S." },
+    //     Kentucky: { value: 0.4, info: "Kentucky is famous for bourbon and the Kentucky Derby." },
+    //     Louisiana: { value: 0.5, info: "Louisiana is known for its Creole and Cajun culture." },
+    //     Maine: { value: 0.3, info: "Maine is famous for its lobster industry." },
+    //     Maryland: { value: 0.5, info: "Maryland is home to the U.S. Naval Academy." },
+    //     Massachusetts: { value: 0.6, info: "Massachusetts is known for Harvard University." },
+    //     Michigan: { value: 0.5, info: "Michigan is famous for the Great Lakes and the auto industry." },
+    //     Minnesota: { value: 0.4, info: "Minnesota is known as the Land of 10,000 Lakes." },
+    //     Mississippi: { value: 0.3, info: "Mississippi is the birthplace of blues music." },
+    //     Missouri: { value: 0.4, info: "Missouri is home to the Gateway Arch in St. Louis." },
+    //     Montana: { value: 0.2, info: "Montana is known for Yellowstone National Park." },
+    //     Nebraska: { value: 0.3, info: "Nebraska is famous for its cornfields and prairies." },
+    //     Nevada: { value: 0.5, info: "Nevada is home to Las Vegas, the entertainment capital." },
+    //     "New Hampshire": { value: 0.4, info: "New Hampshire is known for its fall foliage and mountains." },
+    //     NewJersey: { value: 0.6, info: "New Jersey has the highest population density in the U.S." },
+    //     NewMexico: { value: 0.4, info: "New Mexico is famous for its deserts and Roswell UFO incident." },
+    //     NewYork: { value: 0.6, info: "New York is known for the Statue of Liberty and Times Square." },
+    //     NorthCarolina: { value: 0.5, info: "North Carolina is known for the Wright brothers' first flight." },
+    //     "North Dakota": { value: 0.3, info: "North Dakota has the lowest unemployment rate in the U.S." },
+    //     Ohio: { value: 0.5, info: "Ohio is the birthplace of aviation pioneers, the Wright brothers." },
+    //     Oklahoma: { value: 0.4, info: "Oklahoma is known for its Native American heritage." },
+    //     Oregon: { value: 0.5, info: "Oregon is home to Crater Lake, the deepest lake in the U.S." },
+    //     Pennsylvania: { value: 0.6, info: "Pennsylvania is home to the Liberty Bell and Hershey's Chocolate." },
+    //     RhodeIsland: { value: 0.3, info: "Rhode Island is the smallest U.S. state by area." },
+    //     SouthCarolina: { value: 0.5, info: "South Carolina is known for its historic Charleston district." },
+    //     SouthDakota: { value: 0.3, info: "South Dakota is home to Mount Rushmore." },
+    //     Tennessee: { value: 0.5, info: "Tennessee is famous for country music and Elvis Presley." },
+    //     Texas: { value: 0.8, info: "Texas is the second-largest state by population." },
+    //     Utah: { value: 0.4, info: "Utah is known for its national parks and Mormon heritage." },
+    //     Vermont: { value: 0.3, info: "Vermont is famous for maple syrup production." },
+    //     Virginia: { value: 0.6, info: "Virginia is home to many historical American landmarks." },
+    //     Washington: { value: 0.6, info: "Washington state is known for tech companies like Microsoft and Amazon." },
+    //     WestVirginia: { value: 0.3, info: "West Virginia is known for its Appalachian Mountains." },
+    //     Wisconsin: { value: 0.4, info: "Wisconsin is famous for cheese production." },
+    //     Wyoming: { value: 0.2, info: "Wyoming has the lowest population of any U.S. state." }
+    //   };
       
       
     //  const dropDown = [
@@ -434,7 +441,7 @@ console.log("markers",markers)
                     
 
                     <div className="mt-4 flex gap-4">
-                        <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
+                        <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisData || loadingAnalysisData} onClick={handleApply}>
                             Apply
                         </Button>
                         <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]"  disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
@@ -478,8 +485,8 @@ console.log("markers",markers)
           ) : (
                 <MapAnalysisGEOJSON
                 stateInfo={stateInfoFORGEOJSON} 
-                zoom={4} 
-                center={[37.0902, -95.7129]} // Center of the U.S.
+                zoom={zoom} 
+                center={center} // Center of the U.S.
                 showGeoJSON={showGeoJSON}
                 markers = {markers}
                 />
