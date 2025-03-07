@@ -112,3 +112,28 @@ export const getAnalysisKABData =async (queryParams: any = {}) =>{
     throw error;
   }
 }
+
+export const analysisNewDropdown = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/dropdownswithfilter?code=ZNyDSFOcqowWb8iqnQKUrnSVIDN2uTC8f0pfsw8MSBQOAzFu8MS8IQ==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+
+export const getHeatMap = async () => {
+  try {
+    const response = await axios.get(`https://lees1ddoaifunc02.azurewebsites.net/api/analytics-heatmap?code=wAv_2sEbNaYYfkgnWzahhrHr0JkKAoUA09SqBGKRzlKGAzFurrR-iA==`);
+    return response.data;
+  } catch (error) {
+    console.error("Error calling analysis data", error);
+    throw error;  
+  }
+};

@@ -7,6 +7,7 @@ import { FeatureCollection } from "geojson";
 
 // Import and typecast GeoJSON data
 import usStatesGeoJSONRaw from "../../public/us-states.json";
+// import usStatesGeoJSONRaw from "../../public/us-states-new.json";
 const usStatesGeoJSON: FeatureCollection = usStatesGeoJSONRaw as FeatureCollection;
 
 interface StateInfo {
@@ -36,7 +37,7 @@ interface RawMarkerData {
 }
 
 interface MapAnalysisProps {
-  stateInfo: StateInfo;
+  stateInfo: any;
   zoom: number;
   center: [number, number];
   showGeoJSON: boolean; // New boolean prop to toggle GeoJSON layer
@@ -44,7 +45,7 @@ interface MapAnalysisProps {
 }
 
 // Function to style each state based on its data
-const getStateStyle = (stateId: string, stateInfo: StateInfo) => {
+const getStateStyle = (stateId: string, stateInfo: any) => {
   const stateData = stateInfo[stateId];
   const value = stateData ? stateData.value : 0;
 
@@ -65,15 +66,17 @@ const getStateStyle = (stateId: string, stateInfo: StateInfo) => {
 };
 
 // Function to bind popups to each state
-const onEachState = (state: any, layer: L.Layer, stateInfo: StateInfo) => {
+const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
+  
   const stateId = state.properties.name;
   const stateData = stateInfo[stateId];
-
+  console.log("came here",stateId,stateData)
   if (stateData) {
     layer.bindPopup(`
-      <strong>${stateId}</strong><br>
-      Value: ${stateData.value}<br>
-      Info: ${stateData.info}
+      State: ${stateData?.State}<br>
+      Sum of Estimated: ${stateData["Estimated Litter Quantity"]}<br>
+      Average of estimated Litter Density: ${stateData["Estimated Litter Density"]}<br>
+      First Bottle Bill: ${stateData["Bottle Bill Status"]}
     `);
   }
 };
