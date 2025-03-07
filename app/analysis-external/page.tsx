@@ -166,20 +166,24 @@ const Analysis = () => {
         label: '# of Litter',
         data: Object.values(analysisData?.analytics?.pie_chart || {}),
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',   // light pink
-          'rgba(54, 162, 235, 0.2)',   // light blue
-          'rgba(255, 159, 64, 0.2)',   // light orange
-          'rgba(75, 192, 192, 0.2)',   // light teal
-          'rgba(153, 102, 255, 0.2)',  // light purple
-          'rgba(255, 205, 86, 0.2)',   // light yellow
+          '#E97132',  // Cigarette (Orange)
+          '#196B24',  // Glass (Green)
+          '#0F9ED5',  // Plastic (Light Blue)
+          '#974F91',  // Rubber (Purple)
+          '#DE9ED8',  // Organic (Pink)
+          '#AAB4B8',  // Metal (Gray)
+          '#E6E6E6',  // Paper (Light Gray)
+          '#156082',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',    // pink
-          'rgba(54, 162, 235, 1)',    // blue
-          'rgba(255, 159, 64, 1)',    // orange
-          'rgba(75, 192, 192, 1)',    // teal
-          'rgba(153, 102, 255, 1)',   // purple
-          'rgba(255, 205, 86, 1)',    // yellow
+          '#E97132',  // Cigarette (Orange)
+          '#196B24',  // Glass (Green)
+          '#0F9ED5',  // Plastic (Light Blue)
+          '#974F91',  // Rubber (Purple)
+          '#DE9ED8',  // Organic (Pink)
+          '#AAB4B8',  // Metal (Gray)
+          '#E6E6E6',  // Paper (Light Gray)
+          '#156082',
         ],
         borderWidth: 1,
       },
@@ -221,40 +225,83 @@ const Analysis = () => {
       {
         label: 'Dataset',
         data: Object.values(analysisData?.analytics?.trend_chart || {}),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: '#5BAA76',
+        pointBackgroundColor: '#5BAA76', 
+        backgroundColor: '#5BAA76',
       },
     ],
   };
 
 
   return (
+<div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
 
-    <div className="flex w-full gap-4 mt-4">
 
-      <div className="w-1/5 p-4">
+
+
+<div className="w-1/5 p-4 bg-white shadow-md rounded-lg">
+
 
         <div className="flex flex-col gap-4">
 
+  
 
           <div>
-            <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2">State</label>
             {loadingExternalData ? (
               <div>Loading states...</div>
             ) : (
               <Select
-                id="state"
-                value={filters.state}
-                onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-                options={statesData}
-                placeholder="Select a State"
-              />
+              id="state"
+              value={filters.state}
+              onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
+              options={statesData}
+              placeholder="Select a State"
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                  boxShadow:
+                    state.isFocused || state.hasValue
+                      ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                      : "none",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    borderColor: "#5BAA76",
+                  },
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: "#C5C5C5",
+                }),
+                option: (base, { isSelected, isFocused }) => ({
+                  ...base,
+                  backgroundColor: isSelected
+                    ? "#5BAA76" // ✅ Selected item stays green
+                    : isFocused
+                    ? "#A5D6A7" // ✅ Light green on hover
+                    : "white",
+                  color: isSelected ? "white" : "black",
+                 
+                  "&:active": {
+                    backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
+                  },
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: "#black",
+                  fontWeight: "semibold",
+                }),
+              }}
+            />
+            
+            
             )}
           </div>
 
 
           <div>
-            <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
+            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2">County</label>
             {loadingExternalData ? (
               <div>Loading counties...</div>
             ) : (
@@ -264,13 +311,52 @@ const Analysis = () => {
                 onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
                 options={countiesData}
                 placeholder="Select a County"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76", // ✅ Prevents blue flash when dragging
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black",
+                    fontWeight: "semibold",
+                  }),
+                }}
               />
             )}
           </div>
 
 
           <div>
-            <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract ID</label>
+            <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2">Tract</label>
             {loadingExternalData ? (
               <div>Loading tracts...</div>
             ) : (
@@ -280,13 +366,53 @@ const Analysis = () => {
                 onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
                 options={tractsData}
                 placeholder="Select a Tract ID"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
 
 
           <div>
-            <label htmlFor="year" className="block text-sm font-medium text-gray-700">Year</label>
+            <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2">Year</label>
             {loadingExternalData ? (
               <div>Loading years...</div>
             ) : (
@@ -296,18 +422,59 @@ const Analysis = () => {
                 onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
                 options={yearsData}
                 placeholder="Select a Year"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // ✅ Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "#000000", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
 
 
-          <div className="mt-4 flex gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
+          <div className="mt-4 flex flex-col gap-4">
+            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#5BAA76]" onClick={handleApply}>
               Apply
             </Button>
-            <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
-              Clear
-            </Button>
+           <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" onClick={handleClear}>
+  Clear
+</Button>
+
           </div>
         </div>
       </div>
@@ -317,7 +484,7 @@ const Analysis = () => {
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
 
-        <div className="w-full h-96 p-4 bg-gray-200 rounded">
+        <div className="w-full h-96 p-4  rounded">
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full">
               <span className="text-xl text-gray-600">Loading map...</span>
@@ -326,53 +493,87 @@ const Analysis = () => {
             <AnalysisMap markers={markers.slice(0, 100)} zoom={zoom} center={center} />
           )}
         </div>
+  
 
-        <div className="w-full flex gap-4">
-          <div className="w-1/2 p-4 bg-gray-200 rounded">
 
-            <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
-            {loadingAnalysisData ? (
-              <div>Loading line chart...</div>
-            ) : (
-              // <Bar options={options} data={dataForBar} />
-              <Line options={optionsLine} data={dataLine} />
-            )}
-          </div>
-          <div className="w-1/2 p-4 bg-gray-200 rounded">
 
-            <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
-            {loadingAnalysisData ? (
-              <div>Loading doughnut chart...</div>
-            ) : (
-              <Doughnut data={data} />
-            )}
-          </div>
-        </div>
+        <div className="w-full flex flex-wrap justify-center gap-4 mt-20">
+        <div className="flex justify-between w-full">
+  {/* Left Title */}
+  <div className="w-1/2">
+    <p className="text-xl font-semibold">Trend of Cleanup Programs Over Years</p>
+  </div>
+
+  {/* Right Title */}
+  <div className="w-1/2">
+    <p className="text-xl font-semibold">Break Down of Litter Types</p>
+  </div>
+</div>
+
+
+  <div className="flex-1 min-w-[300px] p-4 bg-white rounded flex flex-col items-center">
+
+    {loadingAnalysisData ? (
+      <div>Loading line chart...</div>
+    ) : (
+      <Line options={optionsLine} data={dataLine} />
+    )}
+  </div>
+
+  <div className="flex-1 min-w-[300px] p-4 bg-white rounded flex flex-col items-center">
+   
+    {loadingAnalysisData ? (
+      <div>Loading doughnut chart...</div>
+    ) : (
+      <Doughnut data={data} />
+    )}
+  </div>
+</div>
 
       </div>
 
 
-      <div className="w-1/5 p-4 space-y-6">
+      <div className="w-1/5 p-4 space-y-6 bg-white rounded-lg shadow-lg min-w-[250px]">
+
+      <div className="flex flex-col  p-4 rounded-lg   min-w-[200px] max-w-[250px]">
+  {/* Year */}
+  <div className="flex items-center gap-2 mt-[-10]">
+  <span className="text-blue-500 text-lg ">📅</span> 
+  <span className="text-lg font-semibold text-gray-900">2022</span>
+</div>
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Total Cleanup</h3>
-          <span className="block text-lg font-bold">{analysisData?.analytics?.total_cleanups}</span>
-          {loadingAnalysisData ? (
-              <span>Loading Data...</span>
-            ) : (
-          <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
-            )}
-        </div>
+  {/* Title */}
+  <p className="mt-2 text-gray-700 text-sm font-semibold">
+    Total Number of Cleanup Programs:
+  </p>
+
+  {/* Value */}
+  <div className="flex items-center gap-2 mt-1">
+    <span className="text-gray-400 text-lg">🧹</span> 
+    <span className="text-2xl font-bold text-green-700">
+      {analysisData?.analytics?.total_cleanups}
+    </span>
+  </div>
+
+  {/* Bottom Line & Diamond */}
+  <div className="relative mt-3 w-full mb-11 ml-[-9]">
+  <hr className="border-t border-green-500 w-[90%] mx-auto" />
+  <span className="absolute right-[5%] bottom-[-2px] transform rotate-45 bg-green-500 w-1.5 h-1.5"></span>
+</div>
+
+</div>
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Top 3 States</h3>
+
+
+<div className="p-4 rounded">
+          <p className="text-base font-bold ">Top 3 States by Number of Cleanup Programs:</p>
           {loadingAnalysisData ? (
             <div>Loading top states...</div>
           ) : (
             Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
-              <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+              <div key={key} className="p-4  rounded-lg  mb-4">
                 <h4 className="text-lg font-medium">{key}</h4>
                 <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
               </div>
@@ -381,13 +582,13 @@ const Analysis = () => {
         </div>
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Top 3 Counties</h3>
+        <div className="p-4  rounded">
+          <p className="text-base font-bold">Top 3 Counties by Number of Cleanup Programs:</p>
           {loadingAnalysisData ? (
             <div>Loading top counties...</div>
           ) : (
             Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
-              <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
+              <div key={key} className="p-4  rounded-lg  mb-4">
                 <h4 className="text-lg font-medium">{key}</h4>
                 <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
               </div>
