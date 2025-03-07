@@ -17,6 +17,7 @@ const AnalysisKABMap = dynamic(() => import("../../src/components/AnalysisKABMap
 const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGeoJSON"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 import value from "../../public/KABAnalytics 1.json"
+import { useRouter } from "next/navigation";
 
 // Define the types for the correlation analysis and selected coefficient
 type CorrelationAnalysis = Record<string, { scatter_plot: { [key: string]: number }[] }>;
@@ -115,7 +116,8 @@ const AnalysisKAB = () => {
   const [forScatter,setForscatter] = useState<any>([]);
   const [stateInfoFORGEOJSON,setStateInfoFORGEOJSON] = useState<any>([]);
     const isFirstRender = useRef(true);
-
+    const isNavigating = useRef(false);
+    const router = useRouter();
     interface DataItem {
         [key: string]: number | string; // Assuming the values are either numbers or strings
       }
@@ -127,17 +129,19 @@ const AnalysisKAB = () => {
 const data = await getAnalysisKABDropdown();
 setStatesData(data?.States)
 setDropDown(data["Parameter Name"])
+
 setLoadingExternalData(false);
 const dataForAnalytics = await getAnalysisKABData();
 setAnalysisData(dataForAnalytics)
 setMarkers(dataForAnalytics?.gps_data)
 setForscatter(dataForAnalytics?.correlation_analysis)
+setCorrelationCoeff(data["Parameter Name"][1])
 const heatMapData = await getHeatMap();
 setStateInfoFORGEOJSON(heatMapData);
-// @ts-ignore: Ignore TypeScript error
-const val = transformData(dataForAnalytics?.correlation_analysis[correlationCoeff?.value]?.scatter_plot);
-    // @ts-ignore: Ignore TypeScript error
-    setDataForScatterChart(val);
+// // @ts-ignore: Ignore TypeScript error
+// const val = transformData(dataForAnalytics?.correlation_analysis[correlationCoeff?.value]?.scatter_plot);
+//     // @ts-ignore: Ignore TypeScript error
+//     setDataForScatterChart(val);
     
 setLoadingAnalysisData(false);
 
@@ -184,18 +188,28 @@ console.log("markers",markers)
     };
 
     useEffect(() => {
+        isNavigating.current = true; // Set to true when navigation happens
+    }, [router]);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return; // Skip the effect on first render
+        }
+        // if (isNavigating.current) {
+        //     isNavigating.current = false;
+        //     return;
+        // }
         try{
-            if (isFirstRender.current) {
-                isFirstRender.current = false;
-                return; // Skip the effect on first render
-            }
+            
     // @ts-ignore: Ignore TypeScript error
             const val = transformData(forScatter[correlationCoeff?.value]?.scatter_plot);
             // @ts-ignore: Ignore TypeScript error
             setDataForScatterChart(val);
         }
         catch(error){
-            toast.error('There was some issue with fetching data');
+            //toast.error('There was some issue with fetching data');
+            console.log("Error")
         }
         
     }, [correlationCoeff]); 
@@ -504,6 +518,7 @@ console.log("markers",markers)
                             onChange={(selectedOption) => setCorrelationCoeff(selectedOption)}
                             options={dropDown}
                             placeholder="Select coefficient"
+                            isDisabled={!correlationCoeff}
                         />
                         )}
                     </div>
