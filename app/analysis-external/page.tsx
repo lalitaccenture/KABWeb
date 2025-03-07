@@ -533,9 +533,9 @@ const Analysis = () => {
       </div>
 
 
-      <div className="w-1/5 p-4 space-y-6 bg-white rounded-lg shadow-lg min-w-[250px]">
+      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px]">
 
-      <div className="flex flex-col  p-4 rounded-lg   min-w-[200px] max-w-[250px]">
+      <div className="flex flex-col  p-4 rounded-lg  ">
   {/* Year */}
   <div className="flex items-center gap-2 mt-[-10]">
   <span className="text-blue-500 text-lg ">📅</span> 
@@ -544,20 +544,20 @@ const Analysis = () => {
 
 
   {/* Title */}
-  <p className="mt-2 text-gray-700 text-sm font-semibold">
+  <p className="mt-2 text-gray-700 text-base font-semibold font-neris">
     Total Number of Cleanup Programs:
   </p>
 
   {/* Value */}
   <div className="flex items-center gap-2 mt-1">
     <span className="text-gray-400 text-lg">🧹</span> 
-    <span className="text-2xl font-bold text-green-700">
+    <span className="text-2xl font-semibold text-green-700">
       {analysisData?.analytics?.total_cleanups}
     </span>
   </div>
 
   {/* Bottom Line & Diamond */}
-  <div className="relative mt-3 w-full mb-11 ml-[-9]">
+  <div className="relative mt-3 w-full ">
   <hr className="border-t border-green-500 w-[90%] mx-auto" />
   <span className="absolute right-[5%] bottom-[-2px] transform rotate-45 bg-green-500 w-1.5 h-1.5"></span>
 </div>
@@ -567,8 +567,8 @@ const Analysis = () => {
 
 
 
-<div className="p-4 rounded">
-          <p className="text-base font-bold ">Top 3 States by Number of Cleanup Programs:</p>
+<div className="p-4 rounded ">
+          <p className="text-base font-semibold ">Top 3 States by Number of Cleanup Programs:</p>
           {loadingAnalysisData ? (
             <div>Loading top states...</div>
           ) : (
