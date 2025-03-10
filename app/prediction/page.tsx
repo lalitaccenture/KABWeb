@@ -10,8 +10,10 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { applyFilter, getAnalysisExternalData } from "../utils/api";
-const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
+import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
+import Switch from "react-switch";
+import WeekSelector from "@/src/components/WeekSelector";
+const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface FilterOption {
@@ -23,7 +25,6 @@ interface Filters {
   state: FilterOption | null;
   county: FilterOption | null;
   tract: FilterOption | null;
-  year: FilterOption | null;
 }
 
 interface MarkerData {
@@ -31,6 +32,20 @@ interface MarkerData {
   longitude: number;
   litter_quantity: number;
   cleanup_date: string;
+}
+
+interface SwitchState {
+  bins: boolean;
+  socioEconomic: boolean;
+  weatherOutlook: boolean;
+  typeOfArea: boolean;
+}
+
+// Define the props for the SwitchItem component
+interface SwitchItemProps {
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
 }
 
 
@@ -45,7 +60,6 @@ const Prediction = () => {
     state: null,
     county: null,
     tract: null,
-    year: null,
   });
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [zoom, setZoom] = useState<number>(4);
@@ -54,39 +68,55 @@ const Prediction = () => {
   const [statesData, setStatesData] = useState<any[]>([]);
   const [countiesData, setCountiesData] = useState<any[]>([]);
   const [tractsData, setTractsData] = useState<any[]>([]);
-  const [yearsData, setYearsData] = useState<any[]>([]);
   const [analysisData, setAnalysisData] = useState<any>({});
   const [loadingAnalysisData, setLoadingAnalysisData] = useState<boolean>(false);
   const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
   const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null);
+  const [switches, setSwitches] = useState<SwitchState>({
+    bins: false,
+    socioEconomic: false,
+    weatherOutlook: false,
+    typeOfArea: false,
+  });
+  const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
+  const weeks = ["09/02", "09/09", "09/16", "09/23", "09/30"];
+
+
+
+
+  const handleChange = (switchName: keyof SwitchState) => (checked: boolean) => {
+    setSwitches((prevState) => ({
+      ...prevState,
+      [switchName]: checked,
+    }));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       setLoadingExternalData(true);
       setLoadingAnalysisData(true);
+      setLoadingAnalysisNewData(true);
       setError(null);
 
       try {
 
-        const data = await getAnalysisExternalData();
-        setStatesData(data.States);
-        setCountiesData(data.Counties);
-        setTractsData(data.TractIDs);
-        setYearsData(data.Years);
-
+        const dropD = await analysisNewDropdown();
+        setStatesData(dropD?.Dropdown)
+        setLoadingAnalysisNewData(false)
         setLoadingExternalData(false);
-
-
-        const value = await applyFilter();
-        setAnalysisData(value);
-        //setMarkers(value?.map_data)
         setLoadingAnalysisData(false);
+
+        // const value = await applyFilter();
+        // setAnalysisData(value);
+        // //setMarkers(value?.map_data)
+        // setLoadingAnalysisData(false);
       } catch (error) {
         setError("Failed to fetch data, please try again later.");
 
         setLoadingAnalysisData(false);
         setLoadingExternalData(false);
+        setLoadingAnalysisNewData(false)
       } finally {
 
       }
@@ -97,11 +127,63 @@ const Prediction = () => {
 
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
+    if(filter=='state'){
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: selectedOption,
+        county: null,
+        tract: null
+      }));
+    }
+    else if(filter=='county'){
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: selectedOption,
+        tract: null
+      }));
+    }
+
+    else 
     setFilters(prevFilters => ({
       ...prevFilters,
       [filter]: selectedOption,
     }));
   };
+
+  const handleDropdownFurther = async (val:string,selectedOption:any)=>{
+      try{
+        setLoadingAnalysisNewData(true)
+        console.log("selectedOption",selectedOption)
+        let queryParams;
+        if((val=="state")){
+        queryParams = {
+            state: selectedOption?.value || null,
+          };
+        }
+        else if (val=="county"){
+          //setFilters({...filters,tract:null})
+          queryParams = {
+            state: filters?.state?.value || null,
+            county: selectedOption?.value || null,
+          };
+        }
+        
+        const dropD = await analysisNewDropdown(queryParams);
+        if(val=="state"){
+          
+          setCountiesData(dropD?.Dropdown)
+          setLoadingAnalysisNewData(false)
+        }
+        else if (val=="county"){
+          setTractsData(dropD?.Dropdown)
+          setLoadingAnalysisNewData(false)
+        }
+      }
+      catch(error){
+        alert("error")
+        setLoadingAnalysisNewData(false)
+      }
+    }
 
   const handleApply = async () => {
 
@@ -109,7 +191,6 @@ const Prediction = () => {
       state: filters.state?.value || null,
       county: filters.county?.value || null,
       tract: filters.tract?.value || null,
-      year: filters.year?.value || null,
     };
 
     // Filter out undefined values
@@ -138,62 +219,88 @@ const Prediction = () => {
       state: null,
       county: null,
       tract: null,
-      year: null,
     });
   };
 
   const options = {
-    responsive: true,
     plugins: {
-      legend: {
-        position: 'top' as const,
+      title: {
+        display: true,
+        text: 'Chart.js Bar Chart - Stacked',
       },
-      // title: {
-      //   display: true,
-      //   text: '',
-      // },
+    },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+      },
     },
   };
-
+  
+  const labels = ['January'];
+  
   const data = {
-    labels: Object.keys(analysisData?.analytics?.pie_chart || {}),
+    labels,
     datasets: [
       {
-        label: '# of Litter',
-        data: Object.values(analysisData?.analytics?.pie_chart || {}),
+        label: 'Dataset 1',
+        data: [60],
+        backgroundColor: 'rgb(255, 99, 132)',
+      },
+      {
+        label: 'Dataset 2',
+        data: [49],
+        backgroundColor: 'rgb(75, 192, 192)',
+      },
+      {
+        label: 'Dataset 3',
+        data: [87],
+        backgroundColor: 'rgb(53, 162, 235)',
+      },
+    ],
+  };
+
+  const dataDoughnut = {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    datasets: [
+      {
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',   // light pink
-          'rgba(54, 162, 235, 0.2)',   // light blue
-          'rgba(255, 159, 64, 0.2)',   // light orange
-          'rgba(75, 192, 192, 0.2)',   // light teal
-          'rgba(153, 102, 255, 0.2)',  // light purple
-          'rgba(255, 205, 86, 0.2)',   // light yellow
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',    // pink
-          'rgba(54, 162, 235, 1)',    // blue
-          'rgba(255, 159, 64, 1)',    // orange
-          'rgba(75, 192, 192, 1)',    // teal
-          'rgba(153, 102, 255, 1)',   // purple
-          'rgba(255, 205, 86, 1)',    // yellow
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
         ],
         borderWidth: 1,
       },
     ],
   };
 
-  const labels = Object.keys(analysisData?.analytics?.trend_chart || {});
+  const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
 
-  const dataForBar = {
-    labels,
-    datasets: [
-      {
-        label: 'Years',
-        data: Object.values(analysisData?.analytics?.trend_chart || {}),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
-  };
+  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange }) => (
+    <div className="flex items-center space-x-2">
+      <Switch onChange={onChange} checked={checked} uncheckedIcon={false} 
+        checkedIcon={false} onColor="#3AAD73" />  
+      <span>{label}</span>
+    </div>
+  );
+
+  
 
 
   return (
@@ -203,19 +310,61 @@ const Prediction = () => {
       <div className="w-1/5 p-4">
 
         <div className="flex flex-col gap-4">
-
+        <h1 className="font-bold">Map Controllers</h1>
 
           <div>
             <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
-            {loadingExternalData ? (
+            {loadingAnalysisNewData ? (
               <div>Loading states...</div>
             ) : (
               <Select
                 id="state"
                 value={filters.state}
-                onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
+                onChange={(selectedOption) => {handleFilterChange('state', selectedOption)
+                  handleDropdownFurther('state',selectedOption)
+                }}
                 options={statesData}
                 placeholder="Select a State"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
@@ -223,23 +372,66 @@ const Prediction = () => {
 
           <div>
             <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
-            {loadingExternalData ? (
+            {loadingAnalysisNewData ? (
               <div>Loading counties...</div>
             ) : (
               <Select
                 id="county"
                 value={filters.county}
-                onChange={(selectedOption) => handleFilterChange('county', selectedOption)}
+                onChange={(selectedOption) => {handleFilterChange('county', selectedOption)
+                  handleDropdownFurther('county',selectedOption)
+                }}
                 options={countiesData}
+                isDisabled={!filters?.state?.value}
                 placeholder="Select a County"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
 
 
           <div>
-            <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract ID</label>
-            {loadingExternalData ? (
+            <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract</label>
+            {loadingAnalysisNewData ? (
               <div>Loading tracts...</div>
             ) : (
               <Select
@@ -248,41 +440,82 @@ const Prediction = () => {
                 onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
                 options={tractsData}
                 placeholder="Select a Tract ID"
+                isDisabled={!filters?.county?.value}
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // Always show shadow if selected
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected stays green
+                      : isFocused
+                      ? "#A5D6A7" // ✅ Light green on hover
+                      : "white",
+                    color: isSelected ? "white" : "black",
+                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+                    "&:hover": {
+                      backgroundColor: "#5BAA76",
+                      color: "white",
+                    },
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black", // ✅ Selected value should be black
+                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
+                  }),
+                }}
               />
             )}
           </div>
 
 
-          <div>
-            <label htmlFor="year" className="block text-sm font-medium text-gray-700">Year</label>
-            {loadingExternalData ? (
-              <div>Loading years...</div>
-            ) : (
-              <Select
-                id="year"
-                value={filters.year}
-                onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-                options={yearsData}
-                placeholder="Select a Year"
-              />
-            )}
-          </div>
+         
 
 
-          <div className="mt-4 flex gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" onClick={handleApply}>
+
+    <div className="mt-4 flex flex-col gap-4">
+            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData}  onClick={handleApply}>
               Apply
             </Button>
-            <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" onClick={handleClear}>
-              Clear
-            </Button>
+           <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
+  Clear
+</Button>
+
           </div>
+          <div className="space-y-4">
+  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />
+  <SwitchItem label="Socio Economic" checked={switches.socioEconomic} onChange={handleChange("socioEconomic")} />
+  <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
+  <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} />
+</div>
         </div>
       </div>
 
 
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
+
+      <div>
+            <h1>Select a track</h1>
+      <WeekSelector weeks={weeks} />
+      </div>
 
 
         <div className="w-full h-96 p-4 bg-gray-200 rounded">
@@ -291,30 +524,11 @@ const Prediction = () => {
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap markers={markers.slice(0, 100)} zoom={zoom} center={center} />
+            <MapPrediction markers={markers.slice(0, 100)} zoom={zoom} center={center} switches={switches}/>
           )}
         </div>
 
-        <div className="w-full flex gap-4">
-          <div className="w-1/2 p-4 bg-gray-200 rounded">
-
-            <h3 className="text-xl font-semibold mb-2 text-center">No of Cleanups by Year</h3>
-            {loadingAnalysisData ? (
-              <div>Loading bar chart...</div>
-            ) : (
-              <Bar options={options} data={dataForBar} />
-            )}
-          </div>
-          <div className="w-1/2 p-4 bg-gray-200 rounded">
-
-            <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
-            {loadingAnalysisData ? (
-              <div>Loading doughnut chart...</div>
-            ) : (
-              <Doughnut data={data} />
-            )}
-          </div>
-        </div>
+          
 
       </div>
 
@@ -322,41 +536,31 @@ const Prediction = () => {
       <div className="w-1/5 p-4 space-y-6">
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Total Cleanup</h3>
-          <span className="block text-lg font-bold">{analysisData?.analytics?.total_cleanups}</span>
-          <p className="text-sm text-gray-600">Sum of the number of cleanup actions.</p>
-        </div>
+      <div className="p-4 bg-gray-200 rounded">
+                    <h3 className="text-xl font-semibold">Total Estimated Litter</h3>
+                    {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+                    <span className="block text-lg font-bold">{analysisData?.total_estimated_litter?.toFixed(2)}</span>
+            )}
+                    </div>
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Top 3 States</h3>
-          {loadingAnalysisData ? (
-            <div>Loading top states...</div>
-          ) : (
-            Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
-              <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-                <h4 className="text-lg font-medium">{key}</h4>
-                <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
-              </div>
-            ))
-          )}
-        </div>
+                <div className="p-4 bg-gray-200 rounded">
+                    <h3 className="text-xl font-semibold">Estimated Litter Density</h3>
+                    {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+                    <span className="block text-lg font-bold">{analysisData?.estimated_litter_density?.toFixed(2)}</span>
+            )}
+                    </div>
+
+                    <div className="h-auto">
+                    {/* <Bar options={options} data={data} /> */}
+                    <Doughnut data={dataDoughnut} />
+                    </div>
 
 
-        <div className="p-4 bg-gray-200 rounded">
-          <h3 className="text-xl font-semibold">Top 3 Counties</h3>
-          {loadingAnalysisData ? (
-            <div>Loading top counties...</div>
-          ) : (
-            Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
-              <div key={key} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-                <h4 className="text-lg font-medium">{key}</h4>
-                <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
-              </div>
-            ))
-          )}
-        </div>
       </div>
 
     </div>

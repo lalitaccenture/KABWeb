@@ -135,7 +135,7 @@ const dataForAnalytics = await getAnalysisKABData();
 setAnalysisData(dataForAnalytics)
 setMarkers(dataForAnalytics?.gps_data)
 setForscatter(dataForAnalytics?.correlation_analysis)
-setCorrelationCoeff(data["Parameter Name"][1])
+setCorrelationCoeff(data["Parameter Name"][0])
 const heatMapData = await getHeatMap();
 setStateInfoFORGEOJSON(heatMapData);
 // // @ts-ignore: Ignore TypeScript error
