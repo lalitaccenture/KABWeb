@@ -60,40 +60,6 @@ interface Filters {
     parameter: FilterOption | null;
 }
 
-
-// const markersTest: MarkerData[] = [
-//     {
-//       latitude: 34.0522,
-//       longitude: -118.2437,
-//       litter_quantity: 120,
-//       cleanup_year: 2023,
-//     },
-//     {
-//       latitude: 40.7128,
-//       longitude: -74.0060,
-//       litter_quantity: 85,
-//       cleanup_year: 2022,
-//     },
-//     {
-//       latitude: 41.8781,
-//       longitude: -87.6298,
-//       litter_quantity: 200,
-//       cleanup_year: 2024,
-//     },
-//     {
-//       latitude: 29.7604,
-//       longitude: -95.3698,
-//       litter_quantity: 50,
-//       cleanup_year: 2021,
-//     },
-//     {
-//       latitude: 47.6062,
-//       longitude: -122.3321,
-//       litter_quantity: 150,
-//       cleanup_year: 2023,
-//     },
-//   ];
-
 const AnalysisKAB = () => {
     const [markers, setMarkers] = useState<RawMarkerData[]>([]);
     const [zoom, setZoom] = useState<number>(4);
@@ -164,14 +130,22 @@ console.log("markers",markers)
           y: item[keys[1]]   // Use the second key for y (education density)
         }));
       };
-
-    const options = {
-        scales: {
-            // y: {
-            //     beginAtZero: true,
-            // },
+      const options = {
+        plugins: {
+          legend: {
+            position: "bottom" as const, 
+            labels: {
+              boxWidth: 10,
+              boxHeight: 8,
+              padding: 10,
+              font: {
+                size: 12,
+              },
+            },
+          },
         },
-    };
+      };
+      
 
     const dataForScatter = {
         datasets: [
@@ -199,7 +173,7 @@ console.log("markers",markers)
         }
         
     }, [correlationCoeff]); 
-    // Only trigger when `correlationCoeff` changes
+    // Only trigger when correlationCoeff changes
 
     const data = {
         labels: Object.keys(analysisData?.litter_pie_chart || {}),
@@ -208,21 +182,25 @@ console.log("markers",markers)
                 label: '# of Votes',
                 data: Object.values(analysisData?.litter_pie_chart || {}),
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
+                    '#E97132',  // Cigarette (Orange)
+                    '#196B24',  // Glass (Green)
+                    '#0F9ED5',  // Plastic (Light Blue)
+                    '#974F91',  // Rubber (Purple)
+                    '#DE9ED8',  // Organic (Pink)
+                    '#AAB4B8',  // Metal (Gray)
+                    '#E6E6E6',  // Paper (Light Gray)
+                    '#156082',
+                  ],
+                  borderColor: [
+                    '#E97132',  // Cigarette (Orange)
+                    '#196B24',  // Glass (Green)
+                    '#0F9ED5',  // Plastic (Light Blue)
+                    '#974F91',  // Rubber (Purple)
+                    '#DE9ED8',  // Organic (Pink)
+                    '#AAB4B8',  // Metal (Gray)
+                    '#E6E6E6',  // Paper (Light Gray)
+                    '#156082',
+                  ],
                 borderWidth: 1,
             },
         ],
@@ -274,9 +252,7 @@ console.log("markers",markers)
             ...prevFilters,
             [filter]: selectedOption,
         }));
-        //setZoom
-        //setCenter
-        //setMarkers
+  
     };
 
     const heatmapData: [number, number, number][] = [
@@ -325,98 +301,14 @@ console.log("markers",markers)
         // Add more states with their info...
       };
 
-    //   const stateInfoFORGEOJSON = {
-    //     Alabama: { value: 0.4, info: "Alabama is known for its rich Civil Rights history." },
-    //     Alaska: { value: 0.2, info: "Alaska is the largest state by area and has vast wilderness." },
-    //     Arizona: { value: 0.5, info: "Arizona is home to the Grand Canyon." },
-    //     Arkansas: { value: 0.3, info: "Arkansas is the birthplace of Walmart." },
-    //     California: { value: 0.9, info: "California's population is over 39 million." },
-    //     Colorado: { value: 0.6, info: "Colorado is known for the Rocky Mountains." },
-    //     Connecticut: { value: 0.5, info: "Connecticut is home to Yale University." },
-    //     Delaware: { value: 0.3, info: "Delaware was the first state to ratify the U.S. Constitution." },
-    //     Florida: { value: 0.7, info: "Florida is known for its beaches and warm climate." },
-    //     Georgia: { value: 0.6, info: "Georgia is famous for peaches and Coca-Cola." },
-    //     Hawaii: { value: 0.4, info: "Hawaii is the only U.S. state made up entirely of islands." },
-    //     Idaho: { value: 0.3, info: "Idaho is known for its potato production." },
-    //     Illinois: { value: 0.5, info: "Illinois is home to the city of Chicago." },
-    //     Indiana: { value: 0.4, info: "Indiana hosts the Indianapolis 500 race." },
-    //     Iowa: { value: 0.3, info: "Iowa is known for its corn production." },
-    //     Kansas: { value: 0.3, info: "Kansas is the geographical center of the U.S." },
-    //     Kentucky: { value: 0.4, info: "Kentucky is famous for bourbon and the Kentucky Derby." },
-    //     Louisiana: { value: 0.5, info: "Louisiana is known for its Creole and Cajun culture." },
-    //     Maine: { value: 0.3, info: "Maine is famous for its lobster industry." },
-    //     Maryland: { value: 0.5, info: "Maryland is home to the U.S. Naval Academy." },
-    //     Massachusetts: { value: 0.6, info: "Massachusetts is known for Harvard University." },
-    //     Michigan: { value: 0.5, info: "Michigan is famous for the Great Lakes and the auto industry." },
-    //     Minnesota: { value: 0.4, info: "Minnesota is known as the Land of 10,000 Lakes." },
-    //     Mississippi: { value: 0.3, info: "Mississippi is the birthplace of blues music." },
-    //     Missouri: { value: 0.4, info: "Missouri is home to the Gateway Arch in St. Louis." },
-    //     Montana: { value: 0.2, info: "Montana is known for Yellowstone National Park." },
-    //     Nebraska: { value: 0.3, info: "Nebraska is famous for its cornfields and prairies." },
-    //     Nevada: { value: 0.5, info: "Nevada is home to Las Vegas, the entertainment capital." },
-    //     "New Hampshire": { value: 0.4, info: "New Hampshire is known for its fall foliage and mountains." },
-    //     NewJersey: { value: 0.6, info: "New Jersey has the highest population density in the U.S." },
-    //     NewMexico: { value: 0.4, info: "New Mexico is famous for its deserts and Roswell UFO incident." },
-    //     NewYork: { value: 0.6, info: "New York is known for the Statue of Liberty and Times Square." },
-    //     NorthCarolina: { value: 0.5, info: "North Carolina is known for the Wright brothers' first flight." },
-    //     "North Dakota": { value: 0.3, info: "North Dakota has the lowest unemployment rate in the U.S." },
-    //     Ohio: { value: 0.5, info: "Ohio is the birthplace of aviation pioneers, the Wright brothers." },
-    //     Oklahoma: { value: 0.4, info: "Oklahoma is known for its Native American heritage." },
-    //     Oregon: { value: 0.5, info: "Oregon is home to Crater Lake, the deepest lake in the U.S." },
-    //     Pennsylvania: { value: 0.6, info: "Pennsylvania is home to the Liberty Bell and Hershey's Chocolate." },
-    //     RhodeIsland: { value: 0.3, info: "Rhode Island is the smallest U.S. state by area." },
-    //     SouthCarolina: { value: 0.5, info: "South Carolina is known for its historic Charleston district." },
-    //     SouthDakota: { value: 0.3, info: "South Dakota is home to Mount Rushmore." },
-    //     Tennessee: { value: 0.5, info: "Tennessee is famous for country music and Elvis Presley." },
-    //     Texas: { value: 0.8, info: "Texas is the second-largest state by population." },
-    //     Utah: { value: 0.4, info: "Utah is known for its national parks and Mormon heritage." },
-    //     Vermont: { value: 0.3, info: "Vermont is famous for maple syrup production." },
-    //     Virginia: { value: 0.6, info: "Virginia is home to many historical American landmarks." },
-    //     Washington: { value: 0.6, info: "Washington state is known for tech companies like Microsoft and Amazon." },
-    //     WestVirginia: { value: 0.3, info: "West Virginia is known for its Appalachian Mountains." },
-    //     Wisconsin: { value: 0.4, info: "Wisconsin is famous for cheese production." },
-    //     Wyoming: { value: 0.2, info: "Wyoming has the lowest population of any U.S. state." }
-    //   };
-      
-      
-    //  const dropDown = [
-    //     {
-    //         "value": "Population_Density",
-    //         "label": "Population_Density"
-    //     },
-    //     {
-    //         "value": "Education amenities_density",
-    //         "label": "Education amenities_density"
-    //     },
-    //     {
-    //         "value": "Entertainment amenities_density",
-    //         "label": "Entertainment amenities_density"
-    //     },
-    //     {
-    //         "value": "Food amenities_density",
-    //         "label": "Food amenities_density"
-    //     },
-    //     {
-    //         "value": "Leisure amenities_density",
-    //         "label": "Leisure amenities_density"
-    //     },
-    //     {
-    //         "value": "Shopping amenities_density",
-    //         "label": "Shopping amenities_density"
-    //     },
-    //     {
-    //         "value": "bins_density",
-    //         "label": "bins_density"
-    //     }
-    // ]
-
    
-    
       
 
     return (
 
-        <div className="flex w-full gap-4 mt-4">
+<div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4">
+
+
 
             <div className="w-1/5 p-4">
                 
@@ -424,7 +316,7 @@ console.log("markers",markers)
 
 
                     <div>
-                        <label htmlFor="state" className="block text-sm font-medium text-gray-700">State</label>
+                        <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
                         {loadingExternalData ? (
               <div>Loading states...</div>
             ) : (
@@ -434,49 +326,100 @@ console.log("markers",markers)
                             onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
                             options={statesData}
                             placeholder="Select a State"
+                            styles={{
+                                control: (base, state) => ({
+                                  ...base,
+                                  fontFamily: "'Neris', sans-serif",
+                                  borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                                  boxShadow:
+                                    state.isFocused || state.hasValue
+                                      ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                                      : "none",
+                                  transition: "all 0.2s ease-in-out",
+                                  "&:hover": {
+                                    borderColor: "#5BAA76",
+                                  },
+                                }),
+                                placeholder: (base) => ({
+                                  ...base,
+                                  color: "#C5C5C5",
+                                  fontSize: "14px",
+                                }),
+                                option: (base, { isSelected, isFocused }) => ({
+                                  ...base,
+                                  backgroundColor: isSelected
+                                    ? "#5BAA76" 
+                                    : isFocused
+                                    ? "#A5D6A7" 
+                                    : "white",
+                                  color: isSelected ? "white" : "black",
+                                 
+                                  "&:active": {
+                                    backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
+                                  },
+                                }),
+                                singleValue: (base) => ({
+                                  ...base,
+                                  color: "#black",
+                                  fontWeight: "semibold",
+                                }),
+                              }}
                         />
                     )}
                     </div>
 
                     
 
-                    <div className="mt-4 flex gap-4">
+                    <div  className="mt-4 flex flex-col gap-4">
                         <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisData || loadingAnalysisData} onClick={handleApply}>
                             Apply
                         </Button>
-                        <Button className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]"  disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
+                        <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition"  disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
                             Clear
                         </Button>
-                        {/* <Button 
-    className="w-full bg-[#FF4D4D] text-white hover:bg-[#e34e4e]" 
-    onClick={() => setShowGeoJSON(prev => !prev)}
-  >
-    {showGeoJSON ? "Hide GeoJSON" : "Show GeoJSON"}
-  </Button> */}
-                    </div>
-                    {/* <div>
-                        <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
-                        {loadingExternalData ? (
-              <div>Loading coefficients...</div>
-            ) : (
-                        <Select
-                            id="parameterName"
-                            value={correlationCoeff}
-                            onChange={(selectedOption) => setCorrelationCoeff(selectedOption)}
-                            options={dropDown}
-                            placeholder="Select coefficient"
-                        />
-                        )}
-                    </div> */}
+     
+                    </div><br></br>
+                    <div className="flex flex-col items-center mr-[78px]">
+
+  <span className="text-xs text-gray-700">Lower Litter Density</span>
+  <div className="w-5 h-24 bg-gradient-to-b from-orange-200 to-red-400 rounded-full my-1"></div>
+  <span className="text-xs text-gray-700">Higher Litter Density</span>
+</div>
+<div className="flex items-center gap-2 mt-2">
+    <div className="w-2 h-2 bg-green-500"></div> 
+    <p className="text-xs text-gray-700">
+    Survey Site Litter Data.
+    </p>
+  </div>
+
+  <div className="flex items-center gap-2 mt-1">
+    <div className="w-2 h-2 bg-red-500"></div> 
+    <p className="text-xs text-gray-700">
+    Statewide Estimated Litter Data.
+    </p>
+  </div>
+
                 </div>
             </div>
+            
 
-
+     
             
             <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
+<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[95px] flex gap-4">
+  <button className=   "w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white">
+    Litter Cleanup Analysis
+  </button>
+  <button className="w-[237px] h-[36px] text-white font-medium rounded-md bg-[#5BAA76]" 
+  >
+  Litter Survey Analysis
+</button>
 
+</div>
                 {/* AnalysisMap section */}
-                <div className="w-full h-96 p-4 bg-gray-200 rounded">
+                <div className="w-full h-72 p-4 rounded" style={{ marginTop: '72px' }}>
+<p className="block text-sm font-semibold text-black-600 mb-2 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
+
                     {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
                     {loadingAnalysisData ? (
             <div className="flex justify-center items-center h-full">
@@ -491,10 +434,11 @@ console.log("markers",markers)
                 markers = {markers}
                 />
           )}
-                </div>
+      </div>
+            {/*     Correlation Between Estimated Litter Density */}
+           <div className="mr-[420] mt-14">
 
-                <div>
-                        <label htmlFor="parameterName" className="block text-sm font-medium text-gray-700">Parameter Name</label>
+                        <label htmlFor="parameterName" className="text-base font-semibold font-neris p-[30px] ml-[-32px]">Correlation Between Estimated Litter<br/> Density &</label>
                         {loadingExternalData ? (
               <div>Loading coefficients...</div>
             ) : (
@@ -504,77 +448,176 @@ console.log("markers",markers)
                             onChange={(selectedOption) => setCorrelationCoeff(selectedOption)}
                             options={dropDown}
                             placeholder="Select coefficient"
+                            styles={{
+                                control: (base, state) => ({
+                                    ...base,
+                                    fontFamily: "'Neris', sans-serif",
+                                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                                    boxShadow:
+                                        state.isFocused || state.hasValue
+                                            ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                                            : "none",
+                                    transition: "all 0.2s ease-in-out",
+                                    "&:hover": {
+                                        borderColor: "#5BAA76",
+                                    },
+                                }),
+                                placeholder: (base) => ({
+                                    ...base,
+                                    color: "#C5C5C5",
+                                    fontSize: "14px",
+                                }),
+                                option: (base, { isSelected, isFocused }) => ({
+                                    ...base,
+                                    backgroundColor: isSelected
+                                        ? "#5BAA76"
+                                        : isFocused
+                                            ? "#A5D6A7"
+                                            : "white",
+                                    color: isSelected ? "white" : "black",
+                                    "&:active": {
+                                        backgroundColor: "#5BAA76",
+                                    },
+                                }),
+                                singleValue: (base) => ({
+                                    ...base,
+                                    color: "black",
+                                    fontWeight: "semibold",
+                                }),
+                            }}
+                          className="w-[250px]"
                         />
                         )}
                     </div>
                 <div className="w-full flex gap-4">
+                  
+
+               {/*  Correlation Between Estimated Litter */}
                 
-                    <div className="w-1/2 p-4 bg-gray-200 rounded">
+                <div className="w-[341px] h-[249px] p-4 bg-white rounded">
+
                         
-                        <h3 className="text-xl font-semibold mb-2 text-center">Correlation Coefficient</h3>
-                        <Scatter options={options} data={dataForScatter} />
+                    <p className="text-sm font-medium font-neris p-[30px] ml-[58px] mt-[-32px]">
+  Correlation Coefficient
+</p>
+
+<Scatter
+  options={{
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Estimated Litter Density (#/ sq. miles)",
+        },
+        ticks: {
+          stepSize: 0.1, // Adjust this based on your dataset
+          autoSkip: false, // Prevent Chart.js from skipping ticks
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Bins_Density",
+        },
+        ticks: {
+          stepSize: 0.1, // Adjust this based on your dataset
+          autoSkip: false, // Prevent Chart.js from skipping ticks
+        },
+      },
+    },
+  }}
+  data={dataForScatter}
+/>
+
                     </div>
-                    <div className="w-1/2 p-4 bg-gray-200 rounded">
-                       
-                        <h3 className="text-xl font-semibold mb-2 text-center">Litter Types</h3>
-                        {loadingAnalysisData ? (
-              <div>Loading doughnut chart...</div>
-            ) : (
-                        <Doughnut data={data} />
-            )}
-                    </div>
+
+
+
+                    <div className="relative w-1/2">
+                    <div className="p-4 bg-white rounded relative h-[251px]">
+
+    <label className="absolute -top-[85] left-0 text-base font-semibold font-neris">
+      Breakdown of Litter Types
+    </label>
+    {loadingAnalysisData ? (
+      <div>Loading doughnut chart...</div>
+    ) : (
+        <Doughnut data={data} options={options} style={{ marginLeft: '53px' }} />
+
+    )}
+  </div >
+  <p  className="absolute bottom-[-20px] right-2 text-xs text-gray-500" >Source: KAB Litter Survey 2020</p>
+</div>
+
                 </div>
 
             </div>
 
             {/* New Sections in the Right Sidebar */}
             <div className="w-1/5 p-4 space-y-6">
+            <div className="p-4 bg-white shadow-lg rounded-lg space-y-6">
+            <div className="flex items-center gap-2 mt-[-10px]">
+    <span className="text-blue-500 text-lg">📅</span> 
+    <span className="text-sm font-medium text-gray-500">2020</span>
+  </div>
+                {/* Total Estimated Litter: */}
+                <div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
+                <div className="p-2 rounded flex flex-col gap-3 text-left ml-[-10]">
+                <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
+  Total Estimated Litter:
+</p>
 
-                {/* Total Cleanup Section */}
-                <div className="p-4 bg-gray-200 rounded">
-                    <h3 className="text-xl font-semibold">Total Estimated Litter</h3>
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-lg font-bold">{analysisData?.total_estimated_litter?.toFixed(2)}</span>
+                    <span className="text-xl font-bold text-green-700">{analysisData?.total_estimated_litter?.toFixed(2)}</span>
+            )}
+                    </div>
+                    </div>
+
+
+    {/* Estimated Litter Density */}
+
+
+                <div className="p-2 rounded flex flex-col gap-3">
+                    <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Estimated Litter Density:</p>
+                    {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+                    <span className="text-xl font-bold text-green-700">{analysisData?.estimated_litter_density?.toFixed(2)}</span>
             )}
                     </div>
 
 
-                <div className="p-4 bg-gray-200 rounded">
-                    <h3 className="text-xl font-semibold">Estimated Litter Density</h3>
-                    {loadingAnalysisData ? (
-              <span>Loading Data...</span>
-            ) : (
-                    <span className="block text-lg font-bold">{analysisData?.estimated_litter_density?.toFixed(2)}</span>
-            )}
-                    </div>
+
+
 
 
                 {/* Top 3 States Section */}
-                <div className="p-4 bg-gray-200 rounded">
-                    <h3 className="text-xl font-semibold">Top 3 States</h3>
-                    {/* {topStates.map((state, index) => (
-                        <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-                            <h4 className="text-lg font-medium">{state.name}</h4>
-                            <p className="text-sm text-gray-500">{state.placeholder}</p>
-                            <p className="text-sm text-gray-500">{state.placeholder}</p>
-                        </div>
-                    ))} */}
+                <div className="mb-4 p-4 rounded  ml-[-4]">
+                    <p className=" mb-2.8 text-black text-base font-semibold font-neris gap-2">Top 3 States:</p>
+                 
                     {loadingAnalysisData ? (
             <div>Loading top states...</div>
           ) : (<>
                     {analysisData?.top_3_states?.map((state:any, index:any) => (
-        <div key={index} className="p-4 bg-white border rounded-lg shadow-md mb-4">
-          <h4 className="text-lg font-medium">{state.State}</h4>
-          <p className="text-sm text-gray-500">Estimated: {state.Estimated.toFixed(2)}</p>
-          <p className="text-sm text-gray-500">Litter Density: {state["Litter density"].toFixed(2)}</p>
-        </div>
+       <div key={index} className="flex items-start gap-3 p-2 mb-6 ml-[-4]">
+         {/* Dot before each state name */}
+         <span className="text-green-700 text-lg font-bold leading-6 ">•</span> 
+
+         {/* State details */}
+         <div >
+           <p className="text-base font-medium font-neris ">{state.State}</p>
+           <p className="text-sm text-gray-500 font-neris ">Estimated: {state.Estimated.toFixed(2)}</p>
+           <p className="text-xs text-gray-500 font-neris ">Litter Density: {state["Litter density"].toFixed(2)}</p>
+         </div>
+       </div>
       ))}
       </>
     )}
                 </div>
 
+            </div>
             </div>
 
         </div>

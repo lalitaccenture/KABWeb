@@ -28,13 +28,15 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 //new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
     <>
-<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[110px] flex gap-4">
-  <button className="w-[237px] h-[36px] text-white font-semibold rounded-md bg-[#5BAA76]" onClick={()=>router.push("/analysis-external")}>
+<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[95px] flex gap-4">
+  <button className="w-[237px] h-[36px] text-white font-medium rounded-md bg-[#5BAA76]" onClick={()=>router.push("/analysis-external")}>
     Litter Cleanup Analysis
   </button>
-  <button className="w-[237px] h-[36px] text-black font-semibold border-2 border-[#5BAA76] rounded-md bg-white" onClick={()=>router.push("/analysis-kab")}>
-    Litter Survey Analysis
-  </button>
+  <button className="w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white" 
+  onClick={() => router.push("/analysis-kab")}>
+  Litter Survey Analysis
+</button>
+
 </div>
 
 
@@ -47,7 +49,8 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
           icon={L.divIcon({
             html: `<div class="bg-blue-700 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
-            iconSize: [32, 32], // Size of the bubble
+            iconSize: [36, 36], // Size of the bubble
+            
             iconAnchor: [16, 16], // Center the icon
           })}
           >
@@ -65,8 +68,14 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
           </Marker>
         ))}
       </MapContainer>
+      <div className="mt-4 flex items-center gap-2">
+        <div className="w-2 h-2 rounded-full bg-[#5BAA76]"></div>
+        <span className="text-black text-sm font-medium">Cleanup Site</span>
+      </div>
     </div>
+  
     </>
+    
   );
 };
 

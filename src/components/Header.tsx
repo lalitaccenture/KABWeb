@@ -37,9 +37,9 @@ const Header = () => {
 
 
     return (
-        <div className="w-full flex border-b-2 border-[#D5D5D5]">
-            <div className="w-1/3 p-2">
-                <h2 className="text-[#3AAD73] text-2xl font-semibold cursor-pointer font-neris" onClick={()=>router.push('/')}>LitterSense</h2>
+        <div className="w-full flex ">
+            <div className="w-1/3 p-2 ml-4">
+                <p className="text-[#5BAA76] text-base font-bold cursor-pointer font-neris" onClick={()=>router.push('/')}>LitterSense</p>
                 <div className="flex">
         <Image
             src="/powered.png"
@@ -138,7 +138,7 @@ const Header = () => {
         />
     </div>
     
-    <div className="flex justify-center gap-6 cursor-pointer" onClick={()=>router.push('/user-profile')} style={{ width: '60%' }}>
+    <div className="flex justify-center gap-6 cursor-pointer" onClick={()=>router.push('/user-profile')} style={{ width: '60%', marginLeft: '70px' }}>
     <Image
             src="/notif.png"
             alt="Notification"

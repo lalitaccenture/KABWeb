@@ -13,6 +13,7 @@ import {
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
+
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -253,12 +254,21 @@ const Analysis = () => {
       legend: {
         position: 'top' as const,
       },
-      title: {
+   /*    title: {
         display: true,
         text: 'Line Chart',
+      }, */
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Number of Cleanups by Year', 
+        },
       },
     },
   };
+  
 
 
   const labelsLine = Object.keys(analysisData?.analytics?.trend_chart || {});
@@ -267,11 +277,12 @@ const Analysis = () => {
     labels:labelsLine,
     datasets: [
       {
-        label: 'Dataset',
+      /*   label: 'Dataset', */
         data: Object.values(analysisData?.analytics?.trend_chart || {}),
         borderColor: '#5BAA76',
         pointBackgroundColor: '#5BAA76', 
-        backgroundColor: '#5BAA76',
+     
+        
       },
     ],
   };
@@ -329,7 +340,7 @@ const Analysis = () => {
   
 
           <div>
-            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2">State</label>
+            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State:</label>
             {loadingAnalysisNewData ? (
               <div>Loading states...</div>
             ) : (
@@ -358,6 +369,7 @@ const Analysis = () => {
                 placeholder: (base) => ({
                   ...base,
                   color: "#C5C5C5",
+                  fontSize: "14px",
                 }),
                 option: (base, { isSelected, isFocused }) => ({
                   ...base,
@@ -386,7 +398,7 @@ const Analysis = () => {
 
 
           <div>
-            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2">County</label>
+            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2 font-neris">County</label>
             {loadingAnalysisNewData ? (
               <div>Loading counties...</div>
             ) : (
@@ -416,6 +428,7 @@ isDisabled={!filters?.state?.value}
                   placeholder: (base) => ({
                     ...base,
                     color: "#C5C5C5",
+                    fontSize: "14px",
                   }),
                   option: (base, { isSelected, isFocused }) => ({
                     ...base,
@@ -445,7 +458,7 @@ isDisabled={!filters?.state?.value}
 
 
           <div>
-            <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2">Tract</label>
+            <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2 font-neris">Tract</label>
             {loadingAnalysisNewData ? (
               <div>Loading tracts...</div>
             ) : (
@@ -472,6 +485,7 @@ isDisabled={!filters?.county?.value}
                   placeholder: (base) => ({
                     ...base,
                     color: "#C5C5C5",
+                    fontSize: "14px",
                   }),
                   option: (base, { isSelected, isFocused }) => ({
                     ...base,
@@ -502,7 +516,7 @@ isDisabled={!filters?.county?.value}
 
 
           <div>
-            <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2">Year</label>
+            <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2 font-neris">Year</label>
             {loadingAnalysisNewData ? (
               <div>Loading years...</div>
             ) : (
@@ -528,6 +542,7 @@ isDisabled={!filters?.county?.value}
                   placeholder: (base) => ({
                     ...base,
                     color: "#C5C5C5",
+                    fontSize: "14px",
                   }),
                   option: (base, { isSelected, isFocused }) => ({
                     ...base,
@@ -573,10 +588,13 @@ isDisabled={!filters?.county?.value}
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
+  
+      <div className="w-full h-96 p-4 rounded mb-[50px]">
 
-        <div className="w-full h-96 p-4  rounded">
+        <p className="block text-sm font-semibold text-black-600 mt-9 mb-2 font-neris">Litter Cleanup Activity Map :</p>
           {loadingMapData ? (
-            <div className="flex justify-center items-center h-full">
+       <div className="flex justify-center items-center h-full mt-4">
+
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
@@ -584,107 +602,149 @@ isDisabled={!filters?.county?.value}
           )}
         </div>
   
-
-
-
         <div className="w-full flex flex-wrap justify-center gap-4 mt-20">
-        <div className="flex justify-between w-full">
+        <div className="flex justify-between w-full gap-5">
   {/* Left Title */}
   <div className="w-1/2">
-    <p className="text-xl font-semibold">Trend of Cleanup Programs Over Years</p>
+    <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
   </div>
 
   {/* Right Title */}
   <div className="w-1/2">
-    <p className="text-xl font-semibold">Break Down of Litter Types</p>
-  </div>
+ <p className="text-base font-semibold font-neris ">Break Down of Litter Types</p>
+
+</div>
 </div>
 
 
-  <div className="flex-1 min-w-[300px] p-4 bg-white rounded flex flex-col items-center">
+<div className="flex-1 min-w-[300px] h-[400px] p-4 bg-white rounded flex flex-col items-center">
+  {loadingAnalysisData ? (
+    <div>Loading line chart...</div>
+  ) : (
+    <Line options={optionsLine} data={dataLine} height={400} /> 
+  )}
+</div>
 
-    {loadingAnalysisData ? (
-      <div>Loading line chart...</div>
-    ) : (
-      <Line options={optionsLine} data={dataLine} />
-    )}
-  </div>
 
-  <div className="flex-1 min-w-[300px] p-4 bg-white rounded flex flex-col items-center">
-   
-    {loadingAnalysisData ? (
-      <div>Loading doughnut chart...</div>
-    ) : (
-      <Doughnut data={data} />
-    )}
+<div className="flex-1 min-w-[300px] p-4 bg-white rounded flex flex-col items-center relative">
+  {loadingAnalysisData ? (
+    <div>Loading doughnut chart...</div>
+  ) : (
+    <Doughnut 
+      data={data} 
+      options={{
+        maintainAspectRatio: false,
+        responsive: true,
+        
+        plugins: {
+          legend: {
+            display: true,
+            position: "top",
+            labels: {
+              boxWidth: 6, 
+              boxHeight: 8,  
+              padding: 5,  
+              font: { size: 10 } 
+            }
+          }
+        }
+      }}
+    />
+  )}
+
+  {/* Text Outside the White Box (Aligned to Bottom-Right) */}
+  <div className="absolute bottom-[-20px] right-2 text-xs text-gray-500">
+  Source: Cleanswell App
   </div>
 </div>
 
-      </div>
+</div>
+
+</div>
+
+
+
+
 
 
       <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px]">
 
-      <div className="flex flex-col  p-4 rounded-lg  ">
-  {/* Year */}
-  <div className="flex items-center gap-2 mt-[-10]">
-  <span className="text-blue-500 text-lg ">📅</span> 
-  <span className="text-lg font-semibold text-gray-900">2022</span>
-</div>
+{/* year part */}
 
+<div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
+  {/* Year */}
+  <div className="flex items-center gap-2 mt-[-10px]">
+    <span className="text-blue-500 text-lg">📅</span> 
+    <span className="text-sm font-medium text-gray-500">2022</span>
+  </div>
 
   {/* Title */}
-  <p className="mt-2 text-gray-700 text-base font-semibold font-neris">
+  <p className="mt-4 text-black text-base font-semibold font-neris">
     Total Number of Cleanup Programs:
   </p>
 
   {/* Value */}
-  <div className="flex items-center gap-2 mt-1">
-    <span className="text-gray-400 text-lg">🧹</span> 
-    <span className="text-2xl font-semibold text-green-700">
+  <div className="flex items-center gap-1 mt-3">
+  <img src="/Brush.svg" alt="Broom Icon" className="w-9 h-9" />
+
+
+    <span className="text-xl font-bold text-green-700">
       {analysisData?.analytics?.total_cleanups}
     </span>
   </div>
-
-  {/* Bottom Line & Diamond */}
-  <div className="relative mt-3 w-full ">
-  <hr className="border-t border-green-500 w-[90%] mx-auto" />
-  <span className="absolute right-[5%] bottom-[-2px] transform rotate-45 bg-green-500 w-1.5 h-1.5"></span>
 </div>
 
+{/* top 3 states */}
+
+<div className="p-2 rounded mt-5 font-neris">
+  <p className="text-base font-semibold font-neris">
+    Top 3 States by Number of Cleanup Programs:
+  </p>
+  {loadingAnalysisData ? (
+    <div>Loading top states...</div>
+  ) : (
+    Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
+      <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
+        {/* Adjusted Indicator */}
+        <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
+        
+        {/* Text */}
+        <div>
+          <p className="text-base font-medium font-neris">{key}</p>
+          <p className="text-xs text-gray-500 font-neris">{value as React.ReactNode}</p> {/* Reduced font size */}
+        </div>
+      </div>
+    ))
+  )}
 </div>
 
 
 
 
-<div className="p-4 rounded ">
-          <p className="text-base font-semibold ">Top 3 States by Number of Cleanup Programs:</p>
-          {loadingAnalysisData ? (
-            <div>Loading top states...</div>
-          ) : (
-            Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
-              <div key={key} className="p-4  rounded-lg  mb-4">
-                <h4 className="text-lg font-medium">{key}</h4>
-                <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
-              </div>
-            ))
-          )}
+
+<div className="p-1 rounded mt-5 font-neris">
+  <p className="text-base font-semibold font-neris">
+    Top 3 Counties by Number of Cleanup Programs:
+  </p>
+  {loadingAnalysisData ? (
+    <div>Loading top counties...</div>
+  ) : (
+    Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
+      <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
+        {/* Green Indicator */}
+        <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
+
+        {/* Text Content */}
+        <div>
+          <h4 className="text-base font-medium font-neris">{key}</h4>
+          <p className="text-sm text-gray-500 font-neris">{value as React.ReactNode}</p>
         </div>
+      </div>
+    ))
+  )}
+</div>
 
 
-        <div className="p-4  rounded">
-          <p className="text-base font-bold">Top 3 Counties by Number of Cleanup Programs:</p>
-          {loadingAnalysisData ? (
-            <div>Loading top counties...</div>
-          ) : (
-            Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
-              <div key={key} className="p-4  rounded-lg  mb-4">
-                <h4 className="text-lg font-medium">{key}</h4>
-                <p className="text-sm text-gray-500">{value as React.ReactNode}</p>
-              </div>
-            ))
-          )}
-        </div>
       </div>
 
     </div>
