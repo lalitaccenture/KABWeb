@@ -14,7 +14,7 @@ const WeekSelector: React.FC<WeekSelectorProps> = ({ weeks }) => {
           key={week}
           onClick={() => setSelectedWeek(week)}
           className={`px-4 py-2 border rounded transition-colors 
-            ${selectedWeek === week ? "bg-[#3AAD73] text-white" : "border-green-500 text-gray-700"}`}
+            ${selectedWeek === week ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"}`}
         >
           Week of {week}
         </button>

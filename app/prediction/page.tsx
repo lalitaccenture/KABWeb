@@ -39,6 +39,7 @@ interface SwitchState {
   socioEconomic: boolean;
   weatherOutlook: boolean;
   typeOfArea: boolean;
+  amenities:boolean
 }
 
 // Define the props for the SwitchItem component
@@ -78,6 +79,7 @@ const Prediction = () => {
     socioEconomic: false,
     weatherOutlook: false,
     typeOfArea: false,
+    amenities:false
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
   const weeks = ["09/02", "09/09", "09/16", "09/23", "09/30"];
@@ -430,7 +432,7 @@ const Prediction = () => {
 
 
           <div>
-            <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Tract</label>
+            <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Central Tract</label>
             {loadingAnalysisNewData ? (
               <div>Loading tracts...</div>
             ) : (
@@ -501,9 +503,9 @@ const Prediction = () => {
           </div>
           <div className="space-y-4">
   <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />
-  <SwitchItem label="Socio Economic" checked={switches.socioEconomic} onChange={handleChange("socioEconomic")} />
-  <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
-  <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} />
+  <SwitchItem label="Amenities" checked={switches.socioEconomic} onChange={handleChange("amenities")} />
+  {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
+  <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
 </div>
         </div>
       </div>
@@ -513,7 +515,7 @@ const Prediction = () => {
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
       <div>
-            <h1>Select a track</h1>
+            <h1>Select a week</h1>
       <WeekSelector weeks={weeks} />
       </div>
 
