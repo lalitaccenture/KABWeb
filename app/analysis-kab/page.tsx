@@ -69,7 +69,7 @@ const AnalysisKAB = () => {
         state: null,
         parameter: null,
     });
-
+    const [showTooltip, setShowTooltip] = useState(false);
     const [showGeoJSON, setShowGeoJSON] = useState(true);
     const [correlationCoeff, setCorrelationCoeff] = useState<any>(null);
     const [dataForScatterChart,setDataForScatterChart]  = useState([])
@@ -324,7 +324,9 @@ console.log("markers",markers)
 
 
 
-            <div className="w-1/5 p-4">
+<div style={{ marginTop: "72px", marginLeft: "14px" }} className="p-4 bg-white shadow-lg rounded-lg space-y-6 h-auto max-h-[600px]">
+
+
                 
                 <div className="flex flex-col gap-4">
 
@@ -393,11 +395,13 @@ console.log("markers",markers)
                         </Button>
      
                     </div><br></br>
+                    <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Map Legend:</p>
                     <div className="flex flex-col items-center mr-[78px]">
 
   <span className="text-xs text-gray-700">Lower Litter Density</span>
   <div className="w-5 h-24 bg-gradient-to-b from-orange-200 to-red-400 rounded-full my-1"></div>
-  <span className="text-xs text-gray-700">Higher Litter Density</span>
+  <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
+
 </div>
 <div className="flex items-center gap-2 mt-2">
     <div className="w-2 h-2 bg-green-500"></div> 
@@ -420,7 +424,7 @@ console.log("markers",markers)
      
             
             <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
-<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[95px] flex gap-4">
+<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[85px] flex gap-4">
   <button className=   "w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white">
     Litter Cleanup Analysis
   </button>
@@ -431,8 +435,8 @@ console.log("markers",markers)
 
 </div>
                 {/* AnalysisMap section */}
-                <div className="w-full h-72 p-4 rounded" style={{ marginTop: '72px' }}>
-<p className="block text-sm font-semibold text-black-600 mb-2 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
+                <div className="w-full h-72 p-4 rounded" style={{ marginTop: '32px' ,marginLeft:'-35px'}}>
+<p className="block text-base font-semibold text-black-600 mb-1 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
 
                     {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
                     {loadingAnalysisData ? (
@@ -452,7 +456,10 @@ console.log("markers",markers)
             {/*     Correlation Between Estimated Litter Density */}
            <div className="mr-[420] mt-14">
 
-                        <label htmlFor="parameterName" className="text-base font-semibold font-neris p-[30px] ml-[-32px]">Correlation Between Estimated Litter<br/> Density &</label>
+           <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
+  Correlation Between Estimated Litter Density & Surveys
+</label>
+
                         {loadingExternalData ? (
               <div>Loading coefficients...</div>
             ) : (
@@ -511,11 +518,31 @@ console.log("markers",markers)
                 
                 <div className="w-[341px] h-[249px] p-4 bg-white rounded">
 
-                        
-                    <p className="text-sm font-medium font-neris p-[30px] ml-[58px] mt-[-32px]">
-  Correlation Coefficient
-</p>
+                <p className="text-sm font-medium font-neris text-center relative z-10">
+      Correlation Coefficient: 
+      <span className="relative inline-block ml-1">
+        <b className="text-[#5BAA76] text-lg">0.30</b>
 
+        {/* Info Button */}
+        <span 
+          className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-pointer"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          i
+
+          {/* Tooltip Box */}
+          {showTooltip && (
+            <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-3 py-1 shadow-lg flex items-center z-50">
+              This measures the relationship between variables.
+              
+              {/* Tooltip Arrow */}
+              <div className="absolute left-0 -ml-1 w-2 h-2 bg-[#5BAA76] rotate-45"></div>
+            </div>
+          )}
+        </span>
+      </span>
+    </p>
 <Scatter
   options={{
     scales: {
@@ -549,7 +576,7 @@ console.log("markers",markers)
 
 
                     <div className="relative w-1/2">
-                    <div className="p-4 bg-white rounded relative h-[251px]">
+                    <div className="p-4 bg-white rounded relative h-[251px] ">
 
     <label className="absolute -top-[85] left-0 text-base font-semibold font-neris">
       Breakdown of Litter Types
@@ -570,7 +597,7 @@ console.log("markers",markers)
 
             {/* New Sections in the Right Sidebar */}
             <div className="w-1/5 p-4 space-y-6">
-            <div className="p-4 bg-white shadow-lg rounded-lg space-y-6">
+            <div className="p-4 bg-white shadow-lg rounded-lg space-y-6"  style={{ marginTop: "51px"}}>
             <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>

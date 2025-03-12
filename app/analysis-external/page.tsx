@@ -34,6 +34,7 @@ interface MarkerData {
   longitude: number;
   litter_quantity: number;
   cleanup_date: string;
+  radius:number
 }
 
 
@@ -332,7 +333,7 @@ const Analysis = () => {
 
 
 
-<div className="w-1/5 p-4 bg-white shadow-md rounded-lg">
+<div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-10">
 
 
         <div className="flex flex-col gap-4">
@@ -589,9 +590,9 @@ isDisabled={!filters?.county?.value}
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
   
-      <div className="w-full h-96 p-4 rounded mb-[50px]">
+      <div className="w-full h-96 p-4 rounded mb-[40px]">
 
-        <p className="block text-sm font-semibold text-black-600 mt-9 mb-2 font-neris">Litter Cleanup Activity Map :</p>
+        <p className="block text-sm font-semibold text-black-600 mt-15 mb-6 font-neris" style={{ marginLeft: "-19px" }}>Litter Cleanup Activity Map:</p>
           {loadingMapData ? (
        <div className="flex justify-center items-center h-full mt-4">
 
@@ -667,7 +668,7 @@ isDisabled={!filters?.county?.value}
 
 
 
-      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px]">
+      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-10">
 
 {/* year part */}
 

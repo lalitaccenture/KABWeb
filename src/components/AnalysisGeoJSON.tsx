@@ -73,6 +73,7 @@ const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
   console.log("came here",stateId,stateData)
   if (stateData) {
     layer.bindPopup(`
+     /*  state clr changeas */
       State: ${stateData?.State}<br>
       Sum of Estimated: ${stateData["Estimated Litter Quantity"]}<br>
       Average of estimated Litter Density: ${stateData["Estimated Litter Density"]}<br>
@@ -84,7 +85,7 @@ const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
 const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJSON, markers }) => {
   return (
     <div className="w-full h-full">
-      <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false}>
+      <MapContainer center={center} zoom={zoom} style={{ height: "115%", width: "106%" , marginTop:'-21px' }} attributionControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         {/* Conditionally render the GeoJSON layer */}
@@ -98,12 +99,14 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
         {markers?.map((marker, index) => (
                   <Marker key={index} position={{ lat: marker.Latitude, lng: marker.Longitude }} 
                   icon={L.divIcon({
-                    html: `<div class="bg-blue-500 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
+                    html: `<div class="rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold" 
+    style="background-color: rgba(91, 170, 118, 0.1);"></div>`,
+                    className: "transparent-icon",
                     iconSize: [32, 32], // Size of the bubble
                     iconAnchor: [16, 16], // Center the icon
                   })}
                   >
-                    <Popup>
+                    <Popup className="">
                     Latitude: {marker?.Latitude} <br />
                     Longitude: {marker?.Longitude} <br />
                     Sum of All Item Type: {marker["Litter Quantity"]} <br />   
