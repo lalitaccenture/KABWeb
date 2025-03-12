@@ -9,10 +9,12 @@ import {
   Title,
   PointElement,
   LineElement,
+  ChartOptions,
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -43,6 +45,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   BarElement,
   PointElement,
   LineElement,
+  ChartDataLabels,
   Title);
 
 const Analysis = () => {
@@ -324,6 +327,38 @@ const Analysis = () => {
   }
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
+
+  const optionsDoughnut: ChartOptions<'doughnut'> = {
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom', // Ensure the legend is on the right
+        labels: {
+          padding: 20, // Increase spacing between the legend and the chart
+        },
+      },
+      datalabels: {
+        formatter: (value, context) => {
+          // Type assertion to treat dataset as numbers
+          const dataset = context.chart.data.datasets[0].data as number[];
+  
+          // Sum only numeric values
+          const total = dataset.reduce((acc, val) => acc + val, 0);
+  
+          return `${((value as number / total) * 100).toFixed(1)}%`;
+        },
+        color: '#000',
+        font: {
+          weight: 'bold',
+          size: 14,
+        },
+        align: 'end',
+        anchor: 'end',
+      },
+    },
+  };
+
 
 
 
@@ -633,23 +668,7 @@ isDisabled={!filters?.county?.value}
   ) : (
     <Doughnut 
       data={data} 
-      options={{
-        maintainAspectRatio: false,
-        responsive: true,
-        
-        plugins: {
-          legend: {
-            display: true,
-            position: "top",
-            labels: {
-              boxWidth: 6, 
-              boxHeight: 8,  
-              padding: 5,  
-              font: { size: 10 } 
-            }
-          }
-        }
-      }}
+      options={optionsDoughnut}
     />
   )}
 

@@ -81,6 +81,7 @@ const AnalysisKAB = () => {
   const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
   const [forScatter,setForscatter] = useState<any>([]);
   const [stateInfoFORGEOJSON,setStateInfoFORGEOJSON] = useState<any>([]);
+  const [coefficientVal,setCoefficientVal] = useState<number>();
     const isFirstRender = useRef(true);
     const isNavigating = useRef(false);
     const router = useRouter();
@@ -102,6 +103,7 @@ setAnalysisData(dataForAnalytics)
 setMarkers(dataForAnalytics?.gps_data)
 setForscatter(dataForAnalytics?.correlation_analysis)
 setCorrelationCoeff(data["Parameter Name"][0])
+setCoefficientVal(dataForAnalytics?.all_correlation_coefficients[data["Parameter Name"][0]?.value])
 const heatMapData = await getHeatMap();
 setStateInfoFORGEOJSON(heatMapData);
 // // @ts-ignore: Ignore TypeScript error
@@ -425,10 +427,10 @@ console.log("markers",markers)
             
             <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[85px] flex gap-4">
-  <button className=   "w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white">
+  <button className=   "w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white" onClick={()=>router.push("/analysis-external")}>
     Litter Cleanup Analysis
   </button>
-  <button className="w-[237px] h-[36px] text-white font-medium rounded-md bg-[#5BAA76]" 
+  <button className="w-[237px] h-[36px] text-white font-medium rounded-md bg-[#5BAA76]" onClick={() => router.push("/analysis-kab")}
   >
   Litter Survey Analysis
 </button>
@@ -466,7 +468,10 @@ console.log("markers",markers)
                         <Select
                             id="parameterName"
                             value={correlationCoeff}
-                            onChange={(selectedOption) => setCorrelationCoeff(selectedOption)}
+                            onChange={(selectedOption:any) => {
+                                setCorrelationCoeff(selectedOption)
+                                setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
+                            }}
                             options={dropDown}
                             placeholder="Select coefficient"
                             styles={{
