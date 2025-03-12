@@ -426,7 +426,11 @@ console.log("markers",markers)
      
             
             <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
-<div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-[85px] flex gap-4">
+            <div
+  className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4"
+  style={{ marginTop: '72px' }}
+>
+
   <button className=   "w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white" onClick={()=>router.push("/analysis-external")}>
     Litter Cleanup Analysis
   </button>
@@ -526,7 +530,7 @@ console.log("markers",markers)
                 <p className="text-sm font-medium font-neris text-center relative z-10">
       Correlation Coefficient: 
       <span className="relative inline-block ml-1">
-        <b className="text-[#5BAA76] text-lg">0.30</b>
+        <b className="text-[#5BAA76] text-lg">{coefficientVal}</b>
 
         {/* Info Button */}
         <span 

@@ -327,40 +327,41 @@ const Analysis = () => {
   }
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
-
   const optionsDoughnut: ChartOptions<'doughnut'> = {
     maintainAspectRatio: false,
     responsive: true,
+    cutout: '10%', // Keeps a thinner doughnut
+    layout: {
+      padding: 15, // Adds some spacing around
+    },
     plugins: {
       legend: {
-        position: 'bottom', // Ensure the legend is on the right
+        position: 'bottom',
+        align: 'center',
         labels: {
-          padding: 20, // Increase spacing between the legend and the chart
+          boxWidth: 14,
+          padding: 12,
         },
       },
       datalabels: {
         formatter: (value, context) => {
-          // Type assertion to treat dataset as numbers
           const dataset = context.chart.data.datasets[0].data as number[];
-  
-          // Sum only numeric values
           const total = dataset.reduce((acc, val) => acc + val, 0);
-  
-          return `${((value as number / total) * 100).toFixed(1)}%`;
+          return `${((value as number / total) * 100).toFixed(0)}%`;
         },
         color: '#000',
         font: {
           weight: 'bold',
           size: 14,
         },
-        align: 'end',
+        align: 'end', // Keeps labels outside
         anchor: 'end',
+        offset: 0, // Pulls labels closer to the pie chart
+        clip: false, // Prevents labels from being cut off
       },
     },
   };
-
-
-
+  
 
   return (
 <div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
@@ -627,7 +628,7 @@ isDisabled={!filters?.county?.value}
   
       <div className="w-full h-96 p-4 rounded mb-[40px]">
 
-        <p className="block text-sm font-semibold text-black-600 mt-15 mb-6 font-neris" style={{ marginLeft: "-19px" }}>Litter Cleanup Activity Map:</p>
+        <p className="block text-base font-semibold text-black-600 mb-2 font-neris" style={{ marginLeft: "-19px" }}>Litter Cleanup Activity Map:</p>
           {loadingMapData ? (
        <div className="flex justify-center items-center h-full mt-4">
 
