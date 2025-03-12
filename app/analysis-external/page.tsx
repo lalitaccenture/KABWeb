@@ -256,7 +256,9 @@ const Analysis = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top' as const,
+        
+        display: false, // Hides the legend completely
+      
       },
    /*    title: {
         display: true,
@@ -281,7 +283,7 @@ const Analysis = () => {
     labels:labelsLine,
     datasets: [
       {
-      /*   label: 'Dataset', */
+        label: '',
         data: Object.values(analysisData?.analytics?.trend_chart || {}),
         borderColor: '#5BAA76',
         pointBackgroundColor: '#5BAA76', 

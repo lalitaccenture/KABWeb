@@ -8,11 +8,13 @@ import {
     LinearScale,
     PointElement,
     LineElement,
-    Title
+    Title,
+    ChartOptions
 } from 'chart.js';
 import { Doughnut, Scatter } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { applyFilter, getAnalysisKABData, getAnalysisKABDropdown, getHeatMap } from "../utils/api";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 const AnalysisKABMap = dynamic(() => import("../../src/components/AnalysisKABMap"), { ssr: false });
 const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGeoJSON"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -51,6 +53,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
+    ChartDataLabels,
     Title);
 interface FilterOption {
     value: string | null;
@@ -156,7 +159,7 @@ console.log("markers",markers)
     const dataForScatter = {
         datasets: [
             {
-                label: 'A dataset',
+              label: '',
                 data: dataForScatterChart || [],
                 backgroundColor: 'rgba(255, 99, 132, 1)',
             },
@@ -317,7 +320,42 @@ console.log("markers",markers)
         // Add more states with their info...
       };
 
-   
+      const optionsDoughnut: ChartOptions<'doughnut'> = {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom', // Ensure the legend is on the right
+            labels: {
+              boxWidth: 10,
+              boxHeight: 8,
+              padding: 10,
+              font: {
+                size: 12,
+              },
+            },
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              // Type assertion to treat dataset as numbers
+              const dataset = context.chart.data.datasets[0].data as number[];
+      
+              // Sum only numeric values
+              const total = dataset.reduce((acc, val) => acc + val, 0);
+      
+              return `${((value as number / total) * 100).toFixed(1)}%`;
+            },
+            color: '#000',
+            font: {
+              weight: 'bold',
+              size: 14,
+            },
+            align: 'end',
+            anchor: 'end',
+          },
+        },
+      };
+
       
 
     return (
@@ -554,6 +592,15 @@ console.log("markers",markers)
     </p>
 <Scatter
   options={{
+    plugins: {
+      datalabels: {
+        display:false
+      },
+      legend: {
+          display: false, // Hides the legend completely
+      },
+      
+  },
     scales: {
       x: {
         title: {
@@ -561,7 +608,7 @@ console.log("markers",markers)
           text: "Estimated Litter Density (#/ sq. miles)",
         },
         ticks: {
-          stepSize: 0.1, // Adjust this based on your dataset
+          //stepSize: 0.1, // Adjust this based on your dataset
           autoSkip: false, // Prevent Chart.js from skipping ticks
         },
       },
@@ -571,7 +618,7 @@ console.log("markers",markers)
           text: "Bins_Density",
         },
         ticks: {
-          stepSize: 0.1, // Adjust this based on your dataset
+          //stepSize: 0.1, // Adjust this based on your dataset
           autoSkip: false, // Prevent Chart.js from skipping ticks
         },
       },
@@ -593,7 +640,7 @@ console.log("markers",markers)
     {loadingAnalysisData ? (
       <div>Loading doughnut chart...</div>
     ) : (
-        <Doughnut data={data} options={options} style={{ marginLeft: '53px' }} />
+        <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '53px' }} />
 
     )}
   </div >

@@ -50,10 +50,11 @@ const getStateStyle = (stateId: string, stateInfo: any) => {
   const value = stateData ? stateData.value : 0;
 
   const color =
-    value < 0.2 ? "#f7fbff" :
-    value < 0.4 ? "#deebf7" :
-    value < 0.6 ? "#c6dbef" :
-    value < 0.8 ? "#9ecae1" : "#3182bd";
+    value < 0.001 ? "#FFFFFF" :
+    value < 0.2 ? "#FFA500" :
+    value < 0.4 ? "#FF7F50" :
+    value < 0.6 ? "#FF6347" :
+    value < 0.8 ? "#E34234" : "#FF0000";
 
   return {
     fillColor: color,
@@ -73,7 +74,6 @@ const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
   console.log("came here",stateId,stateData)
   if (stateData) {
     layer.bindPopup(`
-     /*  state clr changeas */
       State: ${stateData?.State}<br>
       Sum of Estimated: ${stateData["Estimated Litter Quantity"]}<br>
       Average of estimated Litter Density: ${stateData["Estimated Litter Density"]}<br>
