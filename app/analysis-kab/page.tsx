@@ -574,7 +574,7 @@ console.log("markers",markers)
                 <span className="text-sm font-medium font-neris text-center relative" style={{marginLeft:'66px'}} >
       Correlation Coefficient: 
       <span className="relative inline-block ml-1">
-        <b className="text-[#5BAA76] text-lg">{coefficientVal}</b>
+        <b className="text-[#5BAA76] text-lg">{coefficientVal?.toFixed(2)}</b>
 
         {/* Info Button */}
         <button
@@ -685,7 +685,7 @@ console.log("markers",markers)
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="text-xl font-bold text-green-700">{analysisData?.total_estimated_litter?.toFixed(2)}   <span className="text-sm text-green-700"> (#)</span></span>
+                    <span className="text-xl font-bold text-green-700">{Math.trunc(analysisData?.total_estimated_litter)}   <span className="text-sm text-green-700"> (#)</span></span>
             )}
                     </div>
                     </div>
@@ -699,7 +699,7 @@ console.log("markers",markers)
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="text-xl font-bold text-green-700">{analysisData?.estimated_litter_density?.toFixed(2)}<span className="text-sm text-green-700"> (#/sq. miles)</span> </span>
+                    <span className="text-xl font-bold text-green-700">{Math.trunc(analysisData?.estimated_litter_density)}<span className="text-sm text-green-700"> (#/sq. miles)</span> </span>
             )}
             
                     </div>
