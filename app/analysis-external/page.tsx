@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
@@ -96,8 +96,10 @@ const Analysis = () => {
       setYearsNewData(dropD?.Years)
       setLoadingAnalysisNewData(false)
 
-      const value = await applyFilter();
-      setAnalysisData(value);
+      // const value = await applyFilter();
+      // setAnalysisData(value);
+      const test = await getAnalysis();
+      setAnalysisData(test);
       //setMarkers(value?.map_data)
       
       setLoadingAnalysisData(false);

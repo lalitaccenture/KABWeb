@@ -137,3 +137,14 @@ export const getHeatMap = async () => {
     throw error;  
   }
 };
+
+
+export const getAnalysis = async () => {
+  try {
+    const response = await axios.get(`https://lees1ddoaifunc02.azurewebsites.net/api/analytics?code=TTjA-k1_9asiNJCI676ZgF_ZuoHcNUGydAqM3X7oj21NAzFurtJrGg==`);
+    return response.data;
+  } catch (error) {
+    console.error("Error calling analysis data", error);
+    throw error;  
+  }
+};
