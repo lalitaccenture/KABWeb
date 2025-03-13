@@ -172,10 +172,11 @@ const Analysis = () => {
         // If state, county, and tract are all present
         setZoom(7);
       }
+      setCenter(res?.centroid)
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
       //setZoom()
-      //setCenter()
+      
     } catch (error) {
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
@@ -640,7 +641,7 @@ isDisabled={!filters?.county?.value}
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap markers={markers.slice(0, 100)} zoom={zoom} center={center} />
+            <AnalysisMap markers={markers} zoom={zoom} center={center} />
           )}
         </div>
   

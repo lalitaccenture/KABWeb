@@ -154,7 +154,7 @@ console.log("markers",markers)
           },
         },
       };
-      
+      console.log("correlationCoeff",correlationCoeff)
 
     const dataForScatter = {
         datasets: [
@@ -632,7 +632,7 @@ console.log("markers",markers)
       y: {
         title: {
           display: true,
-          text: "Bins_Density",
+          text: correlationCoeff?.label,
         },
         ticks: {
           //stepSize: 0.1, // Adjust this based on your dataset
