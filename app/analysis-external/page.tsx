@@ -659,7 +659,7 @@ isDisabled={!filters?.county?.value}
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap markers={markers} zoom={zoom} center={center} />
+            <AnalysisMap markers={markers?.slice(0,2000)} zoom={zoom} center={center} />
           )}
         </div>
   
