@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisExternalData } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
@@ -149,7 +149,7 @@ const Analysis = () => {
     const queryParams = {
       state: filters.state?.value || null,
       county: filters.county?.value || null,
-      tract: filters.tract?.value || null,
+      tractid: filters.tract?.value || null,
       year: filters.year?.value || null,
     };
 
@@ -161,23 +161,31 @@ const Analysis = () => {
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
     try {
-      const res = await applyFilter(queryParams);
+      // const res = await applyFilter(queryParams);
+      // setAnalysisData(res);
+      // setMarkers(res?.map_data)
+      const res = await getAnalysisDashboard(queryParams);
+      
       setAnalysisData(res);
-      setMarkers(res?.map_data)
-      if (queryParams.state && !queryParams.county && !queryParams.tract) {
+      setCenter(res?.centroid)
+      setLoadingAnalysisData(false);
+      
+      const resp = await getAnalysisDashboardMap(queryParams);
+      setMarkers(resp?.map_data)
+
+      if (queryParams.state && !queryParams.county && !queryParams.tractid) {
         // If state is present and county and tract are null
         setZoom(5);
-      } else if (queryParams.state && queryParams.county && !queryParams.tract) {
+      } else if (queryParams.state && queryParams.county && !queryParams.tractid) {
         // If state and county are present and tract is null
         setZoom(6);
-      } else if (queryParams.state && queryParams.county && queryParams.tract) {
+      } else if (queryParams.state && queryParams.county && queryParams.tractid) {
         // If state, county, and tract are all present
         setZoom(7);
       }
-      setCenter(res?.centroid)
-      setLoadingAnalysisData(false);
+      
       setLoadingMapData(false);
-      //setZoom()
+  
       
     } catch (error) {
       setLoadingAnalysisData(false);

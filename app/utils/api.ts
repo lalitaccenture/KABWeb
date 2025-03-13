@@ -148,3 +148,31 @@ export const getAnalysis = async () => {
     throw error;  
   }
 };
+
+export const getAnalysisDashboard = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/analyticsdashboard?code=zwOPEiT5HiB8wklpeuZAOmp_XKbdiEyC6fWrcRZp6SUDAzFuIQW8Fg==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getAnalysisDashboardMap = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/analyticsdashboardmap?code=ChdHGtJ0RYzahIr44gsWvNRwidq2XSv4tc_I3qyAuDNnAzFuODzP-A==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
