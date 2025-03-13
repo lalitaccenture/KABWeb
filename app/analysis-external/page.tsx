@@ -346,7 +346,7 @@ const Analysis = () => {
   const optionsDoughnut: ChartOptions<'doughnut'> = {
     maintainAspectRatio: false,
     responsive: true,
-    cutout: '10%', // Keeps a thinner doughnut
+    cutout: '40%', // Keeps a thinner doughnut
     layout: {
       padding: 15, // Adds some spacing around
     },
@@ -670,7 +670,7 @@ isDisabled={!filters?.county?.value}
 </div>
 
 
-<div className="flex-1 min-w-[300px] h-[400px] p-4 bg-white rounded flex flex-col items-center">
+<div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center">
   {loadingAnalysisData ? (
     <div>Loading line chart...</div>
   ) : (
@@ -679,7 +679,7 @@ isDisabled={!filters?.county?.value}
 </div>
 
 
-<div className="flex-1 min-w-[300px] p-4 bg-white rounded flex flex-col items-center relative">
+<div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center relative">
   {loadingAnalysisData ? (
     <div>Loading doughnut chart...</div>
   ) : (

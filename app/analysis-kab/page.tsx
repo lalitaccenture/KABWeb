@@ -320,17 +320,17 @@ console.log("markers",markers)
         California: "California, the most populous state, known for Hollywood, tech, and beautiful beaches.",
         // Add more states with their info...
       };
-
       const optionsDoughnut: ChartOptions<'doughnut'> = {
         maintainAspectRatio: false,
         responsive: true,
         plugins: {
           legend: {
-            position: 'bottom', // Ensure the legend is on the right
+            position: "bottom",
+            align: "center",
             labels: {
-              boxWidth: 10,
+              boxWidth: 12,
               boxHeight: 8,
-              padding: 10,
+              padding: 8, // Reduce padding for compact legend
               font: {
                 size: 12,
               },
@@ -338,25 +338,29 @@ console.log("markers",markers)
           },
           datalabels: {
             formatter: (value, context) => {
-              // Type assertion to treat dataset as numbers
               const dataset = context.chart.data.datasets[0].data as number[];
-      
-              // Sum only numeric values
               const total = dataset.reduce((acc, val) => acc + val, 0);
-      
               return `${((value as number / total) * 100).toFixed(1)}%`;
             },
-            color: '#000',
+            color: "#000",
             font: {
-              weight: 'normal',
-              size: 10,
+              weight: 300,
+              size: 8, // Decrease font size for percentage labels
             },
-            align: 'end',
-            anchor: 'end',
+            align: "end", // Keep labels near the outer edge
+            anchor: "end",
+            offset: 5, // Slightly move labels for better readability
+          },
+        },
+        cutout: "0%", // Keep the inner hole clear
+        layout: {
+          padding: {
+            top: 25,
+            bottom: -10, // Reduce bottom padding to fit legend properly
           },
         },
       };
-
+      
       
 
     return (
@@ -447,7 +451,7 @@ console.log("markers",markers)
   <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
 
 </div>
-<div className="flex items-center gap-2 mt-2">
+{/* <div className="flex items-center gap-2 mt-2">
     <div className="w-2 h-2 bg-green-500"></div> 
     <p className="text-xs text-gray-700">
     Survey Site Litter Data.
@@ -459,7 +463,7 @@ console.log("markers",markers)
     <p className="text-xs text-gray-700">
     Statewide Estimated Litter Data.
     </p>
-  </div>
+  </div> */}
 
                 </div>
             </div>
@@ -664,7 +668,7 @@ console.log("markers",markers)
     {loadingAnalysisData ? (
       <div>Loading doughnut chart...</div>
     ) : (
-        <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '53px' }} />
+        <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px' }} />
 
     )}
   </div >
