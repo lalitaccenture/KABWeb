@@ -15,6 +15,7 @@ import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { formatNumber } from "@/utils/common";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -153,6 +154,13 @@ const Analysis = () => {
       year: filters.year?.value || null,
     };
 
+    const queryParamsForMap = {
+      state: filters.state?.value || null,
+      zone: filters.county?.value || null,
+      tractid: filters.tract?.value || null,
+      year: filters.year?.value || null,
+    };
+
     // Filter out undefined values
     const cleanedQueryParams = Object.fromEntries(
       Object.entries(queryParams).filter(([_, v]) => v !== undefined)
@@ -170,7 +178,7 @@ const Analysis = () => {
       setCenter(res?.centroid)
       setLoadingAnalysisData(false);
       
-      const resp = await getAnalysisDashboardMap(queryParams);
+      const resp = await getAnalysisDashboardMap(queryParamsForMap);
       setMarkers(resp?.map_data)
 
       if (queryParams.state && !queryParams.county && !queryParams.tractid) {
@@ -728,7 +736,7 @@ isDisabled={!filters?.county?.value}
               <span>Loading Data...</span>
             ) : (
               <span className="text-xl font-bold text-green-700">
-              {analysisData?.analytics?.total_cleanups}
+              {formatNumber(analysisData?.analytics?.total_cleanups)}
             </span>
             )}
     
@@ -752,7 +760,7 @@ isDisabled={!filters?.county?.value}
         {/* Text */}
         <div>
           <p className="text-base font-medium font-neris">{key}</p>
-          <p className="text-xs text-gray-500 font-neris">{value as React.ReactNode}</p> {/* Reduced font size */}
+          <p className="text-xs text-gray-500 font-neris">{formatNumber(Number(value))}</p> {/* Reduced font size */}
         </div>
       </div>
     ))
@@ -778,7 +786,7 @@ isDisabled={!filters?.county?.value}
         {/* Text Content */}
         <div>
           <h4 className="text-base font-medium font-neris">{key}</h4>
-          <p className="text-sm text-gray-500 font-neris">{value as React.ReactNode}</p>
+          <p className="text-sm text-gray-500 font-neris">{formatNumber(Number(value))}</p>
         </div>
       </div>
     ))
