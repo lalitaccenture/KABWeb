@@ -99,7 +99,7 @@ const Analysis = () => {
 
       // const value = await applyFilter();
       // setAnalysisData(value);
-      const test = await getAnalysis();
+      const test = await getAnalysisDashboard();
       setAnalysisData(test);
       //setMarkers(value?.map_data)
       
