@@ -40,7 +40,7 @@ type Value = {
 interface RawMarkerData {
     Latitude: number;
     Longitude: number;
-    "Litter Quantity": number;  // Sum of All Item Type (renamed)
+    "Litter Quantity": number;  
     "Date and Time": string;
     City: string;  // First City
     "Site Area": string;  // First Site Area
@@ -198,7 +198,8 @@ console.log("markers",markers)
         labels: Object.keys(analysisData?.litter_pie_chart || {}),
         datasets: [
             {
-                label: '# of Votes',
+
+                label: '# of Litter',
                 data: Object.values(analysisData?.litter_pie_chart || {}),
                 backgroundColor: [
                     '#E97132',  // Cigarette (Orange)
@@ -347,8 +348,8 @@ console.log("markers",markers)
             },
             color: '#000',
             font: {
-              weight: 'bold',
-              size: 14,
+              weight: 'normal',
+              size: 10,
             },
             align: 'end',
             anchor: 'end',
@@ -441,7 +442,8 @@ console.log("markers",markers)
                     <div className="flex flex-col items-center mr-[78px]">
 
   <span className="text-xs text-gray-700">Lower Litter Density</span>
-  <div className="w-5 h-24 bg-gradient-to-b from-orange-200 to-red-400 rounded-full my-1"></div>
+  <div className="w-5 h-24 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
+
   <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
 
 </div>
@@ -503,7 +505,7 @@ console.log("markers",markers)
            <div className="mr-[420] mt-14">
 
            <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
-  Correlation Between Estimated Litter Density
+  Correlation Between Estimated Litter Density &
 </label>
 
                         {loadingExternalData ? (
@@ -571,7 +573,7 @@ console.log("markers",markers)
                 
                 <div className="w-[341px] h-[249px] p-4 bg-white rounded">
 
-                <span className="text-sm font-medium font-neris text-center relative" style={{marginLeft:'66px'}} >
+                <span className="text-sm font-medium font-neris text-center relative" style={{marginLeft:'83px'}} >
       Correlation Coefficient: 
       <span className="relative inline-block ml-1">
         <b className="text-[#5BAA76] text-lg">{coefficientVal?.toFixed(2)}</b>
@@ -589,16 +591,21 @@ console.log("markers",markers)
 {showTooltip && (
   <div 
     className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50"
-    style={{ minWidth: "300px", maxWidth: "350px", whiteSpace: "normal",marginLeft:'24px' }}
+    style={{ minWidth: "300px", maxWidth: "238px", whiteSpace: "normal", marginLeft: '24px' }}
   >
     <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
-    <ul className="mt-1 text-[13px] leading-[1.5]">
-      <li><span className="font-bold">• Positive (0 to +1):</span> Both variables increase together.</li>
-      <li><span className="font-bold">• Negative (0 to -1):</span> One variable increases as the other decreases.</li>
-      <li><span className="font-bold">• Strong (±0.7 to ±1.0)</span> | <span className="font-bold">Moderate (±0.3 to ±0.7)</span> | <span className="font-bold">Weak (0 to ±0.3)</span></li>
-      <li><span className="font-bold">• A value near 0 indicates little to no correlation.</span></li>
+    
+    {/* Adjusted padding to move bullets slightly left */}
+    <ul className="mt-3 text-[13px] leading-[1.5] list-disc pl-3" style={{marginLeft:  '-9px'}}>
+      <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together.</li>
+      <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases.</li>
+      <li>
+        <span className="font-bold">Strong (±0.7 to ±1.0)</span> | 
+        <span className="font-bold"> Moderate (±0.3 to ±0.7)</span> | 
+        <span className="font-bold"> Weak (0 to ±0.3)</span>
+      </li>
+      <li><span className="font-bold">A value near 0 indicates little to no correlation.</span></li>
     </ul>
-
 
   </div>
 )}

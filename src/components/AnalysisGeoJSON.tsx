@@ -75,9 +75,9 @@ const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
   if (stateData) {
     layer.bindPopup(`
       State: ${stateData?.State}<br>
-      Sum of Estimated: ${stateData["Estimated Litter Quantity"]}<br>
-      Average of estimated Litter Density: ${stateData["Estimated Litter Density"]}<br>
-      First Bottle Bill: ${stateData["Bottle Bill Status"]}
+     Estimated litter quantity: ${stateData["Estimated Litter Quantity"]}<br>
+     Estimated litter density: ${stateData["Estimated Litter Density"]}<br>
+      Bottle bill status: ${stateData["Bottle Bill Status"]}
     `);
   }
 };
@@ -102,19 +102,19 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
                     html: `<div class="rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold" 
     style="background-color: rgba(91, 170, 118, 0.3);"></div>`,
                     className: "transparent-icon",
-                    iconSize: [32, 32], // Size of the bubble
+                    iconSize: [32 , 32], // Size of the bubble
                     iconAnchor: [16, 16], // Center the icon
                   })}
                   >
                     <Popup className="">
                     Latitude: {marker?.Latitude} <br />
                     Longitude: {marker?.Longitude} <br />
-                    Sum of All Item Type: {marker["Litter Quantity"]} <br />   
-                    First City: {marker?.City} <br /> 
-                    First Site Area: {marker["Site Area"]} <br /> 
-                    First Site Type: {marker["Site Type"]} <br /> 
-                    First Roadway Type: {marker["Roadway Type"]} <br />      
-              First Survey Type: {marker["Survey Type"]} <br />
+                    Litter quantity : {marker["Litter Quantity"]} <br />   
+                    City: {marker?.City} <br /> 
+                    Site Area: {marker["Site Area"]} <br /> 
+                    Site Type: {marker["Site Type"]} <br /> 
+                    Roadway Type: {marker["Roadway Type"]} <br />      
+                    Survey Type: {marker["Survey Type"]} <br />
                       </Popup>
                   </Marker>
                 ))}

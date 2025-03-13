@@ -359,8 +359,8 @@ const Analysis = () => {
         },
         color: '#000',
         font: {
-          weight: 'bold',
-          size: 14,
+          weight: 'normal',
+          size: 10,
         },
         align: 'end', // Keeps labels outside
         anchor: 'end',
