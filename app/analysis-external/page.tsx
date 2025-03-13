@@ -714,10 +714,14 @@ isDisabled={!filters?.county?.value}
   <div className="flex items-center gap-1 mt-3">
   <img src="/Brush.svg" alt="Broom Icon" className="w-9 h-9" />
 
-
-    <span className="text-xl font-bold text-green-700">
-      {analysisData?.analytics?.total_cleanups}
-    </span>
+  {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+              <span className="text-xl font-bold text-green-700">
+              {analysisData?.analytics?.total_cleanups}
+            </span>
+            )}
+    
   </div>
 </div>
 
