@@ -337,27 +337,27 @@ console.log("markers",markers)
               },
             },
           },
-          datalabels: {
-            display: false, 
-          },
           // datalabels: {
-          //   formatter: (value, context) => {
-          //     // Type assertion to treat dataset as numbers
-          //     const dataset = context.chart.data.datasets[0].data as number[];
-      
-          //     // Sum only numeric values
-          //     const total = dataset.reduce((acc, val) => acc + val, 0);
-      
-          //     return `${((value as number / total) * 100).toFixed(1)}%`;
-          //   },
-          //   color: '#000',
-          //   font: {
-          //     weight: 'normal',
-          //     size: 10,
-          //   },
-          //   align: 'end',
-          //   anchor: 'end',
+          //   display: false, 
           // },
+          datalabels: {
+            formatter: (value, context) => {
+              // Type assertion to treat dataset as numbers
+              const dataset = context.chart.data.datasets[0].data as number[];
+      
+              // Sum only numeric values
+              const total = dataset.reduce((acc, val) => acc + val, 0);
+      
+              return `${((value as number / total) * 100).toFixed(1)}%`;
+            },
+            color: '#000',
+            font: {
+              weight: 'normal',
+              size: 10,
+            },
+            align: 'end',
+            anchor: 'end',
+          },
         },
       };
 
