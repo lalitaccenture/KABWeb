@@ -29,11 +29,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 //new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
     <>
-<div
-  className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4"
-  style={{ marginTop: '72px' }}
->
-
+<div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4"   style={{ marginTop: '72px' }}>
   <button className="w-[237px] h-[36px] text-white font-medium rounded-md bg-[#5BAA76]" onClick={()=>router.push("/analysis-external")}>
     Litter Cleanup Analysis
   </button>
@@ -56,7 +52,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
           icon={L.divIcon({
             html: `<div class="rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold" 
-    style="background-color: rgba(91, 170, 118, 0.1);"></div>`,
+    style="background-color: rgba(91, 170, 118, 0.3);"></div>`,
             className: "transparent-icon",
             iconSize: [size,size], // Size of the bubble
             
@@ -65,12 +61,11 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
           >
             <Popup>
      
-<div className="bg-[#5BAA76]">
+<div>
               {/* Display relevant information about the marker    */}
-              Latitude: {marker?.latitude} <br />
-              Longitude: {marker?.longitude} <br />
-      Sum of Litter Quantity: {marker?.litter_quantity} <br />
-      Latest Cleanup Date: {new Date(marker?.cleanup_date).toLocaleDateString('en-GB', {
+            
+              Litter Quantity Collected: {marker?.litter_quantity} <br />
+              Cleanup Date: {new Date(marker?.cleanup_date).toLocaleDateString('en-GB', {
     day: '2-digit',
     month: 'long',
     year: 'numeric'

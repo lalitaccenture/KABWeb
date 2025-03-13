@@ -260,6 +260,9 @@ const Analysis = () => {
         display: false, // Hides the legend completely
       
       },
+      datalabels: {
+        display: false, // 🔥 This will remove the numbers on the line
+      },
    /*    title: {
         display: true,
         text: 'Line Chart',
@@ -696,10 +699,10 @@ isDisabled={!filters?.county?.value}
 
 <div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
   {/* Year */}
-  <div className="flex items-center gap-2 mt-[-10px]">
+ {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2022</span>
-  </div>
+  </div> */}
 
   {/* Title */}
   <p className="mt-4 text-black text-base font-semibold font-neris">

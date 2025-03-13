@@ -395,6 +395,7 @@ console.log("markers",markers)
                                   "&:hover": {
                                     borderColor: "#5BAA76",
                                   },
+                                  
                                 }),
                                 placeholder: (base) => ({
                                   ...base,
@@ -409,6 +410,7 @@ console.log("markers",markers)
                                     ? "#A5D6A7" 
                                     : "white",
                                   color: isSelected ? "white" : "black",
+                          
                                  
                                   "&:active": {
                                     backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
@@ -501,7 +503,7 @@ console.log("markers",markers)
            <div className="mr-[420] mt-14">
 
            <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
-  Correlation Between Estimated Litter Density & Surveys
+  Correlation Between Estimated Litter Density
 </label>
 
                         {loadingExternalData ? (
@@ -557,7 +559,11 @@ console.log("markers",markers)
                             isDisabled={!correlationCoeff}
                         />
                         )}
+                        
                     </div>
+             
+
+             
                 <div className="w-full flex gap-4">
                   
 
@@ -565,31 +571,42 @@ console.log("markers",markers)
                 
                 <div className="w-[341px] h-[249px] p-4 bg-white rounded">
 
-                <p className="text-sm font-medium font-neris text-center relative z-10">
+                <span className="text-sm font-medium font-neris text-center relative" style={{marginLeft:'66px'}} >
       Correlation Coefficient: 
       <span className="relative inline-block ml-1">
         <b className="text-[#5BAA76] text-lg">{coefficientVal}</b>
 
         {/* Info Button */}
-        <span 
+        <button
           className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-pointer"
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
+          onClick={() => setShowTooltip(!showTooltip)} 
         >
           i
+          </button>
 
           {/* Tooltip Box */}
-          {showTooltip && (
-            <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-3 py-1 shadow-lg flex items-center z-50">
-              This measures the relationship between variables.
-              
-              {/* Tooltip Arrow */}
-              <div className="absolute left-0 -ml-1 w-2 h-2 bg-[#5BAA76] rotate-45"></div>
-            </div>
-          )}
+{/* Tooltip Box */}
+{showTooltip && (
+  <div 
+    className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50"
+    style={{ minWidth: "300px", maxWidth: "350px", whiteSpace: "normal",marginLeft:'24px' }}
+  >
+    <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
+    <ul className="mt-1 text-[13px] leading-[1.5]">
+      <li><span className="font-bold">• Positive (0 to +1):</span> Both variables increase together.</li>
+      <li><span className="font-bold">• Negative (0 to -1):</span> One variable increases as the other decreases.</li>
+      <li><span className="font-bold">• Strong (±0.7 to ±1.0)</span> | <span className="font-bold">Moderate (±0.3 to ±0.7)</span> | <span className="font-bold">Weak (0 to ±0.3)</span></li>
+      <li><span className="font-bold">• A value near 0 indicates little to no correlation.</span></li>
+    </ul>
+
+
+  </div>
+)}
+
+
         </span>
-      </span>
-    </p>
+      
+    </span>
 <Scatter
   options={{
     plugins: {
@@ -654,10 +671,10 @@ console.log("markers",markers)
             {/* New Sections in the Right Sidebar */}
             <div className="w-1/5 p-4 space-y-6">
             <div className="p-4 bg-white shadow-lg rounded-lg space-y-6"  style={{ marginTop: "51px"}}>
-            <div className="flex items-center gap-2 mt-[-10px]">
+           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>
-  </div>
+  </div> */}
                 {/* Total Estimated Litter: */}
                 <div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
                 <div className="p-2 rounded flex flex-col gap-3 text-left ml-[-10]">
@@ -668,7 +685,7 @@ console.log("markers",markers)
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="text-xl font-bold text-green-700">{analysisData?.total_estimated_litter?.toFixed(2)}</span>
+                    <span className="text-xl font-bold text-green-700">{analysisData?.total_estimated_litter?.toFixed(2)}   <span className="text-sm text-green-700"> (#)</span></span>
             )}
                     </div>
                     </div>
@@ -682,8 +699,9 @@ console.log("markers",markers)
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="text-xl font-bold text-green-700">{analysisData?.estimated_litter_density?.toFixed(2)}</span>
+                    <span className="text-xl font-bold text-green-700">{analysisData?.estimated_litter_density?.toFixed(2)}<span className="text-sm text-green-700"> (#/sq. miles)</span> </span>
             )}
+            
                     </div>
 
 

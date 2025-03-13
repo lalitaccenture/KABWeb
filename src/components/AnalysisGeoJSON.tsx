@@ -100,7 +100,7 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
                   <Marker key={index} position={{ lat: marker.Latitude, lng: marker.Longitude }} 
                   icon={L.divIcon({
                     html: `<div class="rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold" 
-    style="background-color: rgba(91, 170, 118, 0.1);"></div>`,
+    style="background-color: rgba(91, 170, 118, 0.3);"></div>`,
                     className: "transparent-icon",
                     iconSize: [32, 32], // Size of the bubble
                     iconAnchor: [16, 16], // Center the icon
