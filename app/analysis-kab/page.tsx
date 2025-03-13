@@ -724,8 +724,8 @@ console.log("markers",markers)
          {/* State details */}
          <div >
            <p className="text-base font-medium font-neris ">{state.State}</p>
-           <p className="text-sm text-gray-500 font-neris ">Estimated: {state.Estimated.toFixed(2)}</p>
-           <p className="text-xs text-gray-500 font-neris ">Litter Density: {state["Litter density"].toFixed(2)}</p>
+           <p className="text-sm text-gray-500 font-neris ">Estimated: {Math.trunc(state?.Estimated)}</p>
+           <p className="text-xs text-gray-500 font-neris ">Litter Density: {Math.trunc(state["Litter density"])}</p>
          </div>
        </div>
       ))}
