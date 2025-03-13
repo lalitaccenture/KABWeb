@@ -15,6 +15,7 @@ import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { formatNumber } from "@/utils/common";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -651,7 +652,7 @@ isDisabled={!filters?.county?.value}
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap markers={markers} zoom={zoom} center={center} />
+            <AnalysisMap markers={markers?.slice(0,2000)} zoom={zoom} center={center} />
           )}
         </div>
   
@@ -728,7 +729,7 @@ isDisabled={!filters?.county?.value}
               <span>Loading Data...</span>
             ) : (
               <span className="text-xl font-bold text-green-700">
-              {analysisData?.analytics?.total_cleanups}
+              {formatNumber(analysisData?.analytics?.total_cleanups)}
             </span>
             )}
     
@@ -752,7 +753,7 @@ isDisabled={!filters?.county?.value}
         {/* Text */}
         <div>
           <p className="text-base font-medium font-neris">{key}</p>
-          <p className="text-xs text-gray-500 font-neris">{value as React.ReactNode}</p> {/* Reduced font size */}
+          <p className="text-xs text-gray-500 font-neris">{formatNumber(Number(value))}</p> {/* Reduced font size */}
         </div>
       </div>
     ))
@@ -778,7 +779,7 @@ isDisabled={!filters?.county?.value}
         {/* Text Content */}
         <div>
           <h4 className="text-base font-medium font-neris">{key}</h4>
-          <p className="text-sm text-gray-500 font-neris">{value as React.ReactNode}</p>
+          <p className="text-sm text-gray-500 font-neris">{formatNumber(Number(value))}</p>
         </div>
       </div>
     ))

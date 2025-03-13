@@ -20,6 +20,7 @@ const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGe
 const Select = dynamic(() => import('react-select'), { ssr: false });
 import value from "../../public/KABAnalytics 1.json"
 import { useRouter } from "next/navigation";
+import { convertToIntegers, formatNumber } from "@/utils/common";
 
 // Define the types for the correlation analysis and selected coefficient
 type CorrelationAnalysis = Record<string, { scatter_plot: { [key: string]: number }[] }>;
@@ -337,23 +338,26 @@ console.log("markers",markers)
             },
           },
           datalabels: {
-            formatter: (value, context) => {
-              // Type assertion to treat dataset as numbers
-              const dataset = context.chart.data.datasets[0].data as number[];
-      
-              // Sum only numeric values
-              const total = dataset.reduce((acc, val) => acc + val, 0);
-      
-              return `${((value as number / total) * 100).toFixed(1)}%`;
-            },
-            color: '#000',
-            font: {
-              weight: 'normal',
-              size: 10,
-            },
-            align: 'end',
-            anchor: 'end',
+            display: false, 
           },
+          // datalabels: {
+          //   formatter: (value, context) => {
+          //     // Type assertion to treat dataset as numbers
+          //     const dataset = context.chart.data.datasets[0].data as number[];
+      
+          //     // Sum only numeric values
+          //     const total = dataset.reduce((acc, val) => acc + val, 0);
+      
+          //     return `${((value as number / total) * 100).toFixed(1)}%`;
+          //   },
+          //   color: '#000',
+          //   font: {
+          //     weight: 'normal',
+          //     size: 10,
+          //   },
+          //   align: 'end',
+          //   anchor: 'end',
+          // },
         },
       };
 
@@ -692,7 +696,7 @@ console.log("markers",markers)
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="text-xl font-bold text-green-700">{Math.trunc(analysisData?.total_estimated_litter)}   <span className="text-sm text-green-700"> (#)</span></span>
+                    <span className="text-xl font-bold text-green-700">{formatNumber(Math.trunc(analysisData?.total_estimated_litter))}   <span className="text-sm text-green-700"> (#)</span></span>
             )}
                     </div>
                     </div>
@@ -706,7 +710,7 @@ console.log("markers",markers)
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="text-xl font-bold text-green-700">{Math.trunc(analysisData?.estimated_litter_density)}<span className="text-sm text-green-700"> (#/sq. miles)</span> </span>
+                    <span className="text-xl font-bold text-green-700">{formatNumber(Math.trunc(analysisData?.estimated_litter_density))}<span className="text-sm text-green-700"> (#/sq. miles)</span> </span>
             )}
             
                     </div>
@@ -731,8 +735,8 @@ console.log("markers",markers)
          {/* State details */}
          <div >
            <p className="text-base font-medium font-neris ">{state.State}</p>
-           <p className="text-sm text-gray-500 font-neris ">Estimated: {Math.trunc(state?.Estimated)}</p>
-           <p className="text-xs text-gray-500 font-neris ">Litter Density: {Math.trunc(state["Litter density"])}</p>
+           <p className="text-sm text-gray-500 font-neris ">Estimated: {formatNumber(Math.trunc(state?.Estimated))}</p>
+           <p className="text-xs text-gray-500 font-neris ">Litter Density: {formatNumber(Math.trunc(state["Litter density"]))}</p>
          </div>
        </div>
       ))}
