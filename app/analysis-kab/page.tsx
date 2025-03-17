@@ -237,6 +237,7 @@ console.log("markers",markers)
     ];
 
     const handleClear = () => {
+      setMarkers([]);
         setFilters({
             state: null,
             parameter: null,

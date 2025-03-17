@@ -202,17 +202,21 @@ const Analysis = () => {
   };
 
   const handleClear = () => {
-    setFilters({
-      state: null,
-      county: null,
-      tract: null,
-      year: null,
-    });
-    fetchData();
-    setCenter([37.0902, -95.7129])
-    setZoom(4)
-    
+    setCenter([37.0902, -95.7129]);
+  setZoom(4);
+setMarkers([]);
+  setFilters(prevFilters => ({
+    ...prevFilters,
+    state: null,
+    county: null,
+    tract: null,
+    year: null,
+  }));
+
+  fetchData();
+
   };
+
 
   const options = {
     responsive: true,
@@ -332,15 +336,29 @@ const Analysis = () => {
           county: selectedOption?.value || null,
         };
       }
+      else if (val=="tract"){
+        //setFilters({...filters,tract:null})
+        queryParams = {
+          state: filters?.state?.value || null,
+          county: filters?.county?.value || null,
+          tract:selectedOption?.value || null,
+        };
+      }
       
       const dropD = await analysisNewDropdown(queryParams);
       if(val=="state"){
         
         setCountiesNewData(dropD?.Dropdown)
+        setYearsNewData(dropD?.Years)
         setLoadingAnalysisNewData(false)
       }
       else if (val=="county"){
         setTractsNewData(dropD?.Dropdown)
+        setYearsNewData(dropD?.Years)
+        setLoadingAnalysisNewData(false)
+      }
+      else if(val=="tract"){
+        setYearsNewData(dropD?.Years)
         setLoadingAnalysisNewData(false)
       }
     }
@@ -526,7 +544,9 @@ isDisabled={!filters?.state?.value}
               <Select
                 id="tract"
                 value={filters.tract}
-                onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
+                onChange={(selectedOption) => {handleFilterChange('tract', selectedOption)
+                  handleDropdownFurther('tract',selectedOption)
+                }}
                 options={tractsNewData}
 isDisabled={!filters?.county?.value}
                 placeholder="Select a Tract ID"
@@ -659,7 +679,7 @@ isDisabled={!filters?.county?.value}
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap markers={markers?.slice(0,2000)} zoom={zoom} center={center} />
+            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers?.slice(0,2000)} zoom={zoom} center={center} />
           )}
         </div>
   
