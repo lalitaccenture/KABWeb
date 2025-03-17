@@ -65,7 +65,7 @@ interface Filters {
   parameter: FilterOption | null;
 }
 
-const AnalysisKAB = () => {
+const ScenarioModeling = () => {
   const [markers, setMarkers] = useState<RawMarkerData[]>([]);
   const [zoom, setZoom] = useState<number>(4);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
@@ -492,7 +492,7 @@ const AnalysisKAB = () => {
 
         </div>
         {/* AnalysisMap section */}
-        <div className="w-full h-72 p-4 rounded" style={{ marginTop: '32px', marginLeft: '-35px' }}>
+        <div className="w-full p-4 rounded" style={{ marginTop: '32px', marginLeft: '-35px' }}>
           <p className="block text-base font-semibold text-black-600 mb-1 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
 
           {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
@@ -510,77 +510,75 @@ const AnalysisKAB = () => {
             />
           )}
         </div>
-        {/*     Correlation Between Estimated Litter Density */}
-        <div className="mr-[420] mt-14">
-
-          <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
-            Correlation Between Estimated Litter Density &
-          </label>
-
-          {loadingExternalData ? (
-            <div>Loading coefficients...</div>
-          ) : (
-            <Select
-              id="parameterName"
-              value={correlationCoeff}
-              onChange={(selectedOption: any) => {
-                setCorrelationCoeff(selectedOption)
-                setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
-              }}
-              options={dropDown}
-              placeholder="Select coefficient"
-              styles={{
-                control: (base, state) => ({
-                  ...base,
-                  fontFamily: "'Neris', sans-serif",
-                  borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                  boxShadow:
-                    state.isFocused || state.hasValue
-                      ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                      : "none",
-                  transition: "all 0.2s ease-in-out",
-                  "&:hover": {
-                    borderColor: "#5BAA76",
-                  },
-                }),
-                placeholder: (base) => ({
-                  ...base,
-                  color: "#C5C5C5",
-                  fontSize: "14px",
-                }),
-                option: (base, { isSelected, isFocused }) => ({
-                  ...base,
-                  backgroundColor: isSelected
-                    ? "#5BAA76"
-                    : isFocused
-                      ? "#A5D6A7"
-                      : "white",
-                  color: isSelected ? "white" : "black",
-                  "&:active": {
-                    backgroundColor: "#5BAA76",
-                  },
-                }),
-                singleValue: (base) => ({
-                  ...base,
-                  color: "black",
-                  fontWeight: "semibold",
-                }),
-              }}
-              className="w-[250px]"
-              isDisabled={!correlationCoeff}
-            />
-          )}
-
+        
+        <div className="flex w-full">
+            <div className="w-1/2">
+            <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
+                        Correlation Between Estimated Litter Density &
+                      </label>
+            
+                      {loadingExternalData ? (
+                        <div>Loading coefficients...</div>
+                      ) : (
+                        <Select
+                          id="parameterName"
+                          value={correlationCoeff}
+                          onChange={(selectedOption: any) => {
+                            setCorrelationCoeff(selectedOption)
+                            setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
+                          }}
+                          options={dropDown}
+                          placeholder="Select coefficient"
+                          styles={{
+                            control: (base, state) => ({
+                              ...base,
+                              fontFamily: "'Neris', sans-serif",
+                              borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                              boxShadow:
+                                state.isFocused || state.hasValue
+                                  ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                                  : "none",
+                              transition: "all 0.2s ease-in-out",
+                              "&:hover": {
+                                borderColor: "#5BAA76",
+                              },
+                            }),
+                            placeholder: (base) => ({
+                              ...base,
+                              color: "#C5C5C5",
+                              fontSize: "14px",
+                            }),
+                            option: (base, { isSelected, isFocused }) => ({
+                              ...base,
+                              backgroundColor: isSelected
+                                ? "#5BAA76"
+                                : isFocused
+                                  ? "#A5D6A7"
+                                  : "white",
+                              color: isSelected ? "white" : "black",
+                              "&:active": {
+                                backgroundColor: "#5BAA76",
+                              },
+                            }),
+                            singleValue: (base) => ({
+                              ...base,
+                              color: "black",
+                              fontWeight: "semibold",
+                            }),
+                          }}
+                          className="w-[250px]"
+                          isDisabled={!correlationCoeff}
+                        />
+                      )}
+            </div>
+            <div className="w-1/2">
+            <label className="text-base font-semibold font-neris">
+                Breakdown of Litter Types
+              </label></div>
         </div>
 
-
-
-        <div className="w-full flex gap-4">
-
-
-          {/*  Correlation Between Estimated Litter */}
-
-          <div className="w-[341px] h-[249px] p-4 bg-white rounded">
+        <div className="flex w-full gap-4">
+        <div className="w-1/2 p-4 bg-white rounded">
 
             <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
               Correlation Coefficient:
@@ -661,27 +659,18 @@ const AnalysisKAB = () => {
             />
 
           </div>
-
-
-
-          <div className="relative w-1/2">
-            <div className="p-4 bg-white rounded relative h-[251px] ">
-
-              <label className="absolute -top-[85] left-0 text-base font-semibold font-neris">
-                Breakdown of Litter Types
-              </label>
-              {loadingAnalysisData ? (
+        <div className="w-1/2 p-4 bg-white rounded">
+        {loadingAnalysisData ? (
                 <div>Loading doughnut chart...</div>
               ) : (
                 <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px' }} />
 
               )}
-            </div >
-            <p className="absolute bottom-[-20px] right-2 text-xs text-gray-500" >Source: KAB Litter Survey 2020</p>
-          </div>
-
         </div>
-
+        </div>
+<div>
+<p className="text-xs text-gray-500" >Source: KAB Litter Survey 2020</p>
+</div>
       </div>
 
       {/* New Sections in the Right Sidebar */}
@@ -758,4 +747,4 @@ const AnalysisKAB = () => {
   );
 }
 
-export default AnalysisKAB;
+export default ScenarioModeling;
