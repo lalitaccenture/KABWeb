@@ -89,10 +89,19 @@ const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
   }
 };
 
-const Testing: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJSON, markers }) => {
+const defaultIcon = L.icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [15, 25], // Small marker
+  iconAnchor: [7, 25], // Bottom-center anchor
+  popupAnchor: [0, -25], // Adjusts popup position
+  shadowSize: [25, 25], // Ensures shadow aligns correctly
+});
+
+const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJSON, markers }) => {
   return (
     <div className="w-full h-full">
-      <MapContainer center={center} zoom={zoom} style={{ height: "420px", width: "715px" , marginTop:'-21px' }} attributionControl={false}>
+      <MapContainer center={center} zoom={zoom} style={{height: "420px", width: "715px" , marginTop:'-21px' }} attributionControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         {/* Conditionally render the GeoJSON layer */}
@@ -105,14 +114,7 @@ const Testing: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJ
         )}
         {markers?.map((marker, index) => (
   <Marker key={index} position={[marker.Latitude, marker.Longitude]}
-  icon={L.icon({
-    iconUrl: markerIconUrl, 
-    shadowUrl: markerShadowUrl, 
-    iconSize: [15, 25], // Small marker size
-    iconAnchor: [7, 25], // Bottom-center anchor (fixes floating issue)
-    popupAnchor: [0, -25], // Adjusts popup position above the marker
-    shadowSize: [25, 25], // Ensures shadow aligns correctly
-  })}>
+  icon={defaultIcon}>
     <Popup>
       Latitude: {marker?.Latitude} <br />
       Longitude: {marker?.Longitude} <br />
@@ -131,4 +133,4 @@ const Testing: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJ
   );
 };
 
-export default Testing;
+export default MapAnalysisGEOJSON;

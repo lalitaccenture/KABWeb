@@ -65,11 +65,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
               {/* Display relevant information about the marker    */}
             
               Litter Quantity Collected: {marker?.litter_quantity} <br />
-              Cleanup Date: {new Date(marker?.cleanup_date).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-})}
+              Cleanup Date: {marker?.cleanup_date}
 </div>
               </Popup>
           </Marker>

@@ -89,6 +89,15 @@ const onEachState = (state: any, layer: L.Layer, stateInfo: any) => {
   }
 };
 
+const defaultIcon = L.icon({
+  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconSize: [15, 25], // Small marker
+  iconAnchor: [7, 25], // Bottom-center anchor
+  popupAnchor: [0, -25], // Adjusts popup position
+  shadowSize: [25, 25], // Ensures shadow aligns correctly
+});
+
 const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJSON, markers }) => {
   return (
     <div className="w-full h-full">
@@ -105,14 +114,7 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
         )}
         {markers?.map((marker, index) => (
   <Marker key={index} position={[marker.Latitude, marker.Longitude]}
-  icon={L.icon({
-    iconUrl: markerIconUrl, 
-    shadowUrl: markerShadowUrl, 
-    iconSize: [15, 25], // Small marker size
-    iconAnchor: [7, 25], // Bottom-center anchor (fixes floating issue)
-    popupAnchor: [0, -25], // Adjusts popup position above the marker
-    shadowSize: [25, 25], // Ensures shadow aligns correctly
-  })}>
+  icon={defaultIcon}>
     <Popup>
       Latitude: {marker?.Latitude} <br />
       Longitude: {marker?.Longitude} <br />
