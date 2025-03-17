@@ -3,12 +3,19 @@
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
+
 import { FeatureCollection } from "geojson";
 
 // Import and typecast GeoJSON data
 import usStatesGeoJSONRaw from "../../public/us-states.json";
 // import usStatesGeoJSONRaw from "../../public/us-states-new.json";
 const usStatesGeoJSON: FeatureCollection = usStatesGeoJSONRaw as FeatureCollection;
+
+// Convert StaticImageData to string
+const markerIconUrl = (markerIconPng as unknown) as string;
+const markerShadowUrl = (markerShadowPng as unknown) as string;
 
 interface StateInfo {
   [key: string]: {
@@ -97,27 +104,28 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
           />
         )}
         {markers?.map((marker, index) => (
-                  <Marker key={index} position={{ lat: marker.Latitude, lng: marker.Longitude }} 
-                  icon={L.divIcon({
-                    html: `<div class="rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold" 
-    style="background-color: rgba(91, 170, 118, 0.3);"></div>`,
-                    className: "transparent-icon",
-                    iconSize: [32 , 32], // Size of the bubble
-                    iconAnchor: [16, 16], // Center the icon
-                  })}
-                  >
-                    <Popup className="">
-                    Latitude: {marker?.Latitude} <br />
-                    Longitude: {marker?.Longitude} <br />
-                    Litter quantity : {marker["Litter Quantity"]} <br />   
-                    City: {marker?.City} <br /> 
-                    Site Area: {marker["Site Area"]} <br /> 
-                    Site Type: {marker["Site Type"]} <br /> 
-                    Roadway Type: {marker["Roadway Type"]} <br />      
-                    Survey Type: {marker["Survey Type"]} <br />
-                      </Popup>
-                  </Marker>
-                ))}
+  <Marker key={index} position={[marker.Latitude, marker.Longitude]}
+  icon={L.icon({
+    iconUrl: markerIconUrl, 
+    shadowUrl: markerShadowUrl, 
+    iconSize: [15, 25], // Small marker size
+    iconAnchor: [7, 25], // Bottom-center anchor (fixes floating issue)
+    popupAnchor: [0, -25], // Adjusts popup position above the marker
+    shadowSize: [25, 25], // Ensures shadow aligns correctly
+  })}>
+    <Popup>
+      Latitude: {marker?.Latitude} <br />
+      Longitude: {marker?.Longitude} <br />
+      Litter quantity: {marker["Litter Quantity"]} <br />   
+      City: {marker?.City} <br /> 
+      Site Area: {marker["Site Area"]} <br /> 
+      Site Type: {marker["Site Type"]} <br /> 
+      Roadway Type: {marker["Roadway Type"]} <br />      
+      Survey Type: {marker["Survey Type"]} <br />
+    </Popup>
+  </Marker>
+))}
+
       </MapContainer>
     </div>
   );

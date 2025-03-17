@@ -37,7 +37,7 @@ interface MarkerData {
   longitude: number;
   litter_quantity: number;
   cleanup_date: string;
-  radius:number
+  radius: number
 }
 
 
@@ -70,7 +70,7 @@ const Analysis = () => {
   const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
   const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null);
-  const [statesNewData,setStatesNewData] = useState<any>([]);
+  const [statesNewData, setStatesNewData] = useState<any>([]);
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
   const [countiesNewData, setCountiesNewData] = useState<any[]>([]);
   const [tractsNewData, setTractsNewData] = useState<any[]>([]);
@@ -102,7 +102,7 @@ const Analysis = () => {
       const test = await getAnalysisDashboard();
       setAnalysisData(test);
       //setMarkers(value?.map_data)
-      
+
       setLoadingAnalysisData(false);
     } catch (error) {
       setError("Failed to fetch data, please try again later.");
@@ -115,14 +115,14 @@ const Analysis = () => {
     }
   };
   useEffect(() => {
-    
+
 
     fetchData();
   }, []);
 
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
-    if(filter=='state'){
+    if (filter == 'state') {
       setFilters(prevFilters => ({
         ...prevFilters,
         [filter]: selectedOption,
@@ -130,7 +130,7 @@ const Analysis = () => {
         tract: null
       }));
     }
-    else if(filter=='county'){
+    else if (filter == 'county') {
       setFilters(prevFilters => ({
         ...prevFilters,
         [filter]: selectedOption,
@@ -138,11 +138,11 @@ const Analysis = () => {
       }));
     }
 
-    else 
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      [filter]: selectedOption,
-    }));
+    else
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: selectedOption,
+      }));
   };
 
   const handleApply = async () => {
@@ -173,11 +173,11 @@ const Analysis = () => {
       // setAnalysisData(res);
       // setMarkers(res?.map_data)
       const res = await getAnalysisDashboard(queryParams);
-      
+
       setAnalysisData(res);
       setCenter(res?.centroid)
       setLoadingAnalysisData(false);
-      
+
       const resp = await getAnalysisDashboardMap(queryParamsForMap);
       setMarkers(resp?.map_data)
 
@@ -191,10 +191,10 @@ const Analysis = () => {
         // If state, county, and tract are all present
         setZoom(7);
       }
-      
+
       setLoadingMapData(false);
-  
-      
+
+
     } catch (error) {
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
@@ -203,17 +203,17 @@ const Analysis = () => {
 
   const handleClear = () => {
     setCenter([37.0902, -95.7129]);
-  setZoom(4);
-setMarkers([]);
-  setFilters(prevFilters => ({
-    ...prevFilters,
-    state: null,
-    county: null,
-    tract: null,
-    year: null,
-  }));
+    setZoom(4);
+    setMarkers([]);
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      state: null,
+      county: null,
+      tract: null,
+      year: null,
+    }));
 
-  fetchData();
+    fetchData();
 
   };
 
@@ -279,90 +279,90 @@ setMarkers([]);
     responsive: true,
     plugins: {
       legend: {
-        
+
         display: false, // Hides the legend completely
-      
+
       },
       datalabels: {
         display: false, // 🔥 This will remove the numbers on the line
       },
-   /*    title: {
-        display: true,
-        text: 'Line Chart',
-      }, */
+      /*    title: {
+           display: true,
+           text: 'Line Chart',
+         }, */
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Number of Cleanups by Year', 
+          text: 'Number of Cleanups by Year',
         },
       },
     },
   };
-  
+
 
 
   const labelsLine = Object.keys(analysisData?.analytics?.trend_chart || {});
 
   const dataLine = {
-    labels:labelsLine,
+    labels: labelsLine,
     datasets: [
       {
         label: '',
         data: Object.values(analysisData?.analytics?.trend_chart || {}),
         borderColor: '#5BAA76',
-        pointBackgroundColor: '#5BAA76', 
-     
-        
+        pointBackgroundColor: '#5BAA76',
+
+
       },
     ],
   };
 
-  const handleDropdownFurther = async (val:string,selectedOption:any)=>{
-    try{
+  const handleDropdownFurther = async (val: string, selectedOption: any) => {
+    try {
       setLoadingAnalysisNewData(true)
-      console.log("selectedOption",selectedOption)
+      console.log("selectedOption", selectedOption)
       let queryParams;
-      if((val=="state")){
-      queryParams = {
+      if ((val == "state")) {
+        queryParams = {
           state: selectedOption?.value || null,
         };
       }
-      else if (val=="county"){
+      else if (val == "county") {
         //setFilters({...filters,tract:null})
         queryParams = {
           state: filters?.state?.value || null,
           county: selectedOption?.value || null,
         };
       }
-      else if (val=="tract"){
+      else if (val == "tract") {
         //setFilters({...filters,tract:null})
         queryParams = {
           state: filters?.state?.value || null,
           county: filters?.county?.value || null,
-          tract:selectedOption?.value || null,
+          tract: selectedOption?.value || null,
         };
       }
-      
+
       const dropD = await analysisNewDropdown(queryParams);
-      if(val=="state"){
-        
+      if (val == "state") {
+
         setCountiesNewData(dropD?.Dropdown)
         setYearsNewData(dropD?.Years)
         setLoadingAnalysisNewData(false)
       }
-      else if (val=="county"){
+      else if (val == "county") {
         setTractsNewData(dropD?.Dropdown)
         setYearsNewData(dropD?.Years)
         setLoadingAnalysisNewData(false)
       }
-      else if(val=="tract"){
+      else if (val == "tract") {
         setYearsNewData(dropD?.Years)
         setLoadingAnalysisNewData(false)
       }
     }
-    catch(error){
+    catch (error) {
       alert("error")
       setLoadingAnalysisNewData(false)
     }
@@ -403,20 +403,20 @@ setMarkers([]);
       },
     },
   };
-  
+
 
   return (
-<div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
+    <div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
 
 
 
 
-<div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-10">
+      <div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-10">
 
 
         <div className="flex flex-col gap-4">
 
-  
+
 
           <div>
             <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State:</label>
@@ -424,54 +424,54 @@ setMarkers([]);
               <div>Loading states...</div>
             ) : (
               <Select
-              id="state"
-              value={filters.state}
-              placeholder="Select a State"
-              onChange={(selectedOption) => {
-                handleFilterChange('state', selectedOption)
-              handleDropdownFurther('state',selectedOption)
-              }}
-              options={statesNewData}
-              styles={{
-                control: (base, state) => ({
-                  ...base,
-                  borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                  boxShadow:
-                    state.isFocused || state.hasValue
-                      ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                      : "none",
-                  transition: "all 0.2s ease-in-out",
-                  "&:hover": {
-                    borderColor: "#5BAA76",
-                  },
-                }),
-                placeholder: (base) => ({
-                  ...base,
-                  color: "#C5C5C5",
-                  fontSize: "14px",
-                }),
-                option: (base, { isSelected, isFocused }) => ({
-                  ...base,
-                  backgroundColor: isSelected
-                    ? "#5BAA76" // ✅ Selected item stays green
-                    : isFocused
-                    ? "#A5D6A7" // ✅ Light green on hover
-                    : "white",
-                  color: isSelected ? "white" : "black",
-                 
-                  "&:active": {
-                    backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
-                  },
-                }),
-                singleValue: (base) => ({
-                  ...base,
-                  color: "#black",
-                  fontWeight: "semibold",
-                }),
-              }}
-            />
-            
-            
+                id="state"
+                value={filters.state}
+                placeholder="Select a State"
+                onChange={(selectedOption) => {
+                  handleFilterChange('state', selectedOption)
+                  handleDropdownFurther('state', selectedOption)
+                }}
+                options={statesNewData}
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                    fontSize: "14px",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76" // ✅ Selected item stays green
+                      : isFocused
+                        ? "#A5D6A7" // ✅ Light green on hover
+                        : "white",
+                    color: isSelected ? "white" : "black",
+
+                    "&:active": {
+                      backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "#black",
+                    fontWeight: "semibold",
+                  }),
+                }}
+              />
+
+
             )}
           </div>
 
@@ -486,10 +486,10 @@ setMarkers([]);
                 value={filters.county}
                 onChange={(selectedOption) => {
                   handleFilterChange('county', selectedOption)
-                  handleDropdownFurther('county',selectedOption)
+                  handleDropdownFurther('county', selectedOption)
                 }}
                 options={countiesNewData}
-isDisabled={!filters?.state?.value}
+                isDisabled={!filters?.state?.value}
                 placeholder="Select a County"
                 styles={{
                   control: (base, state) => ({
@@ -514,8 +514,8 @@ isDisabled={!filters?.state?.value}
                     backgroundColor: isSelected
                       ? "#5BAA76" // ✅ Selected stays green
                       : isFocused
-                      ? "#A5D6A7" // ✅ Light green on hover
-                      : "white",
+                        ? "#A5D6A7" // ✅ Light green on hover
+                        : "white",
                     color: isSelected ? "white" : "black",
                     "&:hover": {
                       backgroundColor: "#5BAA76",
@@ -544,11 +544,12 @@ isDisabled={!filters?.state?.value}
               <Select
                 id="tract"
                 value={filters.tract}
-                onChange={(selectedOption) => {handleFilterChange('tract', selectedOption)
-                  handleDropdownFurther('tract',selectedOption)
+                onChange={(selectedOption) => {
+                  handleFilterChange('tract', selectedOption)
+                  handleDropdownFurther('tract', selectedOption)
                 }}
                 options={tractsNewData}
-isDisabled={!filters?.county?.value}
+                isDisabled={!filters?.county?.value}
                 placeholder="Select a Tract ID"
                 styles={{
                   control: (base, state) => ({
@@ -573,8 +574,8 @@ isDisabled={!filters?.county?.value}
                     backgroundColor: isSelected
                       ? "#5BAA76" // ✅ Selected stays green
                       : isFocused
-                      ? "#A5D6A7" // ✅ Light green on hover
-                      : "white",
+                        ? "#A5D6A7" // ✅ Light green on hover
+                        : "white",
                     color: isSelected ? "white" : "black",
                     fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
                     "&:hover": {
@@ -630,8 +631,8 @@ isDisabled={!filters?.county?.value}
                     backgroundColor: isSelected
                       ? "#5BAA76" // ✅ Selected stays green
                       : isFocused
-                      ? "#A5D6A7" // ✅ Light green on hover
-                      : "white",
+                        ? "#A5D6A7" // ✅ Light green on hover
+                        : "white",
                     color: isSelected ? "white" : "black",
                     fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
                     "&:hover": {
@@ -657,9 +658,9 @@ isDisabled={!filters?.county?.value}
             <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
               Apply
             </Button>
-           <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
-  Clear
-</Button>
+            <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
+              Clear
+            </Button>
 
           </div>
         </div>
@@ -669,63 +670,63 @@ isDisabled={!filters?.county?.value}
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
-  
-      <div className="w-full h-96 p-4 rounded mb-[40px]">
 
-        <p className="block text-base font-semibold text-black-600 mb-2 font-neris" style={{ marginLeft: "-19px" }}>Litter Cleanup Activity Map:</p>
+        <div className="w-full h-96 p-4 rounded mb-[40px]">
+
+          <p className="block text-base font-semibold text-black-600 mb-2 font-neris" style={{ marginLeft: "-19px" }}>Litter Cleanup Activity Map:</p>
           {loadingMapData ? (
-       <div className="flex justify-center items-center h-full mt-4">
+            <div className="flex justify-center items-center h-full mt-4">
 
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers?.slice(0,2000)} zoom={zoom} center={center} />
+            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers?.slice(0, 2000)} zoom={zoom} center={center} />
           )}
         </div>
-  
+
         <div className="w-full flex flex-wrap justify-center gap-4 mt-20">
-        <div className="flex justify-between w-full gap-5">
-  {/* Left Title */}
-  <div className="w-1/2">
-    <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
-  </div>
+          <div className="flex justify-between w-full gap-5">
+            {/* Left Title */}
+            <div className="w-1/2">
+              <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
+            </div>
 
-  {/* Right Title */}
-  <div className="w-1/2">
- <p className="text-base font-semibold font-neris ">Break Down of Litter Types</p>
+            {/* Right Title */}
+            <div className="w-1/2">
+              <p className="text-base font-semibold font-neris ">Break Down of Litter Types</p>
 
-</div>
-</div>
-
-
-<div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center">
-  {loadingAnalysisData ? (
-    <div>Loading line chart...</div>
-  ) : (
-    <Line options={optionsLine} data={dataLine} height={400} /> 
-  )}
-</div>
+            </div>
+          </div>
 
 
-<div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center relative">
-  {loadingAnalysisData ? (
-    <div>Loading doughnut chart...</div>
-  ) : (
-    <Doughnut 
-      data={data} 
-      options={optionsDoughnut}
-    />
-  )}
+          <div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center">
+            {loadingAnalysisData ? (
+              <div>Loading line chart...</div>
+            ) : (
+              <Line options={optionsLine} data={dataLine} height={400} />
+            )}
+          </div>
 
-  {/* Text Outside the White Box (Aligned to Bottom-Right) */}
-  <div className="absolute bottom-[-20px] right-2 text-xs text-gray-500">
-  Source: Cleanswell App
-  </div>
-</div>
 
-</div>
+          <div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center relative">
+            {loadingAnalysisData ? (
+              <div>Loading doughnut chart...</div>
+            ) : (
+              <Doughnut
+                data={data}
+                options={optionsDoughnut}
+              />
+            )}
 
-</div>
+            {/* Text Outside the White Box (Aligned to Bottom-Right) */}
+            <div className="absolute bottom-[-20px] right-2 text-xs text-gray-500">
+              Source: Cleanswell App
+            </div>
+          </div>
+
+        </div>
+
+      </div>
 
 
 
@@ -734,84 +735,84 @@ isDisabled={!filters?.county?.value}
 
       <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-10">
 
-{/* year part */}
+        {/* year part */}
 
-<div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
-  {/* Year */}
- {/*  <div className="flex items-center gap-2 mt-[-10px]">
+        <div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
+          {/* Year */}
+          {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2022</span>
   </div> */}
 
-  {/* Title */}
-  <p className="mt-4 text-black text-base font-semibold font-neris">
-    Total Number of Cleanup Programs:
-  </p>
+          {/* Title */}
+          <p className="mt-4 text-black text-base font-semibold font-neris">
+            Total Number of Cleanup Programs:
+          </p>
 
-  {/* Value */}
-  <div className="flex items-center gap-1 mt-3">
-  <img src="/Brush.svg" alt="Broom Icon" className="w-9 h-9" />
+          {/* Value */}
+          <div className="flex items-center gap-1 mt-3">
+            <img src="/Brush.svg" alt="Broom Icon" className="w-9 h-9" />
 
-  {loadingAnalysisData ? (
+            {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
               <span className="text-xl font-bold text-green-700">
-              {formatNumber(analysisData?.analytics?.total_cleanups)}
-            </span>
+                {formatNumber(analysisData?.analytics?.total_cleanups)}
+              </span>
             )}
-    
-  </div>
-</div>
 
-{/* top 3 states */}
-
-<div className="p-2 rounded mt-5 font-neris">
-  <p className="text-base font-semibold font-neris">
-    Top 3 States by Number of Cleanup Programs:
-  </p>
-  {loadingAnalysisData ? (
-    <div>Loading top states...</div>
-  ) : (
-    Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
-      <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
-        {/* Adjusted Indicator */}
-        <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
-        
-        {/* Text */}
-        <div>
-          <p className="text-base font-medium font-neris">{key}</p>
-          <p className="text-xs text-gray-500 font-neris">{formatNumber(Number(value))}</p> {/* Reduced font size */}
+          </div>
         </div>
-      </div>
-    ))
-  )}
-</div>
 
+        {/* top 3 states */}
 
+        <div className="p-2 rounded mt-5 font-neris">
+          <p className="text-base font-semibold font-neris">
+            Top 3 States by Number of Cleanup Programs:
+          </p>
+          {loadingAnalysisData ? (
+            <div>Loading top states...</div>
+          ) : (
+            Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
+              <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
+                {/* Adjusted Indicator */}
+                <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
 
-
-
-<div className="p-1 rounded mt-5 font-neris">
-  <p className="text-base font-semibold font-neris">
-    Top 3 Counties by Number of Cleanup Programs:
-  </p>
-  {loadingAnalysisData ? (
-    <div>Loading top counties...</div>
-  ) : (
-    Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
-      <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
-        {/* Green Indicator */}
-        <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
-
-        {/* Text Content */}
-        <div>
-          <h4 className="text-base font-medium font-neris">{key}</h4>
-          <p className="text-sm text-gray-500 font-neris">{formatNumber(Number(value))}</p>
+                {/* Text */}
+                <div>
+                  <p className="text-base font-medium font-neris">{key}</p>
+                  <p className="text-xs text-gray-500 font-neris">{formatNumber(Number(value))}</p> {/* Reduced font size */}
+                </div>
+              </div>
+            ))
+          )}
         </div>
-      </div>
-    ))
-  )}
-</div>
+
+
+
+
+
+        <div className="p-1 rounded mt-5 font-neris">
+          <p className="text-base font-semibold font-neris">
+            Top 3 Counties by Number of Cleanup Programs:
+          </p>
+          {loadingAnalysisData ? (
+            <div>Loading top counties...</div>
+          ) : (
+            Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
+              <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
+                {/* Green Indicator */}
+                <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
+
+                {/* Text Content */}
+                <div>
+                  <h4 className="text-base font-medium font-neris">{key}</h4>
+                  <p className="text-sm text-gray-500 font-neris">{formatNumber(Number(value))}</p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
 
 
       </div>
