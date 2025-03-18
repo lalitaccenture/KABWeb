@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react"
+import { getSession, signIn } from "next-auth/react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
 import { login } from "../utils/api";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface IFormInput {
     email: string;
@@ -23,26 +24,47 @@ const validationSchema = Yup.object({
 
 const Login = () => {
 
+
+    //new
+    const [loading, setLoading] = useState(true);  
+    // Track session loading state
+
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>({
         resolver: yupResolver(validationSchema),
     });
 
-    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-        // const response = await signIn("credentials", {
-        //     redirect: false,
-        //     email: data.email,
-        //     password: data.password,
-        // });
+    // Check if the user is already logged in
+    useEffect(() => {
+        const checkSession = async () => {
+            const session = await getSession();
+            if (session) {
+                router.push("/home"); // Redirect if session exists
+            } else {
+                setLoading(false); // Stop loading once session check is done
+            }
+        };
+        checkSession();
+    }, [router]);
 
-        // if (response?.error) {
-        //     toast.error("Invalid credentials!");
-        // } else if (response?.ok) {
-        //     toast.success("Logged in successfully!");
-        //     router.push("/home"); 
-        // }
+    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        const response = await signIn("credentials", {
+            redirect: false,
+            email: data.email,
+            password: data.password,
+        });
+
+        if (response?.error) {
+            toast.error("Invalid credentials!");
+        } else if (response?.ok) {
+            toast.success("Logged in successfully!");
+            router.push("/home"); 
+        }
     };
+
+    //For loading
+    if (loading) return <p>Loading...</p>;
 
     return (
         <div className="flex justify-center bg-[url('/test.jpg')] bg-cover w-full mb-8 pb-8">
