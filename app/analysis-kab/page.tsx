@@ -21,6 +21,7 @@ const Select = dynamic(() => import('react-select'), { ssr: false });
 import value from "../../public/KABAnalytics 1.json"
 import { useRouter } from "next/navigation";
 import { convertToIntegers, formatNumber } from "@/utils/common";
+import { useSession } from "next-auth/react";
 
 // Define the types for the correlation analysis and selected coefficient
 type CorrelationAnalysis = Record<string, { scatter_plot: { [key: string]: number }[] }>;
@@ -89,7 +90,14 @@ const ScenarioModeling = () => {
   const [measurementUnit,setMeasurementUnit]  =useState()
   const isFirstRender = useRef(true);
   const isNavigating = useRef(false);
-  const router = useRouter();
+  const { data: session, status } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/"); // Redirect to login page
+        }
+    }, [status, router]);
   interface DataItem {
     [key: string]: number | string; // Assuming the values are either numbers or strings
   }
@@ -102,7 +110,7 @@ const ScenarioModeling = () => {
       setStatesData(data?.States)
       setDropDown(data["Parameter Name"])
 
-      setLoadingExternalData(false);
+     
       const dataForAnalytics = await getAnalysisKABData();
       setAnalysisData(dataForAnalytics)
       setMarkers(dataForAnalytics?.gps_data)
@@ -110,6 +118,7 @@ const ScenarioModeling = () => {
       setCorrelationCoeff(data["Parameter Name"][0])
       setCoefficientVal(dataForAnalytics?.all_correlation_coefficients[data["Parameter Name"][0]?.value])
       setMeasurementUnit(dataForAnalytics?.correlation_analysis[data["Parameter Name"][0]?.value]?.measurement_unit)
+      setLoadingExternalData(false);
       const heatMapData = await getHeatMap();
       setStateInfoFORGEOJSON(heatMapData);
       // // @ts-ignore: Ignore TypeScript error
@@ -340,23 +349,20 @@ const ScenarioModeling = () => {
           },
         },
       },
-      // datalabels: {
-      //   display: false, 
-      // },
-      datalabels: {
-        formatter: (value, context) => {
-          const dataset = context.chart.data.datasets[0].data as number[];
-          const total = dataset.reduce((acc, val) => acc + val, 0);
-          return `${((value as number / total) * 100).toFixed(1)}%`;
+      datalabels:{
+        display:false
+      },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            const dataset = tooltipItem.dataset.data as number[];
+            const total = dataset.reduce((acc, val) => acc + val, 0);
+            const value = tooltipItem.raw as number;
+            const percentage = ((value / total) * 100).toFixed(1);
+  
+            return [`# of Litter: ${value}`, `(${percentage}%)`];
+          },
         },
-        color: "#000",
-        font: {
-          weight: 300,
-          size: 8, // Decrease font size for percentage labels
-        },
-        align: "end", // Keep labels near the outer edge
-        anchor: "end",
-        offset: 5, // Slightly move labels for better readability
       },
     },
     cutout: "40%", // Keep the inner hole clear
@@ -367,6 +373,10 @@ const ScenarioModeling = () => {
       },
     },
   };
+
+  if (status === "loading") {
+    return <p>Loading...</p>; // Prevents UI flickering
+}
 
   return (
 
@@ -640,6 +650,8 @@ const ScenarioModeling = () => {
               </span>
 
             </span>
+            {loadingExternalData ?
+            <>Loading ...</> :
             <Scatter
               options={{
                 plugins: {
@@ -665,7 +677,8 @@ const ScenarioModeling = () => {
                   y: {
                     title: {
                       display: true,
-                      text: `${correlationCoeff?.label} (${measurementUnit})`,
+                      text:  [`${correlationCoeff?.label}`, `(${measurementUnit})`],
+                      align: "start"
                     },
                     ticks: {
                       //stepSize: 0.1, // Adjust this based on your dataset
@@ -676,7 +689,7 @@ const ScenarioModeling = () => {
               }}
               data={dataForScatter}
             />
-
+            }
           </div>
         <div className="w-1/2 p-4 bg-white rounded">
         {loadingAnalysisData ? (

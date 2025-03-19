@@ -17,6 +17,8 @@ import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, ge
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { formatNumber } from "@/utils/common";
 import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -76,6 +78,15 @@ const Analysis = () => {
   const [countiesNewData, setCountiesNewData] = useState<any[]>([]);
   const [tractsNewData, setTractsNewData] = useState<any[]>([]);
   const [yearsNewData, setYearsNewData] = useState<any[]>([]);
+
+  const { data: session, status } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/"); // Redirect to login page
+        }
+    }, [status, router]);
 
 
   const fetchData = async () => {
@@ -386,25 +397,27 @@ const Analysis = () => {
           padding: 12,
         },
       },
-      datalabels: {
-        formatter: (value, context) => {
-          const dataset = context.chart.data.datasets[0].data as number[];
-          const total = dataset.reduce((acc, val) => acc + val, 0);
-          return `${((value as number / total) * 100).toFixed(0)}%`;
+      datalabels:{
+        display:false
+      },
+      tooltip: {
+        callbacks: {
+          label: (tooltipItem) => {
+            const dataset = tooltipItem.dataset.data as number[];
+            const total = dataset.reduce((acc, val) => acc + val, 0);
+            const value = tooltipItem.raw as number;
+            const percentage = ((value / total) * 100).toFixed(1);
+  
+            return [`# of Litter: ${value}`, `(${percentage}%)`];
+          },
         },
-        color: '#000',
-        font: {
-          weight: 'normal',
-          size: 10,
-        },
-        align: 'end', // Keeps labels outside
-        anchor: 'end',
-        offset: 0, // Pulls labels closer to the pie chart
-        clip: false, // Prevents labels from being cut off
       },
     },
   };
 
+  if (status === "loading") {
+    return <p>Loading...</p>; // Prevents UI flickering
+}
 
   return (
     <div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
