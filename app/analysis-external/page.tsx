@@ -420,7 +420,7 @@ const Analysis = () => {
 
 
           <div>
-            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State:</label>
+            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
             {loadingAnalysisNewData ? (
               <div>Loading states...</div>
             ) : (
@@ -664,6 +664,13 @@ const Analysis = () => {
             </Button>
 
           </div>
+          <div className="mt-8">
+<p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Data Sources & Collection Period:</strong> The insights presented in this tool are based on data collected from external sources between <strong>2015 and 2024</strong>. The completeness and coverage of the insights depend on the availability and accuracy of these sources.</div>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Scope & Limitations:</strong> While we have made every effort to derive meaningful insights, the data used may not comprehensively represent all litter patterns and cleanup programs. The accuracy of insights is contingent upon the integrity of the data provided by external sources.</div>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Evolving Insights:</strong> As additional data is integrated, insights may evolve, leading to more refined and comprehensive analytics over time. The current insights should be considered indicative rather than definitive.</div>
+<div className="text-xs text-gray-600">📌 <strong>Liability Disclaimer:</strong> This tool is intended as an analytical aid and does not claim to provide an exhaustive or final representation of litter and cleanup trends. Users should exercise discretion when interpreting the data, and we disclaim any liability for decisions made based on these insights.</div>
+</div>
         </div>
       </div>
 
@@ -747,7 +754,7 @@ const Analysis = () => {
 
         {/* year part */}
 
-        <div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
+        <div className="flex flex-col p-2 rounded-lg bg-[#DCFCE7]">
           {/* Year */}
           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
@@ -756,7 +763,7 @@ const Analysis = () => {
 
           {/* Title */}
           <p className="mt-4 text-black text-base font-semibold font-neris">
-            Total Number of Cleanup Programs:
+          Total Cleanup Programs:
           </p>
 
           {/* Value */}
@@ -777,24 +784,26 @@ const Analysis = () => {
         {/* top 3 states */}
 
         <div className="p-2 rounded mt-5 font-neris">
-          <p className="text-base font-semibold font-neris">
-            Top 3 States by Number of Cleanup Programs:
+          <p className="block text-base font-semibold text-black-600 font-neris">
+          Top 3 States by Cleanup Programs:
           </p>
           {loadingAnalysisData ? (
             <div>Loading top states...</div>
           ) : (
-            Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
-              <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
+            <div className="space-y-5">
+           {Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
+              <div key={key} className="flex items-center gap-2 p-2  bg-gray-100 rounded-lg mb-2">
                 {/* Adjusted Indicator */}
                 <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
 
                 {/* Text */}
                 <div>
                   <p className="text-base font-medium font-neris">{key}</p>
-                  <p className="text-xs text-gray-500 font-neris">{formatNumber(Number(value))}</p> {/* Reduced font size */}
+                  <p className="text-xs text-gray-500 font-neris">Programs:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p> 
                 </div>
               </div>
-            ))
+            ))}
+            </div>
           )}
         </div>
 
@@ -803,24 +812,26 @@ const Analysis = () => {
 
 
         <div className="p-1 rounded mt-5 font-neris">
-          <p className="text-base font-semibold font-neris">
-            Top 3 Counties by Number of Cleanup Programs:
+          <p className="block text-base font-semibold text-black-600  font-neris">
+          Top 3 Counties by Cleanup Programs:
           </p>
           {loadingAnalysisData ? (
             <div>Loading top counties...</div>
           ) : (
-            Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
-              <div key={key} className="flex items-center gap-2 p-2 rounded-lg mb-2">
+            <div className="space-y-6">
+            {Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
+              <div key={key} className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg mb-2">
                 {/* Green Indicator */}
                 <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
 
                 {/* Text Content */}
                 <div>
                   <h4 className="text-base font-medium font-neris">{key}</h4>
-                  <p className="text-sm text-gray-500 font-neris">{formatNumber(Number(value))}</p>
+                  <p className="text-xs text-gray-500 font-neris">Programs:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
                 </div>
               </div>
-            ))
+            ))}
+            </div>
           )}
         </div>
 

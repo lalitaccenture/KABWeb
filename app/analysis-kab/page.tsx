@@ -374,7 +374,7 @@ const ScenarioModeling = () => {
 
 
 
-      <div style={{ marginTop: "72px", marginLeft: "14px",height:'51rem',width:'20rem' }} className="p-4 bg-white shadow-lg rounded-lg ">
+      <div style={{ marginTop: "64px", marginLeft: "14px",height:'51rem',width:'20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
 
@@ -456,7 +456,7 @@ const ScenarioModeling = () => {
             <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
 
           </div>
-          <h3 className="text-md font-bold mb-2">Understanding the Data</h3>
+          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
 <div className="text-xs text-gray-600 mb-2">📌 <strong>Interpreting Correlation:</strong> The correlation values displayed are derived from the Keep America Beautiful (KAB) survey for the year 2020. These values <strong>may change</strong> as more data is collected and analyzed. It is important to note that correlation does <strong>not</strong> imply causation—correlation only indicates a statistical association and should not be interpreted as evidence of a direct cause-and-effect relationship.</div>
 <div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in data collection methods, geographic coverage, and external influences. The results should be viewed as indicative rather than absolute.</div>
 
@@ -484,7 +484,7 @@ const ScenarioModeling = () => {
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{maxWidth:'58%'}}>
         <div
           className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4"
           style={{ marginTop: '72px' }}
@@ -694,25 +694,36 @@ const ScenarioModeling = () => {
 
       {/* New Sections in the Right Sidebar */}
       <div className="w-1/5 space-y-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px" ,height:'51rem'}}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px" ,height:'91%'}}>
           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>
   </div> */}
           {/* Total Estimated Litter: */}
-          <div className="flex flex-col p-2 rounded-lg bg-white shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
-            <div className="p-2 rounded flex flex-col gap-3 text-left ml-[-10]">
-              <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
-                Total Estimated Litter:
-              </p>
+          <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
+  <div className="flex flex-col items-center text-center">
+    <p className="text-black text-base font-semibold font-neris whitespace-nowrap">
+      Total Estimated Litter:
+    </p>
 
-              {loadingAnalysisData ? (
-                <span>Loading Data...</span>
-              ) : (
-                <span className="text-xl font-bold text-green-700">{formatNumber(Math.trunc(analysisData?.total_estimated_litter))}   <span className="text-sm text-green-700"> (#)</span></span>
-              )}
-            </div>
-          </div>
+    {loadingAnalysisData ? (
+      <span>Loading Data...</span>
+    ) : (
+      <span className="text-xl font-bold text-green-700">
+        {formatNumber(Math.trunc(analysisData?.total_estimated_litter))}  
+        <span className="text-sm text-green-700"> (#)</span>
+      </span>
+    )}
+  </div>
+</div>
+
+
+
+
+
+
+
+
 
 
           {/* Estimated Litter Density */}
@@ -723,7 +734,7 @@ const ScenarioModeling = () => {
             {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-              <span className="text-xl font-bold text-green-700">{formatNumber(Math.trunc(analysisData?.estimated_litter_density))}<span className="text-sm text-green-700"> (#/sq. miles)</span> </span>
+              <span className="text-base font-bold text-green-700">{formatNumber(Math.trunc(analysisData?.estimated_litter_density))}<span className="text-sm text-green-700"> (# / sq. miles)</span> </span>
             )}
 
           </div>
@@ -734,28 +745,46 @@ const ScenarioModeling = () => {
 
 
           {/* Top 3 States Section */}
-          <div className="mb-4 p-4 rounded  ml-[-4]">
-            <p className=" mb-2.8 text-black text-base font-semibold font-neris gap-2">Top 3 States:</p>
+          <div className="mb-4 p-4 rounded" style={{marginLeft:'-15px'}}>
+  <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States:</p>
 
-            {loadingAnalysisData ? (
-              <div>Loading top states...</div>
-            ) : (<>
-              {analysisData?.top_3_states?.map((state: any, index: any) => (
-                <div key={index} className="flex items-start gap-3 p-2 mb-6 ml-[-4]">
-                  {/* Dot before each state name */}
-                  <span className="text-green-700 text-lg font-bold leading-6 ">•</span>
+  {loadingAnalysisData ? (
+    <div>Loading top states...</div>
+  ) : (
+    <>
+      {analysisData?.top_3_states?.map((state: any, index: any) => (
+        <div 
+          key={index} 
+          className="flex items-start gap-3 p-3 mb-4 bg-gray-100 rounded-lg"
+        >
+          {/* Dot before each state name */}
+          <span className="text-green-700 text-lg font-bold leading-6">•</span>
 
-                  {/* State details */}
-                  <div >
-                    <p className="text-base font-medium font-neris ">{state.State}</p>
-                    <p className="text-sm text-gray-500 font-neris ">Estimated: {formatNumber(Math.trunc(state?.Estimated))}</p>
-                    <p className="text-xs text-gray-500 font-neris ">Litter Density: {formatNumber(Math.trunc(state["Litter density"]))}</p>
-                  </div>
-                </div>
-              ))}
-            </>
-            )}
+          {/* State details */}
+          <div>
+            <p className="text-base font-medium font-neris">{state.State}</p>
+            
+            {/* ✅ Fixed Estimated Value Alignment */}
+            <p className="text-xs text-gray-500 font-neris flex items-center">
+              Estimated:
+              <span className="font-semibold text-black text-xs ml-1">
+                {formatNumber(Math.trunc(state?.Estimated))}
+              </span>
+            </p>
+
+            <p className="text-xs text-gray-500 font-neris">
+              Litter Density: 
+              <span className="font-semibold text-black ml-1 text-xs">
+                {formatNumber(Math.trunc(state["Litter density"]))}
+              </span>
+            </p>
           </div>
+        </div>
+      ))}
+    </>
+  )}
+</div>
+
 
         </div>
       </div>
