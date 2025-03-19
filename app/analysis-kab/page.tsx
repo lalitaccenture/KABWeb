@@ -86,6 +86,7 @@ const ScenarioModeling = () => {
   const [forScatter, setForscatter] = useState<any>([]);
   const [stateInfoFORGEOJSON, setStateInfoFORGEOJSON] = useState<any>([]);
   const [coefficientVal, setCoefficientVal] = useState<number>();
+  const [measurementUnit,setMeasurementUnit]  =useState()
   const isFirstRender = useRef(true);
   const isNavigating = useRef(false);
   const router = useRouter();
@@ -108,6 +109,7 @@ const ScenarioModeling = () => {
       setForscatter(dataForAnalytics?.correlation_analysis)
       setCorrelationCoeff(data["Parameter Name"][0])
       setCoefficientVal(dataForAnalytics?.all_correlation_coefficients[data["Parameter Name"][0]?.value])
+      setMeasurementUnit(dataForAnalytics?.correlation_analysis[data["Parameter Name"][0]?.value]?.measurement_unit)
       const heatMapData = await getHeatMap();
       setStateInfoFORGEOJSON(heatMapData);
       // // @ts-ignore: Ignore TypeScript error
@@ -366,8 +368,6 @@ const ScenarioModeling = () => {
     },
   };
 
-
-
   return (
 
     <div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4">
@@ -526,6 +526,8 @@ const ScenarioModeling = () => {
                           onChange={(selectedOption: any) => {
                             setCorrelationCoeff(selectedOption)
                             setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
+                            setMeasurementUnit(forScatter[selectedOption?.value]?.measurement_unit)
+
                           }}
                           options={dropDown}
                           placeholder="Select coefficient"
@@ -646,7 +648,7 @@ const ScenarioModeling = () => {
                   y: {
                     title: {
                       display: true,
-                      text: correlationCoeff?.label,
+                      text: `${correlationCoeff?.label} (${measurementUnit})`,
                     },
                     ticks: {
                       //stepSize: 0.1, // Adjust this based on your dataset

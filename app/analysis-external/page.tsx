@@ -36,7 +36,7 @@ interface MarkerData {
   latitude: number;
   longitude: number;
   litter_quantity: number;
-  cleanup_date: string;
+  date: string;
   radius: number
 }
 

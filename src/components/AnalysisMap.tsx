@@ -10,7 +10,7 @@ interface MarkerData {
   latitude: number;
   longitude: number;
   litter_quantity: number;
-  cleanup_date: string;
+  date: string;
    radius:number
 }
 
@@ -65,7 +65,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
               {/* Display relevant information about the marker    */}
             
               Litter Quantity Collected: {marker?.litter_quantity} <br />
-              Cleanup Date: {marker?.cleanup_date}
+              Cleanup Date: {marker?.date}
 </div>
               </Popup>
           </Marker>
