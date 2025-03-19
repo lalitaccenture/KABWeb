@@ -38,8 +38,11 @@ const auth = NextAuth({
         try {
           const response = await login(credentials.email, credentials.password);
 
-          if (response?.user && response?.token) {
-            return { ...response.user, token: response.token };
+          // if (response?.user && response?.token) {
+          //   return { ...response.user, token: response.token };
+          // }
+          if (response?.token) {
+            return { ... response, token: response.token };
           }
           return null;
         } catch (error) {
@@ -49,6 +52,7 @@ const auth = NextAuth({
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/login',
   },

@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from "@/src/components/Header";
 import Footer from "@/src/components/Footer"; 
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({
   children,
@@ -21,6 +22,7 @@ export default function RootLayout({
         />
       </Head>
       <body className="flex flex-col min-h-screen">
+      <SessionProvider>
         <ToastContainer
           position="top-right" 
           autoClose={5000}     
@@ -35,6 +37,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
+        </SessionProvider>
       </body>
     </html>
   );

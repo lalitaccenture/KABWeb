@@ -25,9 +25,12 @@ const ForgotPassword = () => {
     resolver: yupResolver(schema),
   });
 
-  const handleForgotPassword = async (data: { email: string }) => {
+  const handleForgotPassword = async (data:any) => {
+    const payload = {
+      email: data?.email
+    }
     try {
-      const response = await sendOtp(data.email);
+      const response = await sendOtp(payload);
       if (response) {
         setOtpSent(true);
         toast.success('OTP sent successfully!');

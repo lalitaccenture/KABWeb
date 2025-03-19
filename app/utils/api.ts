@@ -5,9 +5,8 @@ const API_BASE_URL = 'https://example.com';
 
 export const signUp = async (payload:any) => {
   try {
-    //const response = await axios.post(`${API_BASE_URL}${endpoint}`, payload);
-    //return response.data;  
-    return true;
+    const response = await axios.post(`https://lees1ddoaifunc02.azurewebsites.net/api/register_user?code=girr3ajyJHL7Q9IDV0Soww7NgHMBsztJFiPAm1f6OdEVAzFuTy8e1w==`, payload);
+    return response.data;
   } catch (error) {
     console.error("Error signing up", error);
     throw error;  
@@ -16,34 +15,32 @@ export const signUp = async (payload:any) => {
 
 export const login = async (email: string, password: string) => {
   try {
-    
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-      });
+    const response = await fetch(`https://lees1ddoaifunc02.azurewebsites.net/api/login_user?code=R_rE5s1vP6u7a9IIvYEZwy2xuRVs4x647AiwkyJouaroAzFuE45tPw==`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
-
-      if (response.ok) {
-          return data; // Return token and user data
-      } else {
-          throw new Error(data.message || 'Authentication failed');
-      }
-  } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
-  }
+    const data = await response.json();
+    console.log("data",data);
+    if (response.ok) {
+        return data; // Return token and user data
+    } else {
+        throw new Error(data.message || 'Authentication failed');
+    }
+} catch (error) {
+    console.error('Login failed:', error);
+    throw error;
+}
 };
 
 
 export const sendOtp = async (payload:any) => {
   try {
-    //const response = await axios.post(`${API_BASE_URL}${endpoint}`, payload);
-    //return response.data;  
-    return true;
+    const response = await axios.post(`https://lees1ddoaifunc02.azurewebsites.net/api/request_reset_otp_user?code=BZAq20hWl2MnkpJ48xXZCp8yCCEMmiHNQ_340OYEsHC9AzFuHbdttA==`, payload);
+    return response.data;
   } catch (error) {
     console.error("Error sending OTP:", error);
     throw error;  
@@ -52,9 +49,8 @@ export const sendOtp = async (payload:any) => {
 
 export const resetPassword = async (payload:any) => {
   try {
-    //const response = await axios.post(`${API_BASE_URL}${endpoint}`, payload);
-    //return response.data; 
-    return true; 
+    const response = await axios.post(`https://lees1ddoaifunc02.azurewebsites.net/api/reset_password_user?code=ENTzqWeNUghKqW40pifDBLHf-IyXAu6AZa_Hz22sxdoCAzFuPJXv6Q==`, payload);
+    return response.data; 
   } catch (error) {
     console.error("Error reseting password", error);
     throw error;  

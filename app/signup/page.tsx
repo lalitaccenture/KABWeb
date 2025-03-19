@@ -9,16 +9,17 @@ import Link from "next/link";
 import { signUp } from "../utils/api";
 import { toast } from 'react-toastify';
 import ProgressBar from "@/src/components/ProgressBar";
+import { useState } from "react";
 
 interface IFormInput {
-    name: string;
+    username: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
 const schema = yup.object({
-    name: yup.string().required("Name is required"),
+    username: yup.string().required("Name is required"),
     email: yup
         .string()
         .email("Invalid email address")
@@ -37,15 +38,17 @@ const schema = yup.object({
 
 const SignUp = () => {
 
+    const [message,setMessage] = useState()
+
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema),
     });
 
-    const onSubmit: SubmitHandler<IFormInput> = async (data: { email: string; name: string; password: string }) => {
+    const onSubmit: SubmitHandler<IFormInput> = async (data: { email: string; username: string; password: string }) => {
 
         try {
             const response = await signUp(data);
-            //response.success
+            setMessage(response?.msg)
             if (response) {
                 toast.success('Signed Up!');
                 reset();
@@ -70,11 +73,11 @@ const SignUp = () => {
                         <input
                             id="name"
                             type="text"
-                            {...register("name")}
+                            {...register("username")}
                             className="w-full mt-2 p-3 border border-gray-300 rounded-md font-neris"
                             
                         />
-                        {errors.name && <p className="text-red-500 text-sm font-neris">{errors.name.message}</p>}
+                        {errors.username && <p className="text-red-500 text-sm font-neris">{errors.username.message}</p>}
                     </div>
     
                     <div className="mb-4">
@@ -125,6 +128,10 @@ const SignUp = () => {
                     </Button>
                     </div>
                 </form>
+
+                {message && <div>
+                    <p>{message}</p>
+                </div>}
     
                 <p className="flex mt-4 text-sm font-neris justify-center items-center">
                     Already have an account?
