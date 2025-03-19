@@ -44,15 +44,18 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
     <div className="w-full h-full mt-18">
     
 
-      <MapContainer center={center} zoom={zoom} style={{ height: "420px", width: "715px" , marginLeft:'-3%' }} attributionControl={false}>
+      <MapContainer center={center} zoom={zoom} style={{ height: "420px", }} attributionControl={false}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {markers?.map((marker, index) =>  {
         const size = marker?.radius || 32;
         return (
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
           icon={L.divIcon({
-            html: `<div class="rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold" 
-    style="background-color: rgba(91, 170, 118, 0.3);"></div>`,
+            html: `<div 
+            class="rounded-full flex justify-center items-center text-white text-xs font-bold" 
+            style="width: ${size}px; height: ${size}px; background-color: rgba(128, 0, 128, 0.3);">
+          </div>`
+          ,
             className: "transparent-icon",
             iconSize: [size,size], // Size of the bubble
             
@@ -71,7 +74,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
           </Marker>
         )})}
       </MapContainer>
-      <div className="mt-5 flex items-center gap-2" style={{ marginLeft: "-19px" , marginTop:"1px" }}>
+      <div className="mt-5 flex items-center gap-2" style={{marginTop:"1px" }}>
 
 
         <div className="w-2 h-2 rounded-full bg-[#5BAA76]"></div>
