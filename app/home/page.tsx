@@ -3,9 +3,22 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 const Home = () => {
+    const { data: session, status } = useSession();
     const router = useRouter();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/"); // Redirect to login page
+        }
+    }, [status, router]);
+
+    if (status === "loading") {
+        return <p>Loading...</p>; // Prevents UI flickering
+    }
 
     return (
         <div className="flex flex-col justify-center bg-[url('/test.jpg')] bg-cover w-full h-auto mb-4 pb-4">
