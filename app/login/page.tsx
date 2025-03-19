@@ -28,7 +28,7 @@ const Login = () => {
     //new
     const [loading, setLoading] = useState(true);  
     // Track session loading state
-
+    const [loadingLoginBtn, setLoadingLoginBtn] = useState(false);
     const router = useRouter();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>({
@@ -48,18 +48,41 @@ const Login = () => {
         checkSession();
     }, [router]);
 
-    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-        const response = await signIn("credentials", {
-            redirect: false,
-            email: data.email,
-            password: data.password,
-        });
+    // const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    //     const response = await signIn("credentials", {
+    //         redirect: false,
+    //         email: data.email,
+    //         password: data.password,
+    //     });
 
-        if (response?.error) {
-            toast.error("Invalid credentials!");
-        } else if (response?.ok) {
-            toast.success("Logged in successfully!");
-            router.push("/home"); 
+    //     if (response?.error) {
+    //         toast.error("Invalid credentials!");
+    //     } else if (response?.ok) {
+    //         toast.success("Logged in successfully!");
+    //         router.push("/home"); 
+    //     }
+    // };
+
+    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        try {
+            setLoadingLoginBtn(true); // Disable button
+            const response = await signIn("credentials", {
+                redirect: false,
+                email: data.email,
+                password: data.password,
+            });
+    
+            if (response?.error) {
+                toast.error("Invalid credentials!");
+            } else if (response?.ok) {
+                toast.success("Logged in successfully!");
+                router.push("/home"); 
+            }
+        } catch (error) {
+            console.error("Login error", error);
+            toast.error("An error occurred!");
+        } finally {
+            setLoadingLoginBtn(false); // Re-enable button after request completes
         }
     };
 
@@ -124,6 +147,7 @@ const Login = () => {
 
                             <Button type="submit"
                                 className="w-full py-3 hover:bg-[#5BAA76]-600 transition font-neris"
+                                disabled={loadingLoginBtn}
                                 style={{
                                     backgroundColor: '#3AAD73',
                                     color: 'white',
@@ -132,7 +156,7 @@ const Login = () => {
                                     borderRadius: '32px',
                                     fontSize: '16px',
                                 }}>
-                                Login
+                                {loadingLoginBtn ? 'Logging in...' : 'Login'}
                             </Button>
                         </div>
                     </form>

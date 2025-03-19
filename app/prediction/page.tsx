@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -83,6 +85,15 @@ const Prediction = () => {
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
   const weeks = ["09/02", "09/09", "09/16", "09/23", "09/30"];
+
+  const { data: session, status } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            router.push("/"); // Redirect to login page
+        }
+    }, [status, router]);
 
 
 
@@ -303,7 +314,9 @@ const Prediction = () => {
   );
 
   
-
+  if (status === "loading") {
+    return <p>Loading...</p>; // Prevents UI flickering
+}
 
   return (
 

@@ -39,6 +39,7 @@ const schema = yup.object({
 const SignUp = () => {
 
     const [message,setMessage] = useState()
+    const [loading, setLoading] = useState(false);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(schema),
@@ -47,6 +48,7 @@ const SignUp = () => {
     const onSubmit: SubmitHandler<IFormInput> = async (data: { email: string; username: string; password: string }) => {
 
         try {
+            setLoading(true);
             const response = await signUp(data);
             setMessage(response?.msg)
             if (response) {
@@ -58,6 +60,9 @@ const SignUp = () => {
         } catch (error) {
             console.error('Error signing up', error);
             toast.error('Error signing up');
+        }
+        finally {
+            setLoading(false);
         }
     };
     return (
@@ -115,6 +120,7 @@ const SignUp = () => {
                     <div className="flex items-center justify-center mt-14">
                     <Button type="submit" onClick={handleSubmit(onSubmit)} 
                     className="w-full py-3 hover:bg-[#5BAA76]-600 transition font-neris"
+                    disabled={loading}
                     style={{
                         backgroundColor: '#3AAD73',
                         color: 'white',
@@ -124,7 +130,7 @@ const SignUp = () => {
                         fontSize: '16px',
                       }}
                     >
-                        Sign Up
+                        {loading ? 'Signing Up...' : 'Sign Up'}
                     </Button>
                     </div>
                 </form>
