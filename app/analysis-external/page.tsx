@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { formatNumber } from "@/utils/common";
+import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -673,19 +674,23 @@ const Analysis = () => {
 
         <div className="w-full h-96 p-4 rounded mb-[40px]">
 
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris" style={{ marginLeft: "-19px" }}>Litter Cleanup Activity Map:</p>
+          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Litter Cleanup Activity Map:</p>
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full mt-4">
 
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers?.slice(0, 2000)} zoom={zoom} center={center} />
+            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers?.slice(0, 2000)} zoom={zoom} center={center}/>
           )}
         </div>
 
-        <div className="w-full flex flex-wrap justify-center gap-4 mt-20">
-          <div className="flex justify-between w-full gap-5">
+        <div className="w-full flex flex-wrap justify-center gap-4 mt-20"  style={{ gap: '50px'}}>
+        <div 
+  className="flex justify-between w-full" 
+  style={{ gap: '31px', marginLeft: '12px' }}
+>
+
             {/* Left Title */}
             <div className="w-1/2">
               <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
@@ -699,7 +704,11 @@ const Analysis = () => {
           </div>
 
 
-          <div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center">
+<div 
+  className="p-4 bg-white rounded flex flex-col items-center" 
+  style={{ width: '44%' }}
+>
+
             {loadingAnalysisData ? (
               <div>Loading line chart...</div>
             ) : (
@@ -708,13 +717,14 @@ const Analysis = () => {
           </div>
 
 
-          <div className="flex-1 min-w-[300px] h-[300px] p-4 bg-white rounded flex flex-col items-center relative">
+          <div className="p-4 bg-white rounded flex flex-col items-center relative"   style={{ width: '44%' }}>
             {loadingAnalysisData ? (
               <div>Loading doughnut chart...</div>
             ) : (
               <Doughnut
                 data={data}
                 options={optionsDoughnut}
+                
               />
             )}
 
@@ -723,10 +733,10 @@ const Analysis = () => {
               Source: Cleanswell App
             </div>
           </div>
+          </div>
 
         </div>
 
-      </div>
 
 
 

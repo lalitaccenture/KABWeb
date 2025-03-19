@@ -357,7 +357,7 @@ const ScenarioModeling = () => {
         offset: 5, // Slightly move labels for better readability
       },
     },
-    cutout: "0%", // Keep the inner hole clear
+    cutout: "40%", // Keep the inner hole clear
     layout: {
       padding: {
         top: 25,
@@ -374,7 +374,7 @@ const ScenarioModeling = () => {
 
 
 
-      <div style={{ marginTop: "72px", marginLeft: "14px" }} className="p-4 bg-white shadow-lg rounded-lg space-y-6 h-auto max-h-[600px]">
+      <div style={{ marginTop: "72px", marginLeft: "14px",height:'51rem',width:'20rem' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
 
@@ -447,15 +447,23 @@ const ScenarioModeling = () => {
             </Button>
 
           </div><br></br>
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Map Legend:</p>
+          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Litter Density Indicator:</p>
           <div className="flex flex-col items-center mr-[78px]">
 
             <span className="text-xs text-gray-700">Lower Litter Density</span>
-            <div className="w-5 h-24 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
+            <div className="w-5 h-12 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
 
             <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
 
           </div>
+          <h3 className="text-md font-bold mb-2">Understanding the Data</h3>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Interpreting Correlation:</strong> The correlation values displayed are derived from the Keep America Beautiful (KAB) survey for the year 2020. These values <strong>may change</strong> as more data is collected and analyzed. It is important to note that correlation does <strong>not</strong> imply causation—correlation only indicates a statistical association and should not be interpreted as evidence of a direct cause-and-effect relationship.</div>
+<div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in data collection methods, geographic coverage, and external influences. The results should be viewed as indicative rather than absolute.</div>
+
+          
+
+          
+          
           {/* <div className="flex items-center gap-2 mt-2">
     <div className="w-2 h-2 bg-green-500"></div> 
     <p className="text-xs text-gray-700">
@@ -492,7 +500,16 @@ const ScenarioModeling = () => {
 
         </div>
         {/* AnalysisMap section */}
-        <div className="w-full p-4 rounded" style={{ marginTop: '32px', marginLeft: '-35px' }}>
+        <div 
+  className="w-full rounded" 
+  style={{ 
+    marginTop: '32px', 
+    padding: '10px 0px', 
+    display: 'block', 
+    width: '100%' 
+  }}
+>
+
           <p className="block text-base font-semibold text-black-600 mb-1 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
 
           {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
@@ -511,10 +528,10 @@ const ScenarioModeling = () => {
           )}
         </div>
         
-        <div className="flex w-full">
+        <div className="flex w-full gap-6">
             <div className="w-1/2">
             <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
-                        Correlation Between Estimated Litter Density &
+                        Correlation Between Estimated Litter Density-
                       </label>
             
                       {loadingExternalData ? (
@@ -583,7 +600,7 @@ const ScenarioModeling = () => {
             <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
               Correlation Coefficient:
               <span className="relative inline-block ml-1">
-                <b className="text-[#5BAA76] text-lg">{coefficientVal?.toFixed(2)}</b>
+                <b className="text-[#5BAA76] text-sm font-semibold">{coefficientVal?.toFixed(2)}</b>
 
                 {/* Info Button */}
                 <button
@@ -663,7 +680,7 @@ const ScenarioModeling = () => {
         {loadingAnalysisData ? (
                 <div>Loading doughnut chart...</div>
               ) : (
-                <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px' }} />
+                <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px', width: '400px' }} />
 
               )}
         </div>
@@ -674,8 +691,8 @@ const ScenarioModeling = () => {
       </div>
 
       {/* New Sections in the Right Sidebar */}
-      <div className="w-1/5 p-4 space-y-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "51px" }}>
+      <div className="w-1/5 space-y-6">
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px" ,height:'51rem'}}>
           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>
