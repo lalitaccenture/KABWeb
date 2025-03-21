@@ -723,7 +723,7 @@ const ScenarioModeling = () => {
       <span>Loading Data...</span>
     ) : (
       <span className="text-xl font-bold text-green-700">
-        {formatNumber(Math.trunc(analysisData?.total_estimated_litter))}  
+        {analysisData?.total_estimated_litter}  
         <span className="text-sm text-green-700"> (#)</span>
       </span>
     )}
@@ -781,7 +781,7 @@ const ScenarioModeling = () => {
             <p className="text-xs text-gray-500 font-neris flex items-center">
               Estimated:
               <span className="font-semibold text-black text-xs ml-1">
-                {formatNumber(Math.trunc(state?.Estimated))}
+                {state?.Estimated}
               </span>
             </p>
 
