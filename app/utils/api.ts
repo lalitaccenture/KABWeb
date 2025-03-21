@@ -172,3 +172,34 @@ export const getAnalysisDashboardMap = async (queryParams: any = {}) => {
     throw error;
   }
 };
+
+
+
+export const getPredictionDashboard = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/predictiondashboard?code=F5DZFMrStzMzI_ca9F4l9a86PFetAqFxuhdDHSkELuQCAzFuIRppbA==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+
+export const predictionNewDropdown = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/predictiondropdownswithfilter?code=0rTIqa65BxB5PwWX_TnMn13ieVU1sZWnGXArbbCslvz1AzFugwchkA==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};

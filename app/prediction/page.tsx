@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAnalysisExternalData } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAnalysisExternalData, getPredictionDashboard, predictionNewDropdown } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { useSession } from "next-auth/react";
@@ -71,7 +71,7 @@ const Prediction = () => {
   const [statesData, setStatesData] = useState<any[]>([]);
   const [countiesData, setCountiesData] = useState<any[]>([]);
   const [tractsData, setTractsData] = useState<any[]>([]);
-  const [analysisData, setAnalysisData] = useState<any>({});
+  const [predictionData, setPredictionData] = useState<any>({});
   const [loadingAnalysisData, setLoadingAnalysisData] = useState<boolean>(false);
   const [loadingExternalData, setLoadingExternalData] = useState<boolean>(false);
   const [loadingMapData, setLoadingMapData] = useState<boolean>(false)
@@ -84,7 +84,8 @@ const Prediction = () => {
     amenities:false
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
-  const weeks = ["09/02", "09/09", "09/16", "09/23", "09/30"];
+  const [weeks,setWeeks] = useState([])
+
 
   const { data: session, status } = useSession();
     const router = useRouter();
@@ -114,12 +115,14 @@ const Prediction = () => {
 
       try {
 
-        const dropD = await analysisNewDropdown();
+        const dropD = await predictionNewDropdown();
         setStatesData(dropD?.Dropdown)
+        setWeeks(dropD?.Weeks)
         setLoadingAnalysisNewData(false)
         setLoadingExternalData(false);
         setLoadingAnalysisData(false);
-
+        const dataDashboard = await getPredictionDashboard();
+        setPredictionData(dataDashboard);
         // const value = await applyFilter();
         // setAnalysisData(value);
         // //setMarkers(value?.map_data)
@@ -181,7 +184,7 @@ const Prediction = () => {
           };
         }
         
-        const dropD = await analysisNewDropdown(queryParams);
+        const dropD = await predictionNewDropdown(queryParams);
         if(val=="state"){
           
           setCountiesData(dropD?.Dropdown)
@@ -214,9 +217,9 @@ const Prediction = () => {
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
     try {
-      const res = await applyFilter(queryParams);
-      setAnalysisData(res);
-      setMarkers(res?.map_data)
+      const res = await predictionNewDropdown(queryParams);
+      setPredictionData(res);
+      //setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
       //setZoom()
@@ -529,7 +532,8 @@ const Prediction = () => {
 
       <div>
             <h1>Select a week</h1>
-      <WeekSelector weeks={weeks} />
+            {loadingAnalysisData ? <>Loading...</> :
+      <WeekSelector weeks={weeks} />}
       </div>
 
 
@@ -556,7 +560,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-lg font-bold">{analysisData?.total_estimated_litter?.toFixed(2)}</span>
+                    <span className="block text-lg font-bold">{predictionData?.Total_Estimated_Litter?.toFixed(2)}</span>
             )}
                     </div>
 
@@ -566,7 +570,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-lg font-bold">{analysisData?.estimated_litter_density?.toFixed(2)}</span>
+                    <span className="block text-lg font-bold">{predictionData?.Estimated_Litter_Density?.toFixed(2)}</span>
             )}
                     </div>
 
