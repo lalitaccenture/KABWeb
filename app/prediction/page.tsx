@@ -283,20 +283,20 @@ const Prediction = () => {
         label: '# of Votes',
         data: [12, 19, 3, 5, 2, 3],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+          '#E97132',
+          '#196B24',
+          '#0F9ED5',
+          '#974F91',
+          '#DE9ED8',
+          '#AAB4B8',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          '#E97132',
+          '#196B24',
+          '#0F9ED5',
+          '#974F91',
+          '#DE9ED8',
+          '#AAB4B8',
         ],
         borderWidth: 1,
       },
@@ -308,7 +308,7 @@ const Prediction = () => {
   const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange }) => (
     <div className="flex items-center space-x-2">
       <Switch onChange={onChange} checked={checked} uncheckedIcon={false} 
-        checkedIcon={false} onColor="#3AAD73" />  
+        checkedIcon={false} onColor="#3AAD73"  height={20} width={40} handleDiameter={14} />  
       <span>{label}</span>
     </div>
   );
@@ -320,9 +320,12 @@ const Prediction = () => {
 
   return (
 
-    <div className="flex w-full gap-4 mt-4">
+    <div className="flex w-full gap-4 mt-4 px-4 bg-[rgba(91,170,118,0.1)]">
 
-      <div className="w-1/5 p-4">
+
+<div className="w-1/5 p-4 mt-4 mb-4 bg-white rounded-lg shadow-md">
+
+
 
         <div className="flex flex-col gap-4">
         <h1 className="font-bold">Map Controllers</h1>
@@ -525,18 +528,18 @@ const Prediction = () => {
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4 mt-[-1.5%]">
 
       <div>
-            <h1>Select a week</h1>
+            <p className="mt-4 text-black text-base font-semibold font-neris">Select a week</p>
       <WeekSelector weeks={weeks} />
       </div>
 
+      <div className="w-full h-96 p-4 ">
 
-        <div className="w-full h-96 p-4 bg-gray-200 rounded">
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full">
-              <span className="text-xl text-gray-600">Loading map...</span>
+              <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
             <MapPrediction markers={markers.slice(0, 100)} zoom={zoom} center={center} switches={switches}/>
@@ -548,11 +551,13 @@ const Prediction = () => {
       </div>
 
 
-      <div className="w-1/5 p-4 space-y-6">
+      <div className="w-1/5 p-4 mt-4 space-y-6 mb-4 bg-white rounded-lg shadow-md">
 
 
-      <div className="p-4 bg-gray-200 rounded">
-                    <h3 className="text-xl font-semibold">Total Estimated Litter</h3>
+
+
+      <div className="p-4 bg-[#DCFCE7] rounded">
+                    <p className="mt-4 text-black text-base font-semibold font-neris">Total Estimated Litter</p>
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
@@ -561,8 +566,8 @@ const Prediction = () => {
                     </div>
 
 
-                <div className="p-4 bg-gray-200 rounded">
-                    <h3 className="text-xl font-semibold">Estimated Litter Density</h3>
+                <div className="p-4 bg-[#DCFCE7] rounded">
+                    <p className="mt-4 text-black text-base font-semibold font-neris">Estimated Litter Density</p>
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (

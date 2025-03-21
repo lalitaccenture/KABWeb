@@ -380,11 +380,11 @@ const ScenarioModeling = () => {
 
   return (
 
-    <div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4">
+    <div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4" style={{padding:"10px"}}>
 
 
 
-      <div style={{ marginTop: "64px", marginLeft: "14px",height:'51rem',width:'20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
+      <div style={{ marginTop: "64px", height:'54rem',width:'20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
 
@@ -456,19 +456,19 @@ const ScenarioModeling = () => {
               Clear
             </Button>
 
-          </div><br></br>
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Litter Density Indicator:</p>
-          <div className="flex flex-col items-center mr-[78px]">
+          </div>
+       
+     {/*      <div className="flex flex-col items-center mr-[78px]">
 
             <span className="text-xs text-gray-700">Lower Litter Density</span>
             <div className="w-5 h-12 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
 
             <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
 
-          </div>
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Interpreting Correlation:</strong> The correlation values displayed are derived from the Keep America Beautiful (KAB) survey for the year 2020. These values <strong>may change</strong> as more data is collected and analyzed. It is important to note that correlation does <strong>not</strong> imply causation—correlation only indicates a statistical association and should not be interpreted as evidence of a direct cause-and-effect relationship.</div>
-<div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in data collection methods, geographic coverage, and external influences. The results should be viewed as indicative rather than absolute.</div>
+          </div> */}
+          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data:</p>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Interpreting Correlation:</strong>Correlation values are derived from the <strong>2020 Keep America Beautiful (KAB) survey and may change</strong> as more data is collected. Correlation <strong>does not </strong> imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</div>
+<div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in<strong> data collection methods, geographic coverage, and external influences.</strong> The results should be viewed as <strong>indicative rather than absolute.</strong></div>
 
           
 
@@ -537,8 +537,19 @@ const ScenarioModeling = () => {
             />
           )}
         </div>
+
+        <div className="flex justify-center items-center gap-4 mt-4" style={{marginTop:'-12px',marginRight:'39%'}}>
+  <span className="text-xs text-gray-400">Lower Litter Density</span>
+  <div className="w-20 h-2 bg-gradient-to-r from-[#FDBA74] to-[#FB7185] rounded-full"></div>
+  <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+  <div className="flex items-center gap-1">
+    <img src="/marker-icon.png" alt="Marker" className="w-3 h-5" />
+    <span className="text-xs text-gray-400">Survey Site</span>
+  </div>
+</div>
+
         
-        <div className="flex w-full gap-6">
+        <div className="flex w-full gap-6" style={{marginTop:'3px'}}>
             <div className="w-1/2">
             <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
                         Correlation Between Estimated Litter Density-
@@ -707,7 +718,7 @@ const ScenarioModeling = () => {
 
       {/* New Sections in the Right Sidebar */}
       <div className="w-1/5 space-y-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px" ,height:'91%'}}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px" ,height:'92%'}}>
           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>

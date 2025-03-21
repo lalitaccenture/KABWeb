@@ -53,7 +53,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
           icon={L.divIcon({
             html: `<div 
             class="rounded-full flex justify-center items-center text-white text-xs font-bold" 
-            style="width: ${size}px; height: ${size}px; background-color: rgba(128, 0, 128, 0.3);">
+            style="width: ${size}px; height: ${size}px; background-color: rgba(128, 0, 128, 0.4);">
           </div>`
           ,
             className: "transparent-icon",
@@ -77,8 +77,8 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
       <div className="mt-5 flex items-center gap-2" style={{marginTop:"1px" }}>
 
 
-        <div className="w-2 h-2 rounded-full bg-[#5BAA76]"></div>
-        <span className="text-black text-sm font-medium">Cleanup Site</span>
+        <div className="w-3 h-3 rounded-full " style={{backgroundColor:'rgba(128, 0, 128, 0.4)'}}></div>
+        <span className="text-gray-400 text-xs font-xs">Cleanup Site - Bubble size reflects the amount of litter collected; more litter means a larger bubble.</span>
       </div>
     </div>
   

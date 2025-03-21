@@ -679,10 +679,10 @@ const Analysis = () => {
           </div>
           <div className="mt-8">
 <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Data Sources & Collection Period:</strong> The insights presented in this tool are based on data collected from external sources between <strong>2015 and 2024</strong>. The completeness and coverage of the insights depend on the availability and accuracy of these sources.</div>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Scope & Limitations:</strong> While we have made every effort to derive meaningful insights, the data used may not comprehensively represent all litter patterns and cleanup programs. The accuracy of insights is contingent upon the integrity of the data provided by external sources.</div>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Evolving Insights:</strong> As additional data is integrated, insights may evolve, leading to more refined and comprehensive analytics over time. The current insights should be considered indicative rather than definitive.</div>
-<div className="text-xs text-gray-600">📌 <strong>Liability Disclaimer:</strong> This tool is intended as an analytical aid and does not claim to provide an exhaustive or final representation of litter and cleanup trends. Users should exercise discretion when interpreting the data, and we disclaim any liability for decisions made based on these insights.</div>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Data Sources & Collection Period:</strong> Insights in this tool are based on external data collected between <strong>2015 </strong>  and <strong> 2024.</strong> Completeness and coverage depend on the availability and accuracy of these sources.</div>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Scope & Limitations:</strong> While we strive to provide meaningful insights, the data may not fully represent all litter patterns and cleanup programs. Accuracy is contingent on the integrity of external sources.</div>
+<div className="text-xs text-gray-600 mb-2">📌 <strong>Evolving Insights:</strong>As new data is integrated, insights may evolve, leading to more refined analytics over time. Current insights should be considered <strong> indicative, not definitive.</strong></div>
+<div className="text-xs text-gray-600">📌 <strong>Liability Disclaimer:</strong> This tool is an analytical aid and does not claim to provide a complete representation of litter trends. Users should exercise discretion when interpreting data. We disclaim any liability for decisions made based on these insights.</div>
 </div>
         </div>
       </div>
@@ -692,7 +692,7 @@ const Analysis = () => {
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
 
 
-        <div className="w-full h-96 p-4 rounded mb-[40px]">
+        <div className="w-full h-96 p-4 rounded mb-[40px] ">
 
           <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Litter Cleanup Activity Map:</p>
           {loadingMapData ? (
@@ -726,13 +726,13 @@ const Analysis = () => {
 
 <div 
   className="p-4 bg-white rounded flex flex-col items-center" 
-  style={{ width: '44%' }}
+  style={{ width: '44%' , }}
 >
 
             {loadingAnalysisData ? (
               <div>Loading line chart...</div>
             ) : (
-              <Line options={optionsLine} data={dataLine} height={400} />
+              <Line options={optionsLine} data={dataLine} height={230} />
             )}
           </div>
 
@@ -744,7 +744,7 @@ const Analysis = () => {
               <Doughnut
                 data={data}
                 options={optionsDoughnut}
-                
+                height={230}
               />
             )}
 

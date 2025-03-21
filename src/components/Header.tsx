@@ -62,23 +62,18 @@ const Header = () => {
 
 
     return (
-        <div className="w-full flex h-12 ">
-            <div className="w-1/3 p-1 ml-4">
-                <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>LitterSense</p>
-                <div className="flex">
-        <Image
-            src="/powered.png"
-            alt="Accenture"
-            width={100}
-            height={14}
-            className="object-contain"
-        />
-    </div>
-            </div>
+        <div className="w-full flex h-12 px-4 items-center justify-between">
+      <div className="flex flex-col">
+    <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
+        LitterSense
+    </p>
+    <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
+</div>
+
             {status === "authenticated" && (
             <div className="w-1/3 p-2 flex items-center">
                 <nav className="w-full">
-                    <ul className="flex justify-start gap-12 w-full">
+                    <ul className="flex justify-start gap-12 w-full" style={{justifyContent:'center' , marginLeft:'20%'}}>
                         <li>
                         <Link href="/home" onClick={() => setActiveTab('/home')}>
     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
