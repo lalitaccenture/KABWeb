@@ -1,22 +1,28 @@
 import { useState } from "react";
 
+type Week = {
+  week_id: number;
+  week: string;
+};
+
 type WeekSelectorProps = {
-  weeks: string[];
+  weeks: Week[];
 };
 
 const WeekSelector: React.FC<WeekSelectorProps> = ({ weeks }) => {
-  const [selectedWeek, setSelectedWeek] = useState<string>(weeks[0]);
+  const [selectedWeekId, setSelectedWeekId] = useState<number>(weeks[0].week_id);
 
   return (
     <div className="flex space-x-7">
-      {weeks.map((week) => (
+      {weeks.map(({ week_id, week }) => (
         <button
-          key={week}
-          onClick={() => setSelectedWeek(week)}
+          key={week_id}
+          onClick={() => setSelectedWeekId(week_id)}
           className={`px-4 py-2 border rounded transition-colors 
-            ${selectedWeek === week ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"}`}
+            ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"}`}
         >
          <p className="text-black text-xs font-medium font-neris">  Week of {week} </p>
+    
         </button>
       ))}
     </div>
