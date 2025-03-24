@@ -10,11 +10,11 @@ type WeekSelectorProps = {
 };
 
 const WeekSelector: React.FC<WeekSelectorProps> = ({ weeks }) => {
-  const [selectedWeekId, setSelectedWeekId] = useState<number>(weeks[0].week_id);
+  const [selectedWeekId, setSelectedWeekId] = useState<number>(weeks[0]?.week_id);
 
   return (
     <div className="flex space-x-7">
-      {weeks.map(({ week_id, week }) => (
+      {weeks?.map(({ week_id, week }) => (
         <button
           key={week_id}
           onClick={() => setSelectedWeekId(week_id)}
