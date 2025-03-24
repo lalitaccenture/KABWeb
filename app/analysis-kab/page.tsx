@@ -20,7 +20,7 @@ const MapAnalysisGEOJSON = dynamic(() => import("../../src/components/AnalysisGe
 const Select = dynamic(() => import('react-select'), { ssr: false });
 import value from "../../public/KABAnalytics 1.json"
 import { useRouter } from "next/navigation";
-import { convertToIntegers, formatNumber } from "@/utils/common";
+import { convertToIntegers, formatNumber, formatNumberMillion } from "@/utils/common";
 import { useSession } from "next-auth/react";
 
 // Define the types for the correlation analysis and selected coefficient
@@ -359,11 +359,12 @@ const ScenarioModeling = () => {
             const total = dataset.reduce((acc, val) => acc + val, 0);
             const value = tooltipItem.raw as number;
             const percentage = ((value / total) * 100).toFixed(1);
-  
-            return [`# of Litter: ${value}`, `(${percentage}%)`];
+            
+            return [`# of Litter: ${formatNumberMillion(value)}`, `(${percentage}%)`];
           },
         },
       },
+      
     },
     cutout: "40%", // Keep the inner hole clear
     layout: {
@@ -373,6 +374,7 @@ const ScenarioModeling = () => {
       },
     },
   };
+
 
   if (status === "loading") {
     return <p>Loading...</p>; // Prevents UI flickering
