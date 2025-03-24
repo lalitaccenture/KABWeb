@@ -15,7 +15,7 @@ import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
 import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { formatNumber } from "@/utils/common";
+import { formatNumber, formatNumberMillion } from "@/utils/common";
 import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -107,13 +107,31 @@ const Analysis = () => {
       const dropD = await analysisNewDropdown();
       setStatesNewData(dropD?.Dropdown)
       setYearsNewData(dropD?.Years)
+      const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
+    if (defaultState) {
+      setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
+    }
       setLoadingAnalysisNewData(false)
 
       // const value = await applyFilter();
       // setAnalysisData(value);
-      const test = await getAnalysisDashboard();
+
+      const queryParamsForMap = {
+        state: 'California',
+      };
+      //const test = await getAnalysisDashboard();
+      const test = await getAnalysisDashboard(queryParamsForMap);
       setAnalysisData(test);
       //setMarkers(value?.map_data)
+
+      setLoadingMapData(true)
+
+      
+
+      const resp = await getAnalysisDashboardMap(queryParamsForMap);
+      setMarkers(resp?.map_data)
+
+      setLoadingMapData(false);
 
       setLoadingAnalysisData(false);
     } catch (error) {
@@ -122,6 +140,7 @@ const Analysis = () => {
       setLoadingAnalysisData(false);
       setLoadingAnalysisNewData(false)
       setLoadingExternalData(false);
+      setLoadingMapData(false)
     } finally {
 
     }
@@ -187,7 +206,13 @@ const Analysis = () => {
       const res = await getAnalysisDashboard(queryParams);
 
       setAnalysisData(res);
-      setCenter(res?.centroid)
+      if(res?.centroid === "No location found"){
+        
+      }
+      else{
+        setCenter(res?.centroid)
+      }
+      
       setLoadingAnalysisData(false);
 
       const resp = await getAnalysisDashboardMap(queryParamsForMap);
@@ -213,6 +238,44 @@ const Analysis = () => {
     }
   };
 
+  const fetchDataAfterClear = async ()=>{
+    setLoadingExternalData(true);
+    setLoadingAnalysisData(true);
+    setLoadingAnalysisNewData(true);
+    setError(null);
+
+    try {
+
+      // const data = await getAnalysisExternalData();
+      // setStatesData(data.States);
+      // setCountiesData(data.Counties);
+      // setTractsData(data.TractIDs);
+      // setYearsData(data.Years);
+
+      setLoadingExternalData(false);
+      const dropD = await analysisNewDropdown();
+      setStatesNewData(dropD?.Dropdown)
+      setYearsNewData(dropD?.Years)
+      setLoadingAnalysisNewData(false)
+
+      // const value = await applyFilter();
+      // setAnalysisData(value);
+      const test = await getAnalysisDashboard();
+      setAnalysisData(test);
+      //setMarkers(value?.map_data)
+
+      setLoadingAnalysisData(false);
+    } catch (error) {
+      setError("Failed to fetch data, please try again later.");
+
+      setLoadingAnalysisData(false);
+      setLoadingAnalysisNewData(false)
+      setLoadingExternalData(false);
+    } finally {
+
+    }
+  }
+
   const handleClear = () => {
     setCenter([37.0902, -95.7129]);
     setZoom(4);
@@ -225,7 +288,7 @@ const Analysis = () => {
       year: null,
     }));
 
-    fetchData();
+    fetchDataAfterClear();
 
   };
 
@@ -408,7 +471,7 @@ const Analysis = () => {
             const value = tooltipItem.raw as number;
             const percentage = ((value / total) * 100).toFixed(1);
   
-            return [`# of Litter: ${value}`, `(${percentage}%)`];
+            return [`# of Litter: ${formatNumberMillion(value)}`, `(${percentage}%)`];
           },
         },
       },

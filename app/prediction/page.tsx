@@ -217,7 +217,7 @@ const Prediction = () => {
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
     try {
-      const res = await predictionNewDropdown(queryParams);
+      const res = await getPredictionDashboard(queryParams);
       setPredictionData(res);
       //setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
