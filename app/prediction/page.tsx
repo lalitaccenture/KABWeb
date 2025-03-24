@@ -533,18 +533,10 @@ const Prediction = () => {
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4 mt-[-1.5%]">
 
-      <div>
-            <p className="mt-4 text-black text-base font-semibold font-neris">Select a week</p>
-    
-    
-            {loadingAnalysisData ? <>Loading...</> :
-      <WeekSelector weeks={weeks} />}
-      </div>
 
-      <div className="w-full h-96 p-4 ">
-
-          {loadingMapData ? (
-            <div className="flex justify-center items-center h-full">
+      <div className="w-full h-96  " style={{marginTop:'3%'}}>
+             {loadingMapData ? (
+            <div className="flex justify-center items-center h-full p-1">
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
@@ -552,9 +544,15 @@ const Prediction = () => {
           )}
         </div>
 
-          
+         
+      <div>
+            <p className="mt-4 text-black text-base font-semibold font-neris">Select a week</p>
+    {loadingAnalysisData ? <>Loading...</> :
+      <WeekSelector weeks={weeks} />}
+      </div> 
 
-      </div>
+      
+     </div>
 
 
       <div className="w-1/5 p-4 mt-4 space-y-6 mb-4 bg-white rounded-lg shadow-md">
@@ -583,7 +581,27 @@ const Prediction = () => {
 
                     <div className="h-auto">
                     {/* <Bar options={options} data={data} /> */}
-                    <Doughnut data={dataDoughnut} />
+<Doughnut 
+  data={dataDoughnut} 
+  options={{
+    plugins: {
+      legend: {
+        display: true,
+        position: "bottom",  // Move legend below the chart
+        labels: {
+          font: {
+            size: 10,  // Reduce legend text size
+          },
+          boxWidth: 12,  // Reduce color box size
+          padding: 6,  // Adjust spacing
+        },
+      },
+    },
+    maintainAspectRatio: false,
+    responsive: true,
+  }} 
+/>
+
                     </div>
 
 

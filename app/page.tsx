@@ -21,7 +21,7 @@ export default function Home() {
 </div>
 
           <div className="flex flex-col items-center justify-center mt-10 ml-14 mr-14">
-          <p className="text-3xl font-normal text-center mb-2 font-neris">
+          <p className="text-xl font-normal text-center mb-2 font-neris">
           We're so excited to have you join a movement dedicated to smarter, data-driven litter management!
           Predict. Plan. Prevent.
 </p>
