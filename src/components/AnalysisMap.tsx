@@ -78,7 +78,7 @@ const MapAnalysis: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 
 
         <div className="w-3 h-3 rounded-full " style={{backgroundColor:'rgba(128, 0, 128, 0.4)'}}></div>
-        <span className="text-gray-400 text-xs font-xs">Cleanup Site - Bubble size reflects the amount of litter collected; more litter means a larger bubble.</span>
+        <span className="text-gray-400 text-xs font-xs">Cleanup Site - Bubble size reflects the amount of litter collected; larger bubble indicates more litter</span>
       </div>
     </div>
   

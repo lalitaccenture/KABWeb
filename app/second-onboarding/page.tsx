@@ -13,10 +13,10 @@ const SecondOnboarding = () => {
         
         <div className="container mx-auto px-3 pt-2 w-100 rounded-lg mb-5 h-[424px]" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
           <div className="flex items-center justify-center mt-10 ml-10 mr-10">
-          <p className="text-3xl font-normal font-neris items-center justify-center" 
+          <p  className="text-xl font-normal text-center  font-neris"
    style={{textAlign: 'center' }}>
   This tool is designed to help decision makers predict and analyse litter, 
-  design and rollout initiatives to beautify communities effectively and efficiently
+  design and rollout initiatives to beautify communities effectively and efficiently.
 </p>
 
 
@@ -25,14 +25,17 @@ const SecondOnboarding = () => {
             <Button
               onClick={() => router.push("/signup")}
               style={{
-                backgroundColor: '#3AAD73',
-                color: 'white',
+                border: '2px solid #5BAA76',  // Add green border
+                color: '#5BAA76',  // Text color should match border
+                backgroundColor: 'transparent', 
+             
+               
                 width: '324px',
                 height: '48px',  
-                borderRadius: '32px',
+               
                 fontSize: '16px',
               }}
-              className="hover:bg-[#3AAD73] transition-colors duration-300 font-neris"
+              className="hover:bg-[#5BAA76] transition-colors duration-300 font-neris text-2xl font-bold "
             >
               Sign Up
             </Button>
@@ -41,14 +44,14 @@ const SecondOnboarding = () => {
             <Button
               onClick={() => router.push("/login")}
               style={{
-                backgroundColor: '#3AAD73',
+                backgroundColor: '#5BAA76',
                 color: 'white',
                 width: '324px',
                 height: '48px',  
-                borderRadius: '32px',
+              
                 fontSize: '16px',
               }}
-              className="hover:bg-[#3AAD73] transition-colors duration-300 font-neris"
+              className="hover:bg-[#5BAA76] transition-colors duration-300 font-neris text-2xl font-bold "
             >
               Log In
             </Button>

@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import { convertToIntegers, formatNumber } from "@/utils/common";
 import { useSession } from "next-auth/react";
 
+
 // Define the types for the correlation analysis and selected coefficient
 type CorrelationAnalysis = Record<string, { scatter_plot: { [key: string]: number }[] }>;
 
@@ -75,6 +76,7 @@ const ScenarioModeling = () => {
     parameter: null,
   });
   const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
   const [showGeoJSON, setShowGeoJSON] = useState(true);
   const [correlationCoeff, setCorrelationCoeff] = useState<any>(null);
   const [dataForScatterChart, setDataForScatterChart] = useState([])
@@ -87,17 +89,36 @@ const ScenarioModeling = () => {
   const [forScatter, setForscatter] = useState<any>([]);
   const [stateInfoFORGEOJSON, setStateInfoFORGEOJSON] = useState<any>([]);
   const [coefficientVal, setCoefficientVal] = useState<number>();
-  const [measurementUnit,setMeasurementUnit]  =useState()
+  const [measurementUnit, setMeasurementUnit] = useState()
   const isFirstRender = useRef(true);
   const isNavigating = useRef(false);
   const { data: session, status } = useSession();
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            router.push("/"); // Redirect to login page
-        }
-    }, [status, router]);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      tooltipRef.current &&
+      event.target instanceof Node &&
+      !tooltipRef.current.contains(event.target)
+    ) {
+      setShowTooltip(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showTooltip) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showTooltip]);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/"); // Redirect to login page
+    }
+  }, [status, router]);
   interface DataItem {
     [key: string]: number | string; // Assuming the values are either numbers or strings
   }
@@ -110,7 +131,7 @@ const ScenarioModeling = () => {
       setStatesData(data?.States)
       setDropDown(data["Parameter Name"])
 
-     
+
       const dataForAnalytics = await getAnalysisKABData();
       setAnalysisData(dataForAnalytics)
       setMarkers(dataForAnalytics?.gps_data)
@@ -349,8 +370,8 @@ const ScenarioModeling = () => {
           },
         },
       },
-      datalabels:{
-        display:false
+      datalabels: {
+        display: false
       },
       tooltip: {
         callbacks: {
@@ -359,7 +380,7 @@ const ScenarioModeling = () => {
             const total = dataset.reduce((acc, val) => acc + val, 0);
             const value = tooltipItem.raw as number;
             const percentage = ((value / total) * 100).toFixed(1);
-  
+
             return [`# of Litter: ${value}`, `(${percentage}%)`];
           },
         },
@@ -376,15 +397,15 @@ const ScenarioModeling = () => {
 
   if (status === "loading") {
     return <p>Loading...</p>; // Prevents UI flickering
-}
+  }
 
   return (
 
-    <div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4" style={{padding:"10px"}}>
+    <div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4" style={{ padding: "10px" }}>
 
 
 
-      <div style={{ marginTop: "64px", height:'54rem',width:'20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
+      <div style={{ marginTop: "64px", height: '54rem', width: '20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
 
@@ -457,8 +478,8 @@ const ScenarioModeling = () => {
             </Button>
 
           </div>
-       
-     {/*      <div className="flex flex-col items-center mr-[78px]">
+
+          {/*      <div className="flex flex-col items-center mr-[78px]">
 
             <span className="text-xs text-gray-700">Lower Litter Density</span>
             <div className="w-5 h-12 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
@@ -466,14 +487,14 @@ const ScenarioModeling = () => {
             <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
 
           </div> */}
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data:</p>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Interpreting Correlation:</strong>Correlation values are derived from the <strong>2020 Keep America Beautiful (KAB) survey and may change</strong> as more data is collected. Correlation <strong>does not </strong> imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</div>
-<div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in<strong> data collection methods, geographic coverage, and external influences.</strong> The results should be viewed as <strong>indicative rather than absolute.</strong></div>
+          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
+          <div className="text-xs text-gray-600 ">📌 <strong>Interpreting Correlation:</strong>Correlation values are derived from the <strong>2020 Keep America Beautiful (KAB) survey and may change</strong> as more data is collected. Correlation <strong>does not </strong> imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</div>
+          <div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in<strong> data collection methods, geographic coverage, and external influences.</strong> The results should be viewed as <strong>indicative rather than absolute.</strong></div>
 
-          
 
-          
-          
+
+
+
           {/* <div className="flex items-center gap-2 mt-2">
     <div className="w-2 h-2 bg-green-500"></div> 
     <p className="text-xs text-gray-700">
@@ -494,7 +515,7 @@ const ScenarioModeling = () => {
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{maxWidth:'58%'}}>
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ maxWidth: '58%' }}>
         <div
           className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4"
           style={{ marginTop: '72px' }}
@@ -510,15 +531,15 @@ const ScenarioModeling = () => {
 
         </div>
         {/* AnalysisMap section */}
-        <div 
-  className="w-full rounded" 
-  style={{ 
-    marginTop: '32px', 
-    padding: '10px 0px', 
-    display: 'block', 
-    width: '100%' 
-  }}
->
+        <div
+          className="w-full rounded"
+          style={{
+            marginTop: '32px',
+            padding: '10px 0px',
+            display: 'block',
+            width: '100%'
+          }}
+        >
 
           <p className="block text-base font-semibold text-black-600 mb-1 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
 
@@ -538,87 +559,87 @@ const ScenarioModeling = () => {
           )}
         </div>
 
-        <div className="flex justify-center items-center gap-4 mt-4" style={{marginTop:'-12px',marginRight:'39%'}}>
-  <span className="text-xs text-gray-400">Lower Litter Density</span>
-  <div className="w-20 h-2 bg-gradient-to-r from-[#FDBA74] to-[#FB7185] rounded-full"></div>
-  <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
-  <div className="flex items-center gap-1">
-    <img src="/marker-icon.png" alt="Marker" className="w-3 h-5" />
-    <span className="text-xs text-gray-400">Survey Site</span>
-  </div>
-</div>
+        <div className="flex justify-center items-center gap-4 mt-4" style={{ marginTop: '-12px', marginRight: '39%' }}>
+          <span className="text-xs text-gray-400">Lower Litter Density</span>
+          <div className="w-20 h-2 bg-gradient-to-r from-[#FDBA74] to-[#FB7185] rounded-full"></div>
+          <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+          <div className="flex items-center gap-1">
+            <img src="/marker-icon.png" alt="Marker" className="w-3 h-5" />
+            <span className="text-xs text-gray-400">Survey Site</span>
+          </div>
+        </div>
 
-        
-        <div className="flex w-full gap-6" style={{marginTop:'3px'}}>
-            <div className="w-1/2">
+
+        <div className="flex w-full gap-6" style={{ marginTop: '3px' }}>
+          <div className="w-1/2">
             <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
-                        Correlation Between Estimated Litter Density-
-                      </label>
-            
-                      {loadingExternalData ? (
-                        <div>Loading coefficients...</div>
-                      ) : (
-                        <Select
-                          id="parameterName"
-                          value={correlationCoeff}
-                          onChange={(selectedOption: any) => {
-                            setCorrelationCoeff(selectedOption)
-                            setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
-                            setMeasurementUnit(forScatter[selectedOption?.value]?.measurement_unit)
+              Correlation Between Estimated Litter Density and
+            </label>
 
-                          }}
-                          options={dropDown}
-                          placeholder="Select coefficient"
-                          styles={{
-                            control: (base, state) => ({
-                              ...base,
-                              fontFamily: "'Neris', sans-serif",
-                              borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                              boxShadow:
-                                state.isFocused || state.hasValue
-                                  ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                                  : "none",
-                              transition: "all 0.2s ease-in-out",
-                              "&:hover": {
-                                borderColor: "#5BAA76",
-                              },
-                            }),
-                            placeholder: (base) => ({
-                              ...base,
-                              color: "#C5C5C5",
-                              fontSize: "14px",
-                            }),
-                            option: (base, { isSelected, isFocused }) => ({
-                              ...base,
-                              backgroundColor: isSelected
-                                ? "#5BAA76"
-                                : isFocused
-                                  ? "#A5D6A7"
-                                  : "white",
-                              color: isSelected ? "white" : "black",
-                              "&:active": {
-                                backgroundColor: "#5BAA76",
-                              },
-                            }),
-                            singleValue: (base) => ({
-                              ...base,
-                              color: "black",
-                              fontWeight: "semibold",
-                            }),
-                          }}
-                          className="w-[250px]"
-                          isDisabled={!correlationCoeff}
-                        />
-                      )}
-            </div>
-            <div className="w-1/2">
+            {loadingExternalData ? (
+              <div>Loading coefficients...</div>
+            ) : (
+              <Select
+                id="parameterName"
+                value={correlationCoeff}
+                onChange={(selectedOption: any) => {
+                  setCorrelationCoeff(selectedOption)
+                  setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
+                  setMeasurementUnit(forScatter[selectedOption?.value]?.measurement_unit)
+
+                }}
+                options={dropDown}
+                placeholder="Select coefficient"
+                styles={{
+                  control: (base, state) => ({
+                    ...base,
+                    fontFamily: "'Neris', sans-serif",
+                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                    boxShadow:
+                      state.isFocused || state.hasValue
+                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                        : "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      borderColor: "#5BAA76",
+                    },
+                  }),
+                  placeholder: (base) => ({
+                    ...base,
+                    color: "#C5C5C5",
+                    fontSize: "14px",
+                  }),
+                  option: (base, { isSelected, isFocused }) => ({
+                    ...base,
+                    backgroundColor: isSelected
+                      ? "#5BAA76"
+                      : isFocused
+                        ? "#A5D6A7"
+                        : "white",
+                    color: isSelected ? "white" : "black",
+                    "&:active": {
+                      backgroundColor: "#5BAA76",
+                    },
+                  }),
+                  singleValue: (base) => ({
+                    ...base,
+                    color: "black",
+                    fontWeight: "semibold",
+                  }),
+                }}
+                className="w-[250px]"
+                isDisabled={!correlationCoeff}
+              />
+            )}
+          </div>
+          <div className="w-1/2">
             <label className="text-base font-semibold font-neris">
-                Breakdown of Litter Types
-              </label></div>
+              Breakdown of Litter Types
+            </label></div>
         </div>
 
         <div className="flex w-full gap-4">
-        <div className="w-1/2 p-4 bg-white rounded">
+          <div className="w-1/2 p-4 bg-white rounded">
 
             <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
               Correlation Coefficient:
@@ -637,21 +658,22 @@ const ScenarioModeling = () => {
                 {/* Tooltip Box */}
                 {showTooltip && (
                   <div
+                    ref={tooltipRef}
                     className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50"
-                    style={{ minWidth: "300px", maxWidth: "238px", whiteSpace: "normal", marginLeft: '24px' }}
+                    style={{ minWidth: "303px", whiteSpace: "normal", marginLeft: '24px' }}
                   >
                     <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
 
                     {/* Adjusted padding to move bullets slightly left */}
                     <ul className="mt-3 text-[13px] leading-[1.5] list-disc pl-3" style={{ marginLeft: '-9px' }}>
-                      <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together.</li>
-                      <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases.</li>
+                      <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together</li>
+                      <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases</li>
                       <li>
-                        <span className="font-bold">Strong (±0.7 to ±1.0)</span> |
-                        <span className="font-bold"> Moderate (±0.3 to ±0.7)</span> |
-                        <span className="font-bold"> Weak (0 to ±0.3)</span>
+                        <span >Strong (±0.7 to ±1.0)</span> |
+                        <span > Moderate (±0.3 to ±0.7)</span> |
+                        <span > Weak (0 to ±0.3)</span>
                       </li>
-                      <li><span className="font-bold">A value near 0 indicates little to no correlation.</span></li>
+                      <li><span>A value near 0 indicates little to no correlation</span></li>
                     </ul>
 
                   </div>
@@ -662,84 +684,84 @@ const ScenarioModeling = () => {
 
             </span>
             {loadingExternalData ?
-            <>Loading ...</> :
-            <Scatter
-              options={{
-                plugins: {
-                  datalabels: {
-                    display: false
-                  },
-                  legend: {
-                    display: false, // Hides the legend completely
-                  },
+              <>Loading ...</> :
+              <Scatter
+                options={{
+                  plugins: {
+                    datalabels: {
+                      display: false
+                    },
+                    legend: {
+                      display: false, // Hides the legend completely
+                    },
 
-                },
-                scales: {
-                  x: {
-                    title: {
-                      display: true,
-                      text: "Estimated Litter Density (#/ sq. miles)",
+                  },
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Estimated Litter Density (#/ sq. miles)",
+                      },
+                      ticks: {
+                        //stepSize: 0.1, // Adjust this based on your dataset
+                        autoSkip: false, // Prevent Chart.js from skipping ticks
+                      },
                     },
-                    ticks: {
-                      //stepSize: 0.1, // Adjust this based on your dataset
-                      autoSkip: false, // Prevent Chart.js from skipping ticks
+                    y: {
+                      title: {
+                        display: true,
+                        text: [`${correlationCoeff?.label}`, `(${measurementUnit})`],
+                        align: "start"
+                      },
+                      ticks: {
+                        //stepSize: 0.1, // Adjust this based on your dataset
+                        autoSkip: false, // Prevent Chart.js from skipping ticks
+                      },
                     },
                   },
-                  y: {
-                    title: {
-                      display: true,
-                      text:  [`${correlationCoeff?.label}`, `(${measurementUnit})`],
-                      align: "start"
-                    },
-                    ticks: {
-                      //stepSize: 0.1, // Adjust this based on your dataset
-                      autoSkip: false, // Prevent Chart.js from skipping ticks
-                    },
-                  },
-                },
-              }}
-              data={dataForScatter}
-            />
+                }}
+                data={dataForScatter}
+              />
             }
           </div>
-        <div className="w-1/2 p-4 bg-white rounded">
-        {loadingAnalysisData ? (
-                <div>Loading doughnut chart...</div>
-              ) : (
-                <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px', width: '400px' }} />
+          <div className="w-1/2 p-4 bg-white rounded">
+            {loadingAnalysisData ? (
+              <div>Loading doughnut chart...</div>
+            ) : (
+              <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px', width: '400px' }} />
 
-              )}
+            )}
+          </div>
         </div>
+        <div>
+          <p className="text-xs text-gray-500" >Source: KAB Litter Survey 2020</p>
         </div>
-<div>
-<p className="text-xs text-gray-500" >Source: KAB Litter Survey 2020</p>
-</div>
       </div>
 
       {/* New Sections in the Right Sidebar */}
       <div className="w-1/5 space-y-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px" ,height:'92%'}}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px", height: '92%' }}>
           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>
   </div> */}
           {/* Total Estimated Litter: */}
           <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
-  <div className="flex flex-col items-center text-center">
-    <p className="text-black text-base font-semibold font-neris whitespace-nowrap">
-      Total Estimated Litter:
-    </p>
+            <div className="flex flex-col items-center text-center">
+              <p className="text-black text-base font-semibold font-neris whitespace-nowrap">
+                Total Estimated Litter:
+              </p>
 
-    {loadingAnalysisData ? (
-      <span>Loading Data...</span>
-    ) : (
-      <span className="text-xl font-bold text-green-700">
-        {analysisData?.total_estimated_litter}  
-        <span className="text-sm text-green-700"> (#)</span>
-      </span>
-    )}
-  </div>
-</div>
+              {loadingAnalysisData ? (
+                <span>Loading Data...</span>
+              ) : (
+                <span className="text-xl font-bold text-green-700">
+                  {analysisData?.total_estimated_litter}
+                  <span className="text-sm text-green-700"> (#)</span>
+                </span>
+              )}
+            </div>
+          </div>
 
 
 
@@ -769,45 +791,45 @@ const ScenarioModeling = () => {
 
 
           {/* Top 3 States Section */}
-          <div className="mb-4 p-4 rounded" style={{marginLeft:'-15px'}}>
-  <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States:</p>
+          <div className="mb-4 p-4 rounded" style={{ marginLeft: '-15px' }}>
+            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States:</p>
 
-  {loadingAnalysisData ? (
-    <div>Loading top states...</div>
-  ) : (
-    <>
-      {analysisData?.top_3_states?.map((state: any, index: any) => (
-        <div 
-          key={index} 
-          className="flex items-start gap-3 p-3 mb-4 bg-gray-100 rounded-lg"
-        >
-          {/* Dot before each state name */}
-          <span className="text-green-700 text-lg font-bold leading-6">•</span>
+            {loadingAnalysisData ? (
+              <div>Loading top states...</div>
+            ) : (
+              <>
+                {analysisData?.top_3_states?.map((state: any, index: any) => (
+                  <div
+                    key={index}
+                    className="flex items-start gap-3 p-3 mb-4 bg-gray-100 rounded-lg"
+                  >
+                    {/* Dot before each state name */}
+                    <span className="text-green-700 text-lg font-bold leading-6">•</span>
 
-          {/* State details */}
-          <div>
-            <p className="text-base font-medium font-neris">{state.State}</p>
-            
-            {/* ✅ Fixed Estimated Value Alignment */}
-            <p className="text-xs text-gray-500 font-neris flex items-center">
-              Estimated:
-              <span className="font-semibold text-black text-xs ml-1">
-                {state?.Estimated}
-              </span>
-            </p>
+                    {/* State details */}
+                    <div>
+                      <p className="text-base font-medium font-neris">{state.State}</p>
 
-            <p className="text-xs text-gray-500 font-neris">
-              Litter Density: 
-              <span className="font-semibold text-black ml-1 text-xs">
-                {formatNumber(Math.trunc(state["Litter density"]))}
-              </span>
-            </p>
+                      {/* ✅ Fixed Estimated Value Alignment */}
+                      <p className="text-xs text-gray-500 font-neris flex items-center">
+                        Estimated Litter:
+                        <span className="font-semibold text-black text-xs ml-1">
+                          {state?.Estimated}
+                        </span>
+                      </p>
+
+                      <p className="text-xs text-gray-500 font-neris">
+                        Litter Density:
+                        <span className="font-semibold text-black ml-1 text-xs">
+                          {formatNumber(Math.trunc(state["Litter density"]))}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
           </div>
-        </div>
-      ))}
-    </>
-  )}
-</div>
 
 
         </div>

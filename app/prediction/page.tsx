@@ -311,7 +311,7 @@ const Prediction = () => {
   const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange }) => (
     <div className="flex items-center space-x-2">
       <Switch onChange={onChange} checked={checked} uncheckedIcon={false} 
-        checkedIcon={false} onColor="#3AAD73"  height={20} width={40} handleDiameter={14} />  
+        checkedIcon={false} onColor="#5BAA76"  height={20} width={40} handleDiameter={14} />  
       <span>{label}</span>
     </div>
   );
@@ -512,7 +512,7 @@ const Prediction = () => {
 
 
     <div className="mt-4 flex flex-col gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData}  onClick={handleApply}>
+            <Button className="w-full bg-[#5BAA76] text-white hover:bg-[#5BAA76]" disabled={loadingAnalysisNewData || loadingAnalysisData}  onClick={handleApply}>
               Apply
             </Button>
            <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
@@ -532,7 +532,12 @@ const Prediction = () => {
 
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4 mt-[-1.5%]">
-
+        
+      <div>
+            <p className="mt-4 text-black text-base font-semibold font-neris">Select a week</p>
+    {loadingAnalysisData ? <>Loading...</> :
+      <WeekSelector weeks={weeks} />}
+      </div> 
 
       <div className="w-full h-96  " style={{marginTop:'3%'}}>
              {loadingMapData ? (
@@ -544,12 +549,7 @@ const Prediction = () => {
           )}
         </div>
 
-         
-      <div>
-            <p className="mt-4 text-black text-base font-semibold font-neris">Select a week</p>
-    {loadingAnalysisData ? <>Loading...</> :
-      <WeekSelector weeks={weeks} />}
-      </div> 
+ 
 
       
      </div>
@@ -561,21 +561,24 @@ const Prediction = () => {
 
 
       <div className="p-4 bg-[#DCFCE7] rounded">
-                    <p className="mt-4 text-black text-base font-semibold font-neris">Total Estimated Litter</p>
+                    <p className="mt-4 text-black text-base font-semibold font-neris">Total Estimated Litter:</p>
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-lg font-bold">{predictionData?.Total_Estimated_Litter?.toFixed(2)}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.Total_Estimated_Litter?.toFixed(2)}</span>
             )}
                     </div>
 
 
                 <div className="p-4 bg-[#DCFCE7] rounded">
-                    <p className="mt-4 text-black text-base font-semibold font-neris">Estimated Litter Density</p>
+                <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
+    Estimated Litter Density:
+</p>
+
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-lg font-bold">{predictionData?.Estimated_Litter_Density?.toFixed(2)}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.Estimated_Litter_Density?.toFixed(2)}</span>
             )}
                     </div>
 

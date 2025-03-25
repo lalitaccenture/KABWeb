@@ -726,7 +726,7 @@ const Analysis = () => {
 
 <div 
   className="p-4 bg-white rounded flex flex-col items-center" 
-  style={{ width: '44%' , }}
+  style={{ width: '44%' ,marginTop:'-4%' }}
 >
 
             {loadingAnalysisData ? (
@@ -737,7 +737,7 @@ const Analysis = () => {
           </div>
 
 
-          <div className="p-4 bg-white rounded flex flex-col items-center relative"   style={{ width: '44%' }}>
+          <div className="p-4 bg-white rounded flex flex-col items-center relative"   style={{ width: '44%',marginTop:'-4%' }}>
             {loadingAnalysisData ? (
               <div>Loading doughnut chart...</div>
             ) : (
@@ -776,7 +776,7 @@ const Analysis = () => {
 
           {/* Title */}
           <p className="mt-4 text-black text-base font-semibold font-neris">
-          Total Cleanup Programs:
+          Total Cleanup Events:
           </p>
 
           {/* Value */}

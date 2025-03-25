@@ -94,7 +94,7 @@ const Login = () => {
             <div className="container mx-auto px-3 pt-2 w-100 mt-16 rounded-lg flex" style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
                 {/* Left Section (Login Form) */}
                 <div className="w-1/2 p-6 space-y-6">
-                    <h2 className="text-3xl font-bold text-left font-neris">Log In</h2>
+                    <p className="text-2xl font-bold text-left font-neris text-[#5baa76] ">Log In</p>
 
                     <button
                         onClick={() => signIn("google")}
@@ -106,7 +106,7 @@ const Login = () => {
                     <button
                         onClick={() => signIn("apple")}
                         className="w-full py-2 px-4 text-black border-2 border-[#5BAA76] rounded-lg flex items-center justify-center space-x-2 hover:bg-[#f1f1f1] focus:outline-none focus:ring-2 focus:ring-[#5BAA76]">
-                        <Image src="/logo-apple.png" alt="Apple" width={20} height={20} />
+                        <Image src="/logo-apple.png" alt="Apple" width={24} height={24} style={{marginLeft:'-2%'}} />
                         <span className="font-neris">Continue with Apple</span>
                     </button>
 
@@ -128,7 +128,9 @@ const Login = () => {
                             <input
                                 type="email"
                                 {...register("email")}
-                                className={`w-full px-4 py-2 border rounded-md font-neris ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                                className={`w-full px-4 py-2 border rounded-md font-neris 
+                                    ${errors.email ? "border-red-500" : "border-gray-300"} 
+                                    focus:border-[#5BAA76] focus:outline-none`}
                             />
                             {errors.email && <p className="text-sm text-red-500 font-neris">{errors.email.message}</p>}
                         </div>
@@ -139,24 +141,26 @@ const Login = () => {
                             <input
                                 type="password"
                                 {...register("password")}
-                                className={`w-full px-4 py-2 border rounded-md font-neris ${errors.password ? "border-red-500" : "border-gray-300"}`}
+                                className={`w-full px-4 py-2 border rounded-md font-neris 
+                                    ${errors.password ? "border-red-500" : "border-gray-300"} 
+                                    focus:border-[#5BAA76] focus:outline-none`}
+                        
                             />
                             {errors.password && <p className="text-sm text-red-500 font-neris">{errors.password.message}</p>}
                         </div>
                         <div className="flex items-center justify-center mt-14">
 
                             <Button type="submit"
-                                className="w-full py-3 hover:bg-[#5BAA76]-600 transition font-neris"
+                               className="w-full py-3 hover:bg-[#5BAA76]-600 transition font-neris font-semibold"
                                 disabled={loadingLoginBtn}
                                 style={{
-                                    backgroundColor: '#3AAD73',
+                                    backgroundColor: '#5BAA76',
                                     color: 'white',
-                                    width: '324px',
+                                    width: '100%',
                                     height: '48px',
-                                    borderRadius: '32px',
                                     fontSize: '16px',
                                 }}>
-                                {loadingLoginBtn ? 'Logging in...' : 'Login'}
+                                {loadingLoginBtn ? 'Logging In...' : 'Log In'}
                             </Button>
                         </div>
                     </form>
@@ -166,10 +170,15 @@ const Login = () => {
                         Use Single Sign-On
                     </p> */}
 
+<p
+  className="text-xs text-[#5BAA76] cursor-pointer  font-neris text-right" style={{marginTop:'7px'}}
+  onClick={() => router.push('/forgot-password')}
+>
+  Forgot password?
+</p>
 
-                    <p className="text-center text-sm underline cursor-pointer mt-5 font-neris" onClick={() => router.push('/forgot-password')}>
-                        Forgot password?
-                    </p>
+
+
                 </div>
 
 
