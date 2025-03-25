@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
+// const TestAnalysis = dynamic(() => import("../../src/components/TestAnalysis"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface FilterOption {
@@ -111,6 +112,12 @@ const Analysis = () => {
     if (defaultState) {
       setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
     }
+    const queryParamsForCounty = {
+      state: 'California',
+    };
+    const forCountyPopulate = await analysisNewDropdown(queryParamsForCounty);
+    setCountiesNewData(forCountyPopulate?.Dropdown)
+    setYearsNewData(forCountyPopulate?.Years)
       setLoadingAnalysisNewData(false)
 
       // const value = await applyFilter();
@@ -394,6 +401,7 @@ const Analysis = () => {
     ],
   };
 
+  
   const handleDropdownFurther = async (val: string, selectedOption: any) => {
     try {
       setLoadingAnalysisNewData(true)
