@@ -3,8 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 const Home = () => {
     const { data: session, status } = useSession();
@@ -28,7 +28,7 @@ const Home = () => {
                     <p className="mt-1 text-medium font-semibold font-neris">Choose your need below to see the impact!</p>
                 </div>
 
-                <div className="flex mt-8 mx-4 gap-8">
+                <div className="flex mt-6 mx-4 gap-8">
                     {/* Left Section (Prediction) */}
                     <div className="w-1/2">
                         <div className="space-y-4">
@@ -44,7 +44,7 @@ const Home = () => {
                                 <p className="text-base font-medium font-neris ">
                                 Choose the state, county or census tract you are interested in, and our advanced tool will generate predicted litter maps for the week of your selection. This feature  allows you to visualise and analyse litter distribution along with bins, amenities etc of the selected region.
                                 </p>
-                                <div className="relative mt-4">
+                                <div className="relative mx-14 mt-2" >
                                     <Image
                                         src='/predic.png' 
                                         alt="Prediction Image"
@@ -73,7 +73,7 @@ const Home = () => {
                                 <p className="text-base font-medium font-neris">
                                 Wish to see litter trends and analysis of a region? Select your state, county or census tract and get a comprehensive view of trends, statistics and historical litter patterns for your selected region!
                                 </p>
-                                <div className="relative mt-4">
+                                <div className="relative mx-14 mt-2">
                                     <Image
                                         src='/analys.png' 
                                         alt="Analysis Image"
