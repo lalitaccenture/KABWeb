@@ -203,3 +203,31 @@ export const predictionNewDropdown = async (queryParams: any = {}) => {
     throw error;
   }
 };
+
+export const analysisNewDropdownWithCity = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/dropdownswithcityfilter?code=4vc0Z9mm2Hjni2l3dBFeZXQjcPpRzV54GLCfmaHVbsUVAzFuz-ZkLA==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getAnalysisDashboardWithCity = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/analyticsdashboardcity?code=vOJ-CWvru0NCq1xwMHV0jaopUEBsirskDlI3U50YA_8ZAzFuSbHHuA==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
