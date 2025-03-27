@@ -40,7 +40,7 @@ const MapPrediction: React.FC<MapAnalysisProps> = ({ markers, zoom, center,switc
     <div className="w-full h-full">
     
 
-      <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false}>
+      <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {markers?.map((marker, index) => (
           <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 

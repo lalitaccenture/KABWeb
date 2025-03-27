@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, analysisNewDropdownWithCity, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisDashboardWithCity, getAnalysisExternalData } from "../utils/api";
+import { analysisNewDropdown, analysisNewDropdownWithCity, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisDashboardMapCity, getAnalysisDashboardWithCity, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { formatNumber, formatNumberMillion } from "@/utils/common";
 import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
@@ -136,7 +136,7 @@ const Analysis = () => {
 
       
 
-      const resp = await getAnalysisDashboardMap(queryParamsForMap);
+      const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
       setMarkers(resp?.map_data)
       setZoom(5);
       if(resp?.centroid === "No location found"){
@@ -201,7 +201,7 @@ const Analysis = () => {
 
     const queryParamsForMap = {
       state: filters.state?.value || null,
-      zone: filters.county?.value || null,
+      county: filters.county?.value || null,
       tractid: filters.tract?.value || null,
       year: filters.year?.value || null,
     };
@@ -229,7 +229,7 @@ const Analysis = () => {
       
       setLoadingAnalysisData(false);
 
-      const resp = await getAnalysisDashboardMap(queryParamsForMap);
+      const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
       setMarkers(resp?.map_data)
 
       if (queryParams.state && !queryParams.county && !queryParams.tractid) {
@@ -431,7 +431,7 @@ const Analysis = () => {
         queryParams = {
           state: filters?.state?.value || null,
           county: filters?.county?.value || null,
-          tract: selectedOption?.value || null,
+          tractid: selectedOption?.value || null,
         };
       }
 

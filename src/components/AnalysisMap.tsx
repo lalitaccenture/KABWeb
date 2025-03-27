@@ -68,7 +68,7 @@ const AnalysisMap: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
     <div className="w-full h-full mt-18">
     
 
-      <MapContainer center={center} zoom={zoom} style={{ height: "420px", }} attributionControl={false}>
+      <MapContainer center={center} zoom={zoom} style={{ height: "420px", }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <CanvasMarkersLayer data={markers} />
       </MapContainer>

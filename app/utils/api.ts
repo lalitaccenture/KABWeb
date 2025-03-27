@@ -231,3 +231,18 @@ export const getAnalysisDashboardWithCity = async (queryParams: any = {}) => {
     throw error;
   }
 };
+
+export const getAnalysisDashboardMapCity = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/analyticsdashboardcitymap?code=5dUwuIzfDexgxKxauopz8llaOiZuYh4qSei2VWGlHNPAAzFuea9yLg==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
