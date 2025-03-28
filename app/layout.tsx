@@ -34,9 +34,9 @@ export default function RootLayout({
           draggable           
           pauseOnHover         
         />
-        <Header />
+       {/*  <Header /> */}
         <main className="flex-grow">{children}</main>
-        <Footer />
+       {/*  <Footer /> */}
         </SessionProvider>
       </body>
     </html>

@@ -79,7 +79,7 @@ const Analysis = () => {
   const [countiesNewData, setCountiesNewData] = useState<any[]>([]);
   const [tractsNewData, setTractsNewData] = useState<any[]>([]);
   const [yearsNewData, setYearsNewData] = useState<any[]>([]);
-
+  const [activeTab, setActiveTab] = useState("cleanup");
   const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -491,12 +491,46 @@ const Analysis = () => {
 }
 
   return (
-    <div className="flex w-full gap-4 mt-4 bg-[rgba(91,170,118,0.1)] p-4 min-h-screen">
+    <div className="min-h-screen w-full flex p-4"  style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
+      {/* Top Buttons */}
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] mt-2">
+  {/* Litter Cleanup Analysis Button */}
+  <button
+    className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+      activeTab === "cleanup"
+        ? "bg-green-600 text-white font-bold shadow-md"
+        : "text-gray-500"
+    }`}
+    onClick={() => {
+      setActiveTab("cleanup");
+      router.push("/analysis-external");
+    }}
+  >
+    Litter Cleanup Analysis
+  </button>
 
+  {/* Litter Survey Analysis Button */}
+  <button
+    className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+      activeTab === "survey"
+        ? "bg-green-600 text-white font-bold shadow-md"
+        : "text-gray-500"
+    }`}
+    onClick={() => {
+      setActiveTab("survey");
+      router.push("/analysis-kab");
+    }}
+  >
+    Litter Survey Analysis
+  </button>
+</div>
 
-      <div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-10">
+      </div>
+
+      <div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-15">
 
 
         <div className="flex flex-col gap-4">
@@ -760,12 +794,12 @@ const Analysis = () => {
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{marginTop:'3%'}}>
 
+      <p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
+        <div className="w-full h-96 p-4 rounded " style={{marginTop:'-3%'}}>
 
-        <div className="w-full h-96 p-4 rounded mb-[40px] ">
-
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Litter Cleanup Activity Map:</p>
+      
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full mt-4">
 
@@ -834,42 +868,33 @@ const Analysis = () => {
 
 
 
-      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-10">
+      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-15">
+<div className="flex flex-col items-center p-4 rounded-lg bg-[#DCFCE7] w-[220px]">
+  {/* Value */}
+  <div className="flex items-center gap-1" style={{marginLeft:'-14%'}}>
+    <img src="/Brush.svg" alt="Broom Icon" className="w-7 h-7" />
+    
+    {loadingAnalysisData ? (
+      <span>Loading Data...</span>
+    ) : (
+      <span className="text-xl font-bold text-green-700 ">
+        {formatNumber(analysisData?.analytics?.total_cleanups)}
+      </span>
+    )}
+  </div>
 
-        {/* year part */}
+  {/* Title */}
+  <p className="mt-2 text-black text-base font-semibold font-neris text-center">
+    Total Cleanup Events
+  </p>
+</div>
 
-        <div className="flex flex-col p-2 rounded-lg bg-[#DCFCE7]">
-          {/* Year */}
-          {/*  <div className="flex items-center gap-2 mt-[-10px]">
-    <span className="text-blue-500 text-lg">📅</span> 
-    <span className="text-sm font-medium text-gray-500">2022</span>
-  </div> */}
-
-          {/* Title */}
-          <p className="mt-4 text-black text-base font-semibold font-neris">
-          Total Cleanup Events:
-          </p>
-
-          {/* Value */}
-          <div className="flex items-center gap-1 mt-3">
-            <img src="/Brush.svg" alt="Broom Icon" className="w-9 h-9" />
-
-            {loadingAnalysisData ? (
-              <span>Loading Data...</span>
-            ) : (
-              <span className="text-xl font-bold text-green-700">
-                {formatNumber(analysisData?.analytics?.total_cleanups)}
-              </span>
-            )}
-
-          </div>
-        </div>
 
         {/* top 3 states */}
 
         <div className="p-2 rounded mt-5 font-neris">
           <p className="block text-base font-semibold text-black-600 font-neris">
-          Top 3 States by Cleanup Programs:
+          Top 3 States by Cleanup Event
           </p>
           {loadingAnalysisData ? (
             <div>Loading top states...</div>
@@ -883,7 +908,7 @@ const Analysis = () => {
                 {/* Text */}
                 <div>
                   <p className="text-base font-medium font-neris">{key}</p>
-                  <p className="text-xs text-gray-500 font-neris">Programs:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p> 
+                  <p className="text-xs text-gray-500 font-neris">Event:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p> 
                 </div>
               </div>
             ))}
@@ -897,7 +922,7 @@ const Analysis = () => {
 
         <div className="p-1 rounded mt-5 font-neris">
           <p className="block text-base font-semibold text-black-600  font-neris">
-          Top 3 Counties by Cleanup Programs:
+          Top 3 Counties by Cleanup Event
           </p>
           {loadingAnalysisData ? (
             <div>Loading top counties...</div>
@@ -911,7 +936,7 @@ const Analysis = () => {
                 {/* Text Content */}
                 <div>
                   <h4 className="text-base font-medium font-neris">{key}</h4>
-                  <p className="text-xs text-gray-500 font-neris">Programs:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
+                  <p className="text-xs text-gray-500 font-neris">Event:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
                 </div>
               </div>
             ))}

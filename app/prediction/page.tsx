@@ -323,7 +323,7 @@ const Prediction = () => {
 
   return (
 
-    <div className="flex w-full gap-4 mt-4 px-4 bg-[rgba(91,170,118,0.1)]">
+    <div className="min-h-screen w-full flex p-4"  style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
 <div className="w-1/5 p-4 mt-4 mb-4 bg-white rounded-lg shadow-md">
@@ -561,7 +561,7 @@ const Prediction = () => {
 
 
       <div className="p-4 bg-[#DCFCE7] rounded">
-                    <p className="mt-4 text-black text-base font-semibold font-neris">Total Estimated Litter:</p>
+                    <p className="mt-4 text-black text-base font-semibold font-neris">Total Estimated Litter</p>
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
@@ -572,7 +572,7 @@ const Prediction = () => {
 
                 <div className="p-4 bg-[#DCFCE7] rounded">
                 <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
-    Estimated Litter Density:
+    Estimated Litter Density
 </p>
 
                     {loadingAnalysisData ? (

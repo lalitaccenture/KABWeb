@@ -90,6 +90,7 @@ const ScenarioModeling = () => {
   const [stateInfoFORGEOJSON, setStateInfoFORGEOJSON] = useState<any>([]);
   const [coefficientVal, setCoefficientVal] = useState<number>();
   const [measurementUnit, setMeasurementUnit] = useState()
+  const [activeTab, setActiveTab] = useState("survey");
   const isFirstRender = useRef(true);
   const isNavigating = useRef(false);
   const { data: session, status } = useSession();
@@ -401,12 +402,11 @@ const ScenarioModeling = () => {
   }
 
   return (
-
-    <div className="bg-[#5BAA76] bg-opacity-10 flex w-full gap-4 mt-4" style={{ padding: "10px" }}>
-
+    <div className="min-h-screen w-full flex p-4"  style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
-      <div style={{ marginTop: "64px", height: '54rem', width: '20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
+
+      <div style={{ marginTop: "4px", height: '54rem', width: '20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
 
@@ -517,32 +517,53 @@ const ScenarioModeling = () => {
 
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ maxWidth: '58%' }}>
-        <div
-          className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4"
-          style={{ marginTop: '72px' }}
-        >
+      <div className="relative flex bg-[#DCFCE7] p-1 rounded-full shadow-md w-[520px] h-[40px]" style={{marginTop:'-2%'}}>
+      {/* Active Indicator */}
+      <div
+        className={`absolute top-1 bottom-1 w-[48%] bg-[#1E9E4D] rounded-full transition-all duration-300 ${
+          activeTab === "cleanup" ? "left-1" : "left-[50%]"
+        }`}
+      ></div>
 
-          <button className="w-[237px] h-[36px] text-black font-medium border border-[#5BAA76] rounded-md bg-white" onClick={() => router.push("/analysis-external")}>
-            Litter Cleanup Analysis
-          </button>
-          <button className="w-[237px] h-[36px] text-white font-medium rounded-md bg-[#5BAA76]" onClick={() => router.push("/analysis-kab")}
-          >
-            Litter Survey Analysis
-          </button>
+      {/* Button 1: Litter Cleanup Analysis */}
+      <button
+        className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+          activeTab === "cleanup" ? "text-white" : "text-gray-600"
+        }`}
+        onClick={() => {
+          setActiveTab("cleanup");
+          router.push("/analysis-external");
+        }}
+      >
+        Litter Cleanup Analysis
+      </button>
 
-        </div>
+      {/* Button 2: Litter Survey Analysis */}
+      <button
+        className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+          activeTab === "survey" ? "text-white" : "text-gray-600"
+        }`}
+        onClick={() => {
+          setActiveTab("survey");
+          router.push("/analysis-kab");
+        }}
+      >
+        Litter Survey Analysis
+      </button>
+    </div>
+    <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p>
         {/* AnalysisMap section */}
         <div
           className="w-full rounded"
           style={{
-            marginTop: '32px',
+            marginTop: '10px',
             padding: '10px 0px',
             display: 'block',
             width: '100%'
           }}
         >
 
-          <p className="block text-base font-semibold text-black-600 mb-1 font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p><br></br>
+       
 
           {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
           {loadingAnalysisData ? (
@@ -560,7 +581,7 @@ const ScenarioModeling = () => {
           )}
         </div>
 
-        <div className="flex justify-center items-center gap-4 mt-4" style={{ marginTop: '-12px', marginRight: '39%' }}>
+        <div className="flex justify-center items-center gap-4 mt-4" style={{ marginTop: '-20px', marginRight: '38%' }}>
           <span className="text-xs text-gray-400">Lower Litter Density</span>
           <div className="w-20 h-2 bg-gradient-to-r from-[#FDBA74] to-[#FB7185] rounded-full"></div>
           <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
@@ -741,28 +762,30 @@ const ScenarioModeling = () => {
 
       {/* New Sections in the Right Sidebar */}
       <div className="w-1/5 space-y-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "70px", height: '92%' }}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '92%' }}>
           {/*  <div className="flex items-center gap-2 mt-[-10px]">
     <span className="text-blue-500 text-lg">📅</span> 
     <span className="text-sm font-medium text-gray-500">2020</span>
   </div> */}
           {/* Total Estimated Litter: */}
           <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
-            <div className="flex flex-col items-center text-center">
-              <p className="text-black text-base font-semibold font-neris whitespace-nowrap">
-                Total Estimated Litter:
-              </p>
+  <div className="flex flex-col items-center text-center">
+    {/* Value (Number) at the Top */}
+    {loadingAnalysisData ? (
+      <span>Loading Data...</span>
+    ) : (
+      <span className="text-xl font-bold text-green-700">
+        {analysisData?.total_estimated_litter}
+        <span className="text-sm text-green-700"> (#)</span>
+      </span>
+    )}
 
-              {loadingAnalysisData ? (
-                <span>Loading Data...</span>
-              ) : (
-                <span className="text-xl font-bold text-green-700">
-                  {analysisData?.total_estimated_litter}
-                  <span className="text-sm text-green-700"> (#)</span>
-                </span>
-              )}
-            </div>
-          </div>
+    {/* Title Below the Value */}
+    <p className="text-black text-base font-semibold font-neris whitespace-nowrap mt-1">
+      Total Estimated Litter
+    </p>
+  </div>
+</div>
 
 
 
@@ -776,15 +799,24 @@ const ScenarioModeling = () => {
           {/* Estimated Litter Density */}
 
 
-          <div className="p-2 rounded flex flex-col gap-3">
-            <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Estimated Litter Density:</p>
-            {loadingAnalysisData ? (
-              <span>Loading Data...</span>
-            ) : (
-              <span className="text-base font-bold text-green-700">{formatNumber(Math.trunc(analysisData?.estimated_litter_density))}<span className="text-sm text-green-700"> (# / sq. miles)</span> </span>
-            )}
+          <div className="p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)] flex flex-col items-center text-center">
+  {/* Value at the Top */}
+  {loadingAnalysisData ? (
+    <span>Loading Data...</span>
+  ) : (
+    <span className="text-xl font-bold text-green-700">
+      {formatNumber(analysisData?.estimated_litter_density)}
+      <span className="text-sm text-green-700"> (# / sq. miles)</span>
+    </span>
+  )}
 
-          </div>
+  {/* Title Below the Value */}
+  <p className="text-black text-base font-semibold font-neris mt-1 text-nowrap">
+    Estimated Litter Density
+  </p>
+</div>
+
+
 
 
 
@@ -793,7 +825,7 @@ const ScenarioModeling = () => {
 
           {/* Top 3 States Section */}
           <div className="mb-4 p-4 rounded" style={{ marginLeft: '-15px' }}>
-            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States:</p>
+            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States</p>
 
             {loadingAnalysisData ? (
               <div>Loading top states...</div>
@@ -820,7 +852,7 @@ const ScenarioModeling = () => {
                       </p>
 
                       <p className="text-xs text-gray-500 font-neris">
-                        Litter Density:
+                        Litter Density
                         <span className="font-semibold text-black ml-1 text-xs">
                           {formatNumber(Math.trunc(state["Litter density"]))}
                         </span>
