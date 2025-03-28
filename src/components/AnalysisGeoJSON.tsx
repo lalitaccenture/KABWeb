@@ -101,7 +101,7 @@ const defaultIcon = L.icon({
 const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJSON, markers }) => {
   return (
     <div className="w-full h-full">
-      <MapContainer center={center} zoom={zoom} style={{height: "420px", marginTop:'-21px' }} attributionControl={false}>
+      <MapContainer center={center} zoom={zoom} style={{height: "420px", marginTop:'-21px' }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         {/* Conditionally render the GeoJSON layer */}

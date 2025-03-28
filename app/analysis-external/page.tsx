@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar, Line } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisExternalData } from "../utils/api";
+import { analysisNewDropdown, analysisNewDropdownWithCity, applyFilter, getAnalysis, getAnalysisDashboard, getAnalysisDashboardMap, getAnalysisDashboardMapCity, getAnalysisDashboardWithCity, getAnalysisExternalData } from "../utils/api";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { formatNumber, formatNumberMillion } from "@/utils/common";
 import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
@@ -21,7 +21,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
-// const TestAnalysis = dynamic(() => import("../../src/components/TestAnalysis"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 interface FilterOption {
@@ -94,6 +93,7 @@ const Analysis = () => {
     setLoadingExternalData(true);
     setLoadingAnalysisData(true);
     setLoadingAnalysisNewData(true);
+    setLoadingMapData(true)
     setError(null);
 
     try {
@@ -105,7 +105,8 @@ const Analysis = () => {
       // setYearsData(data.Years);
 
       setLoadingExternalData(false);
-      const dropD = await analysisNewDropdown();
+      // const dropD = await analysisNewDropdown();
+      const dropD = await analysisNewDropdownWithCity();
       setStatesNewData(dropD?.Dropdown)
       setYearsNewData(dropD?.Years)
       const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
@@ -115,7 +116,8 @@ const Analysis = () => {
     const queryParamsForCounty = {
       state: 'California',
     };
-    const forCountyPopulate = await analysisNewDropdown(queryParamsForCounty);
+    // const forCountyPopulate = await analysisNewDropdown(queryParamsForCounty);
+    const forCountyPopulate = await analysisNewDropdownWithCity(queryParamsForCounty)
     setCountiesNewData(forCountyPopulate?.Dropdown)
     setYearsNewData(forCountyPopulate?.Years)
       setLoadingAnalysisNewData(false)
@@ -127,17 +129,22 @@ const Analysis = () => {
         state: 'California',
       };
       //const test = await getAnalysisDashboard();
-      const test = await getAnalysisDashboard(queryParamsForMap);
+      // const test = await getAnalysisDashboard(queryParamsForMap);
+      const test = await getAnalysisDashboardWithCity(queryParamsForMap);
       setAnalysisData(test);
       //setMarkers(value?.map_data)
 
-      setLoadingMapData(true)
-
       
 
-      const resp = await getAnalysisDashboardMap(queryParamsForMap);
+      const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
       setMarkers(resp?.map_data)
-
+      setZoom(5);
+      if(resp?.centroid === "No location found"){
+        
+      }
+      else{
+        setCenter(resp?.centroid)
+      }
       setLoadingMapData(false);
 
       setLoadingAnalysisData(false);
@@ -194,7 +201,7 @@ const Analysis = () => {
 
     const queryParamsForMap = {
       state: filters.state?.value || null,
-      zone: filters.county?.value || null,
+      county: filters.county?.value || null,
       tractid: filters.tract?.value || null,
       year: filters.year?.value || null,
     };
@@ -210,7 +217,7 @@ const Analysis = () => {
       // const res = await applyFilter(queryParams);
       // setAnalysisData(res);
       // setMarkers(res?.map_data)
-      const res = await getAnalysisDashboard(queryParams);
+      const res = await getAnalysisDashboardWithCity(queryParams);
 
       setAnalysisData(res);
       if(res?.centroid === "No location found"){
@@ -222,7 +229,7 @@ const Analysis = () => {
       
       setLoadingAnalysisData(false);
 
-      const resp = await getAnalysisDashboardMap(queryParamsForMap);
+      const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
       setMarkers(resp?.map_data)
 
       if (queryParams.state && !queryParams.county && !queryParams.tractid) {
@@ -260,14 +267,14 @@ const Analysis = () => {
       // setYearsData(data.Years);
 
       setLoadingExternalData(false);
-      const dropD = await analysisNewDropdown();
+      const dropD = await analysisNewDropdownWithCity();
       setStatesNewData(dropD?.Dropdown)
       setYearsNewData(dropD?.Years)
       setLoadingAnalysisNewData(false)
 
       // const value = await applyFilter();
       // setAnalysisData(value);
-      const test = await getAnalysisDashboard();
+      const test = await getAnalysisDashboardWithCity();
       setAnalysisData(test);
       //setMarkers(value?.map_data)
 
@@ -424,11 +431,11 @@ const Analysis = () => {
         queryParams = {
           state: filters?.state?.value || null,
           county: filters?.county?.value || null,
-          tract: selectedOption?.value || null,
+          tractid: selectedOption?.value || null,
         };
       }
 
-      const dropD = await analysisNewDropdown(queryParams);
+      const dropD = await analysisNewDropdownWithCity(queryParams);
       if (val == "state") {
 
         setCountiesNewData(dropD?.Dropdown)
@@ -596,7 +603,7 @@ const Analysis = () => {
 
 
           <div>
-            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2 font-neris">County</label>
+            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2 font-neris">City, County</label>
             {loadingAnalysisNewData ? (
               <div>Loading counties...</div>
             ) : (
@@ -726,7 +733,7 @@ const Analysis = () => {
                 value={filters.year}
                 onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
                 options={yearsNewData}
-                placeholder="Select a Year"
+                placeholder="By default, all the years are shown"
                 styles={{
                   control: (base, state) => ({
                     ...base,
@@ -806,7 +813,7 @@ const Analysis = () => {
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers?.slice(0, 2000)} zoom={zoom} center={center}/>
+            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers} zoom={zoom} center={center}/>
           )}
         </div>
 
