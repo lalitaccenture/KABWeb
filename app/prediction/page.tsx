@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAnalysisExternalData, getPredictionDashboard, predictionNewDropdown } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAnalysisExternalData, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { useSession } from "next-auth/react";
@@ -32,8 +32,9 @@ interface Filters {
 interface MarkerData {
   latitude: number;
   longitude: number;
-  litter_quantity: number;
-  cleanup_date: string;
+  Litter_density: number;
+  Predicted_Qty:number;
+  color: string;
 }
 
 interface SwitchState {
@@ -56,6 +57,14 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
   Title);
+
+  interface EventData {
+    Impact: string; 
+    "Event count": number;
+    latitude: number;
+    longitude: number;
+    GEOID: string;
+  }
 
 const Prediction = () => {
 
@@ -85,7 +94,7 @@ const Prediction = () => {
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
   const [weeks,setWeeks] = useState([])
-
+  const [eventData,setEventData] = useState<EventData[]>([]);
 
   const { data: session, status } = useSession();
     const router = useRouter();
@@ -111,6 +120,7 @@ const Prediction = () => {
       setLoadingExternalData(true);
       setLoadingAnalysisData(true);
       setLoadingAnalysisNewData(true);
+      //setLoadingMapData(true);
       setError(null);
 
       try {
@@ -121,8 +131,15 @@ const Prediction = () => {
         setLoadingAnalysisNewData(false)
         setLoadingExternalData(false);
         setLoadingAnalysisData(false);
-        const dataDashboard = await getPredictionDashboard();
+        const dataDashboard = await getDashboardPrediction();
         setPredictionData(dataDashboard);
+      
+          // const resp = await getPredictionMap({"State":"Colorado"});
+          // // console.log("Raw response:", resp, typeof resp);
+          // const respm = await getEventPrediction();
+      
+      
+        //setLoadingMapData(false);
         // const value = await applyFilter();
         // setAnalysisData(value);
         // //setMarkers(value?.map_data)
@@ -133,6 +150,7 @@ const Prediction = () => {
         setLoadingAnalysisData(false);
         setLoadingExternalData(false);
         setLoadingAnalysisNewData(false)
+        setLoadingMapData(false);
       } finally {
 
       }
@@ -217,7 +235,7 @@ const Prediction = () => {
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
     try {
-      const res = await getPredictionDashboard(queryParams);
+      const res = await getDashboardPrediction(queryParams);
       setPredictionData(res);
       //setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
@@ -545,7 +563,7 @@ const Prediction = () => {
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
-            <MapPrediction markers={markers.slice(0, 100)} zoom={zoom} center={center} switches={switches}/>
+            <MapPrediction markers={markers?.slice(0, 100)} zoom={zoom} center={center} switches={switches} eventData={eventData}/>
           )}
         </div>
 
@@ -565,7 +583,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.Total_Estimated_Litter?.toFixed(2)}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]?.toFixed(2)}</span>
             )}
                     </div>
 
@@ -578,7 +596,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.Estimated_Litter_Density?.toFixed(2)}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]?.toFixed(2)}</span>
             )}
                     </div>
 

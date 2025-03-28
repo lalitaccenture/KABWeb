@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
@@ -9,9 +9,19 @@ import { useRouter } from "next/navigation";
 interface MarkerData {
   latitude: number;
   longitude: number;
-  litter_quantity: number;
-  cleanup_date: string;
+  Litter_density: number;
+  Predicted_Qty:number;
+  color: string;
 }
+
+interface EventData {
+  Impact: string; 
+  "Event count": number;
+  latitude: number;
+  longitude: number;
+  GEOID: string;
+}
+
 
 interface SwitchState {
     bins: boolean;
@@ -25,10 +35,107 @@ interface MapAnalysisProps {
   markers: MarkerData[]; 
   zoom: number;
   center: [number, number];
-  switches: SwitchState
+  switches: SwitchState;
+  eventData: EventData[]
 }
 
-const MapPrediction: React.FC<MapAnalysisProps> = ({ markers, zoom, center,switches }) => {
+interface CanvasMarkersLayerProps {
+  data: MarkerData[];
+}
+
+interface CanvasEventMarkersLayerProps {
+  data: EventData[];
+}
+
+const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data }) => {
+    const map = useMap();
+    const canvasRenderer = L.canvas({ padding: 0.5 });
+  
+    data?.forEach((item) => {   
+    const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer, 
+        radius: 5, 
+        fillColor: "rgba(128, 0, 128, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4, 
+        stroke: false,
+      });
+//       let tableContent = `
+//   <table border="1" style="width: 100%; text-align: left; margin: 20px 0;">
+//     <thead>
+//       <tr>
+//         <th>Material</th>
+//         <th>Amount</th>
+//       </tr>
+//     </thead>
+//     <tbody>
+//       ${Object.entries(item?.litter_quantity).map(([material, amount], index) => `
+//         <tr key="${index}">
+//           <td>${material}</td>
+//           <td>${amount}</td>
+//         </tr>
+//       `).join('')}
+//     </tbody>
+//   </table>
+// `;
+      marker.bindPopup(`Litter Quantity Collected: ${item.Litter_density}<br>Cleanup Date: ${item.Litter_density}`);
+      // marker.bindPopup(`
+      //   Litter Quantity Collected: ${item.litter_quantity}<br>
+      //   Cleanup Date: ${item.date}<br>
+      //   ${tableContent}
+      // `);
+      marker.addTo(map);
+    
+    });
+  
+    return null; // We are manually adding markers, so no need to render anything
+  };
+
+  const CanvasEventMarkersLayer: React.FC<CanvasEventMarkersLayerProps> = ({ data }) => {
+    const map = useMap();
+    const canvasRenderer = L.canvas({ padding: 0.5 });
+  
+    data?.forEach((item) => {   
+    const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer, 
+        radius: 5, 
+        fillColor: "rgba(128, 0, 128, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4, 
+        stroke: false,
+      });
+//       let tableContent = `
+//   <table border="1" style="width: 100%; text-align: left; margin: 20px 0;">
+//     <thead>
+//       <tr>
+//         <th>Material</th>
+//         <th>Amount</th>
+//       </tr>
+//     </thead>
+//     <tbody>
+//       ${Object.entries(item?.litter_quantity).map(([material, amount], index) => `
+//         <tr key="${index}">
+//           <td>${material}</td>
+//           <td>${amount}</td>
+//         </tr>
+//       `).join('')}
+//     </tbody>
+//   </table>
+// `;
+      marker.bindPopup(`Litter Quantity Collected: ${item?.["Event count"]}<br>Cleanup Date: ${item?.["Event count"]}`);
+      // marker.bindPopup(`
+      //   Litter Quantity Collected: ${item.litter_quantity}<br>
+      //   Cleanup Date: ${item.date}<br>
+      //   ${tableContent}
+      // `);
+      marker.addTo(map);
+    
+    });
+  
+    return null; // We are manually adding markers, so no need to render anything
+  };
+
+const MapPrediction: React.FC<MapAnalysisProps> = ({ markers, zoom, center,switches,eventData }) => {
 
   const router = useRouter();
 
@@ -42,49 +149,8 @@ const MapPrediction: React.FC<MapAnalysisProps> = ({ markers, zoom, center,switc
 
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        {markers?.map((marker, index) => (
-          <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
-          icon={L.divIcon({
-            html: `<div class="bg-blue-700 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
-            iconSize: [32, 32], // Size of the bubble
-            iconAnchor: [16, 16], // Center the icon
-          })}
-          >
-            <Popup>
-              {/* Display relevant information about the marker */}
-              Latitude: {marker?.latitude} <br />
-              Longitude: {marker?.longitude} <br />
-      Sum of Litter Quantity: {marker?.litter_quantity} <br />
-      Latest Cleanup Date: {new Date(marker?.cleanup_date).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-})}
-              </Popup>
-          </Marker>
-        ))}
-
-        {switches?.bins && markers?.map((marker, index) => (
-          <Marker key={index} position={{ lat: marker.latitude, lng: marker.longitude }} 
-          icon={L.divIcon({
-            html: `<div class="bg-blue-700 rounded-full w-8 h-8 flex justify-center items-center text-white text-xs font-bold"></div>`,
-            iconSize: [32, 32], // Size of the bubble
-            iconAnchor: [16, 16], // Center the icon
-          })}
-          >
-            <Popup>
-              {/* Display relevant information about the marker */}
-              Latitude: {marker?.latitude} <br />
-              Longitude: {marker?.longitude} <br />
-      Sum of Litter Quantity: {marker?.litter_quantity} <br />
-      Latest Cleanup Date: {new Date(marker?.cleanup_date).toLocaleDateString('en-GB', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-})}
-              </Popup>
-          </Marker>
-        ))}
+        <CanvasMarkersLayer data={markers} />
+        <CanvasEventMarkersLayer data={eventData} />
       </MapContainer>
     </div>
     </>

@@ -246,3 +246,63 @@ export const getAnalysisDashboardMapCity = async (queryParams: any = {}) => {
   }
 };
 
+
+export const getPredictionDashboardMap = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/centroidprediction?code=B1Ra1V3sblInyL3tguEIaePFPnOpgqxjk87QxJycPTWfAzFu6EhiDw==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getPredictionMap = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/mapprediction?code=taSky08ckOgJ0QHw-o8JR0Q-Xaz9zt9tYpuVqEtGWd_uAzFua2a3Kw==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getDashboardPrediction = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/dashboardPrediction?code=qSJiX0It367Jz8EJxRnMJc_Pul22ikoZoP3MKXF18lQgAzFuw32_WQ==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getEventPrediction = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/eventBasedPrediction?code=013AV8Z_fAe-3pX0VhFkxFGEFJM0wR67PxaLtMviwULkAzFuT055Uw==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+
+
+
