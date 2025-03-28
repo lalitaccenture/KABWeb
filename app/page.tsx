@@ -42,7 +42,7 @@ const Login = () => {
     const checkSession = async () => {
       const session = await getSession();
       if (session) {
-        router.push("/home"); // Redirect if session exists
+        router.push("/"); // Redirect if session exists
       } else {
         setLoading(false); // Stop loading once session check is done
       }
