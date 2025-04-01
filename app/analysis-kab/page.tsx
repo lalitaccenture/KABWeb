@@ -406,11 +406,11 @@ const ScenarioModeling = () => {
 
 
 
-      <div style={{ marginTop: "4px", height: '54rem', width: '20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
+      <div style={{ marginTop: "4px", height: '61rem', width: '20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" style={{height:'27rem'}}>
 
 
           <div>
@@ -592,9 +592,11 @@ const ScenarioModeling = () => {
         </div>
 
 
-        <div className="flex w-full gap-6" style={{ marginTop: '3px' }}>
-          <div className="w-1/2">
-            <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight">
+        <div className="flex w-full gap-4">
+          <div className="w-1/2 p-4 bg-white rounded">
+
+  <div style={{alignContent:'center' , textAlign:'center'}}>
+            <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight ">
               Correlation Between Estimated Litter Density and
             </label>
 
@@ -625,6 +627,7 @@ const ScenarioModeling = () => {
                     "&:hover": {
                       borderColor: "#5BAA76",
                     },
+                    
                   }),
                   placeholder: (base) => ({
                     ...base,
@@ -649,20 +652,12 @@ const ScenarioModeling = () => {
                     fontWeight: "semibold",
                   }),
                 }}
-                className="w-[250px]"
+                className="w-[250px] ml-7"
                 isDisabled={!correlationCoeff}
               />
             )}
           </div>
-          <div className="w-1/2">
-            <label className="text-base font-semibold font-neris">
-              Breakdown of Litter Types
-            </label></div>
-        </div>
-
-        <div className="flex w-full gap-4">
-          <div className="w-1/2 p-4 bg-white rounded">
-
+<div style={{marginTop:'5%'}}>
             <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
               Correlation Coefficient:
               <span className="relative inline-block ml-1">
@@ -745,12 +740,24 @@ const ScenarioModeling = () => {
                 data={dataForScatter}
               />
             }
+            </div>
           </div>
-          <div className="w-1/2 p-4 bg-white rounded">
+          <div className="w-1/2 p-4 bg-white rounded" style={{height:'23rem'}}>
+
+  
+            <p className="text-base font-semibold font-neris" style={{textAlign:'center'}}>
+              Breakdown of Litter Types
+            </p>
+
+
             {loadingAnalysisData ? (
               <div>Loading doughnut chart...</div>
             ) : (
-              <Doughnut data={data} options={optionsDoughnut} style={{ marginLeft: '5px', width: '400px' }} />
+              <div className="flex justify-center items-center w-full h-[300px]">
+              <Doughnut data={data} options={optionsDoughnut} />
+            </div>
+            
+            
 
             )}
           </div>
@@ -761,12 +768,9 @@ const ScenarioModeling = () => {
       </div>
 
       {/* New Sections in the Right Sidebar */}
-      <div className="w-1/5 space-y-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '92%' }}>
-          {/*  <div className="flex items-center gap-2 mt-[-10px]">
-    <span className="text-blue-500 text-lg">📅</span> 
-    <span className="text-sm font-medium text-gray-500">2020</span>
-  </div> */}
+      <div className="w-1/5 space-y-6" style={{marginLeft:'2%'}}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '61rem' }}>
+        
           {/* Total Estimated Litter: */}
           <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
   <div className="flex flex-col items-center text-center">

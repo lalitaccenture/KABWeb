@@ -80,13 +80,13 @@ const Analysis = () => {
   const [yearsNewData, setYearsNewData] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState("cleanup");
   const { data: session, status } = useSession();
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            router.push("/"); // Redirect to login page
-        }
-    }, [status, router]);
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/"); // Redirect to login page
+    }
+  }, [status, router]);
 
 
   const fetchData = async () => {
@@ -110,16 +110,16 @@ const Analysis = () => {
       setStatesNewData(dropD?.Dropdown)
       setYearsNewData(dropD?.Years)
       const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
-    if (defaultState) {
-      setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
-    }
-    const queryParamsForCounty = {
-      state: 'California',
-    };
-    // const forCountyPopulate = await analysisNewDropdown(queryParamsForCounty);
-    const forCountyPopulate = await analysisNewDropdownWithCity(queryParamsForCounty)
-    setCountiesNewData(forCountyPopulate?.Dropdown)
-    setYearsNewData(forCountyPopulate?.Years)
+      if (defaultState) {
+        setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
+      }
+      const queryParamsForCounty = {
+        state: 'California',
+      };
+      // const forCountyPopulate = await analysisNewDropdown(queryParamsForCounty);
+      const forCountyPopulate = await analysisNewDropdownWithCity(queryParamsForCounty)
+      setCountiesNewData(forCountyPopulate?.Dropdown)
+      setYearsNewData(forCountyPopulate?.Years)
       setLoadingAnalysisNewData(false)
 
       // const value = await applyFilter();
@@ -134,15 +134,15 @@ const Analysis = () => {
       setAnalysisData(test);
       //setMarkers(value?.map_data)
 
-      
+
 
       const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
       setMarkers(resp?.map_data)
       setZoom(5);
-      if(resp?.centroid === "No location found"){
-        
+      if (resp?.centroid === "No location found") {
+
       }
-      else{
+      else {
         setCenter(resp?.centroid)
       }
       setLoadingMapData(false);
@@ -220,13 +220,13 @@ const Analysis = () => {
       const res = await getAnalysisDashboardWithCity(queryParams);
 
       setAnalysisData(res);
-      if(res?.centroid === "No location found"){
-        
+      if (res?.centroid === "No location found") {
+
       }
-      else{
+      else {
         setCenter(res?.centroid)
       }
-      
+
       setLoadingAnalysisData(false);
 
       const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
@@ -252,7 +252,7 @@ const Analysis = () => {
     }
   };
 
-  const fetchDataAfterClear = async ()=>{
+  const fetchDataAfterClear = async () => {
     setLoadingExternalData(true);
     setLoadingAnalysisData(true);
     setLoadingAnalysisNewData(true);
@@ -408,7 +408,7 @@ const Analysis = () => {
     ],
   };
 
-  
+
   const handleDropdownFurther = async (val: string, selectedOption: any) => {
     try {
       setLoadingAnalysisNewData(true)
@@ -475,8 +475,8 @@ const Analysis = () => {
           padding: 12,
         },
       },
-      datalabels:{
-        display:false
+      datalabels: {
+        display: false
       },
       tooltip: {
         callbacks: {
@@ -485,7 +485,7 @@ const Analysis = () => {
             const total = dataset.reduce((acc, val) => acc + val, 0);
             const value = tooltipItem.raw as number;
             const percentage = ((value / total) * 100).toFixed(1);
-  
+
             return [`# of Litter: ${formatNumberMillion(value)}`, `(${percentage}%)`];
           },
         },
@@ -495,45 +495,43 @@ const Analysis = () => {
 
   if (status === "loading") {
     return <p>Loading...</p>; // Prevents UI flickering
-}
+  }
 
   return (
-    <div className="min-h-screen w-full flex p-4"  style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
+    <div className="min-h-screen w-full flex p-4" style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
       {/* Top Buttons */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] mt-2">
-  {/* Litter Cleanup Analysis Button */}
-  <button
-    className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
-      activeTab === "cleanup"
-        ? "bg-green-600 text-white font-bold shadow-md"
-        : "text-gray-500"
-    }`}
-    onClick={() => {
-      setActiveTab("cleanup");
-      router.push("/analysis-external");
-    }}
-  >
-    Litter Cleanup Analysis
-  </button>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] mt-2">
+          {/* Litter Cleanup Analysis Button */}
+          <button
+            className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup"
+                ? "bg-green-600 text-white font-bold shadow-md"
+                : "text-gray-500"
+              }`}
+            onClick={() => {
+              setActiveTab("cleanup");
+              router.push("/analysis-external");
+            }}
+          >
+            Litter Cleanup Analysis
+          </button>
 
-  {/* Litter Survey Analysis Button */}
-  <button
-    className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
-      activeTab === "survey"
-        ? "bg-green-600 text-white font-bold shadow-md"
-        : "text-gray-500"
-    }`}
-    onClick={() => {
-      setActiveTab("survey");
-      router.push("/analysis-kab");
-    }}
-  >
-    Litter Survey Analysis
-  </button>
-</div>
+          {/* Litter Survey Analysis Button */}
+          <button
+            className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "survey"
+                ? "bg-green-600 text-white font-bold shadow-md"
+                : "text-gray-600"
+              }`}
+            onClick={() => {
+              setActiveTab("survey");
+              router.push("/analysis-kab");
+            }}
+          >
+            Litter Survey Analysis
+          </button>
+        </div>
 
       </div>
 
@@ -790,74 +788,78 @@ const Analysis = () => {
 
           </div>
           <div className="mt-8">
-<p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Data Sources & Collection Period:</strong> Insights in this tool are based on external data collected between <strong>2015 </strong>  and <strong> 2024.</strong> Completeness and coverage depend on the availability and accuracy of these sources.</div>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Scope & Limitations:</strong> While we strive to provide meaningful insights, the data may not fully represent all litter patterns and cleanup programs. Accuracy is contingent on the integrity of external sources.</div>
-<div className="text-xs text-gray-600 mb-2">📌 <strong>Evolving Insights:</strong>As new data is integrated, insights may evolve, leading to more refined analytics over time. Current insights should be considered <strong> indicative, not definitive.</strong></div>
-<div className="text-xs text-gray-600">📌 <strong>Liability Disclaimer:</strong> This tool is an analytical aid and does not claim to provide a complete representation of litter trends. Users should exercise discretion when interpreting data. We disclaim any liability for decisions made based on these insights.</div>
-</div>
+            <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
+            <div className="text-xs text-gray-600 mb-2">📌 <strong>Data Sources & Collection Period:</strong> Insights in this tool are based on external data collected between <strong>2015 </strong>  and <strong> 2024.</strong> Completeness and coverage depend on the availability and accuracy of these sources.</div>
+            <div className="text-xs text-gray-600 mb-2">📌 <strong>Scope & Limitations:</strong> While we strive to provide meaningful insights, the data may not fully represent all litter patterns and cleanup programs. Accuracy is contingent on the integrity of external sources.</div>
+            <div className="text-xs text-gray-600 mb-2">📌 <strong>Evolving Insights:</strong>As new data is integrated, insights may evolve, leading to more refined analytics over time. Current insights should be considered <strong> indicative, not definitive.</strong></div>
+            <div className="text-xs text-gray-600">📌 <strong>Liability Disclaimer:</strong> This tool is an analytical aid and does not claim to provide a complete representation of litter trends. Users should exercise discretion when interpreting data. We disclaim any liability for decisions made based on these insights.</div>
+          </div>
         </div>
       </div>
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{marginTop:'3%'}}>
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ marginTop: '3%' }}>
 
-      <p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
-        <div className="w-full h-96 p-4 rounded " style={{marginTop:'-3%'}}>
+        <p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
+        <div className="w-full h-96 p-4 rounded " style={{ marginTop: '-3%' }}>
 
-      
+
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full mt-4">
 
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers} zoom={zoom} center={center}/>
+            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers} zoom={zoom} center={center} />
           )}
         </div>
 
-        <div className="w-full flex flex-wrap justify-center gap-4 mt-20"  style={{ gap: '50px'}}>
-        <div 
-  className="flex justify-between w-full" 
-  style={{ gap: '31px', marginLeft: '12px' }}
->
+        <div className="w-full flex flex-wrap justify-center gap-4 mt-20" style={{height:'27rem'}}>
+          <div
+            className="flex justify-between w-full"
+            style={{ gap: '31px', marginLeft: '12px' }}
+          >
 
             {/* Left Title */}
-            <div className="w-1/2">
-              <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
-            </div>
+            
 
             {/* Right Title */}
-            <div className="w-1/2">
-              <p className="text-base font-semibold font-neris ">Break Down of Litter Types</p>
 
-            </div>
           </div>
 
 
-<div 
-  className="p-4 bg-white rounded flex flex-col items-center" 
-  style={{ width: '44%' ,marginTop:'-4%' }}
->
+          <div
+            className="p-4 bg-white rounded flex flex-col items-center"
+            style={{ width: '48%', marginTop: '-4%' }}
+          >
 
             {loadingAnalysisData ? (
               <div>Loading line chart...</div>
             ) : (
-              <Line options={optionsLine} data={dataLine} height={230} />
+              <div>
+
+              <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
+         
+              <Line options={optionsLine} data={dataLine} height={230} style={{marginTop:'12%'}}/>
+              </div>
             )}
           </div>
+          
 
 
-          <div className="p-4 bg-white rounded flex flex-col items-center relative"   style={{ width: '44%',marginTop:'-4%' }}>
+          <div className="p-3 bg-white rounded flex flex-col items-center relative" style={{ width: '48%', marginTop: '-4%' }}>
+        
+              <p className="text-base font-semibold font-neris" >Break Down of Litter Types</p>
+
+       
             {loadingAnalysisData ? (
               <div>Loading doughnut chart...</div>
             ) : (
-              <Doughnut
-                data={data}
-                options={optionsDoughnut}
-                height={230}
-              />
+              <div style={{ width: "350px", height: "350px", marginTop: "9%" }}> 
+              <Doughnut data={data} options={optionsDoughnut} />
+            </div>
+            
             )}
 
             {/* Text Outside the White Box (Aligned to Bottom-Right) */}
@@ -865,9 +867,11 @@ const Analysis = () => {
               Source: Cleanswell App
             </div>
           </div>
-          </div>
+
 
         </div>
+
+      </div>
 
 
 
@@ -876,49 +880,49 @@ const Analysis = () => {
 
 
       <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-15">
-<div className="flex flex-col items-center p-4 rounded-lg bg-[#DCFCE7] w-[220px]">
-  {/* Value */}
-  <div className="flex items-center gap-1" style={{marginLeft:'-14%'}}>
-    <img src="/Brush.svg" alt="Broom Icon" className="w-7 h-7" />
-    
-    {loadingAnalysisData ? (
-      <span>Loading Data...</span>
-    ) : (
-      <span className="text-xl font-bold text-green-700 ">
-        {formatNumber(analysisData?.analytics?.total_cleanups)}
-      </span>
-    )}
-  </div>
+        <div className="flex flex-col items-center p-4 rounded-lg bg-[#DCFCE7] w-[220px]">
+          {/* Value */}
+          <div className="flex items-center gap-1" style={{ marginLeft: '-14%' }}>
+            <img src="/Brush.svg" alt="Broom Icon" className="w-7 h-7" />
 
-  {/* Title */}
-  <p className="mt-2 text-black text-base font-semibold font-neris text-center">
-    Total Cleanup Events
-  </p>
-</div>
+            {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+              <span className="text-xl font-bold text-green-700 ">
+                {formatNumber(analysisData?.analytics?.total_cleanups)}
+              </span>
+            )}
+          </div>
+
+          {/* Title */}
+          <p className="mt-2 text-black text-base font-semibold font-neris text-center">
+            Total Cleanup Events
+          </p>
+        </div>
 
 
         {/* top 3 states */}
 
         <div className="p-2 rounded mt-5 font-neris">
           <p className="block text-base font-semibold text-black-600 font-neris">
-          Top 3 States by Cleanup Event
+            Top 3 States by Cleanup Events
           </p>
           {loadingAnalysisData ? (
             <div>Loading top states...</div>
           ) : (
             <div className="space-y-5">
-           {Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
-              <div key={key} className="flex items-center gap-2 p-2  bg-gray-100 rounded-lg mb-2">
-                {/* Adjusted Indicator */}
-                <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
+              {Object.entries(analysisData?.analytics?.top_3_states || {}).map(([key, value]) => (
+                <div key={key} className="flex items-center gap-2 p-2  bg-gray-100 rounded-lg mb-2">
+                  {/* Adjusted Indicator */}
+                  <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
 
-                {/* Text */}
-                <div>
-                  <p className="text-base font-medium font-neris">{key}</p>
-                  <p className="text-xs text-gray-500 font-neris">Event:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p> 
+                  {/* Text */}
+                  <div>
+                    <p className="text-base font-medium font-neris">{key}</p>
+                    <p className="text-xs text-gray-500 font-neris">Events:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
             </div>
           )}
         </div>
@@ -929,24 +933,24 @@ const Analysis = () => {
 
         <div className="p-1 rounded mt-5 font-neris">
           <p className="block text-base font-semibold text-black-600  font-neris">
-          Top 3 Counties by Cleanup Event
+            Top 3 Counties by Cleanup Events
           </p>
           {loadingAnalysisData ? (
             <div>Loading top counties...</div>
           ) : (
-            <div className="space-y-6">
-            {Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
-              <div key={key} className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg mb-2">
-                {/* Green Indicator */}
-                <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
+            <div className="space-y-6" style={{marginLeft:'2%'}}>
+              {Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
+                <div key={key} className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg mb-2">
+                  {/* Green Indicator */}
+                  <span className="w-1.5 h-1.5 bg-[#5BAA76] rounded-full relative -top-[8px]"></span>
 
-                {/* Text Content */}
-                <div>
-                  <h4 className="text-base font-medium font-neris">{key}</h4>
-                  <p className="text-xs text-gray-500 font-neris">Event:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
+                  {/* Text Content */}
+                  <div>
+                    <h4 className="text-base font-medium font-neris">{key}</h4>
+                    <p className="text-xs text-gray-500 font-neris">Events:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
             </div>
           )}
         </div>
