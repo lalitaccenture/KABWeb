@@ -137,7 +137,7 @@ const Prediction = () => {
         const dataDashboard = await getDashboardPrediction();
         setPredictionData(dataDashboard);
       
-          const resp = await getPredictionMap({"State":"Colorado"});
+          const resp = await getPredictionMap();
           console.log("Raw response:", resp, typeof resp);
           const respm = await getEventPrediction();
           console.log("Raw response:", respm, typeof respm);
@@ -226,9 +226,9 @@ const Prediction = () => {
   const handleApply = async () => {
 
     const queryParams = {
-      state: filters.state?.value || null,
-      county: filters.county?.value || null,
-      tract: filters.tract?.value || null,
+      State: filters.state?.value || null,
+      County: filters.county?.value || null,
+      TRACTID: filters.tract?.value || null,
     };
 
     // Filter out undefined values
@@ -241,6 +241,8 @@ const Prediction = () => {
     try {
       const res = await getDashboardPrediction(queryParams);
       setPredictionData(res);
+      const resp = await getPredictionMap(queryParams);
+      setMarkers(resp?.data)
       //setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
       setLoadingMapData(false);

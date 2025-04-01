@@ -193,23 +193,23 @@ const Analysis = () => {
   const handleApply = async () => {
 
     const queryParams = {
-      state: filters.state?.value || null,
-      county: filters.county?.value || null,
-      tractid: filters.tract?.value || null,
-      year: filters.year?.value || null,
+      state: filters?.state?.value || null,
+      county: filters?.county?.value || null,
+      tractid: filters?.tract?.value || null,
+      year: filters?.year?.value || null,
     };
 
     const queryParamsForMap = {
-      state: filters.state?.value || null,
-      county: filters.county?.value || null,
-      tractid: filters.tract?.value || null,
-      year: filters.year?.value || null,
+      state: filters?.state?.value || null,
+      county: filters?.county?.value || null,
+      tractid: filters?.tract?.value || null,
+      year: filters?.year?.value || null,
     };
 
     // Filter out undefined values
-    const cleanedQueryParams = Object.fromEntries(
-      Object.entries(queryParams).filter(([_, v]) => v !== undefined)
-    );
+    // const cleanedQueryParams = Object.fromEntries(
+    //   Object.entries(queryParams).filter(([_, v]) => v !== undefined)
+    // );
 
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
@@ -218,27 +218,27 @@ const Analysis = () => {
       // setAnalysisData(res);
       // setMarkers(res?.map_data)
       const res = await getAnalysisDashboardWithCity(queryParams);
-
       setAnalysisData(res);
-      if (res?.centroid === "No location found") {
-
-      }
-      else {
-        setCenter(res?.centroid)
-      }
+      
 
       setLoadingAnalysisData(false);
 
       const resp = await getAnalysisDashboardMapCity(queryParamsForMap);
+      if (resp?.centroid === "No location found") {
+
+      }
+      else {
+        setCenter(resp?.centroid)
+      }
       setMarkers(resp?.map_data)
 
-      if (queryParams.state && !queryParams.county && !queryParams.tractid) {
+      if (queryParams?.state && !queryParams?.county && !queryParams?.tractid) {
         // If state is present and county and tract are null
         setZoom(5);
-      } else if (queryParams.state && queryParams.county && !queryParams.tractid) {
+      } else if (queryParams?.state && queryParams?.county && !queryParams?.tractid) {
         // If state and county are present and tract is null
         setZoom(6);
-      } else if (queryParams.state && queryParams.county && queryParams.tractid) {
+      } else if (queryParams?.state && queryParams?.county && queryParams?.tractid) {
         // If state, county, and tract are all present
         setZoom(7);
       }
@@ -811,7 +811,7 @@ const Analysis = () => {
               <span className="text-xl text-gray-600">Loading map...</span>
             </div>
           ) : (
-            <AnalysisMap key={`${center[0]}-${center[1]}-${zoom}`} markers={markers} zoom={zoom} center={center} />
+            <AnalysisMap markers={markers} zoom={zoom} center={center} />
           )}
         </div>
 

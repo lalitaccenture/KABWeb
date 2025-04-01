@@ -23,11 +23,11 @@ interface MapAnalysisProps {
 
 interface CanvasMarkersLayerProps {
     data: MarkerData[];
+    canvasRenderer: L.Renderer;
   }
 
-const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data }) => {
+const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data, canvasRenderer }) => {
     const map = useMap();
-    const canvasRenderer = L.canvas({ padding: 0.5 });
   
     data.forEach((item) => {   
     const marker = L.circleMarker([item.latitude, item.longitude], {
@@ -48,7 +48,7 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data }) => {
 const AnalysisMap: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 
   const router = useRouter();
-
+const canvasRenderer = L.canvas({ padding: 0.5 });
   console.log("markers",markers)
 //new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
@@ -61,7 +61,7 @@ const AnalysisMap: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
 
       <MapContainer center={center} zoom={zoom} style={{ height: "420px", }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-        <CanvasMarkersLayer data={markers} />
+        <CanvasMarkersLayer data={markers} canvasRenderer={canvasRenderer}/>
       </MapContainer>
       <div className="mt-5 flex items-center gap-2" style={{marginTop:"1px" }}>
 
