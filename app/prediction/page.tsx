@@ -33,8 +33,10 @@ interface MarkerData {
   latitude: number;
   longitude: number;
   Litter_density: number;
+  GEOID: string;
   Predicted_Qty:number;
   color: string;
+  pie_chart:object
 }
 
 interface SwitchState {
@@ -64,6 +66,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     latitude: number;
     longitude: number;
     GEOID: string;
+    pie_chart: object
   }
 
 const Prediction = () => {
@@ -120,7 +123,7 @@ const Prediction = () => {
       setLoadingExternalData(true);
       setLoadingAnalysisData(true);
       setLoadingAnalysisNewData(true);
-      //setLoadingMapData(true);
+      setLoadingMapData(true);
       setError(null);
 
       try {
@@ -134,15 +137,16 @@ const Prediction = () => {
         const dataDashboard = await getDashboardPrediction();
         setPredictionData(dataDashboard);
       
-          // const resp = await getPredictionMap({"State":"Colorado"});
-          // // console.log("Raw response:", resp, typeof resp);
-          // const respm = await getEventPrediction();
-      
-      
-        //setLoadingMapData(false);
+          const resp = await getPredictionMap({"State":"Colorado"});
+          console.log("Raw response:", resp, typeof resp);
+          const respm = await getEventPrediction();
+          console.log("Raw response:", respm, typeof respm);
+      setMarkers(resp?.data)
+      setEventData(respm?.data)
+        setLoadingMapData(false);
         // const value = await applyFilter();
         // setAnalysisData(value);
-        // //setMarkers(value?.map_data)
+        
         // setLoadingAnalysisData(false);
       } catch (error) {
         setError("Failed to fetch data, please try again later.");
@@ -563,7 +567,7 @@ const Prediction = () => {
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
-            <MapPrediction markers={markers?.slice(0, 100)} zoom={zoom} center={center} switches={switches} eventData={eventData}/>
+            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData}/>
           )}
         </div>
 

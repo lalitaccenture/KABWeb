@@ -10,8 +10,10 @@ interface MarkerData {
   latitude: number;
   longitude: number;
   Litter_density: number;
+  GEOID: string;
   Predicted_Qty:number;
   color: string;
+  pie_chart:object
 }
 
 interface EventData {
@@ -60,30 +62,32 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data }) => {
         fillOpacity: 0.4, 
         stroke: false,
       });
-//       let tableContent = `
-//   <table border="1" style="width: 100%; text-align: left; margin: 20px 0;">
-//     <thead>
-//       <tr>
-//         <th>Material</th>
-//         <th>Amount</th>
-//       </tr>
-//     </thead>
-//     <tbody>
-//       ${Object.entries(item?.litter_quantity).map(([material, amount], index) => `
-//         <tr key="${index}">
-//           <td>${material}</td>
-//           <td>${amount}</td>
-//         </tr>
-//       `).join('')}
-//     </tbody>
-//   </table>
-// `;
-      marker.bindPopup(`Litter Quantity Collected: ${item.Litter_density}<br>Cleanup Date: ${item.Litter_density}`);
-      // marker.bindPopup(`
-      //   Litter Quantity Collected: ${item.litter_quantity}<br>
-      //   Cleanup Date: ${item.date}<br>
-      //   ${tableContent}
-      // `);
+
+let tableContent = `
+  <table style="width: 100%; text-align: left; margin: 20px 0; border-collapse: collapse; border: 1px solid black;">
+    <thead>
+      <tr>
+        <th style="border: 1px solid black; padding: 8px;">Material</th>
+        <th style="border: 1px solid black; padding: 8px;">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${Object.entries(item?.pie_chart).map(([material, amount], index) => `
+        <tr key="${index}" style="border: 1px solid black;">
+          <td style="border: 1px solid black; padding: 8px;">${material}</td>
+          <td style="border: 1px solid black; padding: 8px;">${amount}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>
+`;
+      
+      marker.bindPopup(`
+        GEO ID: ${item.GEOID}<br>
+        Litter Density: ${item.Litter_density}<br>
+        Predicted Quantity: ${item.Predicted_Qty}<br>
+        ${tableContent}
+      `);
       marker.addTo(map);
     
     });
@@ -99,7 +103,7 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data }) => {
     const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer, 
         radius: 5, 
-        fillColor: "rgba(128, 0, 128, 0.4)",
+        fillColor: "rgba(0, 255, 0, 0.4)",
         opacity: 1,
         fillOpacity: 0.4, 
         stroke: false,
@@ -122,12 +126,10 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data }) => {
 //     </tbody>
 //   </table>
 // `;
-      marker.bindPopup(`Litter Quantity Collected: ${item?.["Event count"]}<br>Cleanup Date: ${item?.["Event count"]}`);
-      // marker.bindPopup(`
-      //   Litter Quantity Collected: ${item.litter_quantity}<br>
-      //   Cleanup Date: ${item.date}<br>
-      //   ${tableContent}
-      // `);
+      marker.bindPopup(`
+        Event Count: ${item?.["Event count"]}<br>
+        GEOID: ${item?.["GEOID"]}<br>
+        Impact: ${item?.["Impact"]}`);
       marker.addTo(map);
     
     });

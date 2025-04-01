@@ -7,12 +7,18 @@ import Header from "@/src/components/Header";
 import Footer from "@/src/components/Footer"; 
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  const hiddenPaths = ["/", "/signup"];
+
+  const shouldHideHeaderFooter = hiddenPaths.includes(pathname);
   return (
     <html lang="en">
        <Head>
@@ -34,9 +40,9 @@ export default function RootLayout({
           draggable           
           pauseOnHover         
         />
-       {/*  <Header /> */}
+       {!shouldHideHeaderFooter && <Header />}
         <main className="flex-grow">{children}</main>
-       {/*  <Footer /> */}
+        {!shouldHideHeaderFooter && <Footer />}
         </SessionProvider>
       </body>
     </html>
