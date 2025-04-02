@@ -27,6 +27,7 @@ interface Filters {
   state: FilterOption | null;
   county: FilterOption | null;
   tract: FilterOption | null;
+  week_id: number | null;
 }
 
 interface MarkerData {
@@ -69,12 +70,18 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     pie_chart: object
   }
 
+  type Week = {
+    week_id: number;
+    week: string;
+  };
+
 const Prediction = () => {
 
   const [filters, setFilters] = useState<Filters>({
     state: null,
     county: null,
     tract: null,
+    week_id: null
   });
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [zoom, setZoom] = useState<number>(4);
@@ -96,8 +103,9 @@ const Prediction = () => {
     amenities:false
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
-  const [weeks,setWeeks] = useState([])
+  const [weeks,setWeeks] = useState<Week[]>([])
   const [eventData,setEventData] = useState<EventData[]>([]);
+  const [selectedWeekId, setSelectedWeekId] = useState<any>();
 
   const { data: session, status } = useSession();
     const router = useRouter();
@@ -131,6 +139,7 @@ const Prediction = () => {
         const dropD = await predictionNewDropdown();
         setStatesData(dropD?.Dropdown)
         setWeeks(dropD?.Weeks)
+        setSelectedWeekId(dropD?.Weeks[0]?.week_id)
         setLoadingAnalysisNewData(false)
         setLoadingExternalData(false);
         setLoadingAnalysisData(false);
@@ -162,6 +171,7 @@ const Prediction = () => {
 
     fetchData();
   }, []);
+
 
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
@@ -259,6 +269,7 @@ const Prediction = () => {
       state: null,
       county: null,
       tract: null,
+      week_id:null
     });
   };
 
@@ -339,6 +350,33 @@ const Prediction = () => {
       <span>{label}</span>
     </div>
   );
+
+  console.log("selectedWeekId",selectedWeekId)
+
+  const handleApplySelectedWeek = async (weekID:any) =>{
+    const queryParams = {
+      State: filters.state?.value || null,
+      County: filters.county?.value || null,
+      TRACTID: filters.tract?.value || null,
+      week_id: weekID || null,
+    };
+    setLoadingAnalysisData(true);
+    setLoadingMapData(true);
+    try {
+      const res = await getDashboardPrediction(queryParams);
+      setPredictionData(res);
+      const resp = await getPredictionMap(queryParams);
+      setMarkers(resp?.data)
+      //setMarkers(res?.map_data)
+      setLoadingAnalysisData(false);
+      setLoadingMapData(false);
+      //setZoom()
+      //setCenter()
+    } catch (error) {
+      setLoadingAnalysisData(false);
+      setLoadingMapData(false);
+    }
+  }
 
   
   if (status === "loading") {
@@ -559,8 +597,27 @@ const Prediction = () => {
         
       <div>
             <p className="mt-4 text-black text-base font-semibold font-neris">Select a week</p>
-    {loadingAnalysisData ? <>Loading...</> :
-      <WeekSelector weeks={weeks} />}
+    {loadingAnalysisData  ? <>Loading...</> :
+      // <WeekSelector weeks={weeks} />
+      <div className="flex space-x-7">
+      {weeks?.map(({ week_id, week }) => (
+        <button
+          key={week_id}
+          onClick={() => {
+            setSelectedWeekId(week_id)
+          handleApplySelectedWeek(week_id)
+          }}
+          disabled={loadingAnalysisData || loadingMapData}
+          className={`px-4 py-2 border rounded transition-colors 
+            ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"}`}
+        >
+         <p className="text-black text-xs font-medium font-neris">  {week} </p>
+    
+        </button>
+      ))}
+    </div>
+      
+      }
       </div> 
 
       <div className="w-full h-96  " style={{marginTop:'3%'}}>

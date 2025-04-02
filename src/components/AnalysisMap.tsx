@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, useMap  } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 interface MarkerData {
@@ -45,7 +45,7 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data, canvasRen
     return null; // We are manually adding markers, so no need to render anything
   };
 
-const AnalysisMap: React.FC<MapAnalysisProps> = ({ markers, zoom, center }) => {
+const AnalysisMap: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center }) => {
 
   const router = useRouter();
 const canvasRenderer = L.canvas({ padding: 0.5 });
@@ -74,6 +74,9 @@ const canvasRenderer = L.canvas({ padding: 0.5 });
     </>
     
   );
-};
+});
+
+// ✅ Assign a display name
+AnalysisMap.displayName = "AnalysisMap";
 
 export default AnalysisMap;
