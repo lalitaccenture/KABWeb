@@ -134,4 +134,7 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = React.memo(({ stateInfo, 
   );
 });
 
+// ✅ Assign a display name
+MapAnalysisGEOJSON.displayName = "MapAnalysisGEOJSON";
+
 export default MapAnalysisGEOJSON;

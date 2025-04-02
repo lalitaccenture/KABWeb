@@ -153,4 +153,7 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
   );
 });
 
+// ✅ Assign a display name
+MapPrediction.displayName = "MapPrediction";
+
 export default MapPrediction;

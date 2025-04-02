@@ -76,4 +76,7 @@ const canvasRenderer = L.canvas({ padding: 0.5 });
   );
 });
 
+// ✅ Assign a display name
+AnalysisMap.displayName = "AnalysisMap";
+
 export default AnalysisMap;
