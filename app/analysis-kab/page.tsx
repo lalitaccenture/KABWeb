@@ -809,7 +809,7 @@ const ScenarioModeling = () => {
     <span>Loading Data...</span>
   ) : (
     <span className="text-xl font-bold text-green-700">
-      {formatNumber(analysisData?.estimated_litter_density)}
+      {formatNumber(Math.floor(analysisData?.estimated_litter_density))}
       <span className="text-sm text-green-700"> (# / sq. miles)</span>
     </span>
   )}

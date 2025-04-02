@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 interface MarkerData {
@@ -131,7 +131,7 @@ const CanvasEventMarkersLayer: React.FC<CanvasEventMarkersLayerProps> = ({ data,
   return null;
 };
 
-const MapPrediction: React.FC<MapAnalysisProps> = ({ markers, zoom, center,switches,eventData }) => {
+const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData }) => {
 
   const router = useRouter();
   const canvasRenderer = L.canvas({ padding: 0.5 });
@@ -151,6 +151,6 @@ const MapPrediction: React.FC<MapAnalysisProps> = ({ markers, zoom, center,switc
     </div>
     </>
   );
-};
+});
 
 export default MapPrediction;

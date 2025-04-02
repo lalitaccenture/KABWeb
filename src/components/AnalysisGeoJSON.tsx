@@ -10,6 +10,7 @@ import { FeatureCollection } from "geojson";
 
 // Import and typecast GeoJSON data
 import usStatesGeoJSONRaw from "../../public/us-states.json";
+import React from "react";
 // import usStatesGeoJSONRaw from "../../public/us-states-new.json";
 const usStatesGeoJSON: FeatureCollection = usStatesGeoJSONRaw as FeatureCollection;
 
@@ -98,7 +99,7 @@ const defaultIcon = L.icon({
   shadowSize: [25, 25], // Ensures shadow aligns correctly
 });
 
-const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, center, showGeoJSON, markers }) => {
+const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = React.memo(({ stateInfo, zoom, center, showGeoJSON, markers }) => {
   return (
     <div className="w-full h-full">
       <MapContainer center={center} zoom={zoom} style={{height: "420px", marginTop:'-21px' }} attributionControl={false} className="rounded-lg">
@@ -131,6 +132,6 @@ const MapAnalysisGEOJSON: React.FC<MapAnalysisProps> = ({ stateInfo, zoom, cente
       </MapContainer>
     </div>
   );
-};
+});
 
 export default MapAnalysisGEOJSON;
