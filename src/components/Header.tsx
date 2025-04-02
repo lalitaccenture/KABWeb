@@ -62,36 +62,36 @@ const Header = () => {
 
 
     return (
-        <div className="w-full flex h-12 px-4 items-center justify-between">
-            <div className="flex flex-col">
+        <div className="w-full flex  px-6 items-center justify-between" style={{height:'4rem'}}>
+         {/*    <div className="flex flex-col">
                 <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
                     LitterSense
                 </p>
                 <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
-            </div>
+            </div> */}
 
             {status === "authenticated" && (
                 <div className="w-1/3 p-2 flex items-center">
                     <nav className="w-full">
                         <ul className="flex justify-start gap-12 w-full" style={{ justifyContent: 'center', marginLeft: '20%' }}>
                             <li>
-                                <Link href="/home" onClick={() => setActiveTab('/home')}>
+                               {/*  <Link href="/home" onClick={() => setActiveTab('/home')}>
                                     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
     hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 
     focus:border-[#5BAA76] px-2 py-1 rounded-md ${activeTab === '/home' ? 'bg-[#5BAA76] text-white' : ''}`}>
                                         Home
                                     </span>
-                                </Link>
+                                </Link> */}
 
                             </li>
                             <li>
-                                <Link href="/prediction" onClick={() => setActiveTab('/prediction')}>
+                               {/*  <Link href="/prediction" onClick={() => setActiveTab('/prediction')}>
                                     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
     hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 
     focus:border-[#5BAA76] px-2 py-1 rounded-md ${activeTab === '/prediction' ? 'bg-[#5BAA76] text-white' : ''}`}>
                                         Prediction
                                     </span>
-                                </Link>
+                                </Link> */}
 
                             </li>
                             {/* <li>
@@ -109,14 +109,14 @@ const Header = () => {
 
                             >
                                 {/* Main Link for Analysis */}
-                                <button onClick={handleAnalysisClick}>
+                               {/*  <button onClick={handleAnalysisClick}>
                                     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
     hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 
     focus:border-[#5BAA76] px-2 py-1 rounded-md ${activeTab === '/analysis' ? 'bg-[#5BAA76] text-white' : ''}`}>
                                         Analysis
                                     </span>
                                 </button>
-
+ */}
 
                             </li>
                         </ul>
@@ -124,7 +124,7 @@ const Header = () => {
                 </div>
             )}
             <div className={`flex items-center ${status === "authenticated" ? "gap-6" : "justify-end w-1/3"}`}>
-                <div className="flex justify-center" >
+               {/*  <div className="flex justify-center" >
                     <Image
                         src="/kab.png"
                         alt="Logo KAB"
@@ -132,7 +132,7 @@ const Header = () => {
                         height={28}
                         className="object-contain"
                     />
-                </div>
+                </div> */}
 
                 {/* <div className="flex justify-center gap-6 cursor-pointer" onClick={()=>router.push('/user-profile')} style={{ width: '60%', marginLeft: '70px' }}>
     <Image
@@ -167,13 +167,13 @@ const Header = () => {
 
 
                         {/* Logout Icon Button flex gap-2 cursor-pointer */}
-                        <button
+                    {/*     <button
                             onClick={handleLogout}
                             className="flex items-center gap-1 px-3 py-2 bg-[#5BAA76] text-white rounded-lg transition-all"
                             title="Logout"
                         >
                             <MdLogout size={20} />
-                        </button>
+                        </button> */}
 
                     </div>
                 )}

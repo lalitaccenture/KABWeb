@@ -60,7 +60,7 @@ const SignUp = () => {
     return (
         <div className="flex min-h-screen overflow-y-auto">
             {/* ✅ Left Side: Enlarged Image Section */}
-            <div className="hidden lg:flex w-3/5 overflow-hidden">
+            <div className="hidden lg:flex w-1/2 overflow-hidden">
                 <div className="relative w-full min-h-screen">
                     <Image
                         src="/login.jpg"
@@ -74,7 +74,7 @@ const SignUp = () => {
             <div className="w-full lg:w-1/2 flex flex-col ">
                 {/* ✅ Right Side: Sign-Up Form */}
                 <div className="w-full flex flex-col justify-center items-center px-8 lg:px-20 py-10">
-                    <div className="w-full flex justify-end " style={{ marginTop: '-7%' }}>
+                    <div className="w-full flex justify-end " style={{ marginTop: '-10%' ,marginLeft:'28%' }}>
                         <div className="text-right">
                             <p className="text-[#5BAA76] text-xl font-bold">LitterSense</p>
                             <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
@@ -156,13 +156,8 @@ const SignUp = () => {
                         >
                             {loading ? "Signing Up..." : "Sign Up"}
                         </button>
-                    </form>
-
-                    <div className="my-3 flex items-center w-full max-w-sm">
-                        <div className="flex-grow border-t border-gray-300"></div>
-                        <span className="mx-2 text-xs text-gray-400">Or Continue With</span>
-                        <div className="flex-grow border-t border-gray-300"></div>
-                    </div>
+                    </form><br/>
+{/* 
                     <div className="flex space-x-4">
                         <button onClick={() => signIn("google")} className="w-10 h-10">
                             <Image src="/google.png" alt="Google" width={20} height={20} />
@@ -170,7 +165,7 @@ const SignUp = () => {
                         <button onClick={() => signIn("apple")} className="w-10 h-10">
                             <Image src="/logo-apple.png" alt="Apple" width={24} height={24} />
                         </button>
-                    </div>
+                    </div> */}
                     <div >
                         <Image
                             src="/kab.png"

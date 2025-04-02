@@ -48,9 +48,7 @@ const Footer = () => {
             </div>
 
             {/* Copyright Text */}
-            <p className="text-xs text-gray-600 mt-2">
-              Keep America Beautiful © Copyright 2025
-            </p>
+           
           </div>
 
         </div>

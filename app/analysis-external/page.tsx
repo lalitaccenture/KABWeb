@@ -1,5 +1,6 @@
 'use client';
-
+import Image from "next/image"
+import { MdLogout } from "react-icons/md";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import {
@@ -17,8 +18,8 @@ import { analysisNewDropdown, analysisNewDropdownWithCity, applyFilter, getAnaly
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { formatNumber, formatNumberMillion } from "@/utils/common";
 import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -497,13 +498,32 @@ const Analysis = () => {
     return <p>Loading...</p>; // Prevents UI flickering
   }
 
+  
+    const handleLogoClick = () => {
+        if (status === "authenticated") {
+            router.push("/home");
+        } else {
+            router.push("/");
+        }
+    };
+   const handleLogout = async () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            await signOut({ redirect: false }); // Prevents full page reload
+            router.push("/");
+            console.log("Logged out");
+        }
+        else {
+            console.log("Logout canceled");
+        }
+    };
   return (
     <div className="min-h-screen w-full flex p-4" style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
       {/* Top Buttons */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] mt-2">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] " style={{marginTop:'4rem'}}>
           {/* Litter Cleanup Analysis Button */}
           <button
             className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup"
@@ -535,273 +555,368 @@ const Analysis = () => {
 
       </div>
 
-      <div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-15">
-
-
-        <div className="flex flex-col gap-4">
 
 
 
-          <div>
-            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
-            {loadingAnalysisNewData ? (
-              <div>Loading states...</div>
-            ) : (
-              <Select
-                id="state"
-                value={filters.state}
-                placeholder="Select a State"
-                onChange={(selectedOption) => {
-                  handleFilterChange('state', selectedOption)
-                  handleDropdownFurther('state', selectedOption)
-                }}
-                options={statesNewData}
-                styles={{
-                  control: (base, state) => ({
-                    ...base,
-                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                    boxShadow:
-                      state.isFocused || state.hasValue
-                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                        : "none",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      borderColor: "#5BAA76",
-                    },
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#C5C5C5",
-                    fontSize: "14px",
-                  }),
-                  option: (base, { isSelected, isFocused }) => ({
-                    ...base,
-                    backgroundColor: isSelected
-                      ? "#5BAA76" // ✅ Selected item stays green
-                      : isFocused
-                        ? "#A5D6A7" // ✅ Light green on hover
-                        : "white",
-                    color: isSelected ? "white" : "black",
-
-                    "&:active": {
-                      backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
-                    },
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "#black",
-                    fontWeight: "semibold",
-                  }),
-                }}
-              />
+      <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-5%' }}>
 
 
-            )}
-          </div>
+  {/* Top Section */}
+  <div className="flex flex-col items-center">
+    <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
+      LitterSense
+    </p>
+    <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
+
+   
+  </div>
+
+  {/* MENU Section */}
+  <div className="mt-6">
+    <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
+    <div className="flex flex-col gap-2">
+      <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
+       {/*  <span>📊</span>  */}
+       <span className="font-neris text-sm">Analysis</span>
+
+      </button>
+      <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-full hover:bg-gray-200">
+    {/*     <span>⚡</span>  */}
+        <span className="font-neris text-sm">Prediction</span>
+      </button>
+    </div>
+  </div>
+
+  {/* Spacer to push content below */}
+  <div className="flex-grow"></div>
+
+  {/* Logout Button */}
+  <div className="flex justify-center mb-2">
+    <button
+      onClick={handleLogout}
+      className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+      title="Logout"
+    >
+      <MdLogout size={20} />
+      <span>Logout</span>
+    </button>
+  </div>
+
+  {/* Copyright under the logout button */}
+  <div className="flex justify-center">
+    <p className="text-xs text-gray-600 whitespace-nowrap">Keep America Beautiful © Copyright 2025</p>
+  </div>
+
+  {/* Bottom Logo */}
+  <div className="flex justify-center mt-2">
+    <Image src="/kab.png" alt="Logo KAB" width={178} height={28} className="object-contain" />
+  </div>
+</div>
 
 
-          <div>
-            <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2 font-neris">City, County</label>
-            {loadingAnalysisNewData ? (
-              <div>Loading counties...</div>
-            ) : (
-              <Select
-                id="county"
-                value={filters.county}
-                onChange={(selectedOption) => {
-                  handleFilterChange('county', selectedOption)
-                  handleDropdownFurther('county', selectedOption)
-                }}
-                options={countiesNewData}
-                isDisabled={!filters?.state?.value}
-                placeholder="Select a County"
-                styles={{
-                  control: (base, state) => ({
-                    ...base,
-                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                    boxShadow:
-                      state.isFocused || state.hasValue
-                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                        : "none",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      borderColor: "#5BAA76",
-                    },
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#C5C5C5",
-                    fontSize: "14px",
-                  }),
-                  option: (base, { isSelected, isFocused }) => ({
-                    ...base,
-                    backgroundColor: isSelected
-                      ? "#5BAA76" // ✅ Selected stays green
-                      : isFocused
-                        ? "#A5D6A7" // ✅ Light green on hover
-                        : "white",
-                    color: isSelected ? "white" : "black",
-                    "&:hover": {
-                      backgroundColor: "#5BAA76",
-                      color: "white",
-                    },
-                    "&:active": {
-                      backgroundColor: "#5BAA76", // ✅ Prevents blue flash when dragging
-                    },
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "black",
-                    fontWeight: "semibold",
-                  }),
-                }}
-              />
-            )}
-          </div>
 
 
-          <div>
-            <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2 font-neris">Tract</label>
-            {loadingAnalysisNewData ? (
-              <div>Loading tracts...</div>
-            ) : (
-              <Select
-                id="tract"
-                value={filters.tract}
-                onChange={(selectedOption) => {
-                  handleFilterChange('tract', selectedOption)
-                  handleDropdownFurther('tract', selectedOption)
-                }}
-                options={tractsNewData}
-                isDisabled={!filters?.county?.value}
-                placeholder="Select a Tract ID"
-                styles={{
-                  control: (base, state) => ({
-                    ...base,
-                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                    boxShadow:
-                      state.isFocused || state.hasValue
-                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // Always show shadow if selected
-                        : "none",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      borderColor: "#5BAA76",
-                    },
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#C5C5C5",
-                    fontSize: "14px",
-                  }),
-                  option: (base, { isSelected, isFocused }) => ({
-                    ...base,
-                    backgroundColor: isSelected
-                      ? "#5BAA76" // ✅ Selected stays green
-                      : isFocused
-                        ? "#A5D6A7" // ✅ Light green on hover
-                        : "white",
-                    color: isSelected ? "white" : "black",
-                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
-                    "&:hover": {
-                      backgroundColor: "#5BAA76",
-                      color: "white",
-                    },
-                    "&:active": {
-                      backgroundColor: "#5BAA76",
-                    },
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "black", // ✅ Selected value should be black
-                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
-                  }),
-                }}
-              />
-            )}
-          </div>
-
-
-          <div>
-            <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2 font-neris">Year</label>
-            {loadingAnalysisNewData ? (
-              <div>Loading years...</div>
-            ) : (
-              <Select
-                id="year"
-                value={filters.year}
-                onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-                options={yearsNewData}
-                placeholder="By default, all the years are shown"
-                styles={{
-                  control: (base, state) => ({
-                    ...base,
-                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                    boxShadow:
-                      state.isFocused || state.hasValue
-                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // ✅ Always show shadow if selected
-                        : "none",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      borderColor: "#5BAA76",
-                    },
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#C5C5C5",
-                    fontSize: "14px",
-                  }),
-                  option: (base, { isSelected, isFocused }) => ({
-                    ...base,
-                    backgroundColor: isSelected
-                      ? "#5BAA76" // ✅ Selected stays green
-                      : isFocused
-                        ? "#A5D6A7" // ✅ Light green on hover
-                        : "white",
-                    color: isSelected ? "white" : "black",
-                    fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
-                    "&:hover": {
-                      backgroundColor: "#5BAA76",
-                      color: "white",
-                    },
-                    "&:active": {
-                      backgroundColor: "#5BAA76",
-                    },
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "#000000", // ✅ Selected value should be black
-                    fontWeight: "semibold", // ✅ Selected value should be semi-bold
-                  }),
-                }}
-              />
-            )}
-          </div>
-
-
-          <div className="mt-4 flex flex-col gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
-              Apply
-            </Button>
-            <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
-              Clear
-            </Button>
-
-          </div>
-          <div className="mt-8">
-            <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
-            <div className="text-xs text-gray-600 mb-2">📌 <strong>Data Sources & Collection Period:</strong> Insights in this tool are based on external data collected between <strong>2015 </strong>  and <strong> 2024.</strong> Completeness and coverage depend on the availability and accuracy of these sources.</div>
-            <div className="text-xs text-gray-600 mb-2">📌 <strong>Scope & Limitations:</strong> While we strive to provide meaningful insights, the data may not fully represent all litter patterns and cleanup programs. Accuracy is contingent on the integrity of external sources.</div>
-            <div className="text-xs text-gray-600 mb-2">📌 <strong>Evolving Insights:</strong>As new data is integrated, insights may evolve, leading to more refined analytics over time. Current insights should be considered <strong> indicative, not definitive.</strong></div>
-            <div className="text-xs text-gray-600">📌 <strong>Liability Disclaimer:</strong> This tool is an analytical aid and does not claim to provide a complete representation of litter trends. Users should exercise discretion when interpreting data. We disclaim any liability for decisions made based on these insights.</div>
-          </div>
-        </div>
-      </div>
 
 
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ marginTop: '3%' }}>
+      <div className="flex flex-row w-full p-4 " style={{gap:'5.1%', flex:'1'}}>
 
-        <p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
+
+
+      <div style={{ 
+  width: "max-content", 
+  maxWidth: "21%", 
+  minWidth: "21%", 
+  flex: "0.2" 
+}}>
+
+  <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
+  {loadingAnalysisNewData ? (
+    <div>Loading states...</div>
+  ) : (
+    <Select
+      id="state"
+      value={filters.state}
+      placeholder="Select a State"
+      onChange={(selectedOption) => {
+        handleFilterChange('state', selectedOption)
+        handleDropdownFurther('state', selectedOption)
+      }}
+      options={statesNewData}
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 👈 Ensures dropdown appears on top
+        control: (base, state) => ({
+          ...base,
+          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+          boxShadow:
+            state.isFocused || state.hasValue
+              ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+              : "none",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            borderColor: "#5BAA76",
+          },
+          zIndex: 10, // 👈 Ensures input stays above other elements
+        }),
+        menu: (base) => ({
+          ...base,
+          zIndex: 9999, // 👈 Ensures dropdown is above everything
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: "#C5C5C5",
+          fontSize: "14px",
+        }),
+        option: (base, { isSelected, isFocused }) => ({
+          ...base,
+          backgroundColor: isSelected
+            ? "#5BAA76" // ✅ Selected item stays green
+            : isFocused
+              ? "#A5D6A7" // ✅ Light green on hover
+              : "white",
+          color: isSelected ? "white" : "black",
+          "&:active": {
+            backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
+          },
+        }),
+        singleValue: (base) => ({
+          ...base,
+          color: "black", // ✅ Corrected invalid color
+          fontWeight: "semibold",
+        }),
+      }}
+      
+    />
+
+
+  )}
+</div>
+
+
+<div style={{ 
+  width: "max-content", 
+  maxWidth: "21%", 
+  minWidth: "21%", 
+  flex: "0.2" ,
+  whiteSpace:'nowrap'
+}}>
+
+  <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2 font-neris">City,County</label>
+  {loadingAnalysisNewData ? (
+    <div>Loading counties...</div>
+  ) : (
+    <Select
+      id="county"
+      value={filters.county}
+      onChange={(selectedOption) => {
+        handleFilterChange('county', selectedOption)
+        handleDropdownFurther('county', selectedOption)
+      }}
+      options={countiesNewData}
+      isDisabled={!filters?.state?.value}
+      placeholder="Select a County"
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 👈 Ensures dropdown appears on top
+        control: (base, state) => ({
+          ...base,
+          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+          boxShadow:
+            state.isFocused || state.hasValue
+              ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+              : "none",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            borderColor: "#5BAA76",
+          },
+          zIndex: 10, // 👈 Keeps input above other elements
+        }),
+        menu: (base) => ({
+          ...base,
+          zIndex: 9999, // 👈 Ensures dropdown is above the map
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: "#C5C5C5",
+          fontSize: "14px",
+        }),
+        option: (base, { isSelected, isFocused }) => ({
+          ...base,
+          backgroundColor: isSelected
+            ? "#5BAA76" // ✅ Selected stays green
+            : isFocused
+              ? "#A5D6A7" // ✅ Light green on hover
+              : "white",
+          color: isSelected ? "white" : "black",
+          "&:hover": {
+            backgroundColor: "#5BAA76",
+            color: "white",
+          },
+          "&:active": {
+            backgroundColor: "#5BAA76", // ✅ Prevents blue flash when dragging
+          },
+        }),
+        singleValue: (base) => ({
+          ...base,
+          color: "black",
+          fontWeight: "semibold",
+        }),
+      }}
+      
+    />
+  )}
+</div>
+
+{/* 
+<div>
+  <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2 font-neris">Tract</label>
+  {loadingAnalysisNewData ? (
+    <div>Loading tracts...</div>
+  ) : (
+    <Select
+      id="tract"
+      value={filters.tract}
+      onChange={(selectedOption) => {
+        handleFilterChange('tract', selectedOption)
+        handleDropdownFurther('tract', selectedOption)
+      }}
+      options={tractsNewData}
+      isDisabled={!filters?.county?.value}
+      placeholder="Select a Tract ID"
+      styles={{
+        control: (base, state) => ({
+          ...base,
+          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+          boxShadow:
+            state.isFocused || state.hasValue
+              ? "0px 2px 4px rgba(91, 170, 118, 0.3)" 
+              : "none",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            borderColor: "#5BAA76",
+          },
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: "#C5C5C5",
+          fontSize: "14px",
+        }),
+        option: (base, { isSelected, isFocused }) => ({
+          ...base,
+          backgroundColor: isSelected
+            ? "#5BAA76" 
+            : isFocused
+              ? "#A5D6A7" 
+              : "white",
+          color: isSelected ? "white" : "black",
+          fontWeight: isSelected ? "600" : "normal", 
+          "&:hover": {
+            backgroundColor: "#5BAA76",
+            color: "white",
+          },
+          "&:active": {
+            backgroundColor: "#5BAA76",
+          },
+        }),
+        singleValue: (base) => ({
+          ...base,
+          color: "black", 
+          fontWeight: "semibold", 
+        }),
+      }}
+    />
+  )}
+</div> */}
+
+
+<div style={{ 
+  width: "max-content", 
+  maxWidth: "21%", 
+  minWidth: "21%", 
+  flex: "0.2" 
+}}>
+
+  <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2 font-neris">Year</label>
+  {loadingAnalysisNewData ? (
+    <div>Loading years...</div>
+  ) : (
+    <Select
+      id="year"
+      value={filters.year}
+      onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
+      options={yearsNewData}
+      placeholder="All the years"
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 🔥 Ensures dropdown appears above everything
+        control: (base, state) => ({
+          ...base,
+          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+          boxShadow:
+            state.isFocused || state.hasValue
+              ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // ✅ Always show shadow if selected
+              : "none",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            borderColor: "#5BAA76",
+          },
+          zIndex: 10, // ✅ Ensures input is visible above map
+        }),
+        menu: (base) => ({
+          ...base,
+          zIndex: 9999, // ✅ Ensures dropdown list is above the map
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: "#C5C5C5",
+          fontSize: "14px",
+        }),
+        option: (base, { isSelected, isFocused }) => ({
+          ...base,
+          backgroundColor: isSelected
+            ? "#5BAA76" // ✅ Selected stays green
+            : isFocused
+              ? "#A5D6A7" // ✅ Light green on hover
+              : "white",
+          color: isSelected ? "white" : "black",
+          fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
+          "&:hover": {
+            backgroundColor: "#5BAA76",
+            color: "white",
+          },
+          "&:active": {
+            backgroundColor: "#5BAA76",
+          },
+        }),
+        singleValue: (base) => ({
+          ...base,
+          color: "#000000", // ✅ Selected value should be black
+          fontWeight: "semibold", // ✅ Semi-bold text for selected value
+        }),
+      }}
+      
+    />
+  )}
+</div>
+
+
+<div className="mt-8 flex flex-row gap-2" style={{ 
+  width: "max-content", 
+  maxWidth: "21%", 
+  minWidth: "21%", 
+  flex: "0.2" ,
+  whiteSpace:'nowrap'
+}}>
+  <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
+    Apply
+  </Button>
+  <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
+    Clear
+  </Button>
+
+</div>
+
+</div>
+<p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
         <div className="w-full h-96 p-4 rounded " style={{ marginTop: '-3%' }}>
 
 

@@ -185,11 +185,11 @@ const Login = () => {
           </div>
 
           {/* ✅ Social Login Buttons */}
-          <div className="flex space-x-4">
+          <div className="flex" style={{marginLeft:'6%' ,marginTop:'-2%'}}>
             <button onClick={() => signIn("google")} className="w-10 h-10">
               <Image src="/google.png" alt="Google" width={20} height={20} />
             </button>
-            <button onClick={() => signIn("apple")} className="w-10 h-10">
+            <button onClick={() => signIn("apple")} className="w-10 h-10" style={{marginLeft:'-10%'}}>
               <Image src="/logo-apple.png" alt="Apple" width={24} height={24} />
             </button>
           </div>
