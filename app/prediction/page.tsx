@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAnalysisExternalData, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { useSession } from "next-auth/react";
@@ -68,6 +68,15 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
     pie_chart: object
   }
 
+  interface BinData {
+    latitude: number;
+    longitude: number;
+  }
+  
+  interface AmenitiesData extends BinData {
+    type: string;
+  }
+
   type Week = {
     week_id: number;
     week: string;
@@ -102,6 +111,11 @@ const Prediction = () => {
   const [weeks,setWeeks] = useState<Week[]>([])
   const [eventData,setEventData] = useState<EventData[]>([]);
   const [selectedWeekId, setSelectedWeekId] = useState<any>();
+  const [loadingEventData,setLoadingEventData] = useState<boolean>(false);
+  const [loadingBinData,setLoadingBinData] = useState<boolean>(false);
+  const [loadingAmenitiesData,setLoadingAmenitiesData] = useState<boolean>(false);
+  const [binData,setBinData] = useState<BinData>();
+  const [amenitiesData,setAmenitiesData] = useState<AmenitiesData>();
 
   const { data: session, status } = useSession();
     const router = useRouter();
@@ -128,6 +142,9 @@ const Prediction = () => {
       setLoadingAnalysisData(true);
       setLoadingAnalysisNewData(true);
       setLoadingMapData(true);
+      setLoadingEventData(true);
+      setLoadingAmenitiesData(true)
+      setLoadingBinData(true)
       setError(null);
 
       try {
@@ -135,20 +152,40 @@ const Prediction = () => {
         const dropD = await predictionNewDropdown();
         setStatesData(dropD?.Dropdown)
         setWeeks(dropD?.Weeks)
+        const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
+      if (defaultState) {
+        setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
+      }
         setSelectedWeekId(dropD?.Weeks[0]?.week_id)
         setLoadingAnalysisNewData(false)
         setLoadingExternalData(false);
         setLoadingAnalysisData(false);
-        const dataDashboard = await getDashboardPrediction();
+        const dataDashboard = await getDashboardPrediction({"State":"California"});
         setPredictionData(dataDashboard);
-      
-          const resp = await getPredictionMap();
-          console.log("Raw response:", resp, typeof resp);
+        // if (dataDashboard?.centroid === "No location found") {
+
+        // }
+        // else {
+        //   setCenter(dataDashboard?.centroid)
+        // }
+          const resp = await getPredictionMap({"State":"California"});
+          console.log("Raw response:map", resp, typeof resp);
           const respm = await getEventPrediction();
-          console.log("Raw response:", respm, typeof respm);
+          console.log("Raw response:eventData", respm, typeof respm);
+          const binData = await getBinPrediction();
+          console.log("Raw response:binData", binData, typeof binData);
+          const amenitiesData = await getAmenitiesPrediction();
+          console.log("Raw response:amenitiesData", amenitiesData, typeof amenitiesData);
+          
+          
       setMarkers(resp?.data)
       setEventData(respm?.data)
+      setBinData(binData)
+      setAmenitiesData(amenitiesData)
         setLoadingMapData(false);
+        setLoadingEventData(false)
+        setLoadingAmenitiesData(false)
+        setLoadingBinData(false)
         // const value = await applyFilter();
         // setAnalysisData(value);
         
@@ -160,6 +197,9 @@ const Prediction = () => {
         setLoadingExternalData(false);
         setLoadingAnalysisNewData(false)
         setLoadingMapData(false);
+        setLoadingEventData(false)
+        setLoadingAmenitiesData(false)
+        setLoadingBinData(false)
       } finally {
 
       }
@@ -244,19 +284,32 @@ const Prediction = () => {
 
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
+    setLoadingEventData(true)
+    setLoadingAmenitiesData(true)
+    setLoadingBinData(true)
     try {
       const res = await getDashboardPrediction(queryParams);
       setPredictionData(res);
       const resp = await getPredictionMap(queryParams);
       setMarkers(resp?.data)
+      const respm = await getEventPrediction(queryParams);
+      setEventData(respm?.data)
+      const binData = await getBinPrediction();
+      setBinData(binData)
+      const amenitiesData = await getAmenitiesPrediction();
+      setAmenitiesData(amenitiesData)
       //setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
+      setLoadingEventData(false)
       //setZoom()
       //setCenter()
     } catch (error) {
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
+      setLoadingEventData(false)
+      setLoadingAmenitiesData(false)
+        setLoadingBinData(false)
     }
   };
 
@@ -358,19 +411,32 @@ const Prediction = () => {
     };
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
+    setLoadingEventData(true)
+    setLoadingAmenitiesData(true)
+    setLoadingBinData(true)
     try {
       const res = await getDashboardPrediction(queryParams);
       setPredictionData(res);
       const resp = await getPredictionMap(queryParams);
       setMarkers(resp?.data)
+      const respm = await getEventPrediction(queryParams);
+      setEventData(respm?.data)
+      const binData = await getBinPrediction();
+      setBinData(binData)
+      const amenitiesData = await getAmenitiesPrediction();
+      setAmenitiesData(amenitiesData)
       //setMarkers(res?.map_data)
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
+      setLoadingEventData(false)
       //setZoom()
       //setCenter()
     } catch (error) {
       setLoadingAnalysisData(false);
       setLoadingMapData(false);
+      setLoadingEventData(false)
+      setLoadingAmenitiesData(false)
+        setLoadingBinData(false)
     }
   }
 
@@ -579,9 +645,12 @@ const Prediction = () => {
 
           </div>
           <div className="space-y-4">
-          <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />
-  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />
-  <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />
+            {loadingEventData ? <>Loading...</> :
+          <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />}
+          {loadingBinData ? <>Loading...</> :
+  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
+  {loadingAmenitiesData ? <>Loading...</>:
+  <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />}
   {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
 </div>
@@ -623,7 +692,7 @@ const Prediction = () => {
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
-            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData}/>
+            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData}/>
           )}
         </div>
 

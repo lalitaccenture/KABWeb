@@ -304,5 +304,33 @@ export const getEventPrediction = async (queryParams: any = {}) => {
 };
 
 
+export const getBinPrediction = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/binsBasedPrediction?code=iE68FtFMDeoP5LGFAkqYzN1HtimSbg706zTRbn1JC6rDAzFuThGlkQ==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getAmenitiesPrediction = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/amenitiesBasedPrediction?code=_eBQrXlvqAoRx1z1l_4u-8LLvUgDCFa7cmv6VcJUujsbAzFuTQ7oCg==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
 
 

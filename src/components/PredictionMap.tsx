@@ -24,6 +24,15 @@ interface EventData {
   GEOID: string;
 }
 
+interface BinData {
+  latitude: number;
+  longitude: number;
+}
+
+interface AmenitiesData extends BinData {
+  type: string;
+}
+
 
 interface SwitchState {
   bins: boolean;
@@ -37,7 +46,9 @@ interface MapAnalysisProps {
   zoom: number;
   center: [number, number];
   switches: SwitchState;
-  eventData: EventData[]
+  eventData: EventData[];
+  binData: any;
+  amenitiesData: any;
 }
 
 interface CanvasMarkersLayerProps {
@@ -47,6 +58,16 @@ interface CanvasMarkersLayerProps {
 
 interface CanvasEventMarkersLayerProps {
   data: EventData[];
+  canvasRenderer: L.Renderer;
+}
+
+interface CanvasBinMarkersLayerProps {
+  data: BinData[];
+  canvasRenderer: L.Renderer;
+}
+
+interface CanvasAmenitiesMarkersLayerProps {
+  data: AmenitiesData[];
   canvasRenderer: L.Renderer;
 }
 
@@ -141,12 +162,75 @@ const CanvasEventMarkersLayer: React.FC<CanvasEventMarkersLayerProps> = ({ data,
   return null;
 };
 
+const CanvasBinMarkersLayer: React.FC<CanvasBinMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
 
-const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData }) => {
+  useEffect(() => {
+    const markers: L.CircleMarker[] = [];
+
+    data?.forEach((item) => {   
+      const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer,
+        radius: 5,
+        fillColor: "rgba(255, 165, 0, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4,
+        stroke: false,
+        interactive: true,
+      });
+
+      
+
+      marker.addTo(map);
+      markers.push(marker);
+    });
+
+    // Cleanup function to remove markers when component unmounts
+    return () => {
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]); // Re-run effect if data changes
+
+  return null;
+};
+
+const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.CircleMarker[] = [];
+
+    data?.forEach((item) => {   
+      const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer,
+        radius: 5,
+        fillColor: "rgba(0, 0, 255, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4,
+        stroke: false,
+        interactive: true,
+      });
+
+
+      marker.addTo(map);
+      markers.push(marker);
+    });
+
+    // Cleanup function to remove markers when component unmounts
+    return () => {
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]); // Re-run effect if data changes
+
+  return null;
+};
+
+
+const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData }) => {
 
   const router = useRouter();
   const canvasRenderer = useMemo(() => L.canvas({ padding: 0.5 }), []);
-  console.log("markers",markers,switches)
+  console.log("markers",binData,amenitiesData)
 //new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
     <>
@@ -159,6 +243,12 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
         <CanvasMarkersLayer data={markers} canvasRenderer={canvasRenderer}/>
         {switches?.events &&
         <CanvasEventMarkersLayer data={eventData} canvasRenderer={canvasRenderer}/>
+}
+{switches?.bins &&
+        <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
+}
+{switches?.amenities &&
+        <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
 }
       </MapContainer>
     </div>
