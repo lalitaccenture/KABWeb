@@ -501,39 +501,7 @@ const Analysis = () => {
     <div className="min-h-screen w-full flex p-4" style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
-      {/* Top Buttons */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] mt-2">
-          {/* Litter Cleanup Analysis Button */}
-          <button
-            className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup"
-                ? "bg-green-600 text-white font-bold shadow-md"
-                : "text-gray-500"
-              }`}
-            onClick={() => {
-              setActiveTab("cleanup");
-              router.push("/analysis-external");
-            }}
-          >
-            Litter Cleanup Analysis
-          </button>
-
-          {/* Litter Survey Analysis Button */}
-          <button
-            className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "survey"
-                ? "bg-green-600 text-white font-bold shadow-md"
-                : "text-gray-600"
-              }`}
-            onClick={() => {
-              setActiveTab("survey");
-              router.push("/analysis-kab");
-            }}
-          >
-            Litter Survey Analysis
-          </button>
-        </div>
-
-      </div>
+     
 
       <div className="w-1/5 p-4 bg-white shadow-md rounded-lg mt-15">
 
@@ -799,8 +767,41 @@ const Analysis = () => {
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ marginTop: '3%' }}>
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4">
+      <div className="relative flex bg-[#DCFCE7] p-1 rounded-full shadow-md w-[520px] h-[40px]" style={{marginTop:'-2%'}}>
+      {/* Active Indicator */}
+      <div
+        className={`absolute top-1 bottom-1 w-[48%] bg-[#1E9E4D] rounded-full transition-all duration-300 ${
+          activeTab === "cleanup" ? "left-1" : "left-[50%]"
+        }`}
+      ></div>
 
+      {/* Button 1: Litter Cleanup Analysis */}
+      <button
+        className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+          activeTab === "cleanup" ? "text-white" : "text-gray-600"
+        }`}
+        onClick={() => {
+          setActiveTab("cleanup");
+          router.push("/analysis-external");
+        }}
+      >
+        Litter Cleanup Analysis
+      </button>
+
+      {/* Button 2: Litter Survey Analysis */}
+      <button
+        className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
+          activeTab === "survey" ? "text-white" : "text-gray-600"
+        }`}
+        onClick={() => {
+          setActiveTab("survey");
+          router.push("/analysis-kab");
+        }}
+      >
+        Litter Survey Analysis
+      </button>
+    </div>
         <p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
         <div className="w-full h-96 p-4 rounded " style={{ marginTop: '-3%' }}>
 

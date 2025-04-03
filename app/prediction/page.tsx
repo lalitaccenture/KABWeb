@@ -42,9 +42,7 @@ interface MarkerData {
 
 interface SwitchState {
   bins: boolean;
-  socioEconomic: boolean;
-  weatherOutlook: boolean;
-  typeOfArea: boolean;
+  events: boolean;
   amenities:boolean
 }
 
@@ -97,9 +95,7 @@ const Prediction = () => {
   const [error, setError] = useState<string | null>(null);
   const [switches, setSwitches] = useState<SwitchState>({
     bins: false,
-    socioEconomic: false,
-    weatherOutlook: false,
-    typeOfArea: false,
+    events: false,
     amenities:false
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
@@ -583,8 +579,9 @@ const Prediction = () => {
 
           </div>
           <div className="space-y-4">
+          <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />
   <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />
-  <SwitchItem label="Amenities" checked={switches.socioEconomic} onChange={handleChange("amenities")} />
+  <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />
   {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
 </div>
@@ -646,7 +643,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]?.toFixed(2)}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}</span>
             )}
                     </div>
 
@@ -659,7 +656,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]?.toFixed(2)}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}</span>
             )}
                     </div>
 
