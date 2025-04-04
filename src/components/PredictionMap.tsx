@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 interface MarkerData {
@@ -24,13 +24,21 @@ interface EventData {
   GEOID: string;
 }
 
+interface BinData {
+  latitude: number;
+  longitude: number;
+}
+
+interface AmenitiesData extends BinData {
+  type: string;
+}
+
 
 interface SwitchState {
-    bins: boolean;
-    socioEconomic: boolean;
-    weatherOutlook: boolean;
-    typeOfArea: boolean;
-  }
+  bins: boolean;
+  events: boolean;
+  amenities:boolean
+}
 
 
 interface MapAnalysisProps {
@@ -38,7 +46,9 @@ interface MapAnalysisProps {
   zoom: number;
   center: [number, number];
   switches: SwitchState;
-  eventData: EventData[]
+  eventData: EventData[];
+  binData: any;
+  amenitiesData: any;
 }
 
 interface CanvasMarkersLayerProps {
@@ -51,7 +61,17 @@ interface CanvasEventMarkersLayerProps {
   canvasRenderer: L.Renderer;
 }
 
-const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data, canvasRenderer }) => {
+interface CanvasBinMarkersLayerProps {
+  data: BinData[];
+  canvasRenderer: L.Renderer;
+}
+
+interface CanvasAmenitiesMarkersLayerProps {
+  data: AmenitiesData[];
+  canvasRenderer: L.Renderer;
+}
+
+const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data, canvasRenderer }) => {
   const map = useMap();
 
   data?.forEach((item) => {   
@@ -99,43 +119,118 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = ({ data, canvasRen
   });
 
   return null;
-};
+});
+
+
+CanvasMarkersLayer.displayName = "CanvasMarkersLayer";
 
 const CanvasEventMarkersLayer: React.FC<CanvasEventMarkersLayerProps> = ({ data, canvasRenderer }) => {
   const map = useMap();
 
-  data?.forEach((item) => {   
-    const marker = L.circleMarker([item.latitude, item.longitude], {
-      renderer: canvasRenderer, // ✅ Use the shared renderer
-      radius: 5,
-      fillColor: "rgba(0, 255, 0, 0.4)",
-      opacity: 1,
-      fillOpacity: 0.4,
-      stroke: false,
-      interactive: true,
+  useEffect(() => {
+    const markers: L.CircleMarker[] = [];
+
+    data?.forEach((item) => {   
+      const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer,
+        radius: 5,
+        fillColor: "rgba(0, 255, 0, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4,
+        stroke: false,
+        interactive: true,
+      });
+
+      marker.bindPopup(
+        `Event Count: ${item?.["Event count"]}<br>
+        GEOID: ${item?.["GEOID"]}<br>
+        Impact: ${item?.["Impact"]}`
+      );
+
+      marker.on("click", () => marker.openPopup());
+
+      marker.addTo(map);
+      markers.push(marker);
     });
 
-    marker.bindPopup(`
-      Event Count: ${item?.["Event count"]}<br>
-      GEOID: ${item?.["GEOID"]}<br>
-      Impact: ${item?.["Impact"]}
-    `);
-
-    marker.on("click", function () {
-      marker.openPopup();
-    });
-
-    marker.addTo(map);
-  });
+    // Cleanup function to remove markers when component unmounts
+    return () => {
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]); // Re-run effect if data changes
 
   return null;
 };
 
-const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData }) => {
+const CanvasBinMarkersLayer: React.FC<CanvasBinMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.CircleMarker[] = [];
+
+    data?.forEach((item) => {   
+      const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer,
+        radius: 5,
+        fillColor: "rgba(255, 165, 0, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4,
+        stroke: false,
+        interactive: true,
+      });
+
+      
+
+      marker.addTo(map);
+      markers.push(marker);
+    });
+
+    // Cleanup function to remove markers when component unmounts
+    return () => {
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]); // Re-run effect if data changes
+
+  return null;
+};
+
+const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.CircleMarker[] = [];
+
+    data?.forEach((item) => {   
+      const marker = L.circleMarker([item.latitude, item.longitude], {
+        renderer: canvasRenderer,
+        radius: 5,
+        fillColor: "rgba(0, 0, 255, 0.4)",
+        opacity: 1,
+        fillOpacity: 0.4,
+        stroke: false,
+        interactive: true,
+      });
+
+
+      marker.addTo(map);
+      markers.push(marker);
+    });
+
+    // Cleanup function to remove markers when component unmounts
+    return () => {
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]); // Re-run effect if data changes
+
+  return null;
+};
+
+
+const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData }) => {
 
   const router = useRouter();
-  const canvasRenderer = L.canvas({ padding: 0.5 });
-  console.log("markers",markers)
+  const canvasRenderer = useMemo(() => L.canvas({ padding: 0.5 }), []);
+  console.log("markers",binData,amenitiesData)
 //new Date(marker?.cleanup_date).toISOString().split('T')[0]
   return (
     <>
@@ -146,14 +241,22 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <CanvasMarkersLayer data={markers} canvasRenderer={canvasRenderer}/>
+        {switches?.events &&
         <CanvasEventMarkersLayer data={eventData} canvasRenderer={canvasRenderer}/>
+}
+{switches?.bins &&
+        <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
+}
+{switches?.amenities &&
+        <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
+}
       </MapContainer>
     </div>
     </>
   );
 });
 
-// ✅ Assign a display name
+
 MapPrediction.displayName = "MapPrediction";
 
 export default MapPrediction;
