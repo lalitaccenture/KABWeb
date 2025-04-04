@@ -51,6 +51,7 @@ interface SwitchItemProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  onColor: string
 }
 
 
@@ -136,6 +137,90 @@ const Prediction = () => {
     }));
   };
 
+  const fetchData = async () => {
+    setLoadingExternalData(true);
+    setLoadingAnalysisData(true);
+    setLoadingAnalysisNewData(true);
+    setLoadingMapData(true);
+    setLoadingEventData(true);
+    setLoadingAmenitiesData(true);
+    setLoadingBinData(true);
+    setError(null);
+  
+    try {
+      
+      const dropD = await predictionNewDropdown();
+  if (!dropD) throw new Error("Failed to fetch dropdown data");
+
+  setStatesData(dropD?.Dropdown);
+  setWeeks(dropD?.Weeks);
+
+  const defaultState = dropD?.Dropdown.find((state: { value: string }) => state.value === "California");
+  if (defaultState) {
+    setFilters((prev) => ({ ...prev, state: defaultState }));
+  }
+
+  const weekId = dropD?.Weeks[0]?.week_id;
+        setSelectedWeekId(weekId);
+      
+  
+      
+      const [
+        dashboardRes,
+        mapRes,
+        eventRes,
+        binRes,
+        amenitiesRes
+      ] = await Promise.allSettled([
+        getDashboardPrediction({ State: "California" }),
+        getPredictionMap({ State: "California" }),
+        getEventPrediction(),
+        getBinPrediction(),
+        getAmenitiesPrediction()
+      ]);
+  
+      if (dashboardRes.status === "fulfilled") {
+        setPredictionData(dashboardRes.value);
+      }
+  
+      if (mapRes.status === "fulfilled") {
+        setMarkers(mapRes.value?.data);
+        setZoom(5);
+        if (mapRes.value?.centroid !== "No location found") {
+          setCenter(mapRes.value?.centroid);
+        }
+      }
+  
+      if (eventRes.status === "fulfilled") {
+        setEventData(eventRes.value?.data);
+      }
+  
+      if (binRes.status === "fulfilled") {
+        setBinData(binRes.value);
+      }
+  
+      if (amenitiesRes.status === "fulfilled") {
+        setAmenitiesData(amenitiesRes.value);
+      }
+  
+      if ([dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
+        setError("Some data failed to load. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Dropdown API failed:", error);
+      setError("Failed to fetch dropdown data.");
+    }
+  
+   
+    setLoadingExternalData(false);
+    setLoadingAnalysisData(false);
+    setLoadingAnalysisNewData(false);
+    setLoadingMapData(false);
+    setLoadingEventData(false);
+    setLoadingAmenitiesData(false);
+    setLoadingBinData(false);
+  };
+
   useEffect(() => {
     // const fetchData = async () => {
     //   setLoadingExternalData(true);
@@ -206,88 +291,8 @@ const Prediction = () => {
     // };
 
 
-    const fetchData = async()=>{
-      setLoadingExternalData(true);
-      setLoadingAnalysisData(true);
-      setLoadingAnalysisNewData(true);
-      setLoadingMapData(true);
-      setLoadingEventData(true);
-      setLoadingAmenitiesData(true)
-      setLoadingBinData(true)
-      setError(null);
-
-      const [
-        dropDRes,
-        dashboardRes,
-        mapRes,
-        eventRes,
-        binRes,
-        amenitiesRes
-      ] = await Promise.allSettled([
-        predictionNewDropdown(),
-        getDashboardPrediction({ State: "California" }),
-        getPredictionMap({ State: "California" }),
-        getEventPrediction(),
-        getBinPrediction(),
-        getAmenitiesPrediction()
-      ]);
-
-      if (dropDRes.status === "fulfilled") {
-        const dropD = dropDRes.value;
-        setStatesData(dropD?.Dropdown);
-        setWeeks(dropD?.Weeks);
-        const defaultState = dropD?.Dropdown.find((state: { value: string }) => state.value === "California");
-        if (defaultState) {
-          setFilters(prev => ({ ...prev, state: defaultState }));
-        }
-        setSelectedWeekId(dropD?.Weeks[0]?.week_id);
-      } else {
-        console.error("Dropdown failed:", dropDRes.reason);
-      }
-
-      if (dashboardRes.status === "fulfilled") {
-        setPredictionData(dashboardRes.value);
-      }
-
-      if (mapRes.status === "fulfilled") {
-        setMarkers(mapRes.value?.data);
-        setZoom(5);
-      if (mapRes.value?.centroid === "No location found") {
-
-      }
-      else {
-        setCenter(mapRes.value?.centroid)
-      }
-      }
-      if (mapRes.status === "fulfilled") {
-        setMarkers(mapRes.value?.data);
-      }
+   
     
-      if (eventRes.status === "fulfilled") {
-        setEventData(eventRes.value?.data);
-      }
-    
-      if (binRes.status === "fulfilled") {
-        setBinData(binRes.value);
-      }
-    
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
-      }
-
-      if ([dropDRes, dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
-        setError("Some data failed to load. Please try again later.");
-      }
-    
-      // Turn off all loaders
-      setLoadingExternalData(false);
-      setLoadingAnalysisData(false);
-      setLoadingAnalysisNewData(false);
-      setLoadingMapData(false);
-      setLoadingEventData(false);
-      setLoadingAmenitiesData(false);
-      setLoadingBinData(false);
-}
     fetchData();
   }, []);
 
@@ -358,6 +363,7 @@ const Prediction = () => {
       State: filters.state?.value || null,
       County: filters.county?.value || null,
       TRACTID: filters.tract?.value || null,
+      week_id: selectedWeekId || null
     };
 
     // Filter out undefined values
@@ -371,29 +377,47 @@ const Prediction = () => {
     setLoadingAmenitiesData(true)
     setLoadingBinData(true)
     try {
-      const res = await getDashboardPrediction(queryParams);
-      setPredictionData(res);
-      const resp = await getPredictionMap(queryParams);
-      setMarkers(resp?.data)
-      const respm = await getEventPrediction(queryParams);
-      setEventData(respm?.data)
-      const binData = await getBinPrediction();
-      setBinData(binData)
-      const amenitiesData = await getAmenitiesPrediction();
-      setAmenitiesData(amenitiesData)
-      //setMarkers(res?.map_data)
-      setLoadingAnalysisData(false);
-      setLoadingMapData(false);
-      setLoadingEventData(false)
-      //setZoom()
-      //setCenter()
+      const results = await Promise.allSettled([
+        getDashboardPrediction(queryParams),
+        getPredictionMap(queryParams),
+        getEventPrediction(queryParams),
+        getBinPrediction(queryParams),
+        getAmenitiesPrediction(queryParams)
+      ]);
+    
+      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes] = results;
+    
+      if (dashboardRes.status === "fulfilled") {
+        setPredictionData(dashboardRes.value);
+      }
+    
+      if (mapRes.status === "fulfilled") {
+        setMarkers(mapRes.value?.data);
+      }
+    
+      if (eventRes.status === "fulfilled") {
+        setEventData(eventRes.value?.data);
+      }
+    
+      if (binRes.status === "fulfilled") {
+        setBinData(binRes.value);
+      }
+    
+      if (amenitiesRes.status === "fulfilled") {
+        setAmenitiesData(amenitiesRes.value);
+      }
+    
     } catch (error) {
-      setLoadingAnalysisData(false);
-      setLoadingMapData(false);
-      setLoadingEventData(false)
-      setLoadingAmenitiesData(false)
-        setLoadingBinData(false)
+      console.error("Unexpected error:", error);
+      setError("Something went wrong while fetching data.");
     }
+    
+    // Turn off all loaders
+    setLoadingAnalysisData(false);
+    setLoadingMapData(false);
+    setLoadingEventData(false);
+    setLoadingAmenitiesData(false);
+    setLoadingBinData(false);
   };
 
   const handleClear = () => {
@@ -403,6 +427,7 @@ const Prediction = () => {
       tract: null,
       week_id:null
     });
+    fetchData();
   };
 
   const options = {
@@ -475,13 +500,23 @@ const Prediction = () => {
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
 
-  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange }) => (
+  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange, onColor = "#00FF00" }) => (
     <div className="flex items-center space-x-2">
-      <Switch onChange={onChange} checked={checked} uncheckedIcon={false} 
-        checkedIcon={false} onColor="#5BAA76"  height={20} width={40} handleDiameter={14} />  
+      <Switch 
+        onChange={onChange} 
+        checked={checked} 
+        uncheckedIcon={false} 
+        checkedIcon={false} 
+        onColor={onColor}  
+        height={20} 
+        width={40} 
+        handleDiameter={14} 
+        activeBoxShadow={`0 0 5px 2px ${onColor}`}
+      />  
       <span>{label}</span>
     </div>
   );
+  
 
   console.log("selectedWeekId",selectedWeekId)
 
@@ -498,29 +533,47 @@ const Prediction = () => {
     setLoadingAmenitiesData(true)
     setLoadingBinData(true)
     try {
-      const res = await getDashboardPrediction(queryParams);
-      setPredictionData(res);
-      const resp = await getPredictionMap(queryParams);
-      setMarkers(resp?.data)
-      const respm = await getEventPrediction(queryParams);
-      setEventData(respm?.data)
-      const binData = await getBinPrediction();
-      setBinData(binData)
-      const amenitiesData = await getAmenitiesPrediction();
-      setAmenitiesData(amenitiesData)
-      //setMarkers(res?.map_data)
-      setLoadingAnalysisData(false);
-      setLoadingMapData(false);
-      setLoadingEventData(false)
-      //setZoom()
-      //setCenter()
+      const results = await Promise.allSettled([
+        getDashboardPrediction(queryParams),
+        getPredictionMap(queryParams),
+        getEventPrediction(queryParams),
+        getBinPrediction(queryParams),
+        getAmenitiesPrediction(queryParams)
+      ]);
+    
+      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes] = results;
+    
+      if (dashboardRes.status === "fulfilled") {
+        setPredictionData(dashboardRes.value);
+      }
+    
+      if (mapRes.status === "fulfilled") {
+        setMarkers(mapRes.value?.data);
+      }
+    
+      if (eventRes.status === "fulfilled") {
+        setEventData(eventRes.value?.data);
+      }
+    
+      if (binRes.status === "fulfilled") {
+        setBinData(binRes.value);
+      }
+    
+      if (amenitiesRes.status === "fulfilled") {
+        setAmenitiesData(amenitiesRes.value);
+      }
+    
     } catch (error) {
-      setLoadingAnalysisData(false);
-      setLoadingMapData(false);
-      setLoadingEventData(false)
-      setLoadingAmenitiesData(false)
-        setLoadingBinData(false)
+      console.error("Unexpected error:", error);
+      setError("Something went wrong while fetching data.");
     }
+    
+    // Turn off all loaders
+    setLoadingAnalysisData(false);
+    setLoadingMapData(false);
+    setLoadingEventData(false);
+    setLoadingAmenitiesData(false);
+    setLoadingBinData(false);
   }
 
   
@@ -729,11 +782,11 @@ const Prediction = () => {
           </div>
           <div className="space-y-4">
             {loadingEventData ? <>Loading...</> :
-          <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />}
+          <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} onColor="#00FF00"/>}
           {loadingBinData ? <>Loading...</> :
-  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
+  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#FFA500"/>}
   {loadingAmenitiesData ? <>Loading...</>:
-  <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />}
+  <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} onColor="#0000FF"/>}
   {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
 </div>
@@ -749,21 +802,22 @@ const Prediction = () => {
     {loadingAnalysisData  ? <>Loading...</> :
       // <WeekSelector weeks={weeks} />
       <div className="flex space-x-7">
-      {weeks?.map(({ week_id, week }) => (
-        <button
-          key={week_id}
-          onClick={() => {
-            setSelectedWeekId(week_id)
-          handleApplySelectedWeek(week_id)
-          }}
-          disabled={loadingAnalysisData || loadingMapData}
-          className={`px-4 py-2 border rounded transition-colors 
-            ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"}`}
-        >
-         <p className="text-black text-xs font-medium font-neris">  {week} </p>
-    
-        </button>
-      ))}
+      {weeks?.map(({ week_id, week }, index) => ( 
+  <button
+    key={week_id}
+    onClick={() => {
+      setSelectedWeekId(week_id);
+      handleApplySelectedWeek(week_id);
+    }}
+    disabled={loadingAnalysisData || loadingMapData || index === 2 || index === 3} 
+    className={`px-4 py-2 border rounded transition-colors 
+      ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"} 
+      ${index === 2 || index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
+  >
+    <p className="text-black text-xs font-medium font-neris">{week}</p>
+  </button>
+))}
+
     </div>
       
       }
