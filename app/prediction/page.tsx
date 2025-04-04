@@ -137,7 +137,76 @@ const Prediction = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    // const fetchData = async () => {
+    //   setLoadingExternalData(true);
+    //   setLoadingAnalysisData(true);
+    //   setLoadingAnalysisNewData(true);
+    //   setLoadingMapData(true);
+    //   setLoadingEventData(true);
+    //   setLoadingAmenitiesData(true)
+    //   setLoadingBinData(true)
+    //   setError(null);
+
+    //   try {
+
+    //     const dropD = await predictionNewDropdown();
+    //     setStatesData(dropD?.Dropdown)
+    //     setWeeks(dropD?.Weeks)
+    //     const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
+    //   if (defaultState) {
+    //     setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
+    //   }
+    //     setSelectedWeekId(dropD?.Weeks[0]?.week_id)
+    //     setLoadingAnalysisNewData(false)
+    //     setLoadingExternalData(false);
+    //     setLoadingAnalysisData(false);
+    //     const dataDashboard = await getDashboardPrediction();
+    //     setPredictionData(dataDashboard);
+    //     // if (dataDashboard?.centroid === "No location found") {
+
+    //     // }
+    //     // else {
+    //     //   setCenter(dataDashboard?.centroid)
+    //     // }
+    //       const resp = await getPredictionMap({"State":"California"});
+    //       console.log("Raw response:map", resp, typeof resp);
+    //       const respm = await getEventPrediction();
+    //       console.log("Raw response:eventData", respm, typeof respm);
+    //       const binData = await getBinPrediction();
+    //       console.log("Raw response:binData", binData, typeof binData);
+    //       const amenitiesData = await getAmenitiesPrediction();
+    //       console.log("Raw response:amenitiesData", amenitiesData, typeof amenitiesData);
+          
+          
+    //   setMarkers(resp?.data)
+    //   setEventData(respm?.data)
+    //   setBinData(binData)
+    //   setAmenitiesData(amenitiesData)
+    //     setLoadingMapData(false);
+    //     setLoadingEventData(false)
+    //     setLoadingAmenitiesData(false)
+    //     setLoadingBinData(false)
+    //     // const value = await applyFilter();
+    //     // setAnalysisData(value);
+        
+    //     // setLoadingAnalysisData(false);
+    //   } catch (error) {
+    //     setError("Failed to fetch data, please try again later.");
+
+    //     setLoadingAnalysisData(false);
+    //     setLoadingExternalData(false);
+    //     setLoadingAnalysisNewData(false)
+    //     setLoadingMapData(false);
+    //     setLoadingEventData(false)
+    //     setLoadingAmenitiesData(false)
+    //     setLoadingBinData(false)
+    //   } finally {
+
+    //   }
+    // };
+
+
+    const fetchData = async()=>{
       setLoadingExternalData(true);
       setLoadingAnalysisData(true);
       setLoadingAnalysisNewData(true);
@@ -147,64 +216,78 @@ const Prediction = () => {
       setLoadingBinData(true)
       setError(null);
 
-      try {
+      const [
+        dropDRes,
+        dashboardRes,
+        mapRes,
+        eventRes,
+        binRes,
+        amenitiesRes
+      ] = await Promise.allSettled([
+        predictionNewDropdown(),
+        getDashboardPrediction({ State: "California" }),
+        getPredictionMap({ State: "California" }),
+        getEventPrediction(),
+        getBinPrediction(),
+        getAmenitiesPrediction()
+      ]);
 
-        const dropD = await predictionNewDropdown();
-        setStatesData(dropD?.Dropdown)
-        setWeeks(dropD?.Weeks)
-        const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
-      if (defaultState) {
-        setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
+      if (dropDRes.status === "fulfilled") {
+        const dropD = dropDRes.value;
+        setStatesData(dropD?.Dropdown);
+        setWeeks(dropD?.Weeks);
+        const defaultState = dropD?.Dropdown.find((state: { value: string }) => state.value === "California");
+        if (defaultState) {
+          setFilters(prev => ({ ...prev, state: defaultState }));
+        }
+        setSelectedWeekId(dropD?.Weeks[0]?.week_id);
+      } else {
+        console.error("Dropdown failed:", dropDRes.reason);
       }
-        setSelectedWeekId(dropD?.Weeks[0]?.week_id)
-        setLoadingAnalysisNewData(false)
-        setLoadingExternalData(false);
-        setLoadingAnalysisData(false);
-        const dataDashboard = await getDashboardPrediction({"State":"California"});
-        setPredictionData(dataDashboard);
-        // if (dataDashboard?.centroid === "No location found") {
 
-        // }
-        // else {
-        //   setCenter(dataDashboard?.centroid)
-        // }
-          const resp = await getPredictionMap({"State":"California"});
-          console.log("Raw response:map", resp, typeof resp);
-          const respm = await getEventPrediction();
-          console.log("Raw response:eventData", respm, typeof respm);
-          const binData = await getBinPrediction();
-          console.log("Raw response:binData", binData, typeof binData);
-          const amenitiesData = await getAmenitiesPrediction();
-          console.log("Raw response:amenitiesData", amenitiesData, typeof amenitiesData);
-          
-          
-      setMarkers(resp?.data)
-      setEventData(respm?.data)
-      setBinData(binData)
-      setAmenitiesData(amenitiesData)
-        setLoadingMapData(false);
-        setLoadingEventData(false)
-        setLoadingAmenitiesData(false)
-        setLoadingBinData(false)
-        // const value = await applyFilter();
-        // setAnalysisData(value);
-        
-        // setLoadingAnalysisData(false);
-      } catch (error) {
-        setError("Failed to fetch data, please try again later.");
+      if (dashboardRes.status === "fulfilled") {
+        setPredictionData(dashboardRes.value);
+      }
 
-        setLoadingAnalysisData(false);
-        setLoadingExternalData(false);
-        setLoadingAnalysisNewData(false)
-        setLoadingMapData(false);
-        setLoadingEventData(false)
-        setLoadingAmenitiesData(false)
-        setLoadingBinData(false)
-      } finally {
+      if (mapRes.status === "fulfilled") {
+        setMarkers(mapRes.value?.data);
+        setZoom(5);
+      if (mapRes.value?.centroid === "No location found") {
 
       }
-    };
+      else {
+        setCenter(mapRes.value?.centroid)
+      }
+      }
+      if (mapRes.status === "fulfilled") {
+        setMarkers(mapRes.value?.data);
+      }
+    
+      if (eventRes.status === "fulfilled") {
+        setEventData(eventRes.value?.data);
+      }
+    
+      if (binRes.status === "fulfilled") {
+        setBinData(binRes.value);
+      }
+    
+      if (amenitiesRes.status === "fulfilled") {
+        setAmenitiesData(amenitiesRes.value);
+      }
 
+      if ([dropDRes, dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
+        setError("Some data failed to load. Please try again later.");
+      }
+    
+      // Turn off all loaders
+      setLoadingExternalData(false);
+      setLoadingAnalysisData(false);
+      setLoadingAnalysisNewData(false);
+      setLoadingMapData(false);
+      setLoadingEventData(false);
+      setLoadingAmenitiesData(false);
+      setLoadingBinData(false);
+}
     fetchData();
   }, []);
 
