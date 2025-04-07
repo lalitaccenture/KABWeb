@@ -6,11 +6,11 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { sendOtp, resetPassword } from '../utils/api';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const ForgotPassword = () => {
   const [otpSent, setOtpSent] = useState(false);
-  //const router = useRouter();
+  const router = useRouter();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
       const response = await resetPassword(data);
       if (response) {
         reset();
-        //router.push('/login')
+        router.push('/')
         toast.success('Password reset successful');
       } else {
         toast.error('Failed to reset password');
