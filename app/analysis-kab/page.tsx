@@ -1,5 +1,6 @@
 'use client';
-
+import Image from "next/image";
+import { MdLogout } from "react-icons/md";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { toast } from 'react-toastify';
@@ -21,7 +22,7 @@ const Select = dynamic(() => import('react-select'), { ssr: false });
 import value from "../../public/KABAnalytics 1.json"
 import { useRouter } from "next/navigation";
 import { convertToIntegers, formatNumber, formatNumberMillion } from "@/utils/common";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 
 // Define the types for the correlation analysis and selected coefficient
@@ -401,117 +402,90 @@ const ScenarioModeling = () => {
     return <p>Loading...</p>; // Prevents UI flickering
   }
 
+
+  const handleLogoClick = () => {
+    if (status === "authenticated") {
+        router.push("/home");
+    } else {
+        router.push("/");
+    }
+};
+ const handleLogout = async () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            await signOut({ redirect: false }); // Prevents full page reload
+            router.push("/");
+            console.log("Logged out");
+        }
+        else {
+            console.log("Logout canceled");
+        }
+    };
+
+
   return (
     <div className="min-h-screen w-full flex p-4"  style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
 
-      <div style={{ marginTop: "4px", height: '61rem', width: '20%' }} className="p-4 bg-white shadow-lg rounded-lg ">
 
 
+<div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%',marginLeft:'-1%' }}>
 
-        <div className="flex flex-col gap-4" style={{height:'27rem'}}>
-
-
-          <div>
-            <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
-            {loadingExternalData ? (
-              <div>Loading states...</div>
-            ) : (
-              <Select
-                id="state"
-                value={filters.state}
-                onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-                options={statesData}
-                placeholder="Select a State"
-                styles={{
-                  control: (base, state) => ({
-                    ...base,
-                    fontFamily: "'Neris', sans-serif",
-                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                    boxShadow:
-                      state.isFocused || state.hasValue
-                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                        : "none",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      borderColor: "#5BAA76",
-                    },
-
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#C5C5C5",
-                    fontSize: "14px",
-                  }),
-                  option: (base, { isSelected, isFocused }) => ({
-                    ...base,
-                    backgroundColor: isSelected
-                      ? "#5BAA76"
-                      : isFocused
-                        ? "#A5D6A7"
-                        : "white",
-                    color: isSelected ? "white" : "black",
-
-
-                    "&:active": {
-                      backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
-                    },
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "#black",
-                    fontWeight: "semibold",
-                  }),
-                }}
-              />
-            )}
-          </div>
-
-
-
-          <div className="mt-4 flex flex-col gap-4">
-            <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisData || loadingAnalysisData} onClick={handleApply}>
-              Apply
-            </Button>
-            <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
-              Clear
-            </Button>
-
-          </div>
-
-          {/*      <div className="flex flex-col items-center mr-[78px]">
-
-            <span className="text-xs text-gray-700">Lower Litter Density</span>
-            <div className="w-5 h-12 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
-
-            <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
-
-          </div> */}
-          <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
-          <div className="text-xs text-gray-600 ">📌 <strong>Interpreting Correlation:</strong>Correlation values are derived from the <strong>2020 Keep America Beautiful (KAB) survey and may change</strong> as more data is collected. Correlation <strong>does not </strong> imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</div>
-          <div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in<strong> data collection methods, geographic coverage, and external influences.</strong> The results should be viewed as <strong>indicative rather than absolute.</strong></div>
-
-
-
-
-
-          {/* <div className="flex items-center gap-2 mt-2">
-    <div className="w-2 h-2 bg-green-500"></div> 
-    <p className="text-xs text-gray-700">
-    Survey Site Litter Data.
+  <div className="flex flex-col items-center">
+    <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
+      LitterSense
     </p>
+    <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
+
+   
   </div>
 
-  <div className="flex items-center gap-2 mt-1">
-    <div className="w-2 h-2 bg-red-500"></div> 
-    <p className="text-xs text-gray-700">
-    Statewide Estimated Litter Data.
-    </p>
-  </div> */}
+  {/* MENU Section */}
+  <div className="mt-6">
+    <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
+    <div className="flex flex-col gap-2">
+      <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
+       {/*  <span>📊</span>  */}
+       <span className="font-neris text-sm">Analysis</span>
 
-        </div>
+      </button>
+      <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
+    {/*     <span>⚡</span>  */}
+        <span className="font-neris text-sm">Prediction</span>
+      </button>
+    </div>
+  </div>
+
+  {/* Spacer to push content below */}
+  <div className="flex-grow"></div>
+
+  {/* Logout Button */}
+  <div className="flex justify-center mb-2">
+    <button
+      onClick={handleLogout}
+      className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+      title="Logout"
+    >
+      <MdLogout size={20} />
+      <span>Logout</span>
+    </button>
+  </div>
+
+  {/* Copyright under the logout button */}
+  <div className="flex justify-center">
+    <p className="text-xs text-gray-600 whitespace-nowrap">Keep America Beautiful © Copyright 2025</p>
+  </div>
+
+  {/* Bottom Logo */}
+  <div className="flex justify-center mt-2">
+    <Image src="/kab.png" alt="Logo KAB" width={178} height={28} className="object-contain" />
+  </div>
+
+        
       </div>
+
+
 
 
 
@@ -551,6 +525,112 @@ const ScenarioModeling = () => {
         Litter Survey Analysis
       </button>
     </div>
+    <div className="flex flex-row gap-4">
+
+
+<div>
+  <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
+  {loadingExternalData ? (
+    <div>Loading states...</div>
+  ) : (
+    <Select
+      id="state"
+      value={filters.state}
+      onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
+      options={statesData}
+      placeholder="Select a State"
+      styles={{
+        control: (base, state) => ({
+          ...base,
+          fontFamily: "'Neris', sans-serif",
+          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+          boxShadow:
+            state.isFocused || state.hasValue
+              ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+              : "none",
+          transition: "all 0.2s ease-in-out",
+          "&:hover": {
+            borderColor: "#5BAA76",
+          },
+
+        }),
+        placeholder: (base) => ({
+          ...base,
+          color: "#C5C5C5",
+          fontSize: "14px",
+        }),
+        option: (base, { isSelected, isFocused }) => ({
+          ...base,
+          backgroundColor: isSelected
+            ? "#5BAA76"
+            : isFocused
+              ? "#A5D6A7"
+              : "white",
+          color: isSelected ? "white" : "black",
+
+
+          "&:active": {
+            backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
+          },
+        }),
+        singleValue: (base) => ({
+          ...base,
+          color: "#black",
+          fontWeight: "semibold",
+        }),
+        menu: (base) => ({
+          ...base,
+          zIndex: 9999,  // Ensures dropdown appears on top of the map
+          position: "absolute",
+        }),
+      }}
+    />
+  )}
+</div>
+
+
+
+<div className="mt-8 flex flex-row gap-4">
+  <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisData || loadingAnalysisData} onClick={handleApply}>
+    Apply
+  </Button>
+  <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
+    Clear
+  </Button>
+
+</div>
+
+{/*      <div className="flex flex-col items-center mr-[78px]">
+
+  <span className="text-xs text-gray-700">Lower Litter Density</span>
+  <div className="w-5 h-12 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
+
+  <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
+
+</div> */}
+{/*  <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
+<div className="text-xs text-gray-600 ">📌 <strong>Interpreting Correlation:</strong>Correlation values are derived from the <strong>2020 Keep America Beautiful (KAB) survey and may change</strong> as more data is collected. Correlation <strong>does not </strong> imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</div>
+<div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in<strong> data collection methods, geographic coverage, and external influences.</strong> The results should be viewed as <strong>indicative rather than absolute.</strong></div> */}
+
+
+
+
+
+{/* <div className="flex items-center gap-2 mt-2">
+<div className="w-2 h-2 bg-green-500"></div> 
+<p className="text-xs text-gray-700">
+Survey Site Litter Data.
+</p>
+</div>
+
+<div className="flex items-center gap-2 mt-1">
+<div className="w-2 h-2 bg-red-500"></div> 
+<p className="text-xs text-gray-700">
+Statewide Estimated Litter Data.
+</p>
+</div> */}
+
+</div>
     <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p>
         {/* AnalysisMap section */}
         <div
@@ -769,7 +849,7 @@ const ScenarioModeling = () => {
 
       {/* New Sections in the Right Sidebar */}
       <div className="w-1/5 space-y-6" style={{marginLeft:'2%'}}>
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '61rem' }}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '67rem' }}>
         
           {/* Total Estimated Litter: */}
           <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">

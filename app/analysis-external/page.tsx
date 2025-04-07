@@ -523,7 +523,7 @@ const Analysis = () => {
 
       {/* Top Buttons */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] " style={{marginTop:'4rem'}}>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] " style={{marginTop:'5rem'}}>
           {/* Litter Cleanup Analysis Button */}
           <button
             className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup"
@@ -558,7 +558,7 @@ const Analysis = () => {
 
 
 
-      <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-5%' }}>
+      <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%',marginLeft:'-1%' }}>
 
 
   {/* Top Section */}
@@ -580,7 +580,7 @@ const Analysis = () => {
        <span className="font-neris text-sm">Analysis</span>
 
       </button>
-      <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-full hover:bg-gray-200">
+      <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
     {/*     <span>⚡</span>  */}
         <span className="font-neris text-sm">Prediction</span>
       </button>

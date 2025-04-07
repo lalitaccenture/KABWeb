@@ -73,7 +73,7 @@ const SignUp = () => {
             </div>
             <div className="w-full lg:w-1/2 flex flex-col ">
                 {/* ✅ Right Side: Sign-Up Form */}
-                <div className="w-full flex flex-col justify-center items-center px-8 lg:px-20 py-10">
+                <div className="w-full flex flex-col justify-center items-center px-8 lg:px-20 py-10" style={{marginTop:'1%'}}>
                     <div className="w-full flex justify-end " style={{ marginTop: '-10%' ,marginLeft:'28%' }}>
                         <div className="text-right">
                             <p className="text-[#5BAA76] text-xl font-bold">LitterSense</p>
@@ -82,7 +82,7 @@ const SignUp = () => {
                     </div>
 
                     <div className="text-center mb-6">
-                        <p className="text-xl font-semibold text-black">Welcome to Litter Sense</p>
+                        <p className="text-xl font-semibold text-black">Welcome to LitterSense</p>
                         <p className="text-xs text-gray-600">The world's first litter prediction tool!</p>
                     </div>
                     {/* ✅ Toggle Button */}

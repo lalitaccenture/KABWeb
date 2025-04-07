@@ -42,7 +42,7 @@ export default function RootLayout({
         />
        {!shouldHideHeaderFooter && <Header />}
         <main className="flex-grow">{children}</main>
-        {!shouldHideHeaderFooter && <Footer />}
+    {/*     {!shouldHideHeaderFooter && <Footer />} */}
         </SessionProvider>
       </body>
     </html>

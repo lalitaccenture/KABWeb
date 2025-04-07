@@ -62,7 +62,7 @@ const Header = () => {
 
 
     return (
-        <div className="w-full flex  px-6 items-center justify-between" style={{height:'4rem'}}>
+        <div className="w-full flex  px-6 items-center justify-between" style={{height:'5rem'}}>
          {/*    <div className="flex flex-col">
                 <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
                     LitterSense
@@ -158,8 +158,16 @@ const Header = () => {
                             />
                             <UserIcon src="/usertest.png" username={session?.user?.name} />
                         </div> */}
+     <div className="flex-grow flex justify-center ">
+            <div className="bg-white text-center px-2 py-1 border border-gray-300 rounded-lg shadow-md w-[700px]" style={{marginLeft:'-58%'}}>
+            <span className="font-medium italic">
+                    Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time
+                </span> 
+    
+            </div>
+        </div>
 
-                        <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer">
+                        <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer" style={{marginTop:'-3%'}}>
                             <FaUserCircle size={40} color="#5BAA76" /> {/* Primary Green */}
                             <span className="ml-2 text-md font-neris text-gray-500">{session?.user?.name}</span>
                         </div>

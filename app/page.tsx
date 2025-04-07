@@ -120,7 +120,7 @@ const Login = () => {
 
           {/* ✅ Welcome Text */}
           <div className="text-center mb-6">
-            <p className="text-xl font-semibold text-black">Welcome to Litter Sense</p>
+            <p className="text-xl font-semibold text-black">Welcome to LitterSense</p>
             <p className="text-xs text-gray-600">The world's first litter prediction tool!</p>
           </div>
 
