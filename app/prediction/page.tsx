@@ -6,7 +6,8 @@ import {
   Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
-  Title
+  Title,
+  ChartOptions
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { formatNumberMillion } from "@/utils/common";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -472,31 +474,69 @@ const Prediction = () => {
   };
 
   const dataDoughnut = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: Object.keys(predictionData?.total?.pie_chart || {}),
     datasets: [
       {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# of Litter',
+        data: Object.values(predictionData?.total?.pie_chart || {}),
         backgroundColor: [
-          '#E97132',
-          '#196B24',
-          '#0F9ED5',
-          '#974F91',
-          '#DE9ED8',
-          '#AAB4B8',
+          '#E97132',  // Cigarette (Orange)
+          '#196B24',  // Glass (Green)
+          '#0F9ED5',  // Plastic (Light Blue)
+          '#974F91',  // Rubber (Purple)
+          '#DE9ED8',  // Organic (Pink)
+          '#AAB4B8',  // Metal (Gray)
+          '#E6E6E6',  // Paper (Light Gray)
+          '#156082',
         ],
         borderColor: [
-          '#E97132',
-          '#196B24',
-          '#0F9ED5',
-          '#974F91',
-          '#DE9ED8',
-          '#AAB4B8',
+          '#E97132',  // Cigarette (Orange)
+          '#196B24',  // Glass (Green)
+          '#0F9ED5',  // Plastic (Light Blue)
+          '#974F91',  // Rubber (Purple)
+          '#DE9ED8',  // Organic (Pink)
+          '#AAB4B8',  // Metal (Gray)
+          '#E6E6E6',  // Paper (Light Gray)
+          '#156082',
         ],
         borderWidth: 1,
       },
     ],
   };
+
+   const optionsDoughnut: ChartOptions<'doughnut'> = {
+      maintainAspectRatio: false,
+      responsive: true,
+      cutout: '40%', // Keeps a thinner doughnut
+      layout: {
+        padding: 15, // Adds some spacing around
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          align: 'center',
+          labels: {
+            boxWidth: 14,
+            padding: 12,
+          },
+        },
+        datalabels: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: (tooltipItem) => {
+              const dataset = tooltipItem.dataset.data as number[];
+              const total = dataset.reduce((acc, val) => acc + val, 0);
+              const value = tooltipItem.raw as number;
+              const percentage = ((value / total) * 100).toFixed(1);
+  
+              return [`# of Litter: ${formatNumberMillion(value)}`, `(${percentage}%)`];
+            },
+          },
+        },
+      },
+    };
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
 
@@ -865,32 +905,19 @@ const Prediction = () => {
                     <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}</span>
             )}
                     </div>
-
+                    {loadingAnalysisData ? (
+              <div>Loading doughnut chart...</div>
+            ) : (
                     <div className="h-auto">
-                    {/* <Bar options={options} data={data} /> */}
+          
+                    
 <Doughnut 
   data={dataDoughnut} 
-  options={{
-    plugins: {
-      legend: {
-        display: true,
-        position: "bottom",  // Move legend below the chart
-        labels: {
-          font: {
-            size: 10,  // Reduce legend text size
-          },
-          boxWidth: 12,  // Reduce color box size
-          padding: 6,  // Adjust spacing
-        },
-      },
-    },
-    maintainAspectRatio: false,
-    responsive: true,
-  }} 
+  options={optionsDoughnut}
 />
 
                     </div>
-
+ )}
 
       </div>
 

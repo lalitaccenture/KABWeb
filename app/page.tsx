@@ -28,6 +28,9 @@ const Login = () => {
   //new
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("signin");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pendingLogin, setPendingLogin] = useState<IFormInput | null>(null);
+  const [showTermsModal, setShowTermsModal] = useState(false);
 
   // Track session loading state
   const [loadingLoginBtn, setLoadingLoginBtn] = useState(false);
@@ -66,26 +69,8 @@ const Login = () => {
   // };
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    try {
-      setLoadingLoginBtn(true); // Disable button
-      const response = await signIn("credentials", {
-        redirect: false,
-        email: data.email,
-        password: data.password,
-      });
-
-      if (response?.error) {
-        toast.error("Invalid credentials!");
-      } else if (response?.ok) {
-        toast.success("Logged in successfully!");
-        router.push("/home");
-      }
-    } catch (error) {
-      console.error("Login error", error);
-      toast.error("An error occurred!");
-    } finally {
-      setLoadingLoginBtn(false); // Re-enable button after request completes
-    }
+    setPendingLogin(data);
+    setShowTermsModal(true);
   };
 
   //For loading
@@ -93,25 +78,25 @@ const Login = () => {
 
   return (
     <div className="flex min-h-screen">
-         {/* ✅ Left Side: Full-Height, Scrollable Image */}
-         <div className="hidden lg:flex w-1/2 overflow-hidden"> 
-             <div className="relative w-full min-h-screen">
-                 <Image
-                     src="/login.jpg"
-                     alt="LitterSense Cleanup"
-                     layout="fill"
-                     objectFit="cover"
-                     priority
-                 />
-             </div>
-         </div>
+      {/* ✅ Left Side: Full-Height, Scrollable Image */}
+      <div className="hidden lg:flex w-1/2 overflow-hidden">
+        <div className="relative w-full min-h-screen">
+          <Image
+            src="/login.jpg"
+            alt="LitterSense Cleanup"
+            layout="fill"
+            objectFit="cover"
+            priority
+          />
+        </div>
+      </div>
       <div className="w-full lg:w-1/2 flex flex-col justify-between items-center ">
 
         {/* ✅ Right Side: Login Form */}
         <div className="w-full  flex flex-col justify-center items-center px-8 lg:px-20">
 
           {/* ✅ Logo Top Right */}
-          <div className="w-full flex justify-end " style={{marginLeft:'21%'}}>
+          <div className="w-full flex justify-end " style={{ marginLeft: '21%' }}>
             <div className="text-right">
               <p className="text-[#5BAA76] text-xl font-bold">LitterSense</p>
               <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
@@ -164,7 +149,8 @@ const Login = () => {
             {/* ✅ Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 font-semibold bg-[#5BAA76] text-white rounded-md hover:bg-[#4A9A65] transition"
+              className={`w-full py-3 font-semibold text-white rounded-md transition
+                ${loadingLoginBtn ? 'bg-[#A0A0A0] cursor-not-allowed' : 'bg-[#5BAA76] hover:bg-[#4A9A65]'}`}
               disabled={loadingLoginBtn}
             >
               {loadingLoginBtn ? 'Logging In...' : 'Log In'}
@@ -196,16 +182,16 @@ const Login = () => {
 
           {/* ✅ Keep America Beautiful Logo */}
           <div>
-  <a href="https://www.kab.org" target="_blank" rel="noopener noreferrer">
-    <Image
-      src="/kab.png"
-      alt="Keep America Beautiful"
-      width={178}
-      height={28}
-      className="object-contain"
-    />
-  </a>
-</div>
+            <a href="https://www.kab.org" target="_blank" rel="noopener noreferrer">
+              <Image
+                src="/kab.png"
+                alt="Keep America Beautiful"
+                width={178}
+                height={28}
+                className="object-contain"
+              />
+            </a>
+          </div>
 
 
 
@@ -232,6 +218,116 @@ const Login = () => {
           </div>
         </div>
       </div>
+
+
+
+      {/* 📌 Custom Modal */}
+      {showTermsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-xl shadow-2xl w-[90%] max-w-4xl max-h-screen p-8 overflow-y-auto flex flex-col">
+
+            <h2 className="text-2xl font-bold mb-4 font-neris text-center">
+              Disclaimer Acknowledgement
+            </h2>
+            <div className="space-y-6 text-sm text-gray-700 font-neris">
+              {/* Intro */}
+              <p className="text-base text-gray-800">
+                <strong>Note:</strong> While we strive to provide accurate and meaningful insights, please consider the following disclaimers when interpreting and utilizing the data:
+              </p>
+              {/* Data Sources */}
+              <div className="flex items-start gap-3">
+                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>📊</span>
+                <div>
+                  <h4 className="font-semibold text-base text-[#3AAD73]">Data Sources & Timeframe</h4>
+                  <p>
+                    Insights are based on external data collected between <strong>2015 and 2024</strong>. Completeness may vary depending on source accuracy and availability.
+                  </p>
+                </div>
+              </div>
+
+              {/* Scope & Limitations */}
+              <div className="flex items-start gap-3">
+                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>📍</span>
+                <div>
+                  <h4 className="font-semibold text-base text-[#3AAD73]">Scope & Limitations</h4>
+                  <p>
+                    This tool provides directional insights and may not fully reflect all littering patterns or cleanup programs. Data quality depends on third-party sources.
+                  </p>
+                </div>
+              </div>
+
+              {/* Evolving Nature */}
+              <div className="flex items-start gap-3">
+                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>🔄</span>
+                <div>
+                  <h4 className="font-semibold text-base text-[#3AAD73]">Evolving Insights</h4>
+                  <p>
+                    As new data is integrated, results may evolve. Current insights are provisional and subject to change over time.
+                  </p>
+                </div>
+              </div>
+
+              {/* Liability */}
+              <div className="flex items-start gap-3">
+                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>⚠️</span>
+                <div>
+                  <h4 className="font-semibold text-base text-[#3AAD73]">Liability Disclaimer</h4>
+                  <p>
+                    This tool is intended as an analytical aid. Conclusions drawn from this data should be viewed as indicative. We disclaim liability for actions based on these insights.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end gap-4">
+              <button
+                onClick={async () => {
+                  if (!pendingLogin) return;
+                  try{
+                  setLoadingLoginBtn(true)
+                  setIsSubmitting(true);
+                  setShowTermsModal(false);
+
+                  const response = await signIn("credentials", {
+                    redirect: false,
+                    email: pendingLogin.email,
+                    password: pendingLogin.password,
+                  });
+
+                  setIsSubmitting(false);
+                  setPendingLogin(null);
+
+                  if (response?.error) {
+                    toast.error("Invalid credentials!");
+                  } else if (response?.ok) {
+                    toast.success("Logged in successfully!");
+                    reset();
+                    router.push("/home");
+                  }}
+                  catch (error) {
+                    console.error("Login error", error);
+                    toast.error("An error occurred!");
+                  } finally {
+                    setLoadingLoginBtn(false); // Re-enable button after request completes
+                  }
+                }}
+                className="px-5 py-2 rounded-md bg-[#3AAD73] text-white hover:bg-green-600 font-neris"
+              >
+                I Accept
+              </button>
+              <button
+                onClick={() => {
+                  setShowTermsModal(false);
+                  setPendingLogin(null);
+                  toast.info("You must accept the terms to proceed.");
+                }}
+                className="px-5 py-2 rounded-md bg-red-500 text-white hover:bg-red-700 font-neris"
+              >
+                I Deny
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
 
   );
