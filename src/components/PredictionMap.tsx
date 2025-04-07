@@ -12,7 +12,7 @@ interface MarkerData {
   Litter_density: number;
   GEOID: string;
   Predicted_Qty:number;
-  color: string;
+  colorType: string;
   pie_chart:object
 }
 
@@ -74,11 +74,12 @@ interface CanvasAmenitiesMarkersLayerProps {
 const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data, canvasRenderer }) => {
   const map = useMap();
 
-  data?.forEach((item) => {   
+  data?.forEach((item) => {  
+    const color = item?.colorType || "#800080"; 
     const marker = L.circleMarker([item.latitude, item.longitude], {
       renderer: canvasRenderer, // ✅ Use the shared renderer
       radius: 5,
-      fillColor: "rgba(128, 0, 128, 0.4)",
+      fillColor: color,
       opacity: 1,
       fillOpacity: 0.4,
       stroke: false,
@@ -90,7 +91,7 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data
     <thead>
       <tr>
         <th style="border: 1px solid black; padding: 8px;">Material</th>
-        <th style="border: 1px solid black; padding: 8px;">Amount</th>
+        <th style="border: 1px solid black; padding: 8px;">% Breakup</th>
       </tr>
     </thead>
     <tbody>
@@ -134,7 +135,7 @@ const CanvasEventMarkersLayer: React.FC<CanvasEventMarkersLayerProps> = ({ data,
       const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer,
         radius: 5,
-        fillColor: "rgba(0, 255, 0, 0.4)",
+        fillColor: "rgba(0, 255, 0, 0.7)",
         opacity: 1,
         fillOpacity: 0.4,
         stroke: false,
@@ -172,7 +173,7 @@ const CanvasBinMarkersLayer: React.FC<CanvasBinMarkersLayerProps> = ({ data, can
       const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer,
         radius: 5,
-        fillColor: "rgba(255, 165, 0, 0.4)",
+        fillColor: "rgba(252, 15, 192,0.7)",
         opacity: 1,
         fillOpacity: 0.4,
         stroke: false,
@@ -204,13 +205,17 @@ const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = 
       const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer,
         radius: 5,
-        fillColor: "rgba(0, 0, 255, 0.4)",
+        fillColor: "rgba(0, 0, 255, 0.7)",
         opacity: 1,
         fillOpacity: 0.4,
         stroke: false,
         interactive: true,
       });
+      marker.bindPopup(
+        `Type: ${item?.type}<br>`
+      );
 
+      marker.on("click", () => marker.openPopup());
 
       marker.addTo(map);
       markers.push(marker);

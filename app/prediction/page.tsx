@@ -38,7 +38,7 @@ interface MarkerData {
   Litter_density: number;
   GEOID: string;
   Predicted_Qty:number;
-  color: string;
+  colorType: string;
   pie_chart:object
 }
 
@@ -161,6 +161,12 @@ const Prediction = () => {
   if (defaultState) {
     setFilters((prev) => ({ ...prev, state: defaultState }));
   }
+  const queryParamsForCounty = {
+    state: 'California',
+  };
+  const forCountyPopulate = await predictionNewDropdown(queryParamsForCounty)
+  setCountiesData(forCountyPopulate?.Dropdown)
+
 
   const weekId = dropD?.Weeks[0]?.week_id;
         setSelectedWeekId(weekId);
@@ -365,7 +371,7 @@ const Prediction = () => {
       State: filters.state?.value || null,
       County: filters.county?.value || null,
       TRACTID: filters.tract?.value || null,
-      week_id: selectedWeekId || null
+      //week_id: selectedWeekId || null
     };
 
     // Filter out undefined values
@@ -395,6 +401,20 @@ const Prediction = () => {
     
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
+        setZoom(5);
+        if (mapRes.value?.centroid !== "No location found") {
+          setCenter(mapRes.value?.centroid);
+        }
+        if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
+          // If state is present and county and tract are null
+          setZoom(5);
+        } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
+          // If state and county are present and tract is null
+          setZoom(6);
+        } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
+          // If state, county, and tract are all present
+          setZoom(7);
+        }
       }
     
       if (eventRes.status === "fulfilled") {
@@ -565,7 +585,7 @@ const Prediction = () => {
       State: filters.state?.value || null,
       County: filters.county?.value || null,
       TRACTID: filters.tract?.value || null,
-      week_id: weekID || null,
+      //week_id: weekID || null,
     };
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
@@ -589,6 +609,20 @@ const Prediction = () => {
     
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
+        setZoom(5);
+        if (mapRes.value?.centroid !== "No location found") {
+          setCenter(mapRes.value?.centroid);
+        }
+        if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
+          // If state is present and county and tract are null
+          setZoom(5);
+        } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
+          // If state and county are present and tract is null
+          setZoom(6);
+        } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
+          // If state, county, and tract are all present
+          setZoom(7);
+        }
       }
     
       if (eventRes.status === "fulfilled") {
@@ -824,7 +858,7 @@ const Prediction = () => {
             {loadingEventData ? <>Loading...</> :
           <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} onColor="#00FF00"/>}
           {loadingBinData ? <>Loading...</> :
-  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#FFA500"/>}
+  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#fc0fc0"/>}
   {loadingAmenitiesData ? <>Loading...</>:
   <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} onColor="#0000FF"/>}
   {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
@@ -873,7 +907,12 @@ const Prediction = () => {
           )}
         </div>
 
- 
+        {/* <div className="mt-5 flex items-center gap-2" style={{marginTop:"1px" }}>
+
+
+<div className="w-3 h-3 rounded-full " style={{backgroundColor:'rgba(128, 0, 128, 0.4)'}}></div>
+<span className="text-gray-400 text-xs font-xs">Cleanup Site - Bubble reflects the amount of litter collected.</span>
+</div> */}
 
       
      </div>
@@ -889,7 +928,7 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}</span>
             )}
                     </div>
 
@@ -902,15 +941,15 @@ const Prediction = () => {
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}</span>
             )}
                     </div>
                     {loadingAnalysisData ? (
               <div>Loading doughnut chart...</div>
             ) : (
-                    <div className="h-auto">
+              <div style={{ width: "245px", height: "235px", marginTop: "9%" }}>
           
-                    
+          <p className="text-base font-semibold font-neris" >Break Down of Litter Types</p>          
 <Doughnut 
   data={dataDoughnut} 
   options={optionsDoughnut}
