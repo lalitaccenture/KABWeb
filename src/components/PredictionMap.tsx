@@ -104,12 +104,27 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data
     </tbody>
   </table>
 `;
-
+// ${Object.entries(item?.pie_chart).map(([material, amount], index) =>
+//   `${material} : ${Math.floor(amount*100)}%`
+// ).join('')}
     marker.bindPopup(`
-      GEO ID: ${item.GEOID}<br>
-      Litter Density: ${item.Litter_density}<br>
-      Predicted Quantity: ${item.Predicted_Qty}<br>
-      ${tableContent}
+      <strong>GEO ID:</strong> ${item.GEOID}<br>
+      <strong>Litter Density:</strong> ${item.Litter_density}<br>
+      <strong>Predicted Quantity:</strong> ${item.Predicted_Qty}<br>
+      <strong>Material Breakdown:</strong> <br>
+      
+      ${
+        Object.entries(item?.pie_chart)
+          .reduce((acc:any, [material, amount], index) => {
+            const formatted = `<span style="display:inline-block; margin-right:10px;">${material}: ${Math.floor(amount * 100)}%</span>`;
+            if (index % 3 === 0) acc.push([]); // start a new line every 4 items
+            acc[acc.length - 1].push(formatted);
+            return acc;
+          }, [])
+          //@ts-ignore: Ignore TypeScript error
+          .map(group => group.join(' '))
+          .join('<br>')
+      }
     `);
 
     marker.on("click", function () {

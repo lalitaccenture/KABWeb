@@ -924,24 +924,25 @@ const Prediction = () => {
 
 
       <div className="p-4 bg-[#DCFCE7] rounded">
-                    <p className="mt-4 text-black text-base font-semibold font-neris">Total Estimated Litter</p>
+                    <p className="mt-4 text-black text-sm font-semibold font-neris">Predicted Litter Quantity</p>
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}
+                    <span className="text-sm text-green-700"> (#)</span></span>
             )}
                     </div>
 
 
                 <div className="p-4 bg-[#DCFCE7] rounded">
-                <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
-    Estimated Litter Density
+                <p className="mt-4 text-black text-sm font-semibold font-neris whitespace-nowrap">
+                Predicted Litter Density
 </p>
 
                     {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}</span>
+                    <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700"> (# / sq. miles)</span></span>
             )}
                     </div>
                     {loadingAnalysisData ? (

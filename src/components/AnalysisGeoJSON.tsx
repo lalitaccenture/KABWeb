@@ -59,10 +59,10 @@ const getStateStyle = (stateId: string, stateInfo: any) => {
 
   const color =
     value < 0.001 ? "#FFFFFF" :
-    value < 0.2 ? "#FFA500" :
-    value < 0.4 ? "#FF7F50" :
-    value < 0.6 ? "#FF6347" :
-    value < 0.8 ? "#E34234" : "#FF0000";
+    value < 0.2 ? "#00FF00" :
+    value < 0.4 ? "#80FF00" :
+    value < 0.6 ? "#FFFF00" :
+    value < 0.8 ? "#FF8000" : "#FF0000";
 
   return {
     fillColor: color,

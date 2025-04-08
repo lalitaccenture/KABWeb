@@ -583,7 +583,7 @@ const ScenarioModeling = () => {
 
         <div className="flex justify-center items-center gap-4 mt-4" style={{ marginTop: '-20px', marginRight: '38%' }}>
           <span className="text-xs text-gray-400">Lower Litter Density</span>
-          <div className="w-20 h-2 bg-gradient-to-r from-[#FDBA74] to-[#FB7185] rounded-full"></div>
+          <div className="w-20 h-2 bg-gradient-to-r from-[#00FF00] to-[#FF0000] rounded-full"></div>
           <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
           <div className="flex items-center gap-1">
             <img src="/marker-icon.png" alt="Marker" className="w-3 h-5" />
