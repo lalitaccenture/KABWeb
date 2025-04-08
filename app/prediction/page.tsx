@@ -905,6 +905,11 @@ const Prediction = () => {
           ) : (
             <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData}/>
           )}
+           <div className="flex items-center gap-4 mt-2">
+          <span className="text-xs text-gray-400">Lower Litter Density</span>
+          <div className="w-20 h-2 bg-gradient-to-r from-[#00FF00] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+          <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+        </div>
         </div>
 
         {/* <div className="mt-5 flex items-center gap-2" style={{marginTop:"1px" }}>
