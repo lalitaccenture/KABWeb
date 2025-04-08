@@ -158,16 +158,20 @@ const Header = () => {
                             />
                             <UserIcon src="/usertest.png" username={session?.user?.name} />
                         </div> */}
-     <div className="flex-grow flex justify-center ">
-            <div className="bg-white text-center px-2 py-1 border border-gray-300 rounded-lg shadow-md w-[700px]" style={{marginLeft:'-58%'}}>
-            <span className="font-medium italic">
-                    Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time
-                </span> 
-    
-            </div>
-        </div>
+{(pathname === '/prediction' || pathname === '/analysis-external') && (
+  <div className="absolute left-1/2 transform -translate-x-1/2  z-10">
+    <div className="bg-white text-center px-6 py-2 border border-gray-300 rounded-lg shadow-md max-w-2xl w-[700px]">
+      <span className="font-medium italic">
+        {pathname === '/prediction'
+          ? 'Generate weekly litter maps and visualize hotspots, bins, and amenities in real time, allowing for better planning of litter reduction measures'
+          : 'Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time'}
+      </span>
+    </div>
+  </div>
+)}
 
-                        <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer" style={{marginTop:'-3%'}}>
+
+                        <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer" >
                             <FaUserCircle size={40} color="#5BAA76" /> {/* Primary Green */}
                             <span className="ml-2 text-md font-neris text-gray-500">{session?.user?.name}</span>
                         </div>

@@ -562,7 +562,7 @@ const Analysis = () => {
 
 
   {/* Top Section */}
-  <div className="flex flex-col items-center">
+  <div className="flex flex-col items-center" style={{marginTop:'-6%'}}>
     <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
       LitterSense
     </p>
@@ -575,15 +575,16 @@ const Analysis = () => {
   <div className="mt-6">
     <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
     <div className="flex flex-col gap-2">
-      <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
-       {/*  <span>📊</span>  */}
+    <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful" onClick={()=>router.push("/prediction")}>
+
+        <span className="font-neris text-sm">Prediction</span>
+      </button>
+      <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full" onClick={()=>router.push("/analysis-external")}>
+   
        <span className="font-neris text-sm">Analysis</span>
 
       </button>
-      <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
-    {/*     <span>⚡</span>  */}
-        <span className="font-neris text-sm">Prediction</span>
-      </button>
+    
     </div>
   </div>
 
@@ -628,7 +629,8 @@ const Analysis = () => {
   width: "max-content", 
   maxWidth: "21%", 
   minWidth: "21%", 
-  flex: "0.2" 
+  flex: "0.2" ,
+ 
 }}>
 
   <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
@@ -936,10 +938,6 @@ const Analysis = () => {
             style={{ gap: '31px', marginLeft: '12px' }}
           >
 
-            {/* Left Title */}
-            
-
-            {/* Right Title */}
 
           </div>
 

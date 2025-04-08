@@ -432,7 +432,7 @@ const ScenarioModeling = () => {
 
 <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%',marginLeft:'-1%' }}>
 
-  <div className="flex flex-col items-center">
+  <div className="flex flex-col items-center" style={{marginTop:'-6%'}}>
     <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
       LitterSense
     </p>
@@ -445,15 +445,16 @@ const ScenarioModeling = () => {
   <div className="mt-6">
     <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
     <div className="flex flex-col gap-2">
-      <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
-       {/*  <span>📊</span>  */}
+    <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
+
+<span className="font-neris text-sm">Prediction</span>
+</button>
+  <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
+   
        <span className="font-neris text-sm">Analysis</span>
 
-      </button>
-      <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
-    {/*     <span>⚡</span>  */}
-        <span className="font-neris text-sm">Prediction</span>
-      </button>
+      </button> 
+    
     </div>
   </div>
 
