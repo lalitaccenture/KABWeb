@@ -12,7 +12,7 @@ interface MarkerData {
   Litter_density: number;
   GEOID: string;
   Predicted_Qty:number;
-  color: string;
+  colorType: string;
   pie_chart:object
 }
 
@@ -74,11 +74,12 @@ interface CanvasAmenitiesMarkersLayerProps {
 const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data, canvasRenderer }) => {
   const map = useMap();
 
-  data?.forEach((item) => {   
+  data?.forEach((item) => {  
+    const color = item?.colorType || "#800080"; 
     const marker = L.circleMarker([item.latitude, item.longitude], {
       renderer: canvasRenderer, // ✅ Use the shared renderer
       radius: 5,
-      fillColor: "rgba(128, 0, 128, 0.4)",
+      fillColor: color,
       opacity: 1,
       fillOpacity: 0.4,
       stroke: false,
@@ -90,7 +91,7 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data
     <thead>
       <tr>
         <th style="border: 1px solid black; padding: 8px;">Material</th>
-        <th style="border: 1px solid black; padding: 8px;">Amount</th>
+        <th style="border: 1px solid black; padding: 8px;">% Breakup</th>
       </tr>
     </thead>
     <tbody>
@@ -103,12 +104,27 @@ const CanvasMarkersLayer: React.FC<CanvasMarkersLayerProps> = React.memo(({ data
     </tbody>
   </table>
 `;
-
+// ${Object.entries(item?.pie_chart).map(([material, amount], index) =>
+//   `${material} : ${Math.floor(amount*100)}%`
+// ).join('')}
     marker.bindPopup(`
-      GEO ID: ${item.GEOID}<br>
-      Litter Density: ${item.Litter_density}<br>
-      Predicted Quantity: ${item.Predicted_Qty}<br>
-      ${tableContent}
+      <strong>GEO ID:</strong> ${item.GEOID}<br>
+      <strong>Litter Density:</strong> ${item.Litter_density}<br>
+      <strong>Predicted Quantity:</strong> ${item.Predicted_Qty}<br>
+      <strong>Material Breakdown:</strong> <br>
+      
+      ${
+        Object.entries(item?.pie_chart)
+          .reduce((acc:any, [material, amount], index) => {
+            const formatted = `<span style="display:inline-block; margin-right:10px;">${material}: ${Math.floor(amount * 100)}%</span>`;
+            if (index % 3 === 0) acc.push([]); // start a new line every 4 items
+            acc[acc.length - 1].push(formatted);
+            return acc;
+          }, [])
+          //@ts-ignore: Ignore TypeScript error
+          .map(group => group.join(' '))
+          .join('<br>')
+      }
     `);
 
     marker.on("click", function () {
@@ -134,7 +150,7 @@ const CanvasEventMarkersLayer: React.FC<CanvasEventMarkersLayerProps> = ({ data,
       const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer,
         radius: 5,
-        fillColor: "rgba(0, 255, 0, 0.4)",
+        fillColor: "rgba(0, 255, 0, 0.7)",
         opacity: 1,
         fillOpacity: 0.4,
         stroke: false,
@@ -172,7 +188,7 @@ const CanvasBinMarkersLayer: React.FC<CanvasBinMarkersLayerProps> = ({ data, can
       const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer,
         radius: 5,
-        fillColor: "rgba(255, 165, 0, 0.4)",
+        fillColor: "rgba(252, 15, 192,0.7)",
         opacity: 1,
         fillOpacity: 0.4,
         stroke: false,
@@ -204,13 +220,17 @@ const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = 
       const marker = L.circleMarker([item.latitude, item.longitude], {
         renderer: canvasRenderer,
         radius: 5,
-        fillColor: "rgba(0, 0, 255, 0.4)",
+        fillColor: "rgba(0, 0, 255, 0.7)",
         opacity: 1,
         fillOpacity: 0.4,
         stroke: false,
         interactive: true,
       });
+      marker.bindPopup(
+        `Type: ${item?.type}<br>`
+      );
 
+      marker.on("click", () => marker.openPopup());
 
       marker.addTo(map);
       markers.push(marker);

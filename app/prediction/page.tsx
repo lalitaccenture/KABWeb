@@ -8,7 +8,8 @@ import {
   Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale,
   LinearScale,
   BarElement,
-  Title
+  Title,
+  ChartOptions
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
@@ -17,6 +18,7 @@ import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { formatNumberMillion } from "@/utils/common";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -38,7 +40,7 @@ interface MarkerData {
   Litter_density: number;
   GEOID: string;
   Predicted_Qty:number;
-  color: string;
+  colorType: string;
   pie_chart:object
 }
 
@@ -161,6 +163,12 @@ const Prediction = () => {
   if (defaultState) {
     setFilters((prev) => ({ ...prev, state: defaultState }));
   }
+  const queryParamsForCounty = {
+    state: 'California',
+  };
+  const forCountyPopulate = await predictionNewDropdown(queryParamsForCounty)
+  setCountiesData(forCountyPopulate?.Dropdown)
+
 
   const weekId = dropD?.Weeks[0]?.week_id;
         setSelectedWeekId(weekId);
@@ -365,7 +373,7 @@ const Prediction = () => {
       State: filters.state?.value || null,
       County: filters.county?.value || null,
       TRACTID: filters.tract?.value || null,
-      week_id: selectedWeekId || null
+      //week_id: selectedWeekId || null
     };
 
     // Filter out undefined values
@@ -395,6 +403,20 @@ const Prediction = () => {
     
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
+        setZoom(5);
+        if (mapRes.value?.centroid !== "No location found") {
+          setCenter(mapRes.value?.centroid);
+        }
+        if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
+          // If state is present and county and tract are null
+          setZoom(5);
+        } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
+          // If state and county are present and tract is null
+          setZoom(6);
+        } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
+          // If state, county, and tract are all present
+          setZoom(7);
+        }
       }
     
       if (eventRes.status === "fulfilled") {
@@ -474,31 +496,69 @@ const Prediction = () => {
   };
 
   const dataDoughnut = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: Object.keys(predictionData?.total?.pie_chart || {}),
     datasets: [
       {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# of Litter',
+        data: Object.values(predictionData?.total?.pie_chart || {}),
         backgroundColor: [
-          '#E97132',
-          '#196B24',
-          '#0F9ED5',
-          '#974F91',
-          '#DE9ED8',
-          '#AAB4B8',
+          '#E97132',  // Cigarette (Orange)
+          '#196B24',  // Glass (Green)
+          '#0F9ED5',  // Plastic (Light Blue)
+          '#974F91',  // Rubber (Purple)
+          '#DE9ED8',  // Organic (Pink)
+          '#AAB4B8',  // Metal (Gray)
+          '#E6E6E6',  // Paper (Light Gray)
+          '#156082',
         ],
         borderColor: [
-          '#E97132',
-          '#196B24',
-          '#0F9ED5',
-          '#974F91',
-          '#DE9ED8',
-          '#AAB4B8',
+          '#E97132',  // Cigarette (Orange)
+          '#196B24',  // Glass (Green)
+          '#0F9ED5',  // Plastic (Light Blue)
+          '#974F91',  // Rubber (Purple)
+          '#DE9ED8',  // Organic (Pink)
+          '#AAB4B8',  // Metal (Gray)
+          '#E6E6E6',  // Paper (Light Gray)
+          '#156082',
         ],
         borderWidth: 1,
       },
     ],
   };
+
+   const optionsDoughnut: ChartOptions<'doughnut'> = {
+      maintainAspectRatio: false,
+      responsive: true,
+      cutout: '40%', // Keeps a thinner doughnut
+      layout: {
+        padding: 15, // Adds some spacing around
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          align: 'center',
+          labels: {
+            boxWidth: 14,
+            padding: 12,
+          },
+        },
+        datalabels: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: (tooltipItem) => {
+              const dataset = tooltipItem.dataset.data as number[];
+              const total = dataset.reduce((acc, val) => acc + val, 0);
+              const value = tooltipItem.raw as number;
+              const percentage = ((value / total) * 100).toFixed(1);
+  
+              return [`# of Litter: ${formatNumberMillion(value)}`, `(${percentage}%)`];
+            },
+          },
+        },
+      },
+    };
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
 
@@ -527,7 +587,7 @@ const Prediction = () => {
       State: filters.state?.value || null,
       County: filters.county?.value || null,
       TRACTID: filters.tract?.value || null,
-      week_id: weekID || null,
+      //week_id: weekID || null,
     };
     setLoadingAnalysisData(true);
     setLoadingMapData(true);
@@ -551,6 +611,20 @@ const Prediction = () => {
     
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
+        setZoom(5);
+        if (mapRes.value?.centroid !== "No location found") {
+          setCenter(mapRes.value?.centroid);
+        }
+        if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
+          // If state is present and county and tract are null
+          setZoom(5);
+        } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
+          // If state and county are present and tract is null
+          setZoom(6);
+        } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
+          // If state, county, and tract are all present
+          setZoom(7);
+        }
       }
     
       if (eventRes.status === "fulfilled") {
@@ -958,16 +1032,23 @@ const handleLogout = async () => {
         <div className="mt-5 flex items-center gap-2" style={{marginTop:"1px" , marginRight:'23%' }}>
 
 
-<div className="w-3 h-3 rounded-full " style={{backgroundColor:'rgba(128, 0, 128, 0.4)'}}></div>
-<span className="text-gray-400 text-xs font-xs">Cleanup Site - Bubble size reflects the amount of litter collected; more litter means a larger bubble.</span>
+        <div className="flex items-center gap-4 mt-2">
+          <span className="text-xs text-gray-400">Lower Litter Density</span>
+          <div className="w-20 h-2 bg-gradient-to-r from-[#00FF00] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+          <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+        </div>
+
+
 </div>
 
 
         <div className="w-full flex justify-start items-center gap-8 mt-4">
-            {loadingEventData ? <>Loading...</> :
+          
+ 
+        {loadingEventData ? <>Loading...</> :
           <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} onColor="#00FF00"/>}
           {loadingBinData ? <>Loading...</> :
-  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#FFA500"/>}
+  <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#fc0fc0"/>}
   {loadingAmenitiesData ? <>Loading...</>:
   <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} onColor="#0000FF"/>}
   {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
@@ -1010,23 +1091,7 @@ const handleLogout = async () => {
                     <div className="h-[300px]">
 <Doughnut 
   data={dataDoughnut} 
-  options={{
-    plugins: {
-      legend: {
-        display: true,
-        position: "bottom",  // Move legend below the chart
-        labels: {
-          font: {
-            size: 10,  // Reduce legend text size
-          },
-          boxWidth: 12,  // Reduce color box size
-          padding: 6,  // Adjust spacing
-        },
-      },
-    },
-    maintainAspectRatio: false,
-    responsive: true,
-  }} 
+  options={optionsDoughnut}
 />
 </div>
 
