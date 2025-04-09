@@ -348,6 +348,30 @@ const svgCalendarIcon = L.divIcon({
   popupAnchor: [0, -24],
 });
 
+const getImpactIcon = (impact: string) => {
+  let iconUrl = "/Low.svg"; 
+
+  if (impact === "Medium") {
+    iconUrl = "/Medium.svg";
+  } else if (impact === "High") {
+    iconUrl = "/High.svg";
+  }
+
+  return L.icon({
+    iconUrl,
+    iconSize: [20, 20],
+    iconAnchor: [10, 20],
+    popupAnchor: [0, -20],
+  });
+};
+
+const binssvgFileIcon = L.icon({
+  iconUrl: "/bins.svg", // relative or absolute path
+  iconSize: [20, 20],
+  iconAnchor: [10, 20],
+  popupAnchor: [0, -20],
+});
+
 
 const CustomIconMarkerForEvents = ({markers}:any)=>{
   console.log("test",markers)
@@ -355,7 +379,7 @@ const CustomIconMarkerForEvents = ({markers}:any)=>{
     <>
       {markers?.map((marker:any, index:any) => (
       <Marker key={index} position={[marker.latitude, marker.longitude]}
-      icon={calendarIcon}>
+      icon={getImpactIcon(marker?.["Impact"])}>
         <Popup>
           Event Count: {marker?.["Event count"]}<br/>
         GEOID: {marker?.["GEOID"]}<br/>
@@ -367,6 +391,18 @@ const CustomIconMarkerForEvents = ({markers}:any)=>{
   )
 }
 
+const CustomIconMarkerForBins = ({markers}:any)=>{
+  console.log("test",markers)
+  return(
+    <>
+      {markers?.map((marker:any, index:any) => (
+      <Marker key={index} position={[marker.latitude, marker.longitude]}
+      icon={binssvgFileIcon}>
+      </Marker>
+    ))}
+    </>
+  )
+}
 
 
 const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData }) => {
@@ -389,7 +425,8 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
         <CustomIconMarkerForEvents markers={eventData}/>
 }
 {switches?.bins &&
-        <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
+        // <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
+        <CustomIconMarkerForBins markers={binData} />
 }
 {switches?.amenities &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>

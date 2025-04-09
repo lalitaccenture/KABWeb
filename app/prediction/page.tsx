@@ -907,7 +907,7 @@ const Prediction = () => {
           )}
            <div className="flex items-center gap-4 mt-2">
           <span className="text-xs text-gray-400">Lower Litter Density</span>
-          <div className="w-20 h-2 bg-gradient-to-r from-[#00FF00] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+          <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
           <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
         </div>
         </div>

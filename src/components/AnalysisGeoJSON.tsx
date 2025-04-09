@@ -59,7 +59,7 @@ const getStateStyle = (stateId: string, stateInfo: any) => {
 
   const color =
     value < 0.001 ? "#FFFFFF" :
-    value < 0.2 ? "#00FF00" :
+    value < 0.2 ? "#008000" :
     value < 0.4 ? "#80FF00" :
     value < 0.6 ? "#FFFF00" :
     value < 0.8 ? "#FF8000" : "#FF0000";
