@@ -182,9 +182,9 @@ const Prediction = () => {
       ] = await Promise.allSettled([
         getDashboardPrediction({ State: "California" }),
         getPredictionMap({ State: "California" }),
-        getEventPrediction(),
-        getBinPrediction(),
-        getAmenitiesPrediction()
+        getEventPrediction({ State: "California" }),
+        getBinPrediction({ State: "California" }),
+        getAmenitiesPrediction({ State: "California" })
       ]);
   
       if (dashboardRes.status === "fulfilled") {
@@ -193,7 +193,7 @@ const Prediction = () => {
   
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(5);
+        setZoom(6);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
@@ -401,19 +401,19 @@ const Prediction = () => {
     
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(5);
+        setZoom(6);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
         if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
           // If state is present and county and tract are null
-          setZoom(5);
+          setZoom(6);
         } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
           // If state and county are present and tract is null
-          setZoom(6);
+          setZoom(7);
         } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
           // If state, county, and tract are all present
-          setZoom(7);
+          setZoom(8);
         }
       }
     
@@ -609,19 +609,19 @@ const Prediction = () => {
     
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(5);
+        setZoom(6);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
         if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
           // If state is present and county and tract are null
-          setZoom(5);
+          setZoom(6);
         } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
           // If state and county are present and tract is null
-          setZoom(6);
+          setZoom(7);
         } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
           // If state, county, and tract are all present
-          setZoom(7);
+          setZoom(8);
         }
       }
     
