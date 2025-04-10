@@ -17,6 +17,9 @@ const Header = () => {
     const { data: session, status } = useSession();
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [activeTab, setActiveTab] = useState(pathname);
+    const analysisPaths = ['/analysis-external', '/analysis-kab'];
+    const showTooltip = pathname === '/prediction' || analysisPaths.includes(pathname);
+
 
     const handleAnalysisClick = (e: React.MouseEvent) => {
         /*    e.preventDefault();
@@ -62,8 +65,8 @@ const Header = () => {
 
 
     return (
-        <div className="w-full flex  px-6 items-center justify-between" style={{height:'5rem'}}>
-         {/*    <div className="flex flex-col">
+        <div className="w-full flex  px-6 items-center justify-between" style={{ height: '5rem' }}>
+            {/*    <div className="flex flex-col">
                 <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
                     LitterSense
                 </p>
@@ -75,7 +78,7 @@ const Header = () => {
                     <nav className="w-full">
                         <ul className="flex justify-start gap-12 w-full" style={{ justifyContent: 'center', marginLeft: '20%' }}>
                             <li>
-                               {/*  <Link href="/home" onClick={() => setActiveTab('/home')}>
+                                {/*  <Link href="/home" onClick={() => setActiveTab('/home')}>
                                     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
     hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 
     focus:border-[#5BAA76] px-2 py-1 rounded-md ${activeTab === '/home' ? 'bg-[#5BAA76] text-white' : ''}`}>
@@ -85,7 +88,7 @@ const Header = () => {
 
                             </li>
                             <li>
-                               {/*  <Link href="/prediction" onClick={() => setActiveTab('/prediction')}>
+                                {/*  <Link href="/prediction" onClick={() => setActiveTab('/prediction')}>
                                     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
     hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 
     focus:border-[#5BAA76] px-2 py-1 rounded-md ${activeTab === '/prediction' ? 'bg-[#5BAA76] text-white' : ''}`}>
@@ -109,7 +112,7 @@ const Header = () => {
 
                             >
                                 {/* Main Link for Analysis */}
-                               {/*  <button onClick={handleAnalysisClick}>
+                                {/*  <button onClick={handleAnalysisClick}>
                                     <span className={`text-gray-500 font-neris hover:text-white focus:text-white 
     hover:bg-[#5BAA76] focus:bg-[#5BAA76] hover:border-[#5BAA76] focus:border-b-2 
     focus:border-[#5BAA76] px-2 py-1 rounded-md ${activeTab === '/analysis' ? 'bg-[#5BAA76] text-white' : ''}`}>
@@ -124,7 +127,7 @@ const Header = () => {
                 </div>
             )}
             <div className={`flex items-center ${status === "authenticated" ? "gap-6" : "justify-end w-1/3"}`}>
-               {/*  <div className="flex justify-center" >
+                {/*  <div className="flex justify-center" >
                     <Image
                         src="/kab.png"
                         alt="Logo KAB"
@@ -158,17 +161,20 @@ const Header = () => {
                             />
                             <UserIcon src="/usertest.png" username={session?.user?.name} />
                         </div> */}
-{(pathname === '/prediction' || pathname === '/analysis-external') && (
-  <div className="absolute left-1/2 transform -translate-x-1/2  z-10">
-    <div className="bg-white text-center px-6 py-2 border border-gray-300 rounded-lg shadow-md max-w-2xl w-[700px]">
-      <span className="font-medium italic">
-        {pathname === '/prediction'
-          ? 'Generate weekly litter maps and visualize hotspots, bins, and amenities in real time, allowing for better planning of litter reduction measures'
-          : 'Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time'}
-      </span>
-    </div>
-  </div>
-)}
+                        {(showTooltip || pathname === '/user-profile') && (
+                            <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
+                                <div className="bg-white text-center px-6 py-2 border border-gray-300 rounded-lg shadow-md max-w-2xl w-[700px]" style={{marginLeft:'8%'}}>
+                                    <span className="font-medium italic">
+                                        {pathname === '/prediction' &&
+                                            'Generate weekly litter maps and visualize hotspots, bins, and amenities in real time, allowing for better planning of litter reduction measures'}
+                                        {['/analysis-external', '/analysis-kab'].includes(pathname) &&
+                                            'Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time'}
+                                        {pathname === '/user-profile' &&
+                                            'View your profile details, including your name and last login information.'}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
 
 
                         <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer" >
@@ -179,7 +185,7 @@ const Header = () => {
 
 
                         {/* Logout Icon Button flex gap-2 cursor-pointer */}
-                    {/*     <button
+                        {/*     <button
                             onClick={handleLogout}
                             className="flex items-center gap-1 px-3 py-2 bg-[#5BAA76] text-white rounded-lg transition-all"
                             title="Logout"

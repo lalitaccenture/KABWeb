@@ -954,9 +954,7 @@ Statewide Estimated Litter Data.
       </div>
 
     </div>
-
-
-  );
+);
 }
 
 export default ScenarioModeling;
