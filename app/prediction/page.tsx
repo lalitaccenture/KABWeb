@@ -184,9 +184,9 @@ const Prediction = () => {
       ] = await Promise.allSettled([
         getDashboardPrediction({ State: "California" }),
         getPredictionMap({ State: "California" }),
-        getEventPrediction(),
-        getBinPrediction(),
-        getAmenitiesPrediction()
+        getEventPrediction({ State: "California" }),
+        getBinPrediction({ State: "California" }),
+        getAmenitiesPrediction({ State: "California" })
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -195,7 +195,7 @@ const Prediction = () => {
 
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(5);
+        setZoom(6);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
@@ -403,19 +403,19 @@ const Prediction = () => {
 
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(5);
+        setZoom(6);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
         if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
           // If state is present and county and tract are null
-          setZoom(5);
+          setZoom(6);
         } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
           // If state and county are present and tract is null
-          setZoom(6);
+          setZoom(7);
         } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
           // If state, county, and tract are all present
-          setZoom(7);
+          setZoom(8);
         }
       }
 
@@ -611,19 +611,19 @@ const Prediction = () => {
 
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(5);
+        setZoom(6);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
         if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
           // If state is present and county and tract are null
-          setZoom(5);
+          setZoom(6);
         } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
           // If state and county are present and tract is null
-          setZoom(6);
+          setZoom(7);
         } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
           // If state, county, and tract are all present
-          setZoom(7);
+          setZoom(8);
         }
       }
 
@@ -1026,7 +1026,6 @@ const Prediction = () => {
           ) : (
             <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} />
           )}
-
         </div>
 
         <div className="mt-5 flex items-center gap-2" style={{ marginTop: "1px", marginRight: '53%' }}>
@@ -1034,7 +1033,7 @@ const Prediction = () => {
 
           <div className="flex items-center gap-4 mt-2">
             <span className="text-xs text-gray-400">Lower Litter Density</span>
-            <div className="w-20 h-2 bg-gradient-to-r from-[#00FF00] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+            <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
             <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
           </div>
 
