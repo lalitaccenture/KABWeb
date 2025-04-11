@@ -77,10 +77,10 @@ const UserProfile = () => {
   };
   return (
     <div className="bg-[#5BAA761A] min-h-screen pt-24">
-      <div className="flex w-full max-w-screen-xl mx-auto px-4">
+      <div className="flex w-full max-w-screen-xl m">
 
         {/* Sidebar */}
-        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between h-[42rem] mt-[-12%]">
+        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{marginBottom:'38px'}}>
 
           {/* Top Section */}
           <div>
@@ -177,16 +177,19 @@ const UserProfile = () => {
                 <div className="text-3xl font-bold mb-4 text-center">
                   {isEditing ? (
                     <>
-                      <label htmlFor="username" className="block font-neris text-sm text-gray-700">
-                        User name:
-                      </label>
-                      <input
-                        id="username"
-                        type="text"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        className="text-2xl font-bold bg-white border-2 border-[#3AAD73] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#5BAA76] w-full"
-                      />
+                     <div className="w-full max-w-md mx-auto text-left">
+  <label htmlFor="username" className="block font-neris text-sm mb-1">
+    User Name:
+  </label>
+  <input
+    id="username"
+    type="text"
+    value={userName}
+    onChange={(e) => setUserName(e.target.value)}
+    className="text-2xl font-bold bg-white border-2 border-[#3AAD73] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#5BAA76] w-full"
+  />
+</div>
+
                     </>
                   ) : (
                     <span className="font-neris">{userName}</span>
@@ -195,7 +198,7 @@ const UserProfile = () => {
 
                 <div className="text-lg space-y-3 font-neris">
                   {[
-                    { label: 'Email', value: email, onChange: setEmail },
+                    { label: 'Email', value: email, onChange: setEmail , },
                     { label: 'Organization', value: organization, onChange: setOrganization },
                     { label: 'Role', value: role, onChange: setRole },
                     { label: 'Target', value: target, onChange: setTarget },

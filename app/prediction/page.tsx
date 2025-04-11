@@ -804,6 +804,7 @@ const Prediction = () => {
                     placeholder: (base) => ({
                       ...base,
                       color: "#C5C5C5",
+                      fontSize: "12px",
                     }),
                     option: (base, { isSelected, isFocused }) => ({
                       ...base,
@@ -1064,25 +1065,27 @@ const Prediction = () => {
 
 
         <div className="p-4 bg-[#DCFCE7] rounded flex flex-col justify-center items-center text-center">
-          <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Predicted Litter Quantity</p>
-          {loadingAnalysisData ? (
+        {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
             <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(#)</span></span>
           )}
+          <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Predicted Litter Quantity</p>
+         
         </div>
 
 
         <div className="p-4 bg-[#DCFCE7] rounded flex flex-col justify-center items-center text-center">
-          <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
-            Predicted Litter Density
-          </p>
-
-          {loadingAnalysisData ? (
+          
+        {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
             <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
           )}
+          <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
+            Predicted Litter Density
+          </p>
+
         </div>
 
         <div className="h-auto">

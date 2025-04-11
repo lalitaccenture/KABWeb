@@ -668,7 +668,7 @@ const Analysis = () => {
         placeholder: (base) => ({
           ...base,
           color: "#C5C5C5",
-          fontSize: "14px",
+          fontSize: "12px",
         }),
         option: (base, { isSelected, isFocused }) => ({
           ...base,
@@ -740,7 +740,7 @@ const Analysis = () => {
         placeholder: (base) => ({
           ...base,
           color: "#C5C5C5",
-          fontSize: "14px",
+          fontSize: "12px",
         }),
         option: (base, { isSelected, isFocused }) => ({
           ...base,
@@ -870,7 +870,7 @@ const Analysis = () => {
         placeholder: (base) => ({
           ...base,
           color: "#C5C5C5",
-          fontSize: "14px",
+          fontSize: "12px",
         }),
         option: (base, { isSelected, isFocused }) => ({
           ...base,
