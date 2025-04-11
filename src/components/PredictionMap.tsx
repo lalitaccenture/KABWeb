@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface MarkerData {
@@ -256,7 +256,7 @@ const CanvasBinMarkersLayer: React.FC<CanvasBinMarkersLayerProps> = ({ data, can
 //   return null;
 // };
 
-const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+const CanvasAmenitiesMarkersLayerTriangle: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -404,6 +404,348 @@ const CustomIconMarkerForBins = ({markers}:any)=>{
   )
 }
 
+const CustomIconMarkerForBinsWithZoom = ({ markers }: any) => {
+  const map = useMap();
+  const [zoom, setZoom] = useState(map.getZoom());
+
+  useEffect(() => {
+    const handleZoom = () => {
+      setZoom(map.getZoom());
+    };
+
+    map.on("zoomend", handleZoom);
+    return () => {
+      map.off("zoomend", handleZoom);
+    };
+  }, [map]);
+
+  // Function to get icon based on zoom level
+  const getBinIcon = (zoomLevel: number) =>
+    L.icon({
+      iconUrl: "/bins.svg",
+      iconSize: [zoomLevel * 2.5, zoomLevel * 2.5], // Adjust scale as needed
+      iconAnchor: [zoomLevel * 1.25, zoomLevel * 2.5],
+      popupAnchor: [0, -zoomLevel * 2],
+    });
+
+  return (
+    <>
+      {markers?.map((marker: any, index: number) => (
+        <Marker
+          key={index}
+          position={[marker.latitude, marker.longitude]}
+          icon={getBinIcon(zoom)}
+        />
+      ))}
+    </>
+  );
+};
+
+const CanvasAmenitiesMarkersLayerStar: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.Polygon[] = [];
+
+    const toRadians = (deg: number) => (deg * Math.PI) / 180;
+
+    const getStarCoords = (
+      lat: number,
+      lng: number,
+      outerRadius: number,
+      innerRadius: number,
+      points = 5
+    ): [number, number][] => {
+      const coords: [number, number][] = [];
+      const angleStep = 360 / (points * 2);
+
+      for (let i = 0; i < points * 2; i++) {
+        const angleDeg = i * angleStep - 90; // rotate so top point is up
+        const angleRad = toRadians(angleDeg);
+        const radius = i % 2 === 0 ? outerRadius : innerRadius;
+
+        const dx = Math.cos(angleRad) * radius;
+        const dy = Math.sin(angleRad) * radius;
+
+        coords.push([lat + dy, lng + dx]);
+      }
+
+      return coords;
+    };
+
+    const drawStars = () => {
+      markers.forEach(marker => map.removeLayer(marker));
+      markers.length = 0;
+
+      const zoom = map.getZoom();
+      let outerRadius = 0.0015;
+let innerRadius = 0.00075;
+
+if (zoom >= 15) {
+  outerRadius = 0.0007;
+  innerRadius = 0.00035;
+} else if (zoom >= 13) {
+  outerRadius = 0.001;
+  innerRadius = 0.0005;
+}
+
+      data?.forEach((item) => {
+        const lat = item.latitude;
+        const lng = item.longitude;
+        if (typeof lat !== 'number' || typeof lng !== 'number') return;
+
+        const starCoords = getStarCoords(lat, lng, outerRadius, innerRadius);
+
+        const star = L.polygon(starCoords, {
+          renderer: canvasRenderer,
+          fillColor: "rgba(0, 0, 255, 0.7)", // gold-like color
+          fillOpacity: 0.6,
+          stroke: false,
+          interactive: true,
+        });
+
+        star.bindPopup(`Type: ${item?.type}`);
+        star.on("click", () => star.openPopup());
+
+        star.addTo(map);
+        markers.push(star);
+      });
+    };
+
+    drawStars();
+    map.on('zoomend', drawStars);
+
+    return () => {
+      map.off('zoomend', drawStars);
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]);
+
+  return null;
+};
+
+const CanvasAmenitiesMarkersLayerDiamond: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.Polygon[] = [];
+
+    const getDiamondCoords = (lat: number, lng: number, size: number): [number, number][] => {
+      return [
+        [lat + size, lng],        // top
+        [lat, lng + size],        // right
+        [lat - size, lng],        // bottom
+        [lat, lng - size],        // left
+      ];
+    };
+
+    const drawDiamonds = () => {
+      markers.forEach(marker => map.removeLayer(marker));
+      markers.length = 0;
+
+      const zoom = map.getZoom();
+      let size = 0.0015;
+
+      if (zoom >= 15) {
+        size = 0.0007;
+      } else if (zoom >= 13) {
+        size = 0.001;
+      }
+
+      data?.forEach((item) => {
+        const lat = item.latitude;
+        const lng = item.longitude;
+        if (typeof lat !== 'number' || typeof lng !== 'number') return;
+
+        const coords = getDiamondCoords(lat, lng, size);
+
+        const diamond = L.polygon(coords, {
+          renderer: canvasRenderer,
+          fillColor: "rgba(0, 128, 255, 0.7)", // bluish
+          fillOpacity: 0.5,
+          stroke: false,
+          interactive: true,
+        });
+
+        diamond.bindPopup(`Type: ${item?.type}`);
+        diamond.on("click", () => diamond.openPopup());
+
+        diamond.addTo(map);
+        markers.push(diamond);
+      });
+    };
+
+    drawDiamonds();
+    map.on('zoomend', drawDiamonds);
+
+    return () => {
+      map.off('zoomend', drawDiamonds);
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]);
+
+  return null;
+};
+
+
+const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.Polygon[] = [];
+
+    const toRadians = (deg: number) => (deg * Math.PI) / 180;
+
+    const getTriangleCoords = (lat: number, lng: number, size: number): [number, number][] => {
+      return [
+        [lat + size, lng],
+        [lat - size, lng - size],
+        [lat - size, lng + size],
+      ];
+    };
+
+    const getDiamondCoords = (lat: number, lng: number, size: number): [number, number][] => {
+      return [
+        [lat + size, lng],
+        [lat, lng + size],
+        [lat - size, lng],
+        [lat, lng - size],
+      ];
+    };
+
+    const getStarCoords = (
+      lat: number,
+      lng: number,
+      outerRadius: number,
+      innerRadius: number,
+      points = 5
+    ): [number, number][] => {
+      const coords: [number, number][] = [];
+      const angleStep = 360 / (points * 2);
+
+      for (let i = 0; i < points * 2; i++) {
+        const angleDeg = i * angleStep - 90;
+        const angleRad = toRadians(angleDeg);
+        const radius = i % 2 === 0 ? outerRadius : innerRadius;
+
+        const dx = Math.cos(angleRad) * radius;
+        const dy = Math.sin(angleRad) * radius;
+
+        coords.push([lat + dy, lng + dx]);
+      }
+
+      return coords;
+    };
+
+    const getHexagonCoords = (lat: number, lng: number, radius: number): [number, number][] => {
+      const coords: [number, number][] = [];
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i; // 60 degrees
+        const dx = Math.cos(angle) * radius;
+        const dy = Math.sin(angle) * radius;
+        coords.push([lat + dy, lng + dx]);
+      }
+      return coords;
+    };
+
+    const getSquareCoords = (lat: number, lng: number, size: number): [number, number][] => {
+      return [
+        [lat + size, lng - size],
+        [lat + size, lng + size],
+        [lat - size, lng + size],
+        [lat - size, lng - size],
+      ];
+    };
+
+    const getPentagonCoords = (lat: number, lng: number, radius: number): [number, number][] => {
+      const coords: [number, number][] = [];
+      for (let i = 0; i < 5; i++) {
+        const angle = (2 * Math.PI * i) / 5 - Math.PI / 2; // Rotate so the flat side is up
+        const dx = Math.cos(angle) * radius;
+        const dy = Math.sin(angle) * radius;
+        coords.push([lat + dy, lng + dx]);
+      }
+      return coords;
+    };
+
+    const drawShapes = () => {
+      markers.forEach(marker => map.removeLayer(marker));
+      markers.length = 0;
+
+      const zoom = map.getZoom();
+
+      let size = 0.0015;
+      if (zoom >= 15) size = 0.0007;
+      else if (zoom >= 13) size = 0.001;
+
+      data?.forEach((item) => {
+        const lat = item.latitude;
+        const lng = item.longitude;
+        const type = item.type;
+
+        if (typeof lat !== 'number' || typeof lng !== 'number') return;
+
+        let coords: [number, number][] = [];
+        let fillColor = 'rgba(0,0,0,0.6)';
+
+        // Choose shape + color based on type
+        switch (type) {
+          case 'restaurant':
+            coords = getDiamondCoords(lat, lng, size);
+            fillColor = 'rgba(0, 128, 255, 0.7)';
+            break;
+          case 'Railway Station':
+            coords = getStarCoords(lat, lng, size, size / 2);
+            fillColor = 'rgba(255, 0, 0, 0.7)';
+            break;
+          case 'Bus Stop':
+            coords = getTriangleCoords(lat, lng, size);
+            fillColor = 'rgba(0, 0, 255, 0.7)';
+            break;
+          case 'park':
+            coords = getHexagonCoords(lat, lng, size);
+            fillColor = 'rgba(255, 165, 0, 0.7)';
+            break;
+          case 'school':
+            coords = getSquareCoords(lat, lng, size);
+            fillColor = 'rgba(128, 0, 255, 0.7)';
+            break;
+          default:
+            coords = getPentagonCoords(lat, lng, size);
+            fillColor = 'rgba(128, 128, 128, 0.6)';
+        }
+
+        const shape = L.polygon(coords, {
+          renderer: canvasRenderer,
+          fillColor,
+          fillOpacity: 0.5,
+          stroke: false,
+          interactive: true,
+        });
+
+        shape.bindPopup(`Type: ${type}`);
+        shape.on('click', () => shape.openPopup());
+
+        shape.addTo(map);
+        markers.push(shape);
+      });
+    };
+
+    drawShapes();
+    map.on('zoomend', drawShapes);
+
+    return () => {
+      map.off('zoomend', drawShapes);
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]);
+
+  return null;
+};
+
+
+
+
 
 const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData }) => {
 
@@ -426,7 +768,7 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
 }
 {switches?.bins &&
         // <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
-        <CustomIconMarkerForBins markers={binData} />
+        <CustomIconMarkerForBinsWithZoom markers={binData} />
 }
 {switches?.amenities &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
