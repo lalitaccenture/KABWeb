@@ -360,3 +360,17 @@ export const postEditProfile = async (queryParams: any = {}) => {
   }
 };
 
+export const getAmenities = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/amenitiesBasedOnCategoryPrediction?code=MUKis-alp7qJfU9uB4OAzj-mQbcr0jZsKqazkGwkbiAkAzFuAvTFrg==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+

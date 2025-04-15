@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAmenities, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { signOut, useSession } from "next-auth/react";
@@ -123,6 +123,12 @@ const Prediction = () => {
   const [amenitiesData, setAmenitiesData] = useState<AmenitiesData>();
   const [activeButton, setActiveButton] = useState('prediction')
   const { data: session, status } = useSession();
+  const [amenitiesRetail,setAmenitiesRetail] = useState();
+  const [amenitiesEntertainment,setAmenitiesEntertainment] = useState();
+  const [amenitiesTransit,setAmenitiesTransit] = useState();
+  const [amenitiesEducation,setAmenitiesEducation] = useState();
+
+        
   const router = useRouter();
 
   useEffect(() => {
@@ -180,13 +186,21 @@ const Prediction = () => {
         mapRes,
         eventRes,
         binRes,
-        amenitiesRes
+        amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
       ] = await Promise.allSettled([
         getDashboardPrediction({ State: "California" }),
         getPredictionMap({ State: "California" }),
         getEventPrediction({ State: "California" }),
         getBinPrediction({ State: "California" }),
-        getAmenitiesPrediction({ State: "California" })
+        getAmenitiesPrediction({ State: "California" }),
+        getAmenities({ State: "California",Category:"Retail" }),
+        getAmenities({ State: "California",Category:"Entertainment" }),
+        getAmenities({ State: "California",Category:"Transit" }),
+        getAmenities({ State: "California",Category:"Education" })
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -211,6 +225,18 @@ const Prediction = () => {
 
       if (amenitiesRes.status === "fulfilled") {
         setAmenitiesData(amenitiesRes.value);
+      }
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
+      }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
       }
 
       if ([dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
@@ -1025,7 +1051,7 @@ const Prediction = () => {
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
-            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} />
+            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} amenitiesRetail={amenitiesRetail} amenitiesEntertainment={amenitiesEntertainment} amenitiesTransit={amenitiesTransit} amenitiesEducation={amenitiesEducation}/>
           )}
         </div>
 
@@ -1068,7 +1094,7 @@ const Prediction = () => {
         {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
-            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(#)</span></span>
+            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(#)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Predicted Litter Quantity</p>
          
@@ -1080,7 +1106,7 @@ const Prediction = () => {
         {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
-            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
+            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
             Predicted Litter Density
@@ -1090,6 +1116,7 @@ const Prediction = () => {
 
         <div className="h-auto">
           {/* <Bar options={options} data={data} /> */}
+          <p className="text-base font-semibold font-neris" >Break Down of Litter Types</p>
           <div className="h-[300px]">
             <Doughnut
               data={dataDoughnut}

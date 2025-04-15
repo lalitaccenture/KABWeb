@@ -49,6 +49,10 @@ interface MapAnalysisProps {
   eventData: EventData[];
   binData: any;
   amenitiesData: any;
+  amenitiesRetail: any;
+  amenitiesEntertainment:any;
+  amenitiesTransit:any;
+  amenitiesEducation:any;
 }
 
 interface CanvasMarkersLayerProps {
@@ -747,7 +751,7 @@ const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = 
 
 
 
-const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData }) => {
+const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData, amenitiesRetail, amenitiesEntertainment, amenitiesEducation, amenitiesTransit }) => {
 
   const router = useRouter();
   const canvasRenderer = useMemo(() => L.canvas({ padding: 0.5 }), []);
@@ -773,6 +777,9 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
 {switches?.amenities &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
 }
+{/* <CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer}/>
+<CanvasAmenitiesMarkersLayerStar data={amenitiesTransit} canvasRenderer={canvasRenderer}/>
+<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/> */}
       </MapContainer>
     </div>
     </>
