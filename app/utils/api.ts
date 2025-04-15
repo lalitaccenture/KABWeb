@@ -349,7 +349,7 @@ export const getViewProfile = async (queryParams: any = {}) => {
 export const postEditProfile = async (queryParams: any = {}) => {
   try {
     
-    const response = await axios.get(
+    const response = await axios.post(
       `https://lees1ddoaifunc02.azurewebsites.net/api/edit_profile?code=1_qUfaHVY-8-7lLpDwf-2ahNwc2NFulrZ27tw-04520PAzFueMrY8A==`,
       { params: queryParams } 
     );

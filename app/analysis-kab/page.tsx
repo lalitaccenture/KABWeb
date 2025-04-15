@@ -405,7 +405,7 @@ const ScenarioModeling = () => {
 
   const handleLogoClick = () => {
     if (status === "authenticated") {
-        router.push("/home");
+        router.push("/analysis-external");
     } else {
         router.push("/");
     }
