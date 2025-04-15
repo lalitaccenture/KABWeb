@@ -45,7 +45,7 @@ const Login = () => {
     const checkSession = async () => {
       const session = await getSession();
       if (session) {
-        router.push("/home"); // Redirect if session exists
+        router.push("/analysis-external"); // Redirect if session exists
       } else {
         setLoading(false); // Stop loading once session check is done
       }
@@ -236,9 +236,9 @@ const Login = () => {
               </p>
               {/* Data Sources */}
               <div className="flex items-start gap-3">
-                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>📊</span>
+                <span className="text-xl mt-1" style={{ color: '#5BAA76' }}>📊</span>
                 <div>
-                  <h4 className="font-semibold text-base text-[#3AAD73]">Data Sources & Timeframe</h4>
+                  <h4 className="font-semibold text-base text-[#5BAA76]">Data Sources & Timeframe</h4>
                   <p>
                     Insights are based on external data collected between <strong>2015 and 2024</strong>. Completeness may vary depending on source accuracy and availability.
                   </p>
@@ -247,9 +247,9 @@ const Login = () => {
 
               {/* Scope & Limitations */}
               <div className="flex items-start gap-3">
-                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>📍</span>
+                <span className="text-xl mt-1" style={{ color: '#5BAA76' }}>📍</span>
                 <div>
-                  <h4 className="font-semibold text-base text-[#3AAD73]">Scope & Limitations</h4>
+                  <h4 className="font-semibold text-base text-[#5BAA76]">Scope & Limitations</h4>
                   <p>
                     This tool provides directional insights and may not fully reflect all littering patterns or cleanup programs. Data quality depends on third-party sources.
                   </p>
@@ -258,9 +258,9 @@ const Login = () => {
 
               {/* Evolving Nature */}
               <div className="flex items-start gap-3">
-                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>🔄</span>
+                <span className="text-xl mt-1" style={{ color: '#5BAA76' }}>🔄</span>
                 <div>
-                  <h4 className="font-semibold text-base text-[#3AAD73]">Evolving Insights</h4>
+                  <h4 className="font-semibold text-base text-[#5BAA76]">Evolving Insights</h4>
                   <p>
                     As new data is integrated, results may evolve. Current insights are provisional and subject to change over time.
                   </p>
@@ -269,9 +269,9 @@ const Login = () => {
 
               {/* Liability */}
               <div className="flex items-start gap-3">
-                <span className="text-xl mt-1" style={{ color: '#3AAD73' }}>⚠️</span>
+                <span className="text-xl mt-1" style={{ color: '#5BAA76' }}>⚠️</span>
                 <div>
-                  <h4 className="font-semibold text-base text-[#3AAD73]">Liability Disclaimer</h4>
+                  <h4 className="font-semibold text-base text-[#5BAA76]">Liability Disclaimer</h4>
                   <p>
                     This tool is intended as an analytical aid. Conclusions drawn from this data should be viewed as indicative. We disclaim liability for actions based on these insights.
                   </p>
@@ -301,7 +301,7 @@ const Login = () => {
                   } else if (response?.ok) {
                     toast.success("Logged in successfully!");
                     reset();
-                    router.push("/home");
+                    router.push("/analysis-external");
                   }}
                   catch (error) {
                     console.error("Login error", error);
@@ -310,7 +310,7 @@ const Login = () => {
                     setLoadingLoginBtn(false); // Re-enable button after request completes
                   }
                 }}
-                className="px-5 py-2 rounded-md bg-[#3AAD73] text-white hover:bg-green-600 font-neris"
+                className="px-5 py-2 rounded-md bg-[#5BAA76] text-white hover:bg-green-600 font-neris"
               >
                 I Accept
               </button>

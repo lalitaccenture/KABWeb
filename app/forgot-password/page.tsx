@@ -72,7 +72,7 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-[#3AAD73] font-neris">Forgot Password</h2>
+        <p className="text-2xl font-semibold text-center mb-6 text-[#5BAA76] font-neris">Forgot Password</p>
         
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
               id="email"
               placeholder="Enter your email"
               {...register('email')}
-              className={`mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md font-neris focus:ring-[#3AAD73] focus:border-[#3AAD73] ${errors.email ? 'border-red-500' : ''}`}
+              className={`mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md font-neris focus:ring-[#5BAA76] focus:border-[#5BAA76] ${errors.email ? 'border-red-500' : ''}`}
             />
             {errors.email && <p className="text-red-500 text-xs mt-1 font-neris">{errors.email.message}</p>}
           </div>
@@ -98,7 +98,9 @@ const ForgotPassword = () => {
                   {...register('otp')}
                   inputMode="numeric"  
                   pattern="\d+"        
-                  className={`mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md font-neris focus:ring-[#3AAD73] focus:border-[#3AAD73] ${errors.otp ? 'border-red-500' : ''}`}
+                  className={`mt-2 block w-full px-4 py-2 border font-neris rounded-md
+                    ${errors.newPassword ? 'border-red-500' : 'border-gray-300'}
+                    focus:border-[#5BAA76] focus:ring-1 focus:ring-[#5BAA76] focus:outline-none`}
                 />
                 {errors.otp && <p className="text-red-500 text-xs mt-1 font-neris">{errors.otp.message}</p>}
               </div>
@@ -110,7 +112,9 @@ const ForgotPassword = () => {
                   id="newPassword"
                   placeholder="Enter new password"
                   {...register('newPassword')}
-                  className={`mt-2 block w-full px-4 py-2 border border-gray-300 font-neris rounded-md focus:ring-[#3AAD73] focus:border-[#3AAD73] ${errors.newPassword ? 'border-red-500' : ''}`}
+                  className={`mt-2 block w-full px-4 py-2 border font-neris rounded-md
+                    ${errors.newPassword ? 'border-red-500' : 'border-gray-300'}
+                    focus:border-[#5BAA76] focus:ring-1 focus:ring-[#5BAA76] focus:outline-none`}
                 />
                 {errors.newPassword && <p className="text-red-500 text-xs mt-1 font-neris">{errors.newPassword.message}</p>}
               </div>
@@ -122,7 +126,9 @@ const ForgotPassword = () => {
                   id="confirmPassword"
                   placeholder="Confirm password"
                   {...register('confirmPassword')}
-                  className={`mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md font-neris focus:ring-[#3AAD73] focus:border-[#3AAD73] ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                  className={`mt-2 block w-full px-4 py-2 border font-neris rounded-md
+                    ${errors.newPassword ? 'border-red-500' : 'border-gray-300'}
+                    focus:border-[#5BAA76] focus:ring-1 focus:ring-[#5BAA76] focus:outline-none`}
                 />
                 {errors.confirmPassword && <p className="text-red-500 text-xs mt-1 font-neris">{errors.confirmPassword.message}</p>}
               </div>
@@ -131,7 +137,7 @@ const ForgotPassword = () => {
 
           <button
             type="submit"
-            className="w-full font-neris py-2 px-4 bg-[#3AAD73] text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-[#3AAD73] focus:ring-opacity-50"
+            className="w-full font-neris py-2 px-4 bg-[#5BAA76] text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-[#5BAA76] focus:ring-opacity-50"
           >
             {otpSent ? 'Reset Password' : 'Send OTP'}
           </button>
