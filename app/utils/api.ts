@@ -335,7 +335,7 @@ export const getAmenitiesPrediction = async (queryParams: any = {}) => {
 export const getViewProfile = async (queryParams: any = {}) => {
   try {
     
-    const response = await axios.get(
+    const response = await axios.post(
       `https://lees1ddoaifunc02.azurewebsites.net/api/view_profile?code=EMK6Ur3djVu2a0wxHtYx_r4LzJF31l93abdRBe1YHOZmAzFuGSqfkA==`,
       { params: queryParams } 
     );
@@ -365,6 +365,34 @@ export const getAmenities = async (queryParams: any = {}) => {
     
     const response = await axios.get(
       `https://lees1ddoaifunc02.azurewebsites.net/api/amenitiesBasedOnCategoryPrediction?code=MUKis-alp7qJfU9uB4OAzj-mQbcr0jZsKqazkGwkbiAkAzFuAvTFrg==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getPredictionMapNew = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/mapPredictionWithToolTip?code=vz1ck-TLyXGEaEx56a7OHYGR0YuZqun0sFMDpZGAEzQkAzFuxGYs5A==`,
+      { params: queryParams } 
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error applying filter", error);
+    throw error;
+  }
+};
+
+export const getDashboardPredictionNew = async (queryParams: any = {}) => {
+  try {
+    
+    const response = await axios.get(
+      `https://lees1ddoaifunc02.azurewebsites.net/api/dashboardPredictionUpdated?code=Uu9Ybd36DqsMzPE1L2D8ZrC7_DSZUr9RqmxLquD3K4xoAzFuTyL8Ng==`,
       { params: queryParams } 
     );
     return response.data;

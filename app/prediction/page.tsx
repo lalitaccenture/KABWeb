@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAmenities, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAmenities, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getDashboardPredictionNew, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, getPredictionMapNew, predictionNewDropdown } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { signOut, useSession } from "next-auth/react";
@@ -187,20 +187,20 @@ const Prediction = () => {
         eventRes,
         binRes,
         amenitiesRes,
-        amenitiesRetail,
-        amenitiesEntertainment,
-        amenitiesTransit,
-        amenitiesEducation
+        // amenitiesRetail,
+        // amenitiesEntertainment,
+        // amenitiesTransit,
+        // amenitiesEducation
       ] = await Promise.allSettled([
-        getDashboardPrediction({ State: "California" }),
-        getPredictionMap({ State: "California" }),
-        getEventPrediction({ State: "California" }),
+        getDashboardPredictionNew({ State: "California",week_id:weekId }),
+        getPredictionMapNew({ State: "California",week_id:weekId }),
+        getEventPrediction({ State: "California",week_id:weekId }),
         getBinPrediction({ State: "California" }),
         getAmenitiesPrediction({ State: "California" }),
-        getAmenities({ State: "California",Category:"Retail" }),
-        getAmenities({ State: "California",Category:"Entertainment" }),
-        getAmenities({ State: "California",Category:"Transit" }),
-        getAmenities({ State: "California",Category:"Education" })
+        // getAmenities({ State: "California",Category:"Retail",week_id:weekId }),
+        // getAmenities({ State: "California",Category:"Entertainment",week_id:weekId }),
+        // getAmenities({ State: "California",Category:"Transit",week_id:weekId }),
+        // getAmenities({ State: "California",Category:"Education",week_id:weekId })
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -226,18 +226,18 @@ const Prediction = () => {
       if (amenitiesRes.status === "fulfilled") {
         setAmenitiesData(amenitiesRes.value);
       }
-      if (amenitiesRetail.status === "fulfilled") {
-        setAmenitiesRetail(amenitiesRetail.value);
-      }
-      if (amenitiesEntertainment.status === "fulfilled") {
-        setAmenitiesEntertainment(amenitiesEntertainment.value);
-      }
-      if (amenitiesTransit.status === "fulfilled") {
-        setAmenitiesTransit(amenitiesTransit.value);
-      }
-      if (amenitiesEducation.status === "fulfilled") {
-        setAmenitiesEducation(amenitiesEducation.value);
-      }
+      // if (amenitiesRetail.status === "fulfilled") {
+      //   setAmenitiesRetail(amenitiesRetail.value);
+      // }
+      // if (amenitiesEntertainment.status === "fulfilled") {
+      //   setAmenitiesEntertainment(amenitiesEntertainment.value);
+      // }
+      // if (amenitiesTransit.status === "fulfilled") {
+      //   setAmenitiesTransit(amenitiesTransit.value);
+      // }
+      // if (amenitiesEducation.status === "fulfilled") {
+      //   setAmenitiesEducation(amenitiesEducation.value);
+      // }
 
       if ([dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
         setError("Some data failed to load. Please try again later.");
@@ -402,6 +402,7 @@ const Prediction = () => {
       //week_id: selectedWeekId || null
     };
 
+
     // Filter out undefined values
     const cleanedQueryParams = Object.fromEntries(
       Object.entries(queryParams).filter(([_, v]) => v !== undefined)
@@ -414,9 +415,9 @@ const Prediction = () => {
     setLoadingBinData(true)
     try {
       const results = await Promise.allSettled([
-        getDashboardPrediction(queryParams),
-        getPredictionMap(queryParams),
-        getEventPrediction(queryParams),
+        getDashboardPredictionNew({...queryParams,week_id: selectedWeekId || null}),
+        getPredictionMapNew({...queryParams,week_id: selectedWeekId || null}),
+        getEventPrediction({...queryParams,week_id: selectedWeekId || null}),
         getBinPrediction(queryParams),
         getAmenitiesPrediction(queryParams)
       ]);
@@ -622,9 +623,9 @@ const Prediction = () => {
     setLoadingBinData(true)
     try {
       const results = await Promise.allSettled([
-        getDashboardPrediction(queryParams),
-        getPredictionMap(queryParams),
-        getEventPrediction(queryParams),
+        getDashboardPredictionNew({...queryParams,week_id: weekID || null,}),
+        getPredictionMapNew({...queryParams,week_id: weekID || null,}),
+        getEventPrediction({...queryParams,week_id: weekID || null,}),
         getBinPrediction(queryParams),
         getAmenitiesPrediction(queryParams)
       ]);
@@ -1031,10 +1032,10 @@ const Prediction = () => {
                     setSelectedWeekId(week_id);
                     handleApplySelectedWeek(week_id);
                   }}
-                  disabled={loadingAnalysisData || loadingMapData || index === 2 || index === 3}
+                  disabled={loadingAnalysisData || loadingMapData || index === 3}
                   className={`px-4 py-2 border rounded transition-colors 
       ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"} 
-      ${index === 2 || index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
+      ${index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <p className="text-black text-xs font-medium font-neris">{week}</p>
                 </button>
