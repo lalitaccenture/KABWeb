@@ -8,15 +8,16 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import { signIn } from "next-auth/react"
+import { signUp } from "../utils/api";
 interface IFormInput {
-    name: string;
+    username: string;
     email: string;
     password: string;
     confirmPassword: string;
 }
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
+    username: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email address").required("Email is required"),
     password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
     confirmPassword: Yup.string()
@@ -38,24 +39,45 @@ const SignUp = () => {
         resolver: yupResolver(validationSchema),
     });
 
-    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-        if (loading) return;
+    // const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    //     if (loading) return;
+    //     try {
+    //         setLoading(true);
+
+    //         signUp
+
+    //         // Mock API request (Replace with actual API call)
+    //         await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    //         toast.success("Sign-up successful! Please verify your account before logging in");
+    //         reset();
+    //         router.push("/"); // Redirect to Sign In
+    //     } catch (error) {
+    //         console.error("Signup error", error);
+    //         toast.error("An error occurred!");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
+    const onSubmit: SubmitHandler<IFormInput> = async (data: { email: string; username: string; password: string }) => {
+
         try {
-            setLoading(true);
-
-            // Mock API request (Replace with actual API call)
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            toast.success("Sign-up successful! Please verify your account before logging in");
-            reset();
-            router.push("/"); // Redirect to Sign In
+            const response = await signUp(data);
+            //response.success
+            if (response) {
+                toast.success('Sign-up successful! Please verify your account before logging in');
+                reset();
+                router.push("/"); 
+            } else {
+                toast.error('Failed to sign up');
+            }
         } catch (error) {
-            console.error("Signup error", error);
-            toast.error("An error occurred!");
-        } finally {
-            setLoading(false);
+            console.error('Error signing up', error);
+            toast.error('Error signing up');
         }
     };
+
 
     return (
         <div className="flex min-h-screen overflow-y-auto">
@@ -112,10 +134,10 @@ const SignUp = () => {
                             <label className="block text-sm font-medium">Name</label>
                             <input
                                 type="text"
-                                {...register("name")}
+                                {...register("username")}
                                 className="w-full px-4 py-2 border rounded-md focus:border-[#5BAA76] focus:outline-none"
                             />
-                            {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
+                            {errors.username && <p className="text-sm text-red-500">{errors.username.message}</p>}
                         </div>
 
                         <div>
