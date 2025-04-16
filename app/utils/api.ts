@@ -336,8 +336,7 @@ export const getViewProfile = async (queryParams: any = {}) => {
   try {
     
     const response = await axios.post(
-      `https://lees1ddoaifunc02.azurewebsites.net/api/view_profile?code=EMK6Ur3djVu2a0wxHtYx_r4LzJF31l93abdRBe1YHOZmAzFuGSqfkA==`,
-      { params: queryParams } 
+      `https://lees1ddoaifunc02.azurewebsites.net/api/view_profile?code=EMK6Ur3djVu2a0wxHtYx_r4LzJF31l93abdRBe1YHOZmAzFuGSqfkA==`, queryParams
     );
     return response.data;
   } catch (error) {
@@ -350,8 +349,7 @@ export const postEditProfile = async (queryParams: any = {}) => {
   try {
     
     const response = await axios.post(
-      `https://lees1ddoaifunc02.azurewebsites.net/api/edit_profile?code=1_qUfaHVY-8-7lLpDwf-2ahNwc2NFulrZ27tw-04520PAzFueMrY8A==`,
-      { params: queryParams } 
+      `https://lees1ddoaifunc02.azurewebsites.net/api/edit_profile?code=1_qUfaHVY-8-7lLpDwf-2ahNwc2NFulrZ27tw-04520PAzFueMrY8A==`, queryParams 
     );
     return response.data;
   } catch (error) {

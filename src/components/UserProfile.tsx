@@ -13,12 +13,12 @@ const Select = dynamic(() => import('react-select'), { ssr: false });
 const UserProfile = () => {
 
   const [isEditing, setIsEditing] = useState(false);
-  const [email, setEmail] = useState('mayank.swarrowp@accenture.com');
-  const [lastlogin, setLastlogin] = useState('2nd april 2025');
-  const [userName, setUserName] = useState('Michael Johnson');
-  const [organization, setOrganization] = useState('Keep America Beautiful');
-  const [role, setRole] = useState('Program Manager');
-  const [target, setTarget] = useState('Leverage Data for better city services');
+  const [email, setEmail] = useState('');
+  const [lastlogin, setLastlogin] = useState('');
+  const [userName, setUserName] = useState('');
+  const [organization, setOrganization] = useState('');
+  const [role, setRole] = useState('');
+  const [target, setTarget] = useState('');
   const [region, setRegion] = useState('LA County, California');
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
@@ -29,62 +29,67 @@ const UserProfile = () => {
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
-const fetchData = async()=>{
-//const data = await getViewProfile({"email":session?.user?.email});
-//setUserName()
-//setEmail()
-}
-  useEffect(()=>{
-    // @ts-ignore: Ignore TypeScript error
-    setStateVal(session?.user?.state)
-    console.log("session",session,session?.user?.email)
-    // getViewProfile({})
-   fetchData()
-  },[session])
+
+  function formatToUSDateTime(isoString:any) {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-US", {
+      timeZone: "America/New_York", // Adjust as needed
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    });
+  }
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      const fetchData = async () => {
+        const data = await getViewProfile({ email: session.user.email });
+        setUserName(data?.username)
+        setEmail(data?.email)
+        setStateVal(data?.state)
+        setLastlogin(formatToUSDateTime(data?.timestamp))
+        setOrganization(data?.organization)
+        setRole(data?.role)
+        setTarget(data?.target)
+      };
+  
+      fetchData();
+    }
+  }, [session?.user?.email]);
+  
 
   const handleSaveClick = async () => {
     setIsSaving(true);
     try {
-    //   {
-    //     "email": email,
-    //     "username": userName,
-    //     "state": state,
-    //     "fullOption": "0",
-    //     "is_verified": "true"
-    //  }
-      // postEditProfile()
-      // if (data) {
-      //   useProfileStore.getState().setProfile(data);
-      // }
-
-console.log("payload",email,userName,stateVal)
-      //this is how to use in components
-      //const profile = useProfileStore((state) => state.profile);
-      const response = await fetch('/api/updateUserProfile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          userName,
-          organization,
-          role,
-          target,
-          region,
-          lastlogin
-        }),
-      });
-
-      if (response.ok) {
+    const payload =   {
+        "email": email,
+        "username": userName,
+        "state": stateVal,
+        "organization": organization,
+        "role": role,
+        "target": target,
+        // "fullOption": "0",
+        // "is_verified": "true"
+     }
+     const data = await postEditProfile(payload);
+      if (data) {
+        useProfileStore.getState().setState(stateVal);
         setSaveSuccess('Profile updated successfully!');
-      } else {
+      }
+      
+
+     else {
         throw new Error('Failed to save the profile');
       }
     } catch (error) {
       setSaveSuccess('Error saving profile. Please try again!');
     } finally {
       setIsSaving(false);
+      setIsEditing(false)
     }
   };
 
@@ -437,6 +442,9 @@ console.log("payload",email,userName,stateVal)
                 <div className="text-lg space-y-3 font-neris">
                 {[
   { label: 'Email', value: email, onChange: setEmail, editable: false, isDropdown: false },
+  { label: 'Organization', value: organization, onChange: setOrganization, editable: true, isDropdown: false  },
+  { label: 'Role', value: role, onChange: setRole, editable: true, isDropdown: false  },
+  { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false  },
   { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
   { label: 'Last Login', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false }
 ].map(({ label, value, onChange, editable, isDropdown }) => (

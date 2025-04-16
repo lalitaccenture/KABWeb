@@ -19,6 +19,7 @@ import WeekSelector from "@/src/components/WeekSelector";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { formatNumberMillion } from "@/utils/common";
+import { useProfileStore } from "@/stores/profileStore";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -127,7 +128,7 @@ const Prediction = () => {
   const [amenitiesEntertainment,setAmenitiesEntertainment] = useState();
   const [amenitiesTransit,setAmenitiesTransit] = useState();
   const [amenitiesEducation,setAmenitiesEducation] = useState();
-
+  const stateFromStore = useProfileStore((s) => s.state);
         
   const router = useRouter();
 

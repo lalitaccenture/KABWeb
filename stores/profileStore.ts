@@ -1,18 +1,19 @@
-// stores/profileStore.ts
 import { create } from 'zustand';
-
-type Profile = {
-  name: string;
-  email: string;
-  // add other profile fields as needed
-};
+import { persist } from 'zustand/middleware';
 
 type ProfileStore = {
-  profile: Profile | null;
-  setProfile: (profile: Profile) => void;
+  state: string;
+  setState: (state: string) => void;
 };
 
-export const useProfileStore = create<ProfileStore>((set) => ({
-  profile: null,
-  setProfile: (profile) => set({ profile }),
-}));
+export const useProfileStore = create<ProfileStore>()(
+  persist(
+    (set) => ({
+      state: '',
+      setState: (state) => set({ state }),
+    }),
+    {
+      name: 'profile-store', // key in localStorage
+    }
+  )
+);

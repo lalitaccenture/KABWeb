@@ -46,9 +46,9 @@ const SignUp = () => {
             // Mock API request (Replace with actual API call)
             await new Promise((resolve) => setTimeout(resolve, 1500));
 
-            toast.success("Sign-up successful!");
+            toast.success("Sign-up successful! Please verify your account before logging in");
             reset();
-            router.push("/signin"); // Redirect to Sign In
+            router.push("/"); // Redirect to Sign In
         } catch (error) {
             console.error("Signup error", error);
             toast.error("An error occurred!");

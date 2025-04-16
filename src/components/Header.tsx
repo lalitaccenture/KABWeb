@@ -179,7 +179,9 @@ const Header = () => {
 
                         <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer" >
                             <FaUserCircle size={40} color="#5BAA76" /> {/* Primary Green */}
-                            <span className="ml-2 text-md font-neris text-gray-500">{session?.user?.name}</span>
+                            <span className="ml-2 text-md font-neris text-gray-500">{
+                            // @ts-ignore: Ignore TypeScript error
+                            session?.user?.username}</span>
                         </div>
 
 

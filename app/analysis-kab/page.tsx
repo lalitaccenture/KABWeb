@@ -772,6 +772,7 @@ Statewide Estimated Litter Data.
                         <span > Weak (0 to ±0.3)</span>
                       </li>
                       <li><span>A value near 0 indicates little to no correlation</span></li>
+                      <span className="mt-1">Correlation is not causation</span>
                     </ul>
 
                   </div>
@@ -910,7 +911,7 @@ Statewide Estimated Litter Data.
 
           {/* Top 3 States Section */}
           <div className="mb-4 p-4 rounded" style={{ marginLeft: '-15px' }}>
-            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States</p>
+            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States by Est. Litter</p>
 
             {loadingAnalysisData ? (
               <div>Loading top states...</div>
