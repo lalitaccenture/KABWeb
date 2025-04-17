@@ -60,7 +60,7 @@ interface SwitchItemProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
-  onColor: string
+  onColor?: string
 }
 
 
@@ -598,7 +598,7 @@ const Prediction = () => {
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
 
-  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange, onColor = "#00FF00" }) => (
+  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange, onColor = "#5BAA76" }) => (
     <div className="flex items-center space-x-2">
       <Switch
         onChange={onChange}
@@ -1089,11 +1089,11 @@ const Prediction = () => {
 
 
           {loadingEventData ? <>Loading...</> :
-            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} onColor="#00FF00" />}
+            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />}
           {loadingBinData ? <>Loading...</> :
-            <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#fc0fc0" />}
+            <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
           {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} onColor="#0000FF" />}
+            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />}
           {/* {loadingAmenitiesData ? <>Loading...</> :
             <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} onColor="#0000FF" />}
           {loadingAmenitiesData ? <>Loading...</> :

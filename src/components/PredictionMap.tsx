@@ -367,9 +367,9 @@ const getImpactIcon = (impact: string) => {
 
   return L.icon({
     iconUrl,
-    iconSize: [20, 40],       // width x height, adjust as needed
-    iconAnchor: [10, 40],     // center horizontally, bottom vertically
-    popupAnchor: [0, -40],
+    iconSize: [3, 20],        // width x height
+  iconAnchor: [1.5, 20],       // center horizontally (10/2), bottom vertically
+  popupAnchor: [0, -20],
   });
 };
 
