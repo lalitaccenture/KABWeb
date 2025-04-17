@@ -206,10 +206,10 @@ const Prediction = () => {
         getEventPrediction({ State: "California",week_id:weekId }),
         getBinPrediction({ State: "California" }),
         getAmenitiesPrediction({ State: "California" }),
-        // getAmenities({ State: "California",Category:"Retail",week_id:weekId }),
-        // getAmenities({ State: "California",Category:"Entertainment",week_id:weekId }),
-        // getAmenities({ State: "California",Category:"Transit",week_id:weekId }),
-        // getAmenities({ State: "California",Category:"Education",week_id:weekId })
+        // getAmenities({ State: "California",Category:"Retail"}),
+        // getAmenities({ State: "California",Category:"Entertainment" }),
+        // getAmenities({ State: "California",Category:"Transit" }),
+        // getAmenities({ State: "California",Category:"Education"})
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -428,10 +428,19 @@ const Prediction = () => {
         getPredictionMapNew({...queryParams,week_id: selectedWeekId || null}),
         getEventPrediction({...queryParams,week_id: selectedWeekId || null}),
         getBinPrediction(queryParams),
-        getAmenitiesPrediction(queryParams)
+        getAmenitiesPrediction(queryParams),
+        // getAmenities({...queryParams, Category:"Retail"}),
+        // getAmenities({...queryParams, Category:"Entertainment" }),
+        // getAmenities({...queryParams, Category:"Transit" }),
+        // getAmenities({...queryParams, Category:"Education"})
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes] = results;
+      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes,
+        // amenitiesRetail,
+        // amenitiesEntertainment,
+        // amenitiesTransit,
+        // amenitiesEducation
+      ] = results;
 
       if (dashboardRes.status === "fulfilled") {
         setPredictionData(dashboardRes.value);
@@ -466,6 +475,19 @@ const Prediction = () => {
       if (amenitiesRes.status === "fulfilled") {
         setAmenitiesData(amenitiesRes.value);
       }
+
+      // if (amenitiesRetail.status === "fulfilled") {
+      //   setAmenitiesRetail(amenitiesRetail.value);
+      // }
+      // if (amenitiesEntertainment.status === "fulfilled") {
+      //   setAmenitiesEntertainment(amenitiesEntertainment.value);
+      // }
+      // if (amenitiesTransit.status === "fulfilled") {
+      //   setAmenitiesTransit(amenitiesTransit.value);
+      // }
+      // if (amenitiesEducation.status === "fulfilled") {
+      //   setAmenitiesEducation(amenitiesEducation.value);
+      // }
 
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -636,10 +658,19 @@ const Prediction = () => {
         getPredictionMapNew({...queryParams,week_id: weekID || null,}),
         getEventPrediction({...queryParams,week_id: weekID || null,}),
         getBinPrediction(queryParams),
-        getAmenitiesPrediction(queryParams)
+        getAmenitiesPrediction(queryParams),
+        // getAmenities({...queryParams, Category:"Retail"}),
+        // getAmenities({...queryParams, Category:"Entertainment" }),
+        // getAmenities({...queryParams, Category:"Transit" }),
+        // getAmenities({...queryParams, Category:"Education"})
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes] = results;
+      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes,
+        // amenitiesRetail,
+        // amenitiesEntertainment,
+        // amenitiesTransit,
+        // amenitiesEducation
+      ] = results;
 
       if (dashboardRes.status === "fulfilled") {
         setPredictionData(dashboardRes.value);
@@ -674,6 +705,19 @@ const Prediction = () => {
       if (amenitiesRes.status === "fulfilled") {
         setAmenitiesData(amenitiesRes.value);
       }
+
+      // if (amenitiesRetail.status === "fulfilled") {
+      //   setAmenitiesRetail(amenitiesRetail.value);
+      // }
+      // if (amenitiesEntertainment.status === "fulfilled") {
+      //   setAmenitiesEntertainment(amenitiesEntertainment.value);
+      // }
+      // if (amenitiesTransit.status === "fulfilled") {
+      //   setAmenitiesTransit(amenitiesTransit.value);
+      // }
+      // if (amenitiesEducation.status === "fulfilled") {
+      //   setAmenitiesEducation(amenitiesEducation.value);
+      // }
 
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -1076,9 +1120,9 @@ const Prediction = () => {
   {/* Right legend - conditionally rendered */}
   {switches?.events && (
     <div className="flex items-center gap-4 mt-2">
-      <span className="text-xs text-gray-400">Lower Events Impact</span>
+      <span className="text-xs text-gray-400">Low Impact Events</span>
       <div className="w-20 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
-      <span className="text-xs text-gray-400 whitespace-nowrap">Higher Events Impact</span>
+      <span className="text-xs text-gray-400 whitespace-nowrap">High Impact Events</span>
     </div>
   )}
 </div>

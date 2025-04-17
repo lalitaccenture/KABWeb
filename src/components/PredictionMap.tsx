@@ -781,12 +781,13 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
 {switches?.amenities &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
 }
- {switches?.retail &&
-<CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer}/>}
-{switches?.transit &&
+{/* {switches?.retail && amenitiesRetail?.length > 0 &&
+  <CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer} />
+}
+{switches?.transit && amenitiesTransit?.length > 0 &&
 <CanvasAmenitiesMarkersLayerStar data={amenitiesTransit} canvasRenderer={canvasRenderer}/>}
-{switches?.education &&
-<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>}
+{switches?.education && amenitiesEducation?.length > 0 &&
+<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>} */}
       </MapContainer>
     </div>
     </>
