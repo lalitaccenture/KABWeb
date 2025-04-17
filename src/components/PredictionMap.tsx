@@ -751,7 +751,84 @@ const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = 
   return null;
 };
 
+const CanvasAmenitiesMarkersLayerHexagon: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
 
+  useEffect(() => {
+    const markers: L.Polygon[] = [];
+
+    const toRadians = (deg: number) => (deg * Math.PI) / 180;
+
+    const getHexagonCoords = (
+      lat: number,
+      lng: number,
+      radius: number
+    ): [number, number][] => {
+      const coords: [number, number][] = [];
+
+      for (let i = 0; i < 6; i++) {
+        const angleDeg = 60 * i - 30; // Pointy top orientation
+        const angleRad = toRadians(angleDeg);
+
+        const dx = Math.cos(angleRad) * radius;
+        const dy = Math.sin(angleRad) * radius;
+
+        coords.push([lat + dy, lng + dx]);
+      }
+
+      // Close the polygon by repeating the first point
+      coords.push(coords[0]);
+
+      return coords;
+    };
+
+    const drawHexagons = () => {
+      markers.forEach(marker => map.removeLayer(marker));
+      markers.length = 0;
+
+      const zoom = map.getZoom();
+      let radius = 0.001;
+
+      if (zoom >= 15) {
+        radius = 0.0005;
+      } else if (zoom >= 13) {
+        radius = 0.00075;
+      }
+
+      data?.forEach((item) => {
+        const lat = item.latitude;
+        const lng = item.longitude;
+        if (typeof lat !== "number" || typeof lng !== "number") return;
+
+        const hexCoords = getHexagonCoords(lat, lng, radius);
+
+        const hex = L.polygon(hexCoords, {
+          renderer: canvasRenderer,
+          fillColor: "rgba(255, 165, 0, 0.7)", // orange-like fill
+          fillOpacity: 0.6,
+          stroke: false,
+          interactive: true,
+        });
+
+        hex.bindPopup(`Type: ${item?.type}`);
+        hex.on("click", () => hex.openPopup());
+
+        hex.addTo(map);
+        markers.push(hex);
+      });
+    };
+
+    drawHexagons();
+    map.on("zoomend", drawHexagons);
+
+    return () => {
+      map.off("zoomend", drawHexagons);
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]);
+
+  return null;
+};
 
 
 
@@ -770,15 +847,15 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <CanvasMarkersLayer data={markers} canvasRenderer={canvasRenderer}/>
-        {switches?.events &&
+        {switches?.events && eventData?.length>0 &&
         // <CanvasEventMarkersLayer data={eventData} canvasRenderer={canvasRenderer}/>
         <CustomIconMarkerForEvents markers={eventData}/>
 }
-{switches?.bins &&
+{switches?.bins && binData?.length>0 &&
         // <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
         <CustomIconMarkerForBinsWithZoom markers={binData} />
 }
-{switches?.amenities &&
+{switches?.amenities && amenitiesData?.length>0 &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
 }
 {/* {switches?.retail && amenitiesRetail?.length > 0 &&
@@ -787,7 +864,10 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
 {switches?.transit && amenitiesTransit?.length > 0 &&
 <CanvasAmenitiesMarkersLayerStar data={amenitiesTransit} canvasRenderer={canvasRenderer}/>}
 {switches?.education && amenitiesEducation?.length > 0 &&
-<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>} */}
+<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>}
+{switches?.entertainment && amenitiesEntertainment?.length > 0 &&
+<CanvasAmenitiesMarkersLayerHexagon data={amenitiesEntertainment} canvasRenderer={canvasRenderer}/>}
+*/}
       </MapContainer>
     </div>
     </>
