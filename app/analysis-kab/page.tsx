@@ -772,9 +772,10 @@ Statewide Estimated Litter Data.
                         <span > Weak (0 to ±0.3)</span>
                       </li>
                       <li><span>A value near 0 indicates little to no correlation</span></li>
-                      <span className="mt-1">Correlation is not causation</span>
+                     
                     </ul>
-
+                    <span className="mt-2">Correlation values are derived from the 2020 Keep America Beautiful (KAB) survey and may change as more data is collected. 
+                    Correlation does not imply causation, it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</span>
                   </div>
                 )}
 
