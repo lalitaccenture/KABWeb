@@ -37,7 +37,11 @@ interface AmenitiesData extends BinData {
 interface SwitchState {
   bins: boolean;
   events: boolean;
-  amenities:boolean
+  amenities:boolean,
+  transit : boolean,
+  entertainment : boolean,
+  education: boolean,
+  retail: boolean
 }
 
 
@@ -363,9 +367,9 @@ const getImpactIcon = (impact: string) => {
 
   return L.icon({
     iconUrl,
-    iconSize: [20, 20],
-    iconAnchor: [10, 20],
-    popupAnchor: [0, -20],
+    iconSize: [20, 40],       // width x height, adjust as needed
+    iconAnchor: [10, 40],     // center horizontally, bottom vertically
+    popupAnchor: [0, -40],
   });
 };
 
@@ -777,9 +781,12 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
 {switches?.amenities &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
 }
-{/* <CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer}/>
-<CanvasAmenitiesMarkersLayerStar data={amenitiesTransit} canvasRenderer={canvasRenderer}/>
-<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/> */}
+ {switches?.retail &&
+<CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer}/>}
+{switches?.transit &&
+<CanvasAmenitiesMarkersLayerStar data={amenitiesTransit} canvasRenderer={canvasRenderer}/>}
+{switches?.education &&
+<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>}
       </MapContainer>
     </div>
     </>

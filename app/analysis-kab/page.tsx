@@ -632,7 +632,7 @@ Statewide Estimated Litter Data.
 </div> */}
 
 </div>
-    <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p>
+    <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites (KAB Litter Survey 2020):</p>
         {/* AnalysisMap section */}
         <div
           className="w-full rounded"

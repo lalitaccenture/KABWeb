@@ -49,6 +49,10 @@ interface SwitchState {
   bins: boolean;
   events: boolean;
   amenities: boolean
+  transit : boolean,
+  entertainment : boolean,
+  education: boolean,
+  retail: boolean
 }
 
 // Define the props for the SwitchItem component
@@ -111,7 +115,11 @@ const Prediction = () => {
   const [switches, setSwitches] = useState<SwitchState>({
     bins: false,
     events: false,
-    amenities: false
+    amenities: false, 
+    transit : false,
+    entertainment : false,
+    education: false,
+    retail: false
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
   const [weeks, setWeeks] = useState<Week[]>([])
@@ -1057,20 +1065,27 @@ const Prediction = () => {
           )}
         </div>
 
-        <div className="mt-5 flex items-center gap-2" style={{ marginTop: "1px", marginRight: '53%' }}>
+<div className="mt-1 flex justify-between items-center w-full">
+  {/* Left legend - always shown */}
+  <div className="flex items-center gap-4 mt-2">
+    <span className="text-xs text-gray-400">Lower Litter Density</span>
+    <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+    <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+  </div>
+
+  {/* Right legend - conditionally rendered */}
+  {switches?.events && (
+    <div className="flex items-center gap-4 mt-2">
+      <span className="text-xs text-gray-400">Lower Events Impact</span>
+      <div className="w-20 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
+      <span className="text-xs text-gray-400 whitespace-nowrap">Higher Events Impact</span>
+    </div>
+  )}
+</div>
 
 
-          <div className="flex items-center gap-4 mt-2">
-            <span className="text-xs text-gray-400">Lower Litter Density</span>
-            <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
-            <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
-          </div>
 
-
-        </div>
-
-
-        <div className="w-full flex justify-start items-center gap-8 mt-4">
+        <div className="w-full flex justify-start items-center gap-4 mt-4">
 
 
           {loadingEventData ? <>Loading...</> :
@@ -1079,6 +1094,14 @@ const Prediction = () => {
             <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#fc0fc0" />}
           {loadingAmenitiesData ? <>Loading...</> :
             <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} onColor="#0000FF" />}
+          {/* {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} onColor="#0000FF" />}
+          {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Retail + Food & Beverages" checked={switches.retail} onChange={handleChange("retail")} onColor="#0000FF" />}
+            {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Entertainment" checked={switches.entertainment} onChange={handleChange("entertainment")} onColor="#0000FF" />}
+            {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} onColor="#0000FF" />} */}
           {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
         </div>
