@@ -446,7 +446,7 @@ const UserProfile = () => {
   { label: 'Role', value: role, onChange: setRole, editable: true, isDropdown: false  },
   { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false  },
   { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
-  { label: 'Last Login', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false }
+  { label: 'Last Login (ET – Eastern Time)', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false }
 ].map(({ label, value, onChange, editable, isDropdown }) => (
   <div key={label} className="mb-3">
     {isEditing ? (

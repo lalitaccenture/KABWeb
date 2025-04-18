@@ -5,6 +5,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
 
 interface MarkerData {
   latitude: number;
@@ -837,7 +838,39 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
   const router = useRouter();
   const canvasRenderer = useMemo(() => L.canvas({ padding: 0.5 }), []);
   console.log("markers",binData,amenitiesData)
-//new Date(marker?.cleanup_date).toISOString().split('T')[0]
+
+  useEffect(() => {
+    if (switches?.retail) {
+      if (!amenitiesRetail || amenitiesRetail.length === 0) {
+        toast.error("No retail amenities found!");
+      }
+    }
+  }, [switches?.retail]);
+  
+  useEffect(() => {
+    if (switches?.transit) {
+      if (!amenitiesTransit || amenitiesTransit.length === 0) {
+        toast.error("No transit amenities found!");
+      }
+    }
+  }, [switches?.transit]);
+  
+  useEffect(() => {
+    if (switches?.education) {
+      if (!amenitiesEducation || amenitiesEducation.length === 0) {
+        toast.error("No education amenities found!");
+      }
+    }
+  }, [switches?.education]);
+  
+  useEffect(() => {
+    if (switches?.entertainment) {
+      if (!amenitiesEntertainment || amenitiesEntertainment.length === 0) {
+        toast.error("No entertainment amenities found!");
+      }
+    }
+  }, [switches?.entertainment]);
+  
   return (
     <>
 
