@@ -300,7 +300,7 @@ const CanvasAmenitiesMarkersLayerTriangle: React.FC<CanvasAmenitiesMarkersLayerP
 
         const triangle = L.polygon(triangleCoords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(0, 0, 255, 0.7)",
+          fillColor: "rgba(0, 0, 255, 1)",
           fillOpacity: 0.4,
           stroke: false,
           interactive: true,
@@ -506,7 +506,7 @@ if (zoom >= 15) {
 
         const star = L.polygon(starCoords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(0, 0, 255, 0.7)", // gold-like color
+          fillColor: "rgba(0, 0, 255, 1)", // gold-like color
           fillOpacity: 0.6,
           stroke: false,
           interactive: true,
@@ -569,7 +569,7 @@ const CanvasAmenitiesMarkersLayerDiamond: React.FC<CanvasAmenitiesMarkersLayerPr
 
         const diamond = L.polygon(coords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(0, 128, 255, 0.7)", // bluish
+          fillColor: "rgba(0, 128, 255, 1)", // bluish
           fillOpacity: 0.5,
           stroke: false,
           interactive: true,
@@ -804,7 +804,7 @@ const CanvasAmenitiesMarkersLayerHexagon: React.FC<CanvasAmenitiesMarkersLayerPr
 
         const hex = L.polygon(hexCoords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(255, 165, 0, 0.7)", // orange-like fill
+          fillColor: "rgba(255,0,255,1)",
           fillOpacity: 0.6,
           stroke: false,
           interactive: true,
@@ -855,10 +855,10 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
         // <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
         <CustomIconMarkerForBinsWithZoom markers={binData} />
 }
-{switches?.amenities && amenitiesData?.length>0 &&
+{/* {switches?.amenities && amenitiesData?.length>0 &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
-}
-{/* {switches?.retail && amenitiesRetail?.length > 0 &&
+} */}
+{switches?.retail && amenitiesRetail?.length > 0 &&
   <CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer} />
 }
 {switches?.transit && amenitiesTransit?.length > 0 &&
@@ -867,7 +867,7 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
 <CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>}
 {switches?.entertainment && amenitiesEntertainment?.length > 0 &&
 <CanvasAmenitiesMarkersLayerHexagon data={amenitiesEntertainment} canvasRenderer={canvasRenderer}/>}
-*/}
+
       </MapContainer>
     </div>
     </>

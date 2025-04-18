@@ -195,21 +195,21 @@ const Prediction = () => {
         mapRes,
         eventRes,
         binRes,
-        amenitiesRes,
-        // amenitiesRetail,
-        // amenitiesEntertainment,
-        // amenitiesTransit,
-        // amenitiesEducation
+        // amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
       ] = await Promise.allSettled([
         getDashboardPredictionNew({ State: "California",week_id:weekId }),
         getPredictionMapNew({ State: "California",week_id:weekId }),
         getEventPrediction({ State: "California",week_id:weekId }),
         getBinPrediction({ State: "California" }),
-        getAmenitiesPrediction({ State: "California" }),
-        // getAmenities({ State: "California",Category:"Retail"}),
-        // getAmenities({ State: "California",Category:"Entertainment" }),
-        // getAmenities({ State: "California",Category:"Transit" }),
-        // getAmenities({ State: "California",Category:"Education"})
+        // getAmenitiesPrediction({ State: "California" }),
+        getAmenities({ State: "California",Category:"Retail"}),
+        getAmenities({ State: "California",Category:"Entertainment" }),
+        getAmenities({ State: "California",Category:"Transit" }),
+        getAmenities({ State: "California",Category:"Education"})
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -232,23 +232,23 @@ const Prediction = () => {
         setBinData(binRes.value);
       }
 
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
+      // if (amenitiesRes.status === "fulfilled") {
+      //   setAmenitiesData(amenitiesRes.value);
+      // }
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
       }
-      // if (amenitiesRetail.status === "fulfilled") {
-      //   setAmenitiesRetail(amenitiesRetail.value);
-      // }
-      // if (amenitiesEntertainment.status === "fulfilled") {
-      //   setAmenitiesEntertainment(amenitiesEntertainment.value);
-      // }
-      // if (amenitiesTransit.status === "fulfilled") {
-      //   setAmenitiesTransit(amenitiesTransit.value);
-      // }
-      // if (amenitiesEducation.status === "fulfilled") {
-      //   setAmenitiesEducation(amenitiesEducation.value);
-      // }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
+      }
 
-      if ([dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
+      if ([dashboardRes, mapRes, eventRes, binRes].some(r => r.status === "rejected")) {
         setError("Some data failed to load. Please try again later.");
       }
     } catch (error) {
@@ -428,18 +428,19 @@ const Prediction = () => {
         getPredictionMapNew({...queryParams,week_id: selectedWeekId || null}),
         getEventPrediction({...queryParams,week_id: selectedWeekId || null}),
         getBinPrediction(queryParams),
-        getAmenitiesPrediction(queryParams),
-        // getAmenities({...queryParams, Category:"Retail"}),
-        // getAmenities({...queryParams, Category:"Entertainment" }),
-        // getAmenities({...queryParams, Category:"Transit" }),
-        // getAmenities({...queryParams, Category:"Education"})
+        //getAmenitiesPrediction(queryParams),
+        getAmenities({...queryParams, Category:"Retail"}),
+        getAmenities({...queryParams, Category:"Entertainment" }),
+        getAmenities({...queryParams, Category:"Transit" }),
+        getAmenities({...queryParams, Category:"Education"})
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes,
-        // amenitiesRetail,
-        // amenitiesEntertainment,
-        // amenitiesTransit,
-        // amenitiesEducation
+      const [dashboardRes, mapRes, eventRes, binRes, 
+        //amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
       ] = results;
 
       if (dashboardRes.status === "fulfilled") {
@@ -472,22 +473,22 @@ const Prediction = () => {
         setBinData(binRes.value);
       }
 
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
-      }
+      // if (amenitiesRes.status === "fulfilled") {
+      //   setAmenitiesData(amenitiesRes.value);
+      // }
 
-      // if (amenitiesRetail.status === "fulfilled") {
-      //   setAmenitiesRetail(amenitiesRetail.value);
-      // }
-      // if (amenitiesEntertainment.status === "fulfilled") {
-      //   setAmenitiesEntertainment(amenitiesEntertainment.value);
-      // }
-      // if (amenitiesTransit.status === "fulfilled") {
-      //   setAmenitiesTransit(amenitiesTransit.value);
-      // }
-      // if (amenitiesEducation.status === "fulfilled") {
-      //   setAmenitiesEducation(amenitiesEducation.value);
-      // }
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
+      }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
+      }
 
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -658,18 +659,19 @@ const Prediction = () => {
         getPredictionMapNew({...queryParams,week_id: weekID || null,}),
         getEventPrediction({...queryParams,week_id: weekID || null,}),
         getBinPrediction(queryParams),
-        getAmenitiesPrediction(queryParams),
-        // getAmenities({...queryParams, Category:"Retail"}),
-        // getAmenities({...queryParams, Category:"Entertainment" }),
-        // getAmenities({...queryParams, Category:"Transit" }),
-        // getAmenities({...queryParams, Category:"Education"})
+        //getAmenitiesPrediction(queryParams),
+        getAmenities({...queryParams, Category:"Retail"}),
+        getAmenities({...queryParams, Category:"Entertainment" }),
+        getAmenities({...queryParams, Category:"Transit" }),
+        getAmenities({...queryParams, Category:"Education"})
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes,
-        // amenitiesRetail,
-        // amenitiesEntertainment,
-        // amenitiesTransit,
-        // amenitiesEducation
+      const [dashboardRes, mapRes, eventRes, binRes, 
+        //amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
       ] = results;
 
       if (dashboardRes.status === "fulfilled") {
@@ -702,22 +704,22 @@ const Prediction = () => {
         setBinData(binRes.value);
       }
 
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
-      }
+      // if (amenitiesRes.status === "fulfilled") {
+      //   setAmenitiesData(amenitiesRes.value);
+      // }
 
-      // if (amenitiesRetail.status === "fulfilled") {
-      //   setAmenitiesRetail(amenitiesRetail.value);
-      // }
-      // if (amenitiesEntertainment.status === "fulfilled") {
-      //   setAmenitiesEntertainment(amenitiesEntertainment.value);
-      // }
-      // if (amenitiesTransit.status === "fulfilled") {
-      //   setAmenitiesTransit(amenitiesTransit.value);
-      // }
-      // if (amenitiesEducation.status === "fulfilled") {
-      //   setAmenitiesEducation(amenitiesEducation.value);
-      // }
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
+      }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
+      }
 
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -1136,16 +1138,16 @@ const Prediction = () => {
             <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />}
           {loadingBinData ? <>Loading...</> :
             <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
-          {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />}
           {/* {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} onColor="#0000FF" />}
+            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />} */}
+           {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} />}
           {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Retail + Food & Beverages" checked={switches.retail} onChange={handleChange("retail")} onColor="#0000FF" />}
+            <SwitchItem label="Retail + Food & Beverages" checked={switches.retail} onChange={handleChange("retail")} />}
             {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Entertainment" checked={switches.entertainment} onChange={handleChange("entertainment")} onColor="#0000FF" />}
+            <SwitchItem label="Entertainment" checked={switches.entertainment} onChange={handleChange("entertainment")} />}
             {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} onColor="#0000FF" />} */}
+            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} />} 
           {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
         </div>
