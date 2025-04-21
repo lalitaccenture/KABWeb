@@ -1,65 +1,101 @@
 "use client";
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import { MdLogout } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
+import { getViewProfile, postEditProfile } from '@/app/utils/api';
+import dynamic from 'next/dynamic';
+import { useProfileStore } from '@/stores/profileStore';
+const Select = dynamic(() => import('react-select'), { ssr: false });
 const UserProfile = () => {
 
   const [isEditing, setIsEditing] = useState(false);
-  const [email, setEmail] = useState('mayank.swarrowp@accenture.com');
-  const [lastlogin, setLastlogin] = useState('2nd april 2025');
-  const [userName, setUserName] = useState('Michael Johnson');
-  const [organization, setOrganization] = useState('Keep America Beautiful');
-  const [role, setRole] = useState('Program Manager');
-  const [target, setTarget] = useState('Leverage Data for better city services');
+  const [email, setEmail] = useState('');
+  const [lastlogin, setLastlogin] = useState('');
+  const [userName, setUserName] = useState('');
+  const [organization, setOrganization] = useState('');
+  const [role, setRole] = useState('');
+  const [target, setTarget] = useState('');
   const [region, setRegion] = useState('LA County, California');
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const { data: session, status } = useSession();
+  const [stateVal,setStateVal] = useState<any>();
   const router = useRouter();
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
   };
 
+  function formatToUSDateTime(isoString:any) {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-US", {
+      timeZone: "America/New_York", // Adjust as needed
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    });
+  }
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      const fetchData = async () => {
+        const data = await getViewProfile({ email: session.user.email });
+        setUserName(data?.username)
+        setEmail(data?.email)
+        setStateVal(data?.state)
+        setLastlogin(formatToUSDateTime(data?.timestamp))
+        setOrganization(data?.organization)
+        setRole(data?.role)
+        setTarget(data?.target)
+      };
+  
+      fetchData();
+    }
+  }, [session?.user?.email]);
+  
+
   const handleSaveClick = async () => {
     setIsSaving(true);
     try {
-
-      const response = await fetch('/api/updateUserProfile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          userName,
-          organization,
-          role,
-          target,
-          region,
-          lastlogin
-        }),
-      });
-
-      if (response.ok) {
+    const payload =   {
+        "email": email,
+        "username": userName,
+        "state": stateVal,
+        "organization": organization,
+        "role": role,
+        "target": target,
+        // "fullOption": "0",
+        // "is_verified": "true"
+     }
+     const data = await postEditProfile(payload);
+      if (data) {
+        useProfileStore.getState().setState(stateVal);
         setSaveSuccess('Profile updated successfully!');
-      } else {
+      }
+      
+
+     else {
         throw new Error('Failed to save the profile');
       }
     } catch (error) {
       setSaveSuccess('Error saving profile. Please try again!');
     } finally {
       setIsSaving(false);
+      setIsEditing(false)
     }
   };
 
   const handleLogoClick = () => {
     if (status === "authenticated") {
-      router.push("/home");
+      router.push("/analysis-external");
     } else {
       router.push("/");
     }
@@ -75,6 +111,213 @@ const UserProfile = () => {
       console.log("Logout canceled");
     }
   };
+
+  const regions = [
+    {
+        "value": "Alabama",
+        "label": "Alabama"
+    },
+    {
+        "value": "Alaska",
+        "label": "Alaska"
+    },
+    {
+        "value": "Arizona",
+        "label": "Arizona"
+    },
+    {
+        "value": "Arkansas",
+        "label": "Arkansas"
+    },
+    {
+        "value": "California",
+        "label": "California"
+    },
+    {
+        "value": "Colorado",
+        "label": "Colorado"
+    },
+    {
+        "value": "Connecticut",
+        "label": "Connecticut"
+    },
+    {
+        "value": "Delaware",
+        "label": "Delaware"
+    },
+    {
+        "value": "District Of Columbia",
+        "label": "District Of Columbia"
+    },
+    {
+        "value": "Florida",
+        "label": "Florida"
+    },
+    {
+        "value": "Georgia",
+        "label": "Georgia"
+    },
+    {
+        "value": "Hawaii",
+        "label": "Hawaii"
+    },
+    {
+        "value": "Idaho",
+        "label": "Idaho"
+    },
+    {
+        "value": "Illinois",
+        "label": "Illinois"
+    },
+    {
+        "value": "Indiana",
+        "label": "Indiana"
+    },
+    {
+        "value": "Iowa",
+        "label": "Iowa"
+    },
+    {
+        "value": "Kansas",
+        "label": "Kansas"
+    },
+    {
+        "value": "Kentucky",
+        "label": "Kentucky"
+    },
+    {
+        "value": "Louisiana",
+        "label": "Louisiana"
+    },
+    {
+        "value": "Maine",
+        "label": "Maine"
+    },
+    {
+        "value": "Maryland",
+        "label": "Maryland"
+    },
+    {
+        "value": "Massachusetts",
+        "label": "Massachusetts"
+    },
+    {
+        "value": "Michigan",
+        "label": "Michigan"
+    },
+    {
+        "value": "Minnesota",
+        "label": "Minnesota"
+    },
+    {
+        "value": "Mississippi",
+        "label": "Mississippi"
+    },
+    {
+        "value": "Missouri",
+        "label": "Missouri"
+    },
+    {
+        "value": "Montana",
+        "label": "Montana"
+    },
+    {
+        "value": "Nebraska",
+        "label": "Nebraska"
+    },
+    {
+        "value": "Nevada",
+        "label": "Nevada"
+    },
+    {
+        "value": "New Hampshire",
+        "label": "New Hampshire"
+    },
+    {
+        "value": "New Jersey",
+        "label": "New Jersey"
+    },
+    {
+        "value": "New Mexico",
+        "label": "New Mexico"
+    },
+    {
+        "value": "New York",
+        "label": "New York"
+    },
+    {
+        "value": "North Carolina",
+        "label": "North Carolina"
+    },
+    {
+        "value": "North Dakota",
+        "label": "North Dakota"
+    },
+    {
+        "value": "Ohio",
+        "label": "Ohio"
+    },
+    {
+        "value": "Oklahoma",
+        "label": "Oklahoma"
+    },
+    {
+        "value": "Oregon",
+        "label": "Oregon"
+    },
+    {
+        "value": "Pennsylvania",
+        "label": "Pennsylvania"
+    },
+    {
+        "value": "Rhode Island",
+        "label": "Rhode Island"
+    },
+    {
+        "value": "South Carolina",
+        "label": "South Carolina"
+    },
+    {
+        "value": "South Dakota",
+        "label": "South Dakota"
+    },
+    {
+        "value": "Tennessee",
+        "label": "Tennessee"
+    },
+    {
+        "value": "Texas",
+        "label": "Texas"
+    },
+    {
+        "value": "Utah",
+        "label": "Utah"
+    },
+    {
+        "value": "Vermont",
+        "label": "Vermont"
+    },
+    {
+        "value": "Virginia",
+        "label": "Virginia"
+    },
+    {
+        "value": "Washington",
+        "label": "Washington"
+    },
+    {
+        "value": "West Virginia",
+        "label": "West Virginia"
+    },
+    {
+        "value": "Wisconsin",
+        "label": "Wisconsin"
+    },
+    {
+        "value": "Wyoming",
+        "label": "Wyoming"
+    }
+]
   return (
     <div className="bg-[#5BAA761A] min-h-screen pt-24">
       <div className="flex w-full max-w-screen-xl m">
@@ -197,33 +440,50 @@ const UserProfile = () => {
                 </div>
 
                 <div className="text-lg space-y-3 font-neris">
-                  {[
-                    { label: 'Email', value: email, onChange: setEmail , },
-                    { label: 'Organization', value: organization, onChange: setOrganization },
-                    { label: 'Role', value: role, onChange: setRole },
-                    { label: 'Target', value: target, onChange: setTarget },
-                    { label: 'Region', value: region, onChange: setRegion },
-                    { label: 'Last Login', value: lastlogin, onChange: setLastlogin }
-                  ].map(({ label, value, onChange }) => (
-                    <div key={label}>
-                      {isEditing ? (
-                        <>
-                          <label htmlFor={label} className="block text-sm text-gray-700">{label}:</label>
-                          <input
-                            id={label}
-                            type="text"
-                            value={value}
-                            onChange={(e) => onChange(e.target.value)}
-                            className="bg-white border-2 border-[#3AAD73] rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-[#5BAA76]"
-                          />
-                        </>
-                      ) : (
-                        <span>
-                          <span className="font-semibold text-medium">{label}:</span> {value}
-                        </span>
-                      )}
-                    </div>
-                  ))}
+                {[
+  { label: 'Email', value: email, onChange: setEmail, editable: false, isDropdown: false },
+  { label: 'Organization', value: organization, onChange: setOrganization, editable: true, isDropdown: false  },
+  { label: 'Role', value: role, onChange: setRole, editable: true, isDropdown: false  },
+  { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false  },
+  { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
+  { label: 'Last Login (ET – Eastern Time)', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false }
+].map(({ label, value, onChange, editable, isDropdown }) => (
+  <div key={label} className="mb-3">
+    {isEditing ? (
+      <>
+        <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
+
+        {isDropdown ? (
+          
+          <Select
+          id={label}
+          value={regions.find(option => option.value === stateVal)}
+          placeholder="Select a State"
+          onChange={(selectedOption:any) => onChange(selectedOption?.value)}
+          options={regions}
+          />
+        ) : (
+          <input
+            id={label}
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            disabled={!editable}
+            className={`border-2 rounded-md p-2 w-full focus:outline-none ${
+              editable 
+                ? 'bg-white border-[#3AAD73] focus:ring-2 focus:ring-[#5BAA76]' 
+                : 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
+            }`}
+          />
+        )}
+      </>
+    ) : (
+      <span>
+        <span className="font-semibold text-medium">{label}:</span> {value}
+      </span>
+    )}
+  </div>
+))}
                 </div>
 
                 {isEditing && (

@@ -13,13 +13,14 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { Button } from "@/components/ui/button";
-import { analysisNewDropdown, applyFilter, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, predictionNewDropdown } from "../utils/api";
+import { analysisNewDropdown, applyFilter, getAmenities, getAmenitiesPrediction, getAnalysisExternalData, getBinPrediction, getDashboardPrediction, getDashboardPredictionNew, getEventPrediction, getPredictionDashboard, getPredictionDashboardMap, getPredictionMap, getPredictionMapNew, predictionNewDropdown } from "../utils/api";
 import Switch from "react-switch";
 import WeekSelector from "@/src/components/WeekSelector";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { formatNumberMillion } from "@/utils/common";
 import { FaInfoCircle } from "react-icons/fa";
+import { useProfileStore } from "@/stores/profileStore";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -49,6 +50,10 @@ interface SwitchState {
   bins: boolean;
   events: boolean;
   amenities: boolean
+  transit : boolean,
+  entertainment : boolean,
+  education: boolean,
+  retail: boolean
 }
 
 // Define the props for the SwitchItem component
@@ -56,7 +61,7 @@ interface SwitchItemProps {
   label: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
-  onColor: string
+  onColor?: string
 }
 
 
@@ -111,7 +116,11 @@ const Prediction = () => {
   const [switches, setSwitches] = useState<SwitchState>({
     bins: false,
     events: false,
-    amenities: false
+    amenities: false, 
+    transit : false,
+    entertainment : false,
+    education: false,
+    retail: false
   });
   const [loadingAnalysisNewData, setLoadingAnalysisNewData] = useState<boolean>(false);
   const [weeks, setWeeks] = useState<Week[]>([])
@@ -124,6 +133,12 @@ const Prediction = () => {
   const [amenitiesData, setAmenitiesData] = useState<AmenitiesData>();
   const [activeButton, setActiveButton] = useState('prediction')
   const { data: session, status } = useSession();
+  const [amenitiesRetail,setAmenitiesRetail] = useState();
+  const [amenitiesEntertainment,setAmenitiesEntertainment] = useState();
+  const [amenitiesTransit,setAmenitiesTransit] = useState();
+  const [amenitiesEducation,setAmenitiesEducation] = useState();
+  const stateFromStore = useProfileStore((s) => s.state);
+        
   const router = useRouter();
 
   useEffect(() => {
@@ -181,13 +196,21 @@ const Prediction = () => {
         mapRes,
         eventRes,
         binRes,
-        amenitiesRes
+        // amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
       ] = await Promise.allSettled([
-        getDashboardPrediction({ State: "California" }),
-        getPredictionMap({ State: "California" }),
-        getEventPrediction({ State: "California" }),
+        getDashboardPredictionNew({ State: "California",week_id:weekId }),
+        getPredictionMapNew({ State: "California",week_id:weekId }),
+        getEventPrediction({ State: "California",week_id:weekId }),
         getBinPrediction({ State: "California" }),
-        getAmenitiesPrediction({ State: "California" })
+        // getAmenitiesPrediction({ State: "California" }),
+        getAmenities({ State: "California",Category:"Retail"}),
+        getAmenities({ State: "California",Category:"Entertainment" }),
+        getAmenities({ State: "California",Category:"Transit" }),
+        getAmenities({ State: "California",Category:"Education"})
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -210,11 +233,23 @@ const Prediction = () => {
         setBinData(binRes.value);
       }
 
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
+      // if (amenitiesRes.status === "fulfilled") {
+      //   setAmenitiesData(amenitiesRes.value);
+      // }
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
+      }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
       }
 
-      if ([dashboardRes, mapRes, eventRes, binRes, amenitiesRes].some(r => r.status === "rejected")) {
+      if ([dashboardRes, mapRes, eventRes, binRes].some(r => r.status === "rejected")) {
         setError("Some data failed to load. Please try again later.");
       }
     } catch (error) {
@@ -377,6 +412,7 @@ const Prediction = () => {
       //week_id: selectedWeekId || null
     };
 
+
     // Filter out undefined values
     const cleanedQueryParams = Object.fromEntries(
       Object.entries(queryParams).filter(([_, v]) => v !== undefined)
@@ -389,14 +425,24 @@ const Prediction = () => {
     setLoadingBinData(true)
     try {
       const results = await Promise.allSettled([
-        getDashboardPrediction(queryParams),
-        getPredictionMap(queryParams),
-        getEventPrediction(queryParams),
+        getDashboardPredictionNew({...queryParams,week_id: selectedWeekId || null}),
+        getPredictionMapNew({...queryParams,week_id: selectedWeekId || null}),
+        getEventPrediction({...queryParams,week_id: selectedWeekId || null}),
         getBinPrediction(queryParams),
-        getAmenitiesPrediction(queryParams)
+        //getAmenitiesPrediction(queryParams),
+        getAmenities({...queryParams, Category:"Retail"}),
+        getAmenities({...queryParams, Category:"Entertainment" }),
+        getAmenities({...queryParams, Category:"Transit" }),
+        getAmenities({...queryParams, Category:"Education"})
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes] = results;
+      const [dashboardRes, mapRes, eventRes, binRes, 
+        //amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
+      ] = results;
 
       if (dashboardRes.status === "fulfilled") {
         setPredictionData(dashboardRes.value);
@@ -428,8 +474,21 @@ const Prediction = () => {
         setBinData(binRes.value);
       }
 
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
+      // if (amenitiesRes.status === "fulfilled") {
+      //   setAmenitiesData(amenitiesRes.value);
+      // }
+
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
+      }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
       }
 
     } catch (error) {
@@ -563,7 +622,7 @@ const Prediction = () => {
 
   const isClearButtonEnabled = Object.values(filters).some((value) => value !== null);
 
-  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange, onColor = "#00FF00" }) => (
+  const SwitchItem: React.FC<SwitchItemProps> = ({ label, checked, onChange, onColor = "#5BAA76" }) => (
     <div className="flex items-center space-x-2">
       <Switch
         onChange={onChange}
@@ -597,14 +656,24 @@ const Prediction = () => {
     setLoadingBinData(true)
     try {
       const results = await Promise.allSettled([
-        getDashboardPrediction(queryParams),
-        getPredictionMap(queryParams),
-        getEventPrediction(queryParams),
+        getDashboardPredictionNew({...queryParams,week_id: weekID || null,}),
+        getPredictionMapNew({...queryParams,week_id: weekID || null,}),
+        getEventPrediction({...queryParams,week_id: weekID || null,}),
         getBinPrediction(queryParams),
-        getAmenitiesPrediction(queryParams)
+        //getAmenitiesPrediction(queryParams),
+        getAmenities({...queryParams, Category:"Retail"}),
+        getAmenities({...queryParams, Category:"Entertainment" }),
+        getAmenities({...queryParams, Category:"Transit" }),
+        getAmenities({...queryParams, Category:"Education"})
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, amenitiesRes] = results;
+      const [dashboardRes, mapRes, eventRes, binRes, 
+        //amenitiesRes,
+        amenitiesRetail,
+        amenitiesEntertainment,
+        amenitiesTransit,
+        amenitiesEducation
+      ] = results;
 
       if (dashboardRes.status === "fulfilled") {
         setPredictionData(dashboardRes.value);
@@ -636,8 +705,21 @@ const Prediction = () => {
         setBinData(binRes.value);
       }
 
-      if (amenitiesRes.status === "fulfilled") {
-        setAmenitiesData(amenitiesRes.value);
+      // if (amenitiesRes.status === "fulfilled") {
+      //   setAmenitiesData(amenitiesRes.value);
+      // }
+
+      if (amenitiesRetail.status === "fulfilled") {
+        setAmenitiesRetail(amenitiesRetail.value);
+      }
+      if (amenitiesEntertainment.status === "fulfilled") {
+        setAmenitiesEntertainment(amenitiesEntertainment.value);
+      }
+      if (amenitiesTransit.status === "fulfilled") {
+        setAmenitiesTransit(amenitiesTransit.value);
+      }
+      if (amenitiesEducation.status === "fulfilled") {
+        setAmenitiesEducation(amenitiesEducation.value);
       }
 
     } catch (error) {
@@ -660,7 +742,7 @@ const Prediction = () => {
 
   const handleLogoClick = () => {
     if (status === "authenticated") {
-      router.push("/home");
+      router.push("/analysis-external");
     } else {
       router.push("/");
     }
@@ -1007,10 +1089,10 @@ const Prediction = () => {
                     setSelectedWeekId(week_id);
                     handleApplySelectedWeek(week_id);
                   }}
-                  disabled={loadingAnalysisData || loadingMapData || index === 2 || index === 3}
+                  disabled={loadingAnalysisData || loadingMapData || index === 3}
                   className={`px-4 py-2 border rounded transition-colors 
       ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"} 
-      ${index === 2 || index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
+      ${index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <p className="text-black text-xs font-medium font-neris">{week}</p>
                 </button>
@@ -1034,32 +1116,47 @@ const Prediction = () => {
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
-            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} />
+            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} amenitiesRetail={amenitiesRetail} amenitiesEntertainment={amenitiesEntertainment} amenitiesTransit={amenitiesTransit} amenitiesEducation={amenitiesEducation}/>
           )}
         </div>
 
-        <div className="mt-5 flex items-center gap-2" style={{ marginTop: "1px", marginRight: '52%' }}>
+<div className="mt-1 flex justify-between items-center w-full">
+  {/* Left legend - always shown */}
+  <div className="flex items-center gap-4 mt-2">
+    <span className="text-xs text-gray-400">Lower Litter Density</span>
+    <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+    <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+  </div>
+
+  {/* Right legend - conditionally rendered */}
+  {switches?.events && (
+    <div className="flex items-center gap-4 mt-2">
+      <span className="text-xs text-gray-400">Low Impact Events</span>
+      <div className="w-20 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
+      <span className="text-xs text-gray-400 whitespace-nowrap">High Impact Events</span>
+    </div>
+  )}
+</div>
 
 
-          <div className="flex items-center gap-4 mt-2">
-            <span className="text-xs text-gray-400">Lower Litter Density</span>
-            <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
-            <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
-          </div>
 
-
-        </div>
-
-
-        <div className="w-full flex justify-start items-center gap-8 mt-4">
+        <div className="w-full flex justify-start items-center gap-4 mt-4">
 
 
           {loadingEventData ? <>Loading...</> :
-            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} onColor="#00FF00" />}
+            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />}
           {loadingBinData ? <>Loading...</> :
-            <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} onColor="#fc0fc0" />}
+            <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
+          {/* {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />} */}
+           {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} />}
           {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} onColor="#0000FF" />}
+            <SwitchItem label="Retail + Food & Beverages" checked={switches.retail} onChange={handleChange("retail")} />}
+            {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Entertainment" checked={switches.entertainment} onChange={handleChange("entertainment")} />}
+            {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} />} 
           {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
         </div>
@@ -1077,7 +1174,7 @@ const Prediction = () => {
           {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
-            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(#)</span></span>
+            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(#)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Predicted Litter Quantity</p>
 
@@ -1089,7 +1186,7 @@ const Prediction = () => {
           {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
-            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
+            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
             Predicted Litter Density
@@ -1099,6 +1196,7 @@ const Prediction = () => {
 
         <div className="h-auto">
           {/* <Bar options={options} data={data} /> */}
+          <p className="text-base font-semibold font-neris" >Break Down of Litter Types</p>
           <div className="h-[300px]">
             <Doughnut
               data={dataDoughnut}

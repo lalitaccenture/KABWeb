@@ -5,6 +5,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from 'react-toastify';
 
 interface MarkerData {
   latitude: number;
@@ -37,7 +38,11 @@ interface AmenitiesData extends BinData {
 interface SwitchState {
   bins: boolean;
   events: boolean;
-  amenities:boolean
+  amenities:boolean,
+  transit : boolean,
+  entertainment : boolean,
+  education: boolean,
+  retail: boolean
 }
 
 
@@ -49,6 +54,10 @@ interface MapAnalysisProps {
   eventData: EventData[];
   binData: any;
   amenitiesData: any;
+  amenitiesRetail: any;
+  amenitiesEntertainment:any;
+  amenitiesTransit:any;
+  amenitiesEducation:any;
 }
 
 interface CanvasMarkersLayerProps {
@@ -292,7 +301,7 @@ const CanvasAmenitiesMarkersLayerTriangle: React.FC<CanvasAmenitiesMarkersLayerP
 
         const triangle = L.polygon(triangleCoords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(0, 0, 255, 0.7)",
+          fillColor: "rgba(0, 0, 255, 1)",
           fillOpacity: 0.4,
           stroke: false,
           interactive: true,
@@ -359,9 +368,9 @@ const getImpactIcon = (impact: string) => {
 
   return L.icon({
     iconUrl,
-    iconSize: [20, 20],
-    iconAnchor: [10, 20],
-    popupAnchor: [0, -20],
+    iconSize: [3, 20],        // width x height
+  iconAnchor: [1.5, 20],       // center horizontally (10/2), bottom vertically
+  popupAnchor: [0, -20],
   });
 };
 
@@ -498,7 +507,7 @@ if (zoom >= 15) {
 
         const star = L.polygon(starCoords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(0, 0, 255, 0.7)", // gold-like color
+          fillColor: "rgba(0, 0, 255, 1)", // gold-like color
           fillOpacity: 0.6,
           stroke: false,
           interactive: true,
@@ -561,7 +570,7 @@ const CanvasAmenitiesMarkersLayerDiamond: React.FC<CanvasAmenitiesMarkersLayerPr
 
         const diamond = L.polygon(coords, {
           renderer: canvasRenderer,
-          fillColor: "rgba(0, 128, 255, 0.7)", // bluish
+          fillColor: "rgba(0, 128, 255, 1)", // bluish
           fillOpacity: 0.5,
           stroke: false,
           interactive: true,
@@ -743,16 +752,125 @@ const CanvasAmenitiesMarkersLayer: React.FC<CanvasAmenitiesMarkersLayerProps> = 
   return null;
 };
 
+const CanvasAmenitiesMarkersLayerHexagon: React.FC<CanvasAmenitiesMarkersLayerProps> = ({ data, canvasRenderer }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    const markers: L.Polygon[] = [];
+
+    const toRadians = (deg: number) => (deg * Math.PI) / 180;
+
+    const getHexagonCoords = (
+      lat: number,
+      lng: number,
+      radius: number
+    ): [number, number][] => {
+      const coords: [number, number][] = [];
+
+      for (let i = 0; i < 6; i++) {
+        const angleDeg = 60 * i - 30; // Pointy top orientation
+        const angleRad = toRadians(angleDeg);
+
+        const dx = Math.cos(angleRad) * radius;
+        const dy = Math.sin(angleRad) * radius;
+
+        coords.push([lat + dy, lng + dx]);
+      }
+
+      // Close the polygon by repeating the first point
+      coords.push(coords[0]);
+
+      return coords;
+    };
+
+    const drawHexagons = () => {
+      markers.forEach(marker => map.removeLayer(marker));
+      markers.length = 0;
+
+      const zoom = map.getZoom();
+      let radius = 0.001;
+
+      if (zoom >= 15) {
+        radius = 0.0005;
+      } else if (zoom >= 13) {
+        radius = 0.00075;
+      }
+
+      data?.forEach((item) => {
+        const lat = item.latitude;
+        const lng = item.longitude;
+        if (typeof lat !== "number" || typeof lng !== "number") return;
+
+        const hexCoords = getHexagonCoords(lat, lng, radius);
+
+        const hex = L.polygon(hexCoords, {
+          renderer: canvasRenderer,
+          fillColor: "rgba(255,0,255,1)",
+          fillOpacity: 0.6,
+          stroke: false,
+          interactive: true,
+        });
+
+        hex.bindPopup(`Type: ${item?.type}`);
+        hex.on("click", () => hex.openPopup());
+
+        hex.addTo(map);
+        markers.push(hex);
+      });
+    };
+
+    drawHexagons();
+    map.on("zoomend", drawHexagons);
+
+    return () => {
+      map.off("zoomend", drawHexagons);
+      markers.forEach(marker => map.removeLayer(marker));
+    };
+  }, [data, map, canvasRenderer]);
+
+  return null;
+};
 
 
 
-
-const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData }) => {
+const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, center,switches,eventData,binData,amenitiesData, amenitiesRetail, amenitiesEntertainment, amenitiesEducation, amenitiesTransit }) => {
 
   const router = useRouter();
   const canvasRenderer = useMemo(() => L.canvas({ padding: 0.5 }), []);
   console.log("markers",binData,amenitiesData)
-//new Date(marker?.cleanup_date).toISOString().split('T')[0]
+
+  useEffect(() => {
+    if (switches?.retail) {
+      if (!amenitiesRetail || amenitiesRetail.length === 0) {
+        toast.error("No retail amenities found!");
+      }
+    }
+  }, [switches?.retail]);
+  
+  useEffect(() => {
+    if (switches?.transit) {
+      if (!amenitiesTransit || amenitiesTransit.length === 0) {
+        toast.error("No transit amenities found!");
+      }
+    }
+  }, [switches?.transit]);
+  
+  useEffect(() => {
+    if (switches?.education) {
+      if (!amenitiesEducation || amenitiesEducation.length === 0) {
+        toast.error("No education amenities found!");
+      }
+    }
+  }, [switches?.education]);
+  
+  useEffect(() => {
+    if (switches?.entertainment) {
+      if (!amenitiesEntertainment || amenitiesEntertainment.length === 0) {
+        toast.error("No entertainment amenities found!");
+      }
+    }
+  }, [switches?.entertainment]);
+  
   return (
     <>
 
@@ -762,17 +880,27 @@ const MapPrediction: React.FC<MapAnalysisProps> = React.memo(({ markers, zoom, c
       <MapContainer center={center} zoom={zoom} style={{ height: "100%", width: "100%" }} attributionControl={false} className="rounded-lg">
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <CanvasMarkersLayer data={markers} canvasRenderer={canvasRenderer}/>
-        {switches?.events &&
+        {switches?.events && eventData?.length>0 &&
         // <CanvasEventMarkersLayer data={eventData} canvasRenderer={canvasRenderer}/>
         <CustomIconMarkerForEvents markers={eventData}/>
 }
-{switches?.bins &&
+{switches?.bins && binData?.length>0 &&
         // <CanvasBinMarkersLayer data={binData} canvasRenderer={canvasRenderer}/>
         <CustomIconMarkerForBinsWithZoom markers={binData} />
 }
-{switches?.amenities &&
+{/* {switches?.amenities && amenitiesData?.length>0 &&
         <CanvasAmenitiesMarkersLayer data={amenitiesData} canvasRenderer={canvasRenderer}/>
+} */}
+{switches?.retail && amenitiesRetail?.length > 0 &&
+  <CanvasAmenitiesMarkersLayerDiamond data={amenitiesRetail} canvasRenderer={canvasRenderer} />
 }
+{switches?.transit && amenitiesTransit?.length > 0 &&
+<CanvasAmenitiesMarkersLayerStar data={amenitiesTransit} canvasRenderer={canvasRenderer}/>}
+{switches?.education && amenitiesEducation?.length > 0 &&
+<CanvasAmenitiesMarkersLayerTriangle data={amenitiesEducation} canvasRenderer={canvasRenderer}/>}
+{switches?.entertainment && amenitiesEntertainment?.length > 0 &&
+<CanvasAmenitiesMarkersLayerHexagon data={amenitiesEntertainment} canvasRenderer={canvasRenderer}/>}
+
       </MapContainer>
     </div>
     </>

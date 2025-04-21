@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import Image from "next/image"
 import { MdLogout } from "react-icons/md";
 import dynamic from "next/dynamic";
@@ -18,8 +18,10 @@ import { analysisNewDropdown, analysisNewDropdownWithCity, applyFilter, getAnaly
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { formatNumber, formatNumberMillion } from "@/utils/common";
 import { withCoalescedInvoke } from "next/dist/lib/coalesced-function";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useProfileStore } from "@/stores/profileStore";
+import { Suspense } from 'react'
 
 const AnalysisMap = dynamic(() => import("../../src/components/AnalysisMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
@@ -53,6 +55,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale,
   ChartDataLabels,
   Title);
 
+
 const Analysis = () => {
 
   const [filters, setFilters] = useState<Filters>({
@@ -82,7 +85,23 @@ const Analysis = () => {
   const [activeTab, setActiveTab] = useState("cleanup");
   const { data: session, status } = useSession();
   const router = useRouter();
-
+  const stateFromStore = useProfileStore((s) => s.state);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const fromParam = searchParams.get("from");
+    // @ts-ignore: Ignore TypeScript error
+    if (session?.user?.state && fromParam === "login") {
+      // @ts-ignore: Ignore TypeScript error
+      useProfileStore.getState().setState(session.user.state);
+    }
+    // // @ts-ignore: Ignore TypeScript error
+    // else if(session?.user?.state){
+    //   // @ts-ignore: Ignore TypeScript error
+    //   useProfileStore.getState().setState(session.user.state);
+    // }
+    
+    
+  }, [session,searchParams]);
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/"); // Redirect to login page
@@ -91,6 +110,7 @@ const Analysis = () => {
 
 
   const fetchData = async () => {
+    console.log("session",session)
     setLoadingExternalData(true);
     setLoadingAnalysisData(true);
     setLoadingAnalysisNewData(true);
@@ -104,18 +124,18 @@ const Analysis = () => {
       // setCountiesData(data.Counties);
       // setTractsData(data.TractIDs);
       // setYearsData(data.Years);
-
+      console.log("state",stateFromStore)
       setLoadingExternalData(false);
       // const dropD = await analysisNewDropdown();
       const dropD = await analysisNewDropdownWithCity();
       setStatesNewData(dropD?.Dropdown)
       setYearsNewData(dropD?.Years)
-      const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === "California");
+      const defaultState = dropD?.Dropdown.find((state: { value: string; }) => state.value === stateFromStore);
       if (defaultState) {
         setFilters(prevFilters => ({ ...prevFilters, state: defaultState }));
       }
       const queryParamsForCounty = {
-        state: 'California',
+        state: stateFromStore,
       };
       // const forCountyPopulate = await analysisNewDropdown(queryParamsForCounty);
       const forCountyPopulate = await analysisNewDropdownWithCity(queryParamsForCounty)
@@ -127,7 +147,7 @@ const Analysis = () => {
       // setAnalysisData(value);
 
       const queryParamsForMap = {
-        state: 'California',
+        state: stateFromStore,
       };
       //const test = await getAnalysisDashboard();
       // const test = await getAnalysisDashboard(queryParamsForMap);
@@ -161,10 +181,10 @@ const Analysis = () => {
     }
   };
   useEffect(() => {
-
-
-    fetchData();
-  }, []);
+    if (stateFromStore) {
+      fetchData(); // Call fetchData only if state has a value
+    }
+  }, [stateFromStore]);
 
 
   const handleFilterChange = (filter: string, selectedOption: any) => {
@@ -494,29 +514,33 @@ const Analysis = () => {
     },
   };
 
-  if (status === "loading") {
-    return <p>Loading...</p>; // Prevents UI flickering
-  }
 
 
-  const handleLogoClick = () => {
-    if (status === "authenticated") {
-      router.push("/home");
-    } else {
-      router.push("/");
+  
+    const handleLogoClick = () => {
+        if (status === "authenticated") {
+            router.push("/analysis-external");
+        } else {
+            router.push("/");
+        }
+    };
+    
+   const handleLogout = async () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            await signOut({ redirect: false }); // Prevents full page reload
+            router.push("/");
+            console.log("Logged out");
+        }
+        else {
+            console.log("Logout canceled");
+        }
+    };
+    if (status === "loading") {
+      return <p>Loading...</p>; // Prevents UI flickering
     }
-  };
-  const handleLogout = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
-    if (confirmLogout) {
-      await signOut({ redirect: false }); // Prevents full page reload
-      router.push("/");
-      console.log("Logged out");
-    }
-    else {
-      console.log("Logout canceled");
-    }
-  };
+
+
   return (
     <div className="min-h-screen w-full flex p-4" style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
@@ -925,4 +949,12 @@ const Analysis = () => {
   );
 }
 
-export default Analysis;
+export default function WrappedAnalysis() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Analysis />
+    </Suspense>
+  )
+}
+
+// export default Analysis;

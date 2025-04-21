@@ -405,7 +405,7 @@ const ScenarioModeling = () => {
 
   const handleLogoClick = () => {
     if (status === "authenticated") {
-      router.push("/home");
+        router.push("/analysis-external");
     } else {
       router.push("/");
     }
@@ -952,7 +952,7 @@ const ScenarioModeling = () => {
 
           {/* Top 3 States Section */}
           <div className="mb-4 p-4 rounded" style={{ marginLeft: '-15px' }}>
-            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States</p>
+            <p className="mb-2 text-black text-base font-semibold font-neris">Top 3 States by Est. Litter</p>
 
             {loadingAnalysisData ? (
               <div>Loading top states...</div>

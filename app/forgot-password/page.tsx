@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { sendOtp, resetPassword } from '../utils/api';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const ForgotPassword = () => {
   const [otpSent, setOtpSent] = useState(false);
@@ -142,6 +143,9 @@ const ForgotPassword = () => {
             {otpSent ? 'Reset Password' : 'Send OTP'}
           </button>
         </form>
+        <span>
+  Go back to <Link href="/" className="text-[#5BAA76] underline hover:text-blue-800">login</Link>
+</span>
       </div>
     </div>
   );

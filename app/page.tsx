@@ -301,7 +301,7 @@ const Login = () => {
                   } else if (response?.ok) {
                     toast.success("Logged in successfully!");
                     reset();
-                    router.push("/analysis-external");
+                    router.push("/analysis-external?from=login");
                   }}
                   catch (error) {
                     console.error("Login error", error);
