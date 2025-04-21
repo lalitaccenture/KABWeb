@@ -19,6 +19,7 @@ import WeekSelector from "@/src/components/WeekSelector";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { formatNumberMillion } from "@/utils/common";
+import { FaInfoCircle } from "react-icons/fa";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -693,17 +694,7 @@ const Prediction = () => {
         <div className="mt-6">
           <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
           <div className="flex flex-col gap-2">
-            <button
-              className={`flex items-center gap-2 p-2 rounded-lg w-full font-neris text-sm ${activeButton === 'prediction' ? 'bg-[#DCFCE7] text-green-700' : 'bg-gray-100 text-gray-700'
-                }`}
-              onClick={() => {
-                setActiveButton('prediction');
-                router.push('/prediction');
-              }}
-            >
-              <span>Prediction</span>
-            </button>
-            <button
+          <button
               className={`flex items-center gap-2 p-2 rounded-lg w-full font-neris text-sm ${activeButton === 'analysis' ? 'bg-[#DCFCE7] text-green-700' : 'bg-gray-100 text-gray-700'
                 }`}
               onClick={() => {
@@ -714,6 +705,17 @@ const Prediction = () => {
               <span>Analysis</span>
             </button>
 
+            <button
+              className={`flex items-center gap-2 p-2 rounded-lg w-full font-neris text-sm ${activeButton === 'prediction' ? 'bg-[#DCFCE7] text-green-700' : 'bg-gray-100 text-gray-700'
+                }`}
+              onClick={() => {
+                setActiveButton('prediction');
+                router.push('/prediction');
+              }}
+            >
+              <span>Prediction</span>
+            </button>
+       
 
           </div>
         </div>
@@ -747,14 +749,14 @@ const Prediction = () => {
       </div>
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4 mt-[-1.5%]">
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4 mt-[-1.5%]" style={{ marginLeft: '2%' }}>
         <p className="block text-base font-semibold text-black-600  font-neris">Map Controllers</p>
         <div
           className="p-4 rounded-md shadow-md"
           style={{
             background: "white",
-            position: "absolute", // Fix it if over map
-            width: '56%',
+            position: "absolute",
+            width: '54%',
             zIndex: 1000,
             display: "flex",
             flexDirection: "column",
@@ -1018,7 +1020,14 @@ const Prediction = () => {
 
           }
         </div>
-        <p className="block text-base font-semibold text-black-600  font-neris" >Litter Prediction Map:</p>
+        <p className="flex items-center text-base font-semibold text-black-600 font-neris gap-2">
+          Litter Prediction Map:
+          <FaInfoCircle
+            className="text-[#3AAD73] cursor-pointer"
+            style={{marginTop:'-12%'}}
+            title="Prediction map is powered by a Proprietary ML model based on various parameters like location, traffic, weather, population, etc."
+          />
+        </p>
         <div className="w-full h-96">
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full p-1">
@@ -1029,7 +1038,7 @@ const Prediction = () => {
           )}
         </div>
 
-        <div className="mt-5 flex items-center gap-2" style={{ marginTop: "1px", marginRight: '53%' }}>
+        <div className="mt-5 flex items-center gap-2" style={{ marginTop: "1px", marginRight: '52%' }}>
 
 
           <div className="flex items-center gap-4 mt-2">
@@ -1059,25 +1068,25 @@ const Prediction = () => {
       </div>
 
 
-      <div className="w-1/5 p-4  space-y-6  bg-white rounded-lg shadow-md" style={{ marginLeft: '2%' }}>
+      <div className="w-1/5 p-4  space-y-6  bg-white rounded-lg shadow-md" style={{ marginLeft: '2%', position: 'absolute', right: '0px', height: '47rem' }}>
 
 
 
 
         <div className="p-4 bg-[#DCFCE7] rounded flex flex-col justify-center items-center text-center">
-        {loadingAnalysisData ? (
+          {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
             <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(#)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Predicted Litter Quantity</p>
-         
+
         </div>
 
 
         <div className="p-4 bg-[#DCFCE7] rounded flex flex-col justify-center items-center text-center">
-          
-        {loadingAnalysisData ? (
+
+          {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
             <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>

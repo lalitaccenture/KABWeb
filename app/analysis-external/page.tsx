@@ -220,7 +220,7 @@ const Analysis = () => {
       // setMarkers(res?.map_data)
       const res = await getAnalysisDashboardWithCity(queryParams);
       setAnalysisData(res);
-      
+
 
       setLoadingAnalysisData(false);
 
@@ -498,37 +498,37 @@ const Analysis = () => {
     return <p>Loading...</p>; // Prevents UI flickering
   }
 
-  
-    const handleLogoClick = () => {
-        if (status === "authenticated") {
-            router.push("/home");
-        } else {
-            router.push("/");
-        }
-    };
-   const handleLogout = async () => {
-        const confirmLogout = window.confirm("Are you sure you want to log out?");
-        if (confirmLogout) {
-            await signOut({ redirect: false }); // Prevents full page reload
-            router.push("/");
-            console.log("Logged out");
-        }
-        else {
-            console.log("Logout canceled");
-        }
-    };
+
+  const handleLogoClick = () => {
+    if (status === "authenticated") {
+      router.push("/home");
+    } else {
+      router.push("/");
+    }
+  };
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      await signOut({ redirect: false }); // Prevents full page reload
+      router.push("/");
+      console.log("Logged out");
+    }
+    else {
+      console.log("Logout canceled");
+    }
+  };
   return (
     <div className="min-h-screen w-full flex p-4" style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
       {/* Top Buttons */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] " style={{marginTop:'5rem'}}>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] " style={{ marginTop: '5rem' }}>
           {/* Litter Cleanup Analysis Button */}
           <button
             className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup"
-                ? "bg-green-600 text-white font-bold shadow-md"
-                : "text-gray-500"
+              ? "bg-green-600 text-white font-bold shadow-md"
+              : "text-gray-500"
               }`}
             onClick={() => {
               setActiveTab("cleanup");
@@ -541,8 +541,8 @@ const Analysis = () => {
           {/* Litter Survey Analysis Button */}
           <button
             className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "survey"
-                ? "bg-green-600 text-white font-bold shadow-md"
-                : "text-gray-600"
+              ? "bg-green-600 text-white font-bold shadow-md"
+              : "text-gray-600"
               }`}
             onClick={() => {
               setActiveTab("survey");
@@ -558,61 +558,62 @@ const Analysis = () => {
 
 
 
-      <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%',marginLeft:'-1%' }}>
+      <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%', marginLeft: '-1%' }}>
 
 
-  {/* Top Section */}
-  <div className="flex flex-col items-center" style={{marginTop:'-6%'}}>
-    <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
-      LitterSense
-    </p>
-    <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
+        {/* Top Section */}
+        <div className="flex flex-col items-center" style={{ marginTop: '-6%' }}>
+          <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
+            LitterSense
+          </p>
+          <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
 
-   
-  </div>
 
-  {/* MENU Section */}
-  <div className="mt-6">
-    <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
-    <div className="flex flex-col gap-2">
-    <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful" onClick={()=>router.push("/prediction")}>
+        </div>
 
-        <span className="font-neris text-sm">Prediction</span>
-      </button>
-      <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full" onClick={()=>router.push("/analysis-external")}>
-   
-       <span className="font-neris text-sm">Analysis</span>
+        {/* MENU Section */}
+        <div className="mt-6">
+          <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
+          <div className="flex flex-col gap-2">
+            <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full" onClick={() => router.push("/analysis-external")}>
 
-      </button>
-    
-    </div>
-  </div>
+              <span className="font-neris text-sm">Analysis</span>
 
-  {/* Spacer to push content below */}
-  <div className="flex-grow"></div>
+            </button>
+            <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful" onClick={() => router.push("/prediction")}>
 
-  {/* Logout Button */}
-  <div className="flex justify-center mb-2">
-    <button
-      onClick={handleLogout}
-      className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
-      title="Logout"
-    >
-      <MdLogout size={20} />
-      <span>Logout</span>
-    </button>
-  </div>
+              <span className="font-neris text-sm">Prediction</span>
+            </button>
 
-  {/* Copyright under the logout button */}
-  <div className="flex justify-center">
-    <p className="text-xs text-gray-600 whitespace-nowrap">Keep America Beautiful © Copyright 2025</p>
-  </div>
 
-  {/* Bottom Logo */}
-  <div className="flex justify-center mt-2">
-    <Image src="/kab.png" alt="Logo KAB" width={178} height={28} className="object-contain" />
-  </div>
-</div>
+          </div>
+        </div>
+
+        {/* Spacer to push content below */}
+        <div className="flex-grow"></div>
+
+        {/* Logout Button */}
+        <div className="flex justify-center mb-2">
+          <button
+            onClick={handleLogout}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+            title="Logout"
+          >
+            <MdLogout size={20} />
+            <span>Logout</span>
+          </button>
+        </div>
+
+        {/* Copyright under the logout button */}
+        <div className="flex justify-center">
+          <p className="text-xs text-gray-600 whitespace-nowrap">Keep America Beautiful © Copyright 2025</p>
+        </div>
+
+        {/* Bottom Logo */}
+        <div className="flex justify-center mt-2">
+          <Image src="/kab.png" alt="Logo KAB" width={178} height={28} className="object-contain" />
+        </div>
+      </div>
 
 
 
@@ -621,304 +622,151 @@ const Analysis = () => {
 
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ marginTop: '3%' }}>
-      <div className="flex flex-row w-full p-4 " style={{gap:'5.1%', flex:'1'}}>
+        <div className="flex flex-col w-full p-4 bg-white rounded-md shadow-sm" style={{ width: '96%' }}>
+          {/* Heading at the top */}
+          <p className="font-semibold text-base mb-4">Filter Cleanup Events</p>
 
+          {/* Dropdowns and Buttons in horizontal row */}
+          <div className="flex flex-row" style={{ gap: '5.1%', flex: '1' }}>
 
+            {/* State Dropdown */}
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "21%", flex: "0.2" }}>
+              <label htmlFor="state" className="block text-base font-medium text-black-600 mb-2 font-neris">State</label>
+              {loadingAnalysisNewData ? (
+                <div>Loading states...</div>
+              ) : (
+                <Select
+                  id="state"
+                  value={filters.state}
+                  placeholder="Select a State"
+                  onChange={(selectedOption) => {
+                    handleFilterChange('state', selectedOption)
+                    handleDropdownFurther('state', selectedOption)
+                  }}
+                  options={statesNewData}
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                    control: (base, state) => ({
+                      ...base,
+                      borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                      boxShadow: state.isFocused || state.hasValue ? "0px 2px 4px rgba(91, 170, 118, 0.3)" : "none",
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": { borderColor: "#5BAA76" },
+                      zIndex: 10,
+                    }),
+                    menu: (base) => ({ ...base, zIndex: 9999 }),
+                    placeholder: (base) => ({ ...base, color: "#C5C5C5", fontSize: "12px" }),
+                    option: (base, { isSelected, isFocused }) => ({
+                      ...base,
+                      backgroundColor: isSelected ? "#5BAA76" : isFocused ? "#A5D6A7" : "white",
+                      color: isSelected ? "white" : "black",
+                      "&:active": { backgroundColor: "#5BAA76" },
+                    }),
+                    singleValue: (base) => ({ ...base, color: "black", fontWeight: "semibold" }),
+                  }}
+                />
+              )}
+            </div>
 
-      <div style={{ 
-  width: "max-content", 
-  maxWidth: "21%", 
-  minWidth: "21%", 
-  flex: "0.2" ,
- 
-}}>
+            {/* County Dropdown */}
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "21%", flex: "0.2", whiteSpace: 'nowrap' }}>
+              <label htmlFor="county" className="block text-base font-medium text-black-600 mb-2 font-neris">City, County</label>
+              {loadingAnalysisNewData ? (
+                <div>Loading counties...</div>
+              ) : (
+                <Select
+                  id="county"
+                  value={filters.county}
+                  onChange={(selectedOption) => {
+                    handleFilterChange('county', selectedOption)
+                    handleDropdownFurther('county', selectedOption)
+                  }}
+                  options={countiesNewData}
+                  isDisabled={!filters?.state?.value}
+                  placeholder="Select a County"
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                    control: (base, state) => ({
+                      ...base,
+                      borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                      boxShadow: state.isFocused || state.hasValue ? "0px 2px 4px rgba(91, 170, 118, 0.3)" : "none",
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": { borderColor: "#5BAA76" },
+                      zIndex: 10,
+                    }),
+                    menu: (base) => ({ ...base, zIndex: 9999 }),
+                    placeholder: (base) => ({ ...base, color: "#C5C5C5", fontSize: "12px" }),
+                    option: (base, { isSelected, isFocused }) => ({
+                      ...base,
+                      backgroundColor: isSelected ? "#5BAA76" : isFocused ? "#A5D6A7" : "white",
+                      color: isSelected ? "white" : "black",
+                      "&:hover": { backgroundColor: "#5BAA76", color: "white" },
+                      "&:active": { backgroundColor: "#5BAA76" },
+                    }),
+                    singleValue: (base) => ({ ...base, color: "black", fontWeight: "semibold" }),
+                  }}
+                />
+              )}
+            </div>
 
-  <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
-  {loadingAnalysisNewData ? (
-    <div>Loading states...</div>
-  ) : (
-    <Select
-      id="state"
-      value={filters.state}
-      placeholder="Select a State"
-      onChange={(selectedOption) => {
-        handleFilterChange('state', selectedOption)
-        handleDropdownFurther('state', selectedOption)
-      }}
-      options={statesNewData}
-      styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 👈 Ensures dropdown appears on top
-        control: (base, state) => ({
-          ...base,
-          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-          boxShadow:
-            state.isFocused || state.hasValue
-              ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-              : "none",
-          transition: "all 0.2s ease-in-out",
-          "&:hover": {
-            borderColor: "#5BAA76",
-          },
-          zIndex: 10, // 👈 Ensures input stays above other elements
-        }),
-        menu: (base) => ({
-          ...base,
-          zIndex: 9999, // 👈 Ensures dropdown is above everything
-        }),
-        placeholder: (base) => ({
-          ...base,
-          color: "#C5C5C5",
-          fontSize: "12px",
-        }),
-        option: (base, { isSelected, isFocused }) => ({
-          ...base,
-          backgroundColor: isSelected
-            ? "#5BAA76" // ✅ Selected item stays green
-            : isFocused
-              ? "#A5D6A7" // ✅ Light green on hover
-              : "white",
-          color: isSelected ? "white" : "black",
-          "&:active": {
-            backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
-          },
-        }),
-        singleValue: (base) => ({
-          ...base,
-          color: "black", // ✅ Corrected invalid color
-          fontWeight: "semibold",
-        }),
-      }}
-      
-    />
+            {/* Year Dropdown */}
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "21%", flex: "0.2" }}>
+              <label htmlFor="year" className="block text-base font-medium text-black-600 mb-2 font-neris">Year</label>
+              {loadingAnalysisNewData ? (
+                <div>Loading years...</div>
+              ) : (
+                <Select
+                  id="year"
+                  value={filters.year}
+                  onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
+                  options={yearsNewData}
+                  placeholder="All the years"
+                  styles={{
+                    menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                    control: (base, state) => ({
+                      ...base,
+                      borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                      boxShadow: state.isFocused || state.hasValue ? "0px 2px 4px rgba(91, 170, 118, 0.3)" : "none",
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": { borderColor: "#5BAA76" },
+                      zIndex: 10,
+                    }),
+                    menu: (base) => ({ ...base, zIndex: 9999 }),
+                    placeholder: (base) => ({ ...base, color: "#C5C5C5", fontSize: "12px" }),
+                    option: (base, { isSelected, isFocused }) => ({
+                      ...base,
+                      backgroundColor: isSelected ? "#5BAA76" : isFocused ? "#A5D6A7" : "white",
+                      color: isSelected ? "white" : "black",
+                      fontWeight: isSelected ? "600" : "normal",
+                      "&:hover": { backgroundColor: "#5BAA76", color: "white" },
+                      "&:active": { backgroundColor: "#5BAA76" },
+                    }),
+                    singleValue: (base) => ({ ...base, color: "#000000", fontWeight: "semibold" }),
+                  }}
+                />
+              )}
+            </div>
 
+            {/* Buttons */}
+            <div className="mt-8 flex flex-row gap-2" style={{
+              width: "max-content",
+              maxWidth: "21%",
+              minWidth: "21%",
+              flex: "0.2",
+              whiteSpace: 'nowrap'
+            }}>
+              <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
+                Apply
+              </Button>
+              <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
+                Clear
+              </Button>
+            </div>
 
-  )}
-</div>
+          </div>
+        </div>
 
-
-<div style={{ 
-  width: "max-content", 
-  maxWidth: "21%", 
-  minWidth: "21%", 
-  flex: "0.2" ,
-  whiteSpace:'nowrap'
-}}>
-
-  <label htmlFor="county" className="block text-base font-semibold text-black-600 mb-2 font-neris">City,County</label>
-  {loadingAnalysisNewData ? (
-    <div>Loading counties...</div>
-  ) : (
-    <Select
-      id="county"
-      value={filters.county}
-      onChange={(selectedOption) => {
-        handleFilterChange('county', selectedOption)
-        handleDropdownFurther('county', selectedOption)
-      }}
-      options={countiesNewData}
-      isDisabled={!filters?.state?.value}
-      placeholder="Select a County"
-      styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 👈 Ensures dropdown appears on top
-        control: (base, state) => ({
-          ...base,
-          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-          boxShadow:
-            state.isFocused || state.hasValue
-              ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-              : "none",
-          transition: "all 0.2s ease-in-out",
-          "&:hover": {
-            borderColor: "#5BAA76",
-          },
-          zIndex: 10, // 👈 Keeps input above other elements
-        }),
-        menu: (base) => ({
-          ...base,
-          zIndex: 9999, // 👈 Ensures dropdown is above the map
-        }),
-        placeholder: (base) => ({
-          ...base,
-          color: "#C5C5C5",
-          fontSize: "12px",
-        }),
-        option: (base, { isSelected, isFocused }) => ({
-          ...base,
-          backgroundColor: isSelected
-            ? "#5BAA76" // ✅ Selected stays green
-            : isFocused
-              ? "#A5D6A7" // ✅ Light green on hover
-              : "white",
-          color: isSelected ? "white" : "black",
-          "&:hover": {
-            backgroundColor: "#5BAA76",
-            color: "white",
-          },
-          "&:active": {
-            backgroundColor: "#5BAA76", // ✅ Prevents blue flash when dragging
-          },
-        }),
-        singleValue: (base) => ({
-          ...base,
-          color: "black",
-          fontWeight: "semibold",
-        }),
-      }}
-      
-    />
-  )}
-</div>
-
-{/* 
-<div>
-  <label htmlFor="tract" className="block text-base font-semibold text-black-600 mb-2 font-neris">Tract</label>
-  {loadingAnalysisNewData ? (
-    <div>Loading tracts...</div>
-  ) : (
-    <Select
-      id="tract"
-      value={filters.tract}
-      onChange={(selectedOption) => {
-        handleFilterChange('tract', selectedOption)
-        handleDropdownFurther('tract', selectedOption)
-      }}
-      options={tractsNewData}
-      isDisabled={!filters?.county?.value}
-      placeholder="Select a Tract ID"
-      styles={{
-        control: (base, state) => ({
-          ...base,
-          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-          boxShadow:
-            state.isFocused || state.hasValue
-              ? "0px 2px 4px rgba(91, 170, 118, 0.3)" 
-              : "none",
-          transition: "all 0.2s ease-in-out",
-          "&:hover": {
-            borderColor: "#5BAA76",
-          },
-        }),
-        placeholder: (base) => ({
-          ...base,
-          color: "#C5C5C5",
-          fontSize: "14px",
-        }),
-        option: (base, { isSelected, isFocused }) => ({
-          ...base,
-          backgroundColor: isSelected
-            ? "#5BAA76" 
-            : isFocused
-              ? "#A5D6A7" 
-              : "white",
-          color: isSelected ? "white" : "black",
-          fontWeight: isSelected ? "600" : "normal", 
-          "&:hover": {
-            backgroundColor: "#5BAA76",
-            color: "white",
-          },
-          "&:active": {
-            backgroundColor: "#5BAA76",
-          },
-        }),
-        singleValue: (base) => ({
-          ...base,
-          color: "black", 
-          fontWeight: "semibold", 
-        }),
-      }}
-    />
-  )}
-</div> */}
-
-
-<div style={{ 
-  width: "max-content", 
-  maxWidth: "21%", 
-  minWidth: "21%", 
-  flex: "0.2" 
-}}>
-
-  <label htmlFor="year" className="block text-base font-semibold text-black-600 mb-2 font-neris">Year</label>
-  {loadingAnalysisNewData ? (
-    <div>Loading years...</div>
-  ) : (
-    <Select
-      id="year"
-      value={filters.year}
-      onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
-      options={yearsNewData}
-      placeholder="All the years"
-      styles={{
-        menuPortal: (base) => ({ ...base, zIndex: 9999 }), // 🔥 Ensures dropdown appears above everything
-        control: (base, state) => ({
-          ...base,
-          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-          boxShadow:
-            state.isFocused || state.hasValue
-              ? "0px 2px 4px rgba(91, 170, 118, 0.3)" // ✅ Always show shadow if selected
-              : "none",
-          transition: "all 0.2s ease-in-out",
-          "&:hover": {
-            borderColor: "#5BAA76",
-          },
-          zIndex: 10, // ✅ Ensures input is visible above map
-        }),
-        menu: (base) => ({
-          ...base,
-          zIndex: 9999, // ✅ Ensures dropdown list is above the map
-        }),
-        placeholder: (base) => ({
-          ...base,
-          color: "#C5C5C5",
-          fontSize: "12px",
-        }),
-        option: (base, { isSelected, isFocused }) => ({
-          ...base,
-          backgroundColor: isSelected
-            ? "#5BAA76" // ✅ Selected stays green
-            : isFocused
-              ? "#A5D6A7" // ✅ Light green on hover
-              : "white",
-          color: isSelected ? "white" : "black",
-          fontWeight: isSelected ? "600" : "normal", // ✅ Semi-bold when selected
-          "&:hover": {
-            backgroundColor: "#5BAA76",
-            color: "white",
-          },
-          "&:active": {
-            backgroundColor: "#5BAA76",
-          },
-        }),
-        singleValue: (base) => ({
-          ...base,
-          color: "#000000", // ✅ Selected value should be black
-          fontWeight: "semibold", // ✅ Semi-bold text for selected value
-        }),
-      }}
-      
-    />
-  )}
-</div>
-
-
-<div className="mt-8 flex flex-row gap-2" style={{ 
-  width: "max-content", 
-  maxWidth: "21%", 
-  minWidth: "21%", 
-  flex: "0.2" ,
-  whiteSpace:'nowrap'
-}}>
-  <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
-    Apply
-  </Button>
-  <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
-    Clear
-  </Button>
-
-</div>
-
-</div>
-<p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
+        <p className="block text-base font-semibold text-black-600  font-neris" >Litter Cleanup Activity Map:</p>
         <div className="w-full h-96 p-4 rounded " style={{ marginTop: '-3%' }}>
 
 
@@ -932,7 +780,7 @@ const Analysis = () => {
           )}
         </div>
 
-        <div className="w-full flex flex-wrap justify-center gap-4 mt-20" style={{height:'27rem'}}>
+        <div className="w-full flex flex-wrap justify-center gap-4 mt-20" style={{ height: '27rem' }}>
           <div
             className="flex justify-between w-full"
             style={{ gap: '31px', marginLeft: '12px' }}
@@ -944,7 +792,7 @@ const Analysis = () => {
 
           <div
             className="p-4 bg-white rounded flex flex-col items-center"
-            style={{ width: '48%', marginTop: '-4%' }}
+            style={{ width: '47%', marginTop: '-4%' }}
           >
 
             {loadingAnalysisData ? (
@@ -952,27 +800,27 @@ const Analysis = () => {
             ) : (
               <div>
 
-              <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
-         
-              <Line options={optionsLine} data={dataLine} height={230} style={{marginTop:'12%'}}/>
+                <p className="text-base font-semibold font-neris">Trend of Cleanup Programs Over Years</p>
+
+                <Line options={optionsLine} data={dataLine} height={230} style={{ marginTop: '12%' }} />
               </div>
             )}
           </div>
-          
 
 
-          <div className="p-3 bg-white rounded flex flex-col items-center relative" style={{ width: '48%', marginTop: '-4%' }}>
-        
-              <p className="text-base font-semibold font-neris" >Break Down of Litter Types</p>
 
-       
+          <div className="p-3 bg-white rounded flex flex-col items-center relative" style={{ width: '47%', marginTop: '-4%' }}>
+
+            <p className="text-base font-semibold font-neris" >Break Down of Litter Types</p>
+
+
             {loadingAnalysisData ? (
               <div>Loading doughnut chart...</div>
             ) : (
-              <div style={{ width: "350px", height: "350px", marginTop: "9%" }}> 
-              <Doughnut data={data} options={optionsDoughnut} />
-            </div>
-            
+              <div style={{ width: "350px", height: "350px", marginTop: "9%" }}>
+                <Doughnut data={data} options={optionsDoughnut} />
+              </div>
+
             )}
 
             {/* Text Outside the White Box (Aligned to Bottom-Right) */}
@@ -992,7 +840,7 @@ const Analysis = () => {
 
 
 
-      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-15">
+      <div className="w-1/5 p-4  bg-white rounded-lg shadow-lg min-w-[250px] mt-15" style={{ position: 'absolute', right: '0px', height: '72rem' }}>
         <div className="flex flex-col items-center p-4 rounded-lg bg-[#DCFCE7] w-[220px]">
           {/* Value */}
           <div className="flex items-center gap-1" style={{ marginLeft: '-14%' }}>
@@ -1051,7 +899,7 @@ const Analysis = () => {
           {loadingAnalysisData ? (
             <div>Loading top counties...</div>
           ) : (
-            <div className="space-y-6" style={{marginLeft:'2%'}}>
+            <div className="space-y-6" style={{ marginLeft: '2%' }}>
               {Object.entries(analysisData?.analytics?.top_3_counties || {}).map(([key, value]) => (
                 <div key={key} className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg mb-2">
                   {/* Green Indicator */}

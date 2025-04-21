@@ -386,7 +386,7 @@ const ScenarioModeling = () => {
           },
         },
       },
-      
+
     },
     cutout: "40%", // Keep the inner hole clear
     layout: {
@@ -405,85 +405,86 @@ const ScenarioModeling = () => {
 
   const handleLogoClick = () => {
     if (status === "authenticated") {
-        router.push("/home");
+      router.push("/home");
     } else {
-        router.push("/");
+      router.push("/");
     }
-};
- const handleLogout = async () => {
-        const confirmLogout = window.confirm("Are you sure you want to log out?");
-        if (confirmLogout) {
-            await signOut({ redirect: false }); // Prevents full page reload
-            router.push("/");
-            console.log("Logged out");
-        }
-        else {
-            console.log("Logout canceled");
-        }
-    };
+  };
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      await signOut({ redirect: false }); // Prevents full page reload
+      router.push("/");
+      console.log("Logged out");
+    }
+    else {
+      console.log("Logout canceled");
+    }
+  };
 
 
   return (
-    <div className="min-h-screen w-full flex p-4"  style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
+    <div className="min-h-screen w-full flex p-4" style={{ backgroundColor: "rgba(91, 170, 118, 0.1)" }}>
 
 
 
 
 
-<div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%',marginLeft:'-1%' }}>
+      <div className="w-1/5 p-4 bg-white shadow-2xl rounded-lg flex flex-col" style={{ marginTop: '-6.5%', marginLeft: '-1%' }}>
 
-  <div className="flex flex-col items-center" style={{marginTop:'-6%'}}>
-    <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
-      LitterSense
-    </p>
-    <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
+        <div className="flex flex-col items-center" style={{ marginTop: '-6%' }}>
+          <p className="text-[#5BAA76] text-xl font-bold cursor-pointer font-neris" onClick={handleLogoClick}>
+            LitterSense
+          </p>
+          <Image src="/powered.png" alt="Accenture" width={100} height={14} className="object-contain mt-[-4px]" />
 
-   
-  </div>
 
-  {/* MENU Section */}
-  <div className="mt-6">
-    <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
-    <div className="flex flex-col gap-2">
-    <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
+        </div>
 
-<span className="font-neris text-sm">Prediction</span>
-</button>
-  <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
-   
-       <span className="font-neris text-sm">Analysis</span>
+        {/* MENU Section */}
+        <div className="mt-6">
+          <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
+          <div className="flex flex-col gap-2">
+            <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full ">
 
-      </button> 
-    
-    </div>
-  </div>
+              <span className="font-neris text-sm">Analysis</span>
 
-  {/* Spacer to push content below */}
-  <div className="flex-grow"></div>
+            </button>
+            <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful">
 
-  {/* Logout Button */}
-  <div className="flex justify-center mb-2">
-    <button
-      onClick={handleLogout}
-      className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
-      title="Logout"
-    >
-      <MdLogout size={20} />
-      <span>Logout</span>
-    </button>
-  </div>
+              <span className="font-neris text-sm">Prediction</span>
+            </button>
 
-  {/* Copyright under the logout button */}
-  <div className="flex justify-center">
-    <p className="text-xs text-gray-600 whitespace-nowrap">Keep America Beautiful © Copyright 2025</p>
-  </div>
 
-  {/* Bottom Logo */}
-  <div className="flex justify-center mt-2">
-    <Image src="/kab.png" alt="Logo KAB" width={178} height={28} className="object-contain" />
-  </div>
+          </div>
+        </div>
 
-        
+        {/* Spacer to push content below */}
+        <div className="flex-grow"></div>
+
+        {/* Logout Button */}
+        <div className="flex justify-center mb-2">
+          <button
+            onClick={handleLogout}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+            title="Logout"
+          >
+            <MdLogout size={20} />
+            <span>Logout</span>
+          </button>
+        </div>
+
+        {/* Copyright under the logout button */}
+        <div className="flex justify-center">
+          <p className="text-xs text-gray-600 whitespace-nowrap">Keep America Beautiful © Copyright 2025</p>
+        </div>
+
+        {/* Bottom Logo */}
+        <div className="flex justify-center mt-2">
+          <Image src="/kab.png" alt="Logo KAB" width={178} height={28} className="object-contain" />
+        </div>
+
+
       </div>
 
 
@@ -491,148 +492,189 @@ const ScenarioModeling = () => {
 
 
 
-      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ maxWidth: '58%' }}>
-      <div className="relative flex bg-[#DCFCE7] p-1 rounded-full shadow-md w-[520px] h-[40px]" style={{marginTop:'-2%'}}>
-      {/* Active Indicator */}
-      <div
-        className={`absolute top-1 bottom-1 w-[48%] bg-[#1E9E4D] rounded-full transition-all duration-300 ${
-          activeTab === "cleanup" ? "left-1" : "left-[50%]"
-        }`}
-      ></div>
+      <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4" style={{ maxWidth: '58%', marginLeft: '2%' }}>
+        <div className="relative flex bg-[#DCFCE7] p-1 rounded-full shadow-md w-[520px] h-[40px]" style={{ marginTop: '-4%' }}>
+          {/* Active Indicator */}
+          <div
+            className={`absolute top-1 bottom-1 w-[48%] bg-[#1E9E4D] rounded-full transition-all duration-300 ${activeTab === "cleanup" ? "left-1" : "left-[50%]"
+              }`}
+          ></div>
 
-      {/* Button 1: Litter Cleanup Analysis */}
-      <button
-        className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
-          activeTab === "cleanup" ? "text-white" : "text-gray-600"
-        }`}
-        onClick={() => {
-          setActiveTab("cleanup");
-          router.push("/analysis-external");
-        }}
-      >
-        Litter Cleanup Analysis
-      </button>
+          {/* Button 1: Litter Cleanup Analysis */}
+          <button
+            className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup" ? "text-white" : "text-gray-600"
+              }`}
+            onClick={() => {
+              setActiveTab("cleanup");
+              router.push("/analysis-external");
+            }}
+          >
+            Litter Cleanup Analysis
+          </button>
 
-      {/* Button 2: Litter Survey Analysis */}
-      <button
-        className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${
-          activeTab === "survey" ? "text-white" : "text-gray-600"
-        }`}
-        onClick={() => {
-          setActiveTab("survey");
-          router.push("/analysis-kab");
-        }}
-      >
-        Litter Survey Analysis
-      </button>
-    </div>
-    <div className="flex flex-row gap-4">
+          {/* Button 2: Litter Survey Analysis */}
+          <button
+            className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "survey" ? "text-white" : "text-gray-600"
+              }`}
+            onClick={() => {
+              setActiveTab("survey");
+              router.push("/analysis-kab");
+            }}
+          >
+            Litter Survey Analysis
+          </button>
+        </div>
+        <div
+          className="p-4 rounded-md shadow-sm"
+          style={{ backgroundColor: 'white', marginLeft: '5%' }}
+        >
 
-
-<div>
-  <label htmlFor="state" className="block text-base font-semibold text-black-600 mb-2 font-neris">State</label>
-  {loadingExternalData ? (
-    <div>Loading states...</div>
-  ) : (
-    <Select
-      id="state"
-      value={filters.state}
-      onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
-      options={statesData}
-      placeholder="Select a State"
-      styles={{
-        control: (base, state) => ({
-          ...base,
-          fontFamily: "'Neris', sans-serif",
-          borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-          boxShadow:
-            state.isFocused || state.hasValue
-              ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-              : "none",
-          transition: "all 0.2s ease-in-out",
-          "&:hover": {
-            borderColor: "#5BAA76",
-          },
-
-        }),
-        placeholder: (base) => ({
-          ...base,
-          color: "#C5C5C5",
-          fontSize: "14px",
-        }),
-        option: (base, { isSelected, isFocused }) => ({
-          ...base,
-          backgroundColor: isSelected
-            ? "#5BAA76"
-            : isFocused
-              ? "#A5D6A7"
-              : "white",
-          color: isSelected ? "white" : "black",
+          <p className="font-semibold text-base mb-2">Filter Survey Sites</p>
 
 
-          "&:active": {
-            backgroundColor: "#5BAA76", // ✅ Prevents blue color on drag
-          },
-        }),
-        singleValue: (base) => ({
-          ...base,
-          color: "#black",
-          fontWeight: "semibold",
-        }),
-        menu: (base) => ({
-          ...base,
-          zIndex: 9999,  // Ensures dropdown appears on top of the map
-          position: "absolute",
-        }),
-      }}
-    />
-  )}
-</div>
+          <div className="flex flex-row gap-4 items-end">
+
+            <div style={{ width: '15rem' }}>
+              <label htmlFor="state" className="block text-base font-medium text-black-600 mb-2 font-neris">
+                State
+              </label>
+              {loadingExternalData ? (
+                <div>Loading states...</div>
+              ) : (
+                <Select
+                  id="state"
+                  value={filters.state}
+                  onChange={(selectedOption) => handleFilterChange('state', selectedOption)}
+                  options={statesData}
+                  placeholder="Select a State"
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      fontFamily: "'Neris', sans-serif",
+                      borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                      boxShadow:
+                        state.isFocused || state.hasValue
+                          ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                          : "none",
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": {
+                        borderColor: "#5BAA76",
+                      },
+                    }),
+                    placeholder: (base) => ({
+                      ...base,
+                      color: "#C5C5C5",
+                      fontSize: "14px",
+                    }),
+                    option: (base, { isSelected, isFocused }) => ({
+                      ...base,
+                      backgroundColor: isSelected
+                        ? "#5BAA76"
+                        : isFocused
+                          ? "#A5D6A7"
+                          : "white",
+                      color: isSelected ? "white" : "black",
+                      "&:active": {
+                        backgroundColor: "#5BAA76",
+                      },
+                    }),
+                    singleValue: (base) => ({
+                      ...base,
+                      color: "#000",
+                      fontWeight: "semibold",
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      zIndex: 9999,
+                      position: "absolute",
+                    }),
+                  }}
+                />
+              )}
+            </div>
 
 
+            {/*     <div style={{ width: '15rem' }}>
+      <label htmlFor="year" className="block text-base font-medium text-black-600 mb-2 font-neris">
+        Year
+      </label>
+      {loadingExternalData ? (
+        <div>Loading years...</div>
+      ) : (
+        <Select
+          id="year"
+      
+          onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
+          options={statesData}
+          placeholder="Select a Year"
+          styles={{
+            control: (base, state) => ({
+              ...base,
+              fontFamily: "'Neris', sans-serif",
+              borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+              boxShadow:
+                state.isFocused || state.hasValue
+                  ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                  : "none",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                borderColor: "#5BAA76",
+              },
+            }),
+            placeholder: (base) => ({
+              ...base,
+              color: "#C5C5C5",
+              fontSize: "14px",
+            }),
+            option: (base, { isSelected, isFocused }) => ({
+              ...base,
+              backgroundColor: isSelected
+                ? "#5BAA76"
+                : isFocused
+                  ? "#A5D6A7"
+                  : "white",
+              color: isSelected ? "white" : "black",
+              "&:active": {
+                backgroundColor: "#5BAA76",
+              },
+            }),
+            singleValue: (base) => ({
+              ...base,
+              color: "#000",
+              fontWeight: "semibold",
+            }),
+            menu: (base) => ({
+              ...base,
+              zIndex: 9999,
+              position: "absolute",
+            }),
+          }}
+        />
+      )}
+    </div> */}
 
-<div className="mt-8 flex flex-row gap-4">
-  <Button className="w-full bg-[#3AAD73] text-white hover:bg-[#33a060]" disabled={loadingAnalysisData || loadingAnalysisData} onClick={handleApply}>
-    Apply
-  </Button>
-  <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={filters.state === null && filters.parameter === null} onClick={handleClear}>
-    Clear
-  </Button>
-
-</div>
-
-{/*      <div className="flex flex-col items-center mr-[78px]">
-
-  <span className="text-xs text-gray-700">Lower Litter Density</span>
-  <div className="w-5 h-12 bg-gradient-to-b from-[#FDBA74] to-[#FB7185] rounded-full my-1"></div>
-
-  <span className="p-3 text-xs text-gray-700 whitespace-nowrap">Higher Litter Density</span>
-
-</div> */}
-{/*  <p className="block text-base font-semibold text-black-600 mb-2 font-neris">Understanding the Data</p>
-<div className="text-xs text-gray-600 ">📌 <strong>Interpreting Correlation:</strong>Correlation values are derived from the <strong>2020 Keep America Beautiful (KAB) survey and may change</strong> as more data is collected. Correlation <strong>does not </strong> imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.</div>
-<div className="text-xs text-gray-600">📌 <strong>Scope & Limitations:</strong> The insights provided are based on the available dataset and are subject to variability in<strong> data collection methods, geographic coverage, and external influences.</strong> The results should be viewed as <strong>indicative rather than absolute.</strong></div> */}
+            {/* Buttons */}
+            <div className="flex gap-2">
+              <Button
+                className="bg-[#3AAD73] text-white hover:bg-[#33a060] px-4 py-2 rounded-md font-medium"
+                disabled={loadingAnalysisData}
+                onClick={handleApply}
+              >
+                Apply
+              </Button>
+              <Button
+                className="bg-white border border-[#5BAA76] text-black px-4 py-2 rounded-md font-medium hover:bg-[#f5f5f5]"
+                disabled={!filters.state && !filters.parameter}
+                onClick={handleClear}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
+        </div>
 
 
-
-
-
-{/* <div className="flex items-center gap-2 mt-2">
-<div className="w-2 h-2 bg-green-500"></div> 
-<p className="text-xs text-gray-700">
-Survey Site Litter Data.
-</p>
-</div>
-
-<div className="flex items-center gap-2 mt-1">
-<div className="w-2 h-2 bg-red-500"></div> 
-<p className="text-xs text-gray-700">
-Statewide Estimated Litter Data.
-</p>
-</div> */}
-
-</div>
-    <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p>
+        <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p>
         {/* AnalysisMap section */}
         <div
           className="w-full rounded"
@@ -644,7 +686,7 @@ Statewide Estimated Litter Data.
           }}
         >
 
-       
+
 
           {/* <AnalysisKABMap markers={markers} zoom={zoom} center={center} heatmapData={heatmapData} stateInfo={stateInfo}/> */}
           {loadingAnalysisData ? (
@@ -676,157 +718,157 @@ Statewide Estimated Litter Data.
         <div className="flex w-full gap-4">
           <div className="w-1/2 p-4 bg-white rounded">
 
-  <div style={{alignContent:'center' , textAlign:'center'}}>
-            <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight ">
-              Correlation Between Estimated Litter Density and
-            </label>
+            <div style={{ alignContent: 'center', textAlign: 'center' }}>
+              <label htmlFor="parameterName" className="text-base font-semibold font-neris block leading-tight ">
+                Correlation Between Estimated Litter Density and
+              </label>
 
-            {loadingExternalData ? (
-              <div>Loading coefficients...</div>
-            ) : (
-              <Select
-                id="parameterName"
-                value={correlationCoeff}
-                onChange={(selectedOption: any) => {
-                  setCorrelationCoeff(selectedOption)
-                  setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
-                  setMeasurementUnit(forScatter[selectedOption?.value]?.measurement_unit)
+              {loadingExternalData ? (
+                <div>Loading coefficients...</div>
+              ) : (
+                <Select
+                  id="parameterName"
+                  value={correlationCoeff}
+                  onChange={(selectedOption: any) => {
+                    setCorrelationCoeff(selectedOption)
+                    setCoefficientVal(analysisData?.all_correlation_coefficients[selectedOption?.value])
+                    setMeasurementUnit(forScatter[selectedOption?.value]?.measurement_unit)
 
-                }}
-                options={dropDown}
-                placeholder="Select coefficient"
-                styles={{
-                  control: (base, state) => ({
-                    ...base,
-                    fontFamily: "'Neris', sans-serif",
-                    borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
-                    boxShadow:
-                      state.isFocused || state.hasValue
-                        ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
-                        : "none",
-                    transition: "all 0.2s ease-in-out",
-                    "&:hover": {
-                      borderColor: "#5BAA76",
-                    },
-                    
-                  }),
-                  placeholder: (base) => ({
-                    ...base,
-                    color: "#C5C5C5",
-                    fontSize: "14px",
-                  }),
-                  option: (base, { isSelected, isFocused }) => ({
-                    ...base,
-                    backgroundColor: isSelected
-                      ? "#5BAA76"
-                      : isFocused
-                        ? "#A5D6A7"
-                        : "white",
-                    color: isSelected ? "white" : "black",
-                    "&:active": {
-                      backgroundColor: "#5BAA76",
-                    },
-                  }),
-                  singleValue: (base) => ({
-                    ...base,
-                    color: "black",
-                    fontWeight: "semibold",
-                  }),
-                }}
-                className="w-[250px] ml-7"
-                isDisabled={!correlationCoeff}
-              />
-            )}
-          </div>
-<div style={{marginTop:'5%'}}>
-            <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
-              Correlation Coefficient:
-              <span className="relative inline-block ml-1">
-                <b className="text-[#5BAA76] text-sm font-semibold">{coefficientVal?.toFixed(2)}</b>
+                  }}
+                  options={dropDown}
+                  placeholder="Select coefficient"
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      fontFamily: "'Neris', sans-serif",
+                      borderColor: state.isFocused || state.hasValue ? "#5BAA76" : base.borderColor,
+                      boxShadow:
+                        state.isFocused || state.hasValue
+                          ? "0px 2px 4px rgba(91, 170, 118, 0.3)"
+                          : "none",
+                      transition: "all 0.2s ease-in-out",
+                      "&:hover": {
+                        borderColor: "#5BAA76",
+                      },
 
-                {/* Info Button */}
-                <button
-                  className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-pointer"
-                  onClick={() => setShowTooltip(!showTooltip)}
-                >
-                  i
-                </button>
+                    }),
+                    placeholder: (base) => ({
+                      ...base,
+                      color: "#C5C5C5",
+                      fontSize: "14px",
+                    }),
+                    option: (base, { isSelected, isFocused }) => ({
+                      ...base,
+                      backgroundColor: isSelected
+                        ? "#5BAA76"
+                        : isFocused
+                          ? "#A5D6A7"
+                          : "white",
+                      color: isSelected ? "white" : "black",
+                      "&:active": {
+                        backgroundColor: "#5BAA76",
+                      },
+                    }),
+                    singleValue: (base) => ({
+                      ...base,
+                      color: "black",
+                      fontWeight: "semibold",
+                    }),
+                  }}
+                  className="w-[250px] ml-7"
+                  isDisabled={!correlationCoeff}
+                />
+              )}
+            </div>
+            <div style={{ marginTop: '5%' }}>
+              <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
+                Correlation Coefficient:
+                <span className="relative inline-block ml-1">
+                  <b className="text-[#5BAA76] text-sm font-semibold">{coefficientVal?.toFixed(2)}</b>
 
-                {/* Tooltip Box */}
-                {/* Tooltip Box */}
-                {showTooltip && (
-                  <div
-                    ref={tooltipRef}
-                    className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50"
-                    style={{ minWidth: "303px", whiteSpace: "normal", marginLeft: '24px' }}
+                  {/* Info Button */}
+                  <button
+                    className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-pointer"
+                    onClick={() => setShowTooltip(!showTooltip)}
                   >
-                    <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
+                    i
+                  </button>
 
-                    {/* Adjusted padding to move bullets slightly left */}
-                    <ul className="mt-3 text-[13px] leading-[1.5] list-disc pl-3" style={{ marginLeft: '-9px' }}>
-                      <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together</li>
-                      <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases</li>
-                      <li>
-                        <span >Strong (±0.7 to ±1.0)</span> |
-                        <span > Moderate (±0.3 to ±0.7)</span> |
-                        <span > Weak (0 to ±0.3)</span>
-                      </li>
-                      <li><span>A value near 0 indicates little to no correlation</span></li>
-                    </ul>
+                  {/* Tooltip Box */}
+                  {/* Tooltip Box */}
+                  {showTooltip && (
+                    <div
+                      ref={tooltipRef}
+                      className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50"
+                      style={{ minWidth: "303px", whiteSpace: "normal", marginLeft: '24px' }}
+                    >
+                      <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
 
-                  </div>
-                )}
+                      {/* Adjusted padding to move bullets slightly left */}
+                      <ul className="mt-3 text-[13px] leading-[1.5] list-disc pl-3" style={{ marginLeft: '-9px' }}>
+                        <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together</li>
+                        <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases</li>
+                        <li>
+                          <span >Strong (±0.7 to ±1.0)</span> |
+                          <span > Moderate (±0.3 to ±0.7)</span> |
+                          <span > Weak (0 to ±0.3)</span>
+                        </li>
+                        <li><span>A value near 0 indicates little to no correlation</span></li>
+                      </ul>
 
+                    </div>
+                  )}
+
+
+                </span>
 
               </span>
+              {loadingExternalData ?
+                <>Loading ...</> :
+                <Scatter
+                  options={{
+                    plugins: {
+                      datalabels: {
+                        display: false
+                      },
+                      legend: {
+                        display: false, // Hides the legend completely
+                      },
 
-            </span>
-            {loadingExternalData ?
-              <>Loading ...</> :
-              <Scatter
-                options={{
-                  plugins: {
-                    datalabels: {
-                      display: false
                     },
-                    legend: {
-                      display: false, // Hides the legend completely
-                    },
-
-                  },
-                  scales: {
-                    x: {
-                      title: {
-                        display: true,
-                        text: "Estimated Litter Density (#/ sq. miles)",
+                    scales: {
+                      x: {
+                        title: {
+                          display: true,
+                          text: "Estimated Litter Density (#/ sq. miles)",
+                        },
+                        ticks: {
+                          //stepSize: 0.1, // Adjust this based on your dataset
+                          autoSkip: false, // Prevent Chart.js from skipping ticks
+                        },
                       },
-                      ticks: {
-                        //stepSize: 0.1, // Adjust this based on your dataset
-                        autoSkip: false, // Prevent Chart.js from skipping ticks
-                      },
-                    },
-                    y: {
-                      title: {
-                        display: true,
-                        text: [`${correlationCoeff?.label}`, `(${measurementUnit})`],
-                        align: "start"
-                      },
-                      ticks: {
-                        //stepSize: 0.1, // Adjust this based on your dataset
-                        autoSkip: false, // Prevent Chart.js from skipping ticks
+                      y: {
+                        title: {
+                          display: true,
+                          text: [`${correlationCoeff?.label}`, `(${measurementUnit})`],
+                          align: "start"
+                        },
+                        ticks: {
+                          //stepSize: 0.1, // Adjust this based on your dataset
+                          autoSkip: false, // Prevent Chart.js from skipping ticks
+                        },
                       },
                     },
-                  },
-                }}
-                data={dataForScatter}
-              />
-            }
+                  }}
+                  data={dataForScatter}
+                />
+              }
             </div>
           </div>
-          <div className="w-1/2 p-4 bg-white rounded" style={{height:'23rem'}}>
+          <div className="w-1/2 p-4 bg-white rounded" style={{ height: '23rem' }}>
 
-  
-            <p className="text-base font-semibold font-neris" style={{textAlign:'center'}}>
+
+            <p className="text-base font-semibold font-neris" style={{ textAlign: 'center' }}>
               Breakdown of Litter Types
             </p>
 
@@ -835,10 +877,10 @@ Statewide Estimated Litter Data.
               <div>Loading doughnut chart...</div>
             ) : (
               <div className="flex justify-center items-center w-full h-[300px]">
-              <Doughnut data={data} options={optionsDoughnut} />
-            </div>
-            
-            
+                <Doughnut data={data} options={optionsDoughnut} />
+              </div>
+
+
 
             )}
           </div>
@@ -849,28 +891,28 @@ Statewide Estimated Litter Data.
       </div>
 
       {/* New Sections in the Right Sidebar */}
-      <div className="w-1/5 space-y-6" style={{marginLeft:'2%'}}>
+      <div className="w-1/5 space-y-6" style={{ marginLeft: '2%' }}>
         <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '67rem' }}>
-        
+
           {/* Total Estimated Litter: */}
           <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
-  <div className="flex flex-col items-center text-center">
-    {/* Value (Number) at the Top */}
-    {loadingAnalysisData ? (
-      <span>Loading Data...</span>
-    ) : (
-      <span className="text-xl font-bold text-green-700">
-        {analysisData?.total_estimated_litter}
-        <span className="text-sm text-green-700"> (#)</span>
-      </span>
-    )}
+            <div className="flex flex-col items-center text-center">
+              {/* Value (Number) at the Top */}
+              {loadingAnalysisData ? (
+                <span>Loading Data...</span>
+              ) : (
+                <span className="text-xl font-bold text-green-700">
+                  {analysisData?.total_estimated_litter}
+                  <span className="text-sm text-green-700"> (#)</span>
+                </span>
+              )}
 
-    {/* Title Below the Value */}
-    <p className="text-black text-base font-semibold font-neris whitespace-nowrap mt-1">
-      Total Estimated Litter
-    </p>
-  </div>
-</div>
+              {/* Title Below the Value */}
+              <p className="text-black text-base font-semibold font-neris whitespace-nowrap mt-1">
+                Total Estimated Litter
+              </p>
+            </div>
+          </div>
 
 
 
@@ -885,21 +927,21 @@ Statewide Estimated Litter Data.
 
 
           <div className="p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)] flex flex-col items-center text-center">
-  {/* Value at the Top */}
-  {loadingAnalysisData ? (
-    <span>Loading Data...</span>
-  ) : (
-    <span className="text-xl font-bold text-green-700">
-      {formatNumber(Math.floor(analysisData?.estimated_litter_density))}
-      <span className="text-sm text-green-700"> (# / sq. miles)</span>
-    </span>
-  )}
+            {/* Value at the Top */}
+            {loadingAnalysisData ? (
+              <span>Loading Data...</span>
+            ) : (
+              <span className="text-xl font-bold text-green-700">
+                {formatNumber(Math.floor(analysisData?.estimated_litter_density))}
+                <span className="text-sm text-green-700"> (# / sq. miles)</span>
+              </span>
+            )}
 
-  {/* Title Below the Value */}
-  <p className="text-black text-base font-semibold font-neris mt-1 text-nowrap">
-    Estimated Litter Density
-  </p>
-</div>
+            {/* Title Below the Value */}
+            <p className="text-black text-base font-semibold font-neris mt-1 text-nowrap">
+              Estimated Litter Density
+            </p>
+          </div>
 
 
 
@@ -954,7 +996,7 @@ Statewide Estimated Litter Data.
       </div>
 
     </div>
-);
+  );
 }
 
 export default ScenarioModeling;
