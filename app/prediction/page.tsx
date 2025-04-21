@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { formatNumberMillion } from "@/utils/common";
 import { FaInfoCircle } from "react-icons/fa";
 import { useProfileStore } from "@/stores/profileStore";
+import { toast } from "react-toastify";
 const MapPrediction = dynamic(() => import("../../src/components/PredictionMap"), { ssr: false });
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
@@ -34,6 +35,7 @@ interface Filters {
   county: FilterOption | null;
   tract: FilterOption | null;
   week_id: number | null;
+  colorType? : string |null;
 }
 
 interface MarkerData {
@@ -99,7 +101,8 @@ const Prediction = () => {
     state: null,
     county: null,
     tract: null,
-    week_id: null
+    week_id: null,
+    colorType:null
   });
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [zoom, setZoom] = useState<number>(4);
@@ -509,7 +512,8 @@ const Prediction = () => {
       state: null,
       county: null,
       tract: null,
-      week_id: null
+      week_id: null,
+      colorType:null
     });
     fetchData();
   };
@@ -758,6 +762,35 @@ const Prediction = () => {
       console.log("Logout canceled");
     }
   };
+
+  const handleFilterColor = async (color:string) =>{
+    setLoadingMapData(true)
+    try{
+      setFilters((prev) => ({ ...prev, colorType:color}));
+      const queryParams = {
+        State: filters.state?.value || null,
+        County: filters.county?.value || null,
+        TRACTID: filters.tract?.value || null,
+        week_id: selectedWeekId || null,
+        colorType: color
+      };
+      const data = await getPredictionMapNew(queryParams)
+      if (data) {
+        setMarkers(data?.data);
+        setZoom(6);
+        if (data?.centroid !== "No location found") {
+          setCenter(data?.centroid);
+        }
+      }
+    }
+    catch(error){
+toast.error("Some issue while filtering")
+    }
+    finally{
+      setLoadingMapData(false)
+    }
+    
+  }
 
 
   return (
@@ -1110,6 +1143,35 @@ const Prediction = () => {
             title="Prediction map is powered by a Proprietary ML model based on various parameters like location, traffic, weather, population, etc."
           />
         </p>
+        <div className="flex mt-2" style={{ gap: '32px' }}>
+          <span className="text-sm font-semibold text-gray-400">Litter Density</span>
+          <span className="text-sm text-gray-700">-</span>
+ 
+          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#FF0000')}>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#FF0000' }}></div>
+            <span className="text-xs text-gray-700">Very High</span>
+          </div>
+ 
+          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#FF8000')}>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#FFA500' }}></div>
+            <span className="text-xs text-gray-700">High</span>
+          </div>
+ 
+          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#FFFF00')}>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#FFFF00' }}></div>
+            <span className="text-xs text-gray-700">Medium</span>
+          </div>
+ 
+          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#80FF00')}>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#7CFC00' }}></div>
+            <span className="text-xs text-gray-700">Low</span>
+          </div>
+ 
+          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#008000')}>
+            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#006400' }}></div>
+            <span className="text-xs text-gray-700">Very Low</span>
+          </div>
+        </div>
         <div className="w-full h-96">
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full p-1">
