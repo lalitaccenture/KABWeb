@@ -293,7 +293,7 @@ export const getEventPrediction = async (queryParams: any = {}) => {
   try {
     
     const response = await axios.get(
-      `https://lees1ddoaifunc02.azurewebsites.net/api/eventBasedPrediction?code=013AV8Z_fAe-3pX0VhFkxFGEFJM0wR67PxaLtMviwULkAzFuT055Uw==`,
+      `https://lees1ddoaifunc02.azurewebsites.net/api/eventBasedPrediction?code=OGhJDtbD033PHTAiMd-vu95JEqj3K_t3q-GE31lnP-fJAzFu6l421A==`,
       { params: queryParams } 
     );
     return response.data;

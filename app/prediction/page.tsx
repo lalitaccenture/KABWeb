@@ -960,7 +960,7 @@ toast.error("Some issue while filtering")
               position: 'relative',
               zIndex: 1000
             }}>
-              <label htmlFor="county" className="block text-sm font-medium text-gray-700">County</label>
+              <label htmlFor="county" className="block text-sm font-medium text-gray-700">City, County</label>
               {loadingAnalysisNewData ? (
                 <div>Loading counties...</div>
               ) : (
@@ -1140,7 +1140,7 @@ toast.error("Some issue while filtering")
           <FaInfoCircle
             className="text-[#3AAD73] cursor-pointer"
             style={{marginTop:'-12%'}}
-            title="Prediction map is powered by a Proprietary ML model based on various parameters like location, traffic, weather, population, etc."
+            title={`Prediction map is powered by a Proprietary ML model based on various parameters like location, traffic, weather, population, etc.\nLitter density (0–100% scale): Very Low (0–20%), Low (20–40%), Medium (40–60%), High (60–80%), Very High (80–100%).`}
           />
         </p>
         <div className="flex mt-2" style={{ gap: '32px' }}>

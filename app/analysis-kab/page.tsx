@@ -674,7 +674,7 @@ const ScenarioModeling = () => {
         </div>
 
 
-        <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites:</p>
+        <p className="block text-base font-semibold text-black-600  font-neris">Litter Density Heatmap: Statewide Estimates & Surveyed Sites (KAB Litter Survey 2020):</p>
         {/* AnalysisMap section */}
         <div
           className="w-full rounded"
@@ -814,6 +814,13 @@ const ScenarioModeling = () => {
                           <span > Weak (0 to ±0.3)</span>
                         </li>
                         <li><span>A value near 0 indicates little to no correlation</span></li>
+                        <li>
+    <span>
+      Correlation values are derived from the 2020 Keep America Beautiful (KAB) survey and may change as more data is collected.
+      <br />
+      Correlation does not imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.
+    </span>
+  </li>
                       </ul>
 
                     </div>
