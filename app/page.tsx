@@ -240,7 +240,7 @@ const Login = () => {
                 <div>
                   <h4 className="font-semibold text-base text-[#5BAA76]">Data Sources & Timeframe</h4>
                   <p>
-                    Insights are based on external data collected between <strong>2015 and 2024</strong>. Completeness may vary depending on source accuracy and availability.
+                  Insights & predictions are based on external data collected between 2015 and 2024, including weather (Open-Meteo), amenities (OpenStreetMap), demographics (US Census), Litter data (Third party data), and survey data (KAB 2020). Completeness may vary depending on source accuracy and availability.
                   </p>
                 </div>
               </div>
@@ -251,7 +251,18 @@ const Login = () => {
                 <div>
                   <h4 className="font-semibold text-base text-[#5BAA76]">Scope & Limitations</h4>
                   <p>
-                    This tool provides directional insights and may not fully reflect all littering patterns or cleanup programs. Data quality depends on third-party sources.
+                  This tool provides directional insights and may not fully reflect all littering patterns or cleanup programs. Data quality depends on third-party sources.
+                  </p>
+                </div>
+              </div>
+
+              {/* Litter Quantity Measurement */}
+              <div className="flex items-start gap-3">
+                <span className="text-xl mt-1" style={{ color: '#5BAA76' }}>♻️</span>
+                <div>
+                  <h4 className="font-semibold text-base text-[#5BAA76]">Litter Quantity Measurement</h4>
+                  <p>
+                  Litter quantity is measured as a count of individual litter items, regardless of their size or volume, categorized by type.
                   </p>
                 </div>
               </div>
@@ -262,7 +273,7 @@ const Login = () => {
                 <div>
                   <h4 className="font-semibold text-base text-[#5BAA76]">Evolving Insights</h4>
                   <p>
-                    As new data is integrated, results may evolve. Current insights are provisional and subject to change over time.
+                  As new data is integrated, results may evolve. Current insights are provisional and subject to change over time.
                   </p>
                 </div>
               </div>
@@ -273,7 +284,7 @@ const Login = () => {
                 <div>
                   <h4 className="font-semibold text-base text-[#5BAA76]">Liability Disclaimer</h4>
                   <p>
-                    This tool is intended as an analytical aid. Conclusions drawn from this data should be viewed as indicative. We disclaim liability for actions based on these insights.
+                  This tool is intended as an analytical aid. Conclusions drawn from this data should be viewed as indicative. We disclaim liability for actions based on these insights.
                   </p>
                 </div>
               </div>
