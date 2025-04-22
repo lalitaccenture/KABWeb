@@ -526,7 +526,7 @@ const ScenarioModeling = () => {
         </div>
         <div
           className="p-4 rounded-md shadow-sm"
-          style={{ backgroundColor: 'white', marginLeft: '5%' }}
+          style={{ backgroundColor: 'white', marginLeft: '-1%' }}
         >
 
           <p className="font-semibold text-base mb-2">Filter Survey Sites</p>

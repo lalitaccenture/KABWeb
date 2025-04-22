@@ -347,18 +347,19 @@ const UserProfile = () => {
             <div className="mt-6">
               <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
               <div className="flex flex-col gap-2">
+              <button
+                  className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-full"
+                  onClick={() => router.push("/analysis-external")}
+                >
+                  <span className="font-neris text-sm">Analysis</span>
+                </button>
                 <button
                   className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-full"
                   onClick={() => router.push("/prediction")}
                 >
                   <span className="font-neris text-sm">Prediction</span>
                 </button>
-                <button
-                  className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-full"
-                  onClick={() => router.push("/analysis-external")}
-                >
-                  <span className="font-neris text-sm">Analysis</span>
-                </button>
+             
 
               </div>
             </div>

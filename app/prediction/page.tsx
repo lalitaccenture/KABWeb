@@ -50,8 +50,8 @@ interface SwitchState {
   bins: boolean;
   events: boolean;
   amenities: boolean
-  transit : boolean,
-  entertainment : boolean,
+  transit: boolean,
+  entertainment: boolean,
   education: boolean,
   retail: boolean
 }
@@ -116,9 +116,9 @@ const Prediction = () => {
   const [switches, setSwitches] = useState<SwitchState>({
     bins: false,
     events: false,
-    amenities: false, 
-    transit : false,
-    entertainment : false,
+    amenities: false,
+    transit: false,
+    entertainment: false,
     education: false,
     retail: false
   });
@@ -133,12 +133,12 @@ const Prediction = () => {
   const [amenitiesData, setAmenitiesData] = useState<AmenitiesData>();
   const [activeButton, setActiveButton] = useState('prediction')
   const { data: session, status } = useSession();
-  const [amenitiesRetail,setAmenitiesRetail] = useState();
-  const [amenitiesEntertainment,setAmenitiesEntertainment] = useState();
-  const [amenitiesTransit,setAmenitiesTransit] = useState();
-  const [amenitiesEducation,setAmenitiesEducation] = useState();
+  const [amenitiesRetail, setAmenitiesRetail] = useState();
+  const [amenitiesEntertainment, setAmenitiesEntertainment] = useState();
+  const [amenitiesTransit, setAmenitiesTransit] = useState();
+  const [amenitiesEducation, setAmenitiesEducation] = useState();
   const stateFromStore = useProfileStore((s) => s.state);
-        
+
   const router = useRouter();
 
   useEffect(() => {
@@ -202,15 +202,15 @@ const Prediction = () => {
         amenitiesTransit,
         amenitiesEducation
       ] = await Promise.allSettled([
-        getDashboardPredictionNew({ State: "California",week_id:weekId }),
-        getPredictionMapNew({ State: "California",week_id:weekId }),
-        getEventPrediction({ State: "California",week_id:weekId }),
+        getDashboardPredictionNew({ State: "California", week_id: weekId }),
+        getPredictionMapNew({ State: "California", week_id: weekId }),
+        getEventPrediction({ State: "California", week_id: weekId }),
         getBinPrediction({ State: "California" }),
         // getAmenitiesPrediction({ State: "California" }),
-        getAmenities({ State: "California",Category:"Retail"}),
-        getAmenities({ State: "California",Category:"Entertainment" }),
-        getAmenities({ State: "California",Category:"Transit" }),
-        getAmenities({ State: "California",Category:"Education"})
+        getAmenities({ State: "California", Category: "Retail" }),
+        getAmenities({ State: "California", Category: "Entertainment" }),
+        getAmenities({ State: "California", Category: "Transit" }),
+        getAmenities({ State: "California", Category: "Education" })
       ]);
 
       if (dashboardRes.status === "fulfilled") {
@@ -425,18 +425,18 @@ const Prediction = () => {
     setLoadingBinData(true)
     try {
       const results = await Promise.allSettled([
-        getDashboardPredictionNew({...queryParams,week_id: selectedWeekId || null}),
-        getPredictionMapNew({...queryParams,week_id: selectedWeekId || null}),
-        getEventPrediction({...queryParams,week_id: selectedWeekId || null}),
+        getDashboardPredictionNew({ ...queryParams, week_id: selectedWeekId || null }),
+        getPredictionMapNew({ ...queryParams, week_id: selectedWeekId || null }),
+        getEventPrediction({ ...queryParams, week_id: selectedWeekId || null }),
         getBinPrediction(queryParams),
         //getAmenitiesPrediction(queryParams),
-        getAmenities({...queryParams, Category:"Retail"}),
-        getAmenities({...queryParams, Category:"Entertainment" }),
-        getAmenities({...queryParams, Category:"Transit" }),
-        getAmenities({...queryParams, Category:"Education"})
+        getAmenities({ ...queryParams, Category: "Retail" }),
+        getAmenities({ ...queryParams, Category: "Entertainment" }),
+        getAmenities({ ...queryParams, Category: "Transit" }),
+        getAmenities({ ...queryParams, Category: "Education" })
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, 
+      const [dashboardRes, mapRes, eventRes, binRes,
         //amenitiesRes,
         amenitiesRetail,
         amenitiesEntertainment,
@@ -630,8 +630,8 @@ const Prediction = () => {
         uncheckedIcon={false}
         checkedIcon={false}
         onColor={onColor}
-        height={20}
-        width={40}
+        height={15}
+        width={30}
         handleDiameter={14}
         activeBoxShadow={`0 0 5px 2px ${onColor}`}
       />
@@ -656,18 +656,18 @@ const Prediction = () => {
     setLoadingBinData(true)
     try {
       const results = await Promise.allSettled([
-        getDashboardPredictionNew({...queryParams,week_id: weekID || null,}),
-        getPredictionMapNew({...queryParams,week_id: weekID || null,}),
-        getEventPrediction({...queryParams,week_id: weekID || null,}),
+        getDashboardPredictionNew({ ...queryParams, week_id: weekID || null, }),
+        getPredictionMapNew({ ...queryParams, week_id: weekID || null, }),
+        getEventPrediction({ ...queryParams, week_id: weekID || null, }),
         getBinPrediction(queryParams),
         //getAmenitiesPrediction(queryParams),
-        getAmenities({...queryParams, Category:"Retail"}),
-        getAmenities({...queryParams, Category:"Entertainment" }),
-        getAmenities({...queryParams, Category:"Transit" }),
-        getAmenities({...queryParams, Category:"Education"})
+        getAmenities({ ...queryParams, Category: "Retail" }),
+        getAmenities({ ...queryParams, Category: "Entertainment" }),
+        getAmenities({ ...queryParams, Category: "Transit" }),
+        getAmenities({ ...queryParams, Category: "Education" })
       ]);
 
-      const [dashboardRes, mapRes, eventRes, binRes, 
+      const [dashboardRes, mapRes, eventRes, binRes,
         //amenitiesRes,
         amenitiesRetail,
         amenitiesEntertainment,
@@ -776,7 +776,7 @@ const Prediction = () => {
         <div className="mt-6">
           <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
           <div className="flex flex-col gap-2">
-          <button
+            <button
               className={`flex items-center gap-2 p-2 rounded-lg w-full font-neris text-sm ${activeButton === 'analysis' ? 'bg-[#DCFCE7] text-green-700' : 'bg-gray-100 text-gray-700'
                 }`}
               onClick={() => {
@@ -797,7 +797,7 @@ const Prediction = () => {
             >
               <span>Prediction</span>
             </button>
-       
+
 
           </div>
         </div>
@@ -1106,7 +1106,7 @@ const Prediction = () => {
           Litter Prediction Map:
           <FaInfoCircle
             className="text-[#3AAD73] cursor-pointer"
-            style={{marginTop:'-12%'}}
+            style={{ marginTop: '-12%' }}
             title="Prediction map is powered by a Proprietary ML model based on various parameters like location, traffic, weather, population, etc."
           />
         </p>
@@ -1116,47 +1116,48 @@ const Prediction = () => {
               <span className="text-xl text-gray-400">Loading map...</span>
             </div>
           ) : (
-            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} amenitiesRetail={amenitiesRetail} amenitiesEntertainment={amenitiesEntertainment} amenitiesTransit={amenitiesTransit} amenitiesEducation={amenitiesEducation}/>
+            <MapPrediction markers={markers} zoom={zoom} center={center} switches={switches} eventData={eventData} binData={binData} amenitiesData={amenitiesData} amenitiesRetail={amenitiesRetail} amenitiesEntertainment={amenitiesEntertainment} amenitiesTransit={amenitiesTransit} amenitiesEducation={amenitiesEducation} />
           )}
         </div>
 
-<div className="mt-1 flex justify-between items-center w-full">
-  {/* Left legend - always shown */}
-  <div className="flex items-center gap-4 mt-2">
-    <span className="text-xs text-gray-400">Lower Litter Density</span>
-    <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
-    <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
-  </div>
+        <div className="mt-1 flex justify-between items-center w-full">
+          {/* Left legend - always shown */}
+          <div className="flex items-center gap-4 mt-2">
+            <span className="text-xs text-gray-400">Lower Litter Density</span>
+            <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+            <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+          </div>
 
-  {/* Right legend - conditionally rendered */}
-  {switches?.events && (
-    <div className="flex items-center gap-4 mt-2">
-      <span className="text-xs text-gray-400">Low Impact Events</span>
-      <div className="w-20 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
-      <span className="text-xs text-gray-400 whitespace-nowrap">High Impact Events</span>
-    </div>
-  )}
-</div>
+          {/* Right legend - conditionally rendered */}
+          {switches?.events && (
+            <div className="flex items-center gap-4 mt-2">
+              <span className="text-xs text-gray-400">Low Impact Events</span>
+              <div className="w-20 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
+              <span className="text-xs text-gray-400 whitespace-nowrap">High Impact Events</span>
+            </div>
+          )}
+        </div>
 
 
 
-        <div className="w-full flex justify-start items-center gap-4 mt-4">
+        <div className="w-full flex justify-start items-center gap-4 mt-4 text-xs">
 
 
           {loadingEventData ? <>Loading...</> :
-            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")} />}
+            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")}  />}
           {loadingBinData ? <>Loading...</> :
             <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
           {/* {loadingAmenitiesData ? <>Loading...</> :
             <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />} */}
-           {loadingAmenitiesData ? <>Loading...</> :
+          {loadingAmenitiesData ? <>Loading...</> :
             <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} />}
           {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Retail + Food & Beverages" checked={switches.retail} onChange={handleChange("retail")} />}
-            {loadingAmenitiesData ? <>Loading...</> :
+          
+            <SwitchItem label="Retail + F&B" checked={switches.retail} onChange={handleChange("retail")} />}
+          {loadingAmenitiesData ? <>Loading...</> :
             <SwitchItem label="Entertainment" checked={switches.entertainment} onChange={handleChange("entertainment")} />}
-            {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} />} 
+          {loadingAmenitiesData ? <>Loading...</> :
+            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} />}
           {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
   <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
         </div>

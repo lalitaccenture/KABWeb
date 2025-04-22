@@ -547,7 +547,7 @@ const Analysis = () => {
 
       {/* Top Buttons */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex gap-4" style={{ marginTop: "7px" }}>
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px] " style={{ marginTop: '5rem' }}>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-[#DCFCE7] rounded-full p-1 flex w-[520px]  h-[40px]  shadow-md" style={{ marginTop: '5rem' }}>
           {/* Litter Cleanup Analysis Button */}
           <button
             className={`relative w-1/2 text-sm font-semibold px-4 py-2 rounded-full transition-all duration-300 ${activeTab === "cleanup"
@@ -596,9 +596,9 @@ const Analysis = () => {
         </div>
 
         {/* MENU Section */}
-        <div className="mt-6">
+        <div className="mt-6" >
           <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 ">
             <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full" onClick={() => router.push("/analysis-external")}>
 
               <span className="font-neris text-sm">Analysis</span>
