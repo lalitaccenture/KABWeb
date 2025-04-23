@@ -93,6 +93,7 @@ interface AmenitiesData extends BinData {
 type Week = {
   week_id: number;
   week: string;
+  status: string
 };
 
 const Prediction = () => {
@@ -1115,21 +1116,25 @@ toast.error("Some issue while filtering")
           {loadingAnalysisData ? <>Loading...</> :
             // <WeekSelector weeks={weeks} />
             <div className="flex space-x-7">
-              {weeks?.map(({ week_id, week }, index) => (
-                <button
-                  key={week_id}
-                  onClick={() => {
-                    setSelectedWeekId(week_id);
-                    handleApplySelectedWeek(week_id);
-                  }}
-                  disabled={loadingAnalysisData || loadingMapData || index === 3}
-                  className={`px-4 py-2 border rounded transition-colors 
-      ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"} 
-      ${index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
-                >
-                  <p className="text-black text-xs font-medium font-neris">{week}</p>
-                </button>
-              ))}
+             {weeks?.map(({ week_id, week, status }, index) => {
+  const isDisabled = loadingAnalysisData || loadingMapData || status === "disable";
+
+  return (
+    <button
+      key={week_id}
+      onClick={() => {
+        setSelectedWeekId(week_id);
+        handleApplySelectedWeek(week_id);
+      }}
+      disabled={isDisabled}
+      className={`px-4 py-2 border rounded transition-colors 
+        ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"} 
+        ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+    >
+      <p className="text-black text-xs font-medium font-neris">{week}</p>
+    </button>
+  );
+})}
 
             </div>
 
