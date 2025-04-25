@@ -30,6 +30,42 @@ const UserProfile = () => {
     setIsEditing(!isEditing);
   };
 
+  const customSelectStyles = {
+    container: (base: any) => ({
+      ...base,
+      width: '80%', // 👈 80% width
+    }),
+    control: (base: any, state: any) => ({
+      ...base,
+      width: '100%',
+      borderColor: '#D1D5DB', // 👈 Tailwind's border-gray-300
+      borderWidth: 1,
+      boxShadow: state.isFocused ? '0 0 0 1px #5BAA76' : 'none',
+      '&:hover': {
+        borderColor: '#5BAA76',
+      },
+    }),
+    option: (base: any, state: any) => ({
+      ...base,
+      backgroundColor: state.isFocused ? '#E6F5EC' : 'white',
+      color: '#000000',
+      '&:hover': {
+        backgroundColor: '#5BAA76',
+        color: '#fff',
+      },
+    }),
+    singleValue: (base: any) => ({
+      ...base,
+      color: '#000000',
+      fontWeight: 500,
+    }),
+    placeholder: (base: any) => ({
+      ...base,
+      color: '#A0AEC0',
+    }),
+  };
+  
+  
   function formatToUSDateTime(isoString:any) {
     const date = new Date(isoString);
     return date.toLocaleString("en-US", {
@@ -319,11 +355,12 @@ const UserProfile = () => {
     }
 ]
   return (
-    <div className="bg-[#5BAA761A] min-h-screen pt-24">
+    <div className="bg-[#5BAA761A] overflow-hidden pt-24">
+
       <div className="flex w-full max-w-screen-xl m">
 
         {/* Sidebar */}
-        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{marginBottom:'38px'}}>
+        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{marginBottom:'38px', height:'30.5rem'}}>
 
           {/* Top Section */}
           <div>
@@ -397,116 +434,151 @@ const UserProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="w-[80%] flex items-center justify-center min-h-screen pb-10" style={{ marginTop: '-7%' }}>
-          <div className="bg-white py-10 px-5 w-full max-w-4xl">
-            {/* Profile Card */}
-            <div className="flex flex-col items-center bg-[#f5fdf7] p-8 rounded-md border shadow-md">
+        <div className="w-[80%] flex items-center justify-center h-full" style={{ marginTop: '-7%' }}>
 
-              {/* Image at top */}
-              <div className="relative flex justify-center items-center w-[150px] h-[150px] mb-6">
-                <div style={{ width: '80px', height: '80px' }}>
-                  <FaUserCircle size={80} color="#5BAA76" />
-                </div>
+    
+  {/* Profile Card */}
+  <div className="flex flex-col md:flex-row items-start bg-[#f5fdf7] p-8 rounded-md border shadow-md gap-8">
+    
+    {/* Profile Image Section - now on the left */}
+    <div className="relative w-[150px] h-[150px] flex-shrink-0">
+      <div className="w-full h-full flex justify-center items-center">
+        <FaUserCircle size={80} color="#5BAA76" />
+      </div>
+      <button
+        onClick={handleEditClick}
+        className="absolute top-0 right-0 p-2 bg-white rounded-full shadow-lg hover:bg-gray-200"
+      >
+        <Image src="/edit.png" alt="Edit Icon" width={15} height={15} />
+      </button>
+    </div>
 
-                <button
-                  onClick={handleEditClick}
-                  className="absolute top-0 right-0 p-2 bg-white rounded-full shadow-lg hover:bg-gray-200"
-                >
-                  <Image src="/edit.png" alt="Edit Icon" width={24} height={24} />
-                </button>
-              </div>
-
-              {/* Info */}
-              <div className="flex flex-col text-center md:text-left w-full max-w-md">
-                <div className="text-3xl font-bold mb-4 text-center">
-                  {isEditing ? (
-                    <>
-                     <div className="w-full max-w-md mx-auto text-left">
-  <label htmlFor="username" className="block font-neris text-sm mb-1">
-    User Name:
-  </label>
-  <input
-    id="username"
-    type="text"
-    value={userName}
-    onChange={(e) => setUserName(e.target.value)}
-    className="text-2xl font-bold bg-white border-2 border-[#3AAD73] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#5BAA76] w-full"
-  />
-</div>
-
-                    </>
-                  ) : (
-                    <span className="font-neris">{userName}</span>
-                  )}
-                </div>
-
-                <div className="text-lg space-y-3 font-neris">
-                {[
-  { label: 'Email', value: email, onChange: setEmail, editable: false, isDropdown: false },
-  { label: 'Organization', value: organization, onChange: setOrganization, editable: true, isDropdown: false  },
-  { label: 'Role', value: role, onChange: setRole, editable: true, isDropdown: false  },
-  { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false  },
-  { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
-  { label: 'Last Login (ET – Eastern Time)', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false }
-].map(({ label, value, onChange, editable, isDropdown }) => (
-  <div key={label} className="mb-3">
+    {/* Info Section */}
+   {/* Info Section */}
+<div className="flex flex-col text-left w-full">
+  {/* Name Input */}
+  <div className="text-3xl font-bold mb-6">
     {isEditing ? (
-      <>
-        <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
-
-        {isDropdown ? (
-          
-          <Select
-          id={label}
-          value={regions.find(option => option.value === stateVal)}
-          placeholder="Select a State"
-          onChange={(selectedOption:any) => onChange(selectedOption?.value)}
-          options={regions}
-          />
-        ) : (
-          <input
-            id={label}
-            type="text"
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            disabled={!editable}
-            className={`border-2 rounded-md p-2 w-full focus:outline-none ${
-              editable 
-                ? 'bg-white border-[#3AAD73] focus:ring-2 focus:ring-[#5BAA76]' 
-                : 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed'
-            }`}
-          />
-        )}
-      </>
+      <div className="w-full">
+        <label htmlFor="username" className="block font-neris text-sm mb-1">User Name:</label>
+        <input
+          id="username"
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          className="text-xl font-bold bg-white border border-gray-300 rounded-md p-2 focus:outline-none w-full"
+        />
+      </div>
     ) : (
-      <span>
-        <span className="font-semibold text-medium">{label}:</span> {value}
-      </span>
+      <span className="font-neris">{userName}</span>
     )}
   </div>
-))}
-                </div>
 
-                {isEditing && (
-                  <div className="mt-5 text-center">
-                    <button
-                      onClick={handleSaveClick}
-                      disabled={isSaving}
-                      className={`p-2 rounded-md ${isSaving ? 'bg-gray-400' : 'bg-[#3AAD73]'} text-white`}
-                    >
-                      {isSaving ? 'Saving...' : 'Save'}
-                    </button>
-                  </div>
-                )}
-
-                {saveSuccess && (
-                  <div className={`mt-2 text-lg text-center ${saveSuccess.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
-                    {saveSuccess}
-                  </div>
-                )}
-              </div>
-            </div>
+  {/* Form Grid */}
+  {isEditing ? (
+    <div className="flex flex-col gap-6">
+      {/* Row 1 */}
+      <div className="flex flex-wrap gap-4">
+        {[
+          { label: 'Email', value: email, onChange: setEmail, editable: false },
+          { label: 'Organization', value: organization, onChange: setOrganization, editable: true },
+          { label: 'Role', value: role, onChange: setRole, editable: true },
+        ].map(({ label, value, onChange, editable }) => (
+          <div key={label} className="flex-1 min-w-[200px]">
+            <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
+            <input
+              id={label}
+              type="text"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              disabled={!editable}
+              className={`rounded-md p-2 w-full focus:outline-none ${
+                editable
+                  ? 'bg-white border border-gray-300 focus:ring-2 focus:ring-[#5BAA76]'
+                  : 'bg-gray-100 border border-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            />
           </div>
+        ))}
+      </div>
+
+      {/* Row 2 */}
+      <div className="flex flex-wrap gap-4">
+        {[
+          { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false },
+          { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
+          { label: 'Last Login (ET – Eastern Time)', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false },
+        ].map(({ label, value, onChange, editable, isDropdown }) => (
+          <div key={label} className="flex-1 min-w-[200px]">
+            <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
+            {isDropdown ? (
+              <Select
+                id={label}
+                value={regions.find(option => option.value === stateVal)}
+                placeholder="Select a State"
+                onChange={(selectedOption: any) => onChange(selectedOption?.value)}
+                options={regions}
+                styles={customSelectStyles}
+              />
+            ) : (
+              <input
+                id={label}
+                type="text"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                disabled={!editable}
+                className={`rounded-md p-2 w-full focus:outline-none ${
+                  editable
+                    ? 'bg-white border border-gray-300 focus:ring-2 focus:ring-[#5BAA76]'
+                    : 'bg-gray-100 border border-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div className="text-lg space-y-2 font-neris">
+      {[
+        { label: 'Email', value: email },
+        { label: 'Organization', value: organization },
+        { label: 'Role', value: role },
+        { label: 'Target', value: target },
+        { label: 'Region', value: stateVal },
+        { label: 'Last Login (ET – Eastern Time)', value: lastlogin },
+      ].map(({ label, value }) => (
+        <div key={label}>
+          <span className="font-semibold text-medium">{label}:</span> {value}
+        </div>
+      ))}
+    </div>
+  )}
+
+  {/* Save Button */}
+  {isEditing && (
+    <div className="mt-5 text-left">
+      <button
+        onClick={handleSaveClick}
+        disabled={isSaving}
+        className={`p-2 rounded-md ${isSaving ? 'bg-gray-400' : 'bg-[#3AAD73]'} text-white`}
+      >
+        {isSaving ? 'Saving...' : 'Save'}
+      </button>
+    </div>
+  )}
+
+  {/* Success Message */}
+  {saveSuccess && (
+    <div className={`mt-2 text-lg text-left ${saveSuccess.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
+      {saveSuccess}
+    </div>
+  )}
+</div>
+
+  </div>
+
+
         </div>
       </div>
     </div>

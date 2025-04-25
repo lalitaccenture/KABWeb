@@ -99,9 +99,9 @@ const Analysis = () => {
     //   // @ts-ignore: Ignore TypeScript error
     //   useProfileStore.getState().setState(session.user.state);
     // }
-    
-    
-  }, [session,searchParams]);
+
+
+  }, [session, searchParams]);
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/"); // Redirect to login page
@@ -110,7 +110,7 @@ const Analysis = () => {
 
 
   const fetchData = async () => {
-    console.log("session",session)
+    console.log("session", session)
     setLoadingExternalData(true);
     setLoadingAnalysisData(true);
     setLoadingAnalysisNewData(true);
@@ -124,7 +124,7 @@ const Analysis = () => {
       // setCountiesData(data.Counties);
       // setTractsData(data.TractIDs);
       // setYearsData(data.Years);
-      console.log("state",stateFromStore)
+      console.log("state", stateFromStore)
       setLoadingExternalData(false);
       // const dropD = await analysisNewDropdown();
       const dropD = await analysisNewDropdownWithCity();
@@ -516,29 +516,29 @@ const Analysis = () => {
 
 
 
-  
-    const handleLogoClick = () => {
-        if (status === "authenticated") {
-            router.push("/analysis-external");
-        } else {
-            router.push("/");
-        }
-    };
-    
-   const handleLogout = async () => {
-        const confirmLogout = window.confirm("Are you sure you want to log out?");
-        if (confirmLogout) {
-            await signOut({ redirect: false }); // Prevents full page reload
-            router.push("/");
-            console.log("Logged out");
-        }
-        else {
-            console.log("Logout canceled");
-        }
-    };
-    if (status === "loading") {
-      return <p>Loading...</p>; // Prevents UI flickering
+
+  const handleLogoClick = () => {
+    if (status === "authenticated") {
+      router.push("/analysis-external");
+    } else {
+      router.push("/");
     }
+  };
+
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      await signOut({ redirect: false }); // Prevents full page reload
+      router.push("/");
+      console.log("Logged out");
+    }
+    else {
+      console.log("Logout canceled");
+    }
+  };
+  if (status === "loading") {
+    return <p>Loading...</p>; // Prevents UI flickering
+  }
 
 
   return (
@@ -651,7 +651,7 @@ const Analysis = () => {
           <p className="font-semibold text-base mb-4">Filter Cleanup Events</p>
 
           {/* Dropdowns and Buttons in horizontal row */}
-          <div className="flex flex-row" style={{ gap: '5.1%', flex: '1' }}>
+          <div className="flex flex-row" style={{ gap: '1.8%', flex: '1' }}>
 
             {/* State Dropdown */}
             <div style={{ width: "max-content", maxWidth: "21%", minWidth: "21%", flex: "0.2" }}>
@@ -693,7 +693,7 @@ const Analysis = () => {
             </div>
 
             {/* County Dropdown */}
-            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "21%", flex: "0.2", whiteSpace: 'nowrap' }}>
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "32%", flex: "0.2", whiteSpace: 'nowrap' }}>
               <label htmlFor="county" className="block text-base font-medium text-black-600 mb-2 font-neris">City, County</label>
               {loadingAnalysisNewData ? (
                 <div>Loading counties...</div>
@@ -744,7 +744,7 @@ const Analysis = () => {
                   value={filters.year}
                   onChange={(selectedOption) => handleFilterChange('year', selectedOption)}
                   options={yearsNewData}
-                  placeholder="All the years"
+                  placeholder="All"
                   styles={{
                     menuPortal: (base) => ({ ...base, zIndex: 9999 }),
                     control: (base, state) => ({
@@ -873,7 +873,7 @@ const Analysis = () => {
             {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-              <span className="text-xl font-bold text-green-700 ">
+              <span className="text-2xl font-bold text-green-700 ">
                 {formatNumber(analysisData?.analytics?.total_cleanups)}
               </span>
             )}

@@ -104,7 +104,7 @@ const Login = () => {
           </div>
 
           {/* ✅ Welcome Text */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-6" style={{marginTop:'10%'}}>
             <p className="text-xl font-semibold text-black">Welcome to LitterSense</p>
             <p className="text-xs text-gray-600">The world's first litter prediction tool!</p>
           </div>
@@ -164,14 +164,14 @@ const Login = () => {
           </p>
 
           {/* ✅ Social Login Section */}
-          <div className="my-3 flex items-center w-full max-w-sm">
+        {/*   <div className="my-3 flex items-center w-full max-w-sm">
             <div className="flex-grow border-t border-gray-300"></div>
             <span className="mx-2 text-xs text-gray-400">Or Continue With</span>
             <div className="flex-grow border-t border-gray-300"></div>
-          </div>
+          </div> */}
 
           {/* ✅ Social Login Buttons */}
-          <div className="flex" style={{marginLeft:'6%' ,marginTop:'-2%'}}>
+       {/*    <div className="flex" style={{marginLeft:'6%' ,marginTop:'-2%'}}>
             <button onClick={() => signIn("google")} className="w-10 h-10">
               <Image src="/google.png" alt="Google" width={20} height={20} />
             </button>
@@ -179,7 +179,7 @@ const Login = () => {
               <Image src="/logo-apple.png" alt="Apple" width={24} height={24} />
             </button>
           </div>
-
+ */}
           {/* ✅ Keep America Beautiful Logo */}
           <div>
             <a href="https://www.kab.org" target="_blank" rel="noopener noreferrer">

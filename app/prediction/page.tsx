@@ -35,7 +35,7 @@ interface Filters {
   county: FilterOption | null;
   tract: FilterOption | null;
   week_id: number | null;
-  colorType? : string |null;
+  colorType?: string | null;
 }
 
 interface MarkerData {
@@ -93,6 +93,7 @@ interface AmenitiesData extends BinData {
 type Week = {
   week_id: number;
   week: string;
+ status: string
 };
 
 const Prediction = () => {
@@ -102,10 +103,10 @@ const Prediction = () => {
     county: null,
     tract: null,
     week_id: null,
-    colorType:null
+    colorType: null
   });
   const [markers, setMarkers] = useState<MarkerData[]>([]);
-  const [zoom, setZoom] = useState<number>(4);
+  const [zoom, setZoom] = useState<number>(10);
   const [center, setCenter] = useState<[number, number]>([37.0902, -95.7129]);
 
   const [statesData, setStatesData] = useState<any[]>([]);
@@ -141,6 +142,7 @@ const Prediction = () => {
   const [amenitiesTransit, setAmenitiesTransit] = useState();
   const [amenitiesEducation, setAmenitiesEducation] = useState();
   const stateFromStore = useProfileStore((s) => s.state);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -153,12 +155,14 @@ const Prediction = () => {
 
 
 
-  const handleChange = (switchName: keyof SwitchState) => (checked: boolean) => {
-    setSwitches((prevState) => ({
-      ...prevState,
-      [switchName]: checked,
-    }));
-  };
+  const handleChange = (switchName: keyof SwitchState) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { checked } = e.target;
+      setSwitches((prevState) => ({
+        ...prevState,
+        [switchName]: checked,
+      }));
+    };
 
   const fetchData = async () => {
     setLoadingExternalData(true);
@@ -222,7 +226,7 @@ const Prediction = () => {
 
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(6);
+        setZoom(10);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
@@ -453,19 +457,19 @@ const Prediction = () => {
 
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(6);
+        setZoom(10);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
         if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
           // If state is present and county and tract are null
-          setZoom(6);
+          setZoom(11);
         } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
           // If state and county are present and tract is null
-          setZoom(7);
+          setZoom(12);
         } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
           // If state, county, and tract are all present
-          setZoom(8);
+          setZoom(13);
         }
       }
 
@@ -513,7 +517,7 @@ const Prediction = () => {
       county: null,
       tract: null,
       week_id: null,
-      colorType:null
+      colorType: null
     });
     fetchData();
   };
@@ -685,19 +689,19 @@ const Prediction = () => {
 
       if (mapRes.status === "fulfilled") {
         setMarkers(mapRes.value?.data);
-        setZoom(6);
+        setZoom(10);
         if (mapRes.value?.centroid !== "No location found") {
           setCenter(mapRes.value?.centroid);
         }
         if (queryParams?.State && !queryParams?.County && !queryParams?.TRACTID) {
           // If state is present and county and tract are null
-          setZoom(6);
+          setZoom(11);
         } else if (queryParams?.State && queryParams?.County && !queryParams?.TRACTID) {
           // If state and county are present and tract is null
-          setZoom(7);
+          setZoom(12);
         } else if (queryParams?.State && queryParams?.County && queryParams?.TRACTID) {
           // If state, county, and tract are all present
-          setZoom(8);
+          setZoom(13);
         }
       }
 
@@ -763,33 +767,41 @@ const Prediction = () => {
     }
   };
 
-  const handleFilterColor = async (color:string) =>{
+  const handleFilterColor = async (color: string) => {
     setLoadingMapData(true)
-    try{
-      setFilters((prev) => ({ ...prev, colorType:color}));
+    try {
+      setFilters((prev) => ({
+        ...prev,
+        colorType: color === '#800080' ? undefined : color
+      }));
       const queryParams = {
         State: filters.state?.value || null,
         County: filters.county?.value || null,
         TRACTID: filters.tract?.value || null,
         week_id: selectedWeekId || null,
-        colorType: color
+   
       };
+      if (color !== '#800080') {
+        // @ts-ignore: Ignore TypeScript error
+        queryParams.colorType = color;
+      }
+      
       const data = await getPredictionMapNew(queryParams)
       if (data) {
         setMarkers(data?.data);
-        setZoom(6);
+        setZoom(10);
         if (data?.centroid !== "No location found") {
           setCenter(data?.centroid);
         }
       }
     }
-    catch(error){
-toast.error("Some issue while filtering")
+    catch (error) {
+      toast.error("Some issue while filtering")
     }
-    finally{
+    finally {
       setLoadingMapData(false)
     }
-    
+
   }
 
 
@@ -865,13 +877,12 @@ toast.error("Some issue while filtering")
 
 
       <div className="w-3/5 p-4 flex flex-col justify-start items-center gap-4 mt-[-1.5%]" style={{ marginLeft: '2%' }}>
-        <p className="block text-base font-semibold text-black-600  font-neris">Map Controllers</p>
         <div
           className="p-4 rounded-md shadow-md"
           style={{
             background: "white",
             position: "absolute",
-            width: '54%',
+            width: '55.2%',
             zIndex: 1000,
             display: "flex",
             flexDirection: "column",
@@ -952,14 +963,15 @@ toast.error("Some issue while filtering")
 
 
             <div style={{
-              width: "max-content",
-              maxWidth: "21%",
-              minWidth: "21%",
-              flex: "0.2",
+              width: "100%",          // or "40%", or "300px"
+              maxWidth: "35%",
+              minWidth: "35%",
+              flex: "0.2",             // optional — you can remove or adjust based on layout
               whiteSpace: 'nowrap',
               position: 'relative',
               zIndex: 1000
             }}>
+
               <label htmlFor="county" className="block text-sm font-medium text-gray-700">City, County</label>
               {loadingAnalysisNewData ? (
                 <div>Loading counties...</div>
@@ -1023,7 +1035,7 @@ toast.error("Some issue while filtering")
             <div style={{
               width: "max-content",
               maxWidth: "21%",
-              minWidth: "21%",
+              minWidth: "16%",
               flex: "0.2",
               whiteSpace: 'nowrap',
               position: 'relative',
@@ -1038,7 +1050,7 @@ toast.error("Some issue while filtering")
                   value={filters.tract}
                   onChange={(selectedOption) => handleFilterChange('tract', selectedOption)}
                   options={tractsData}
-                  placeholder="Select a Tract ID"
+                  placeholder="Tract ID"
                   isDisabled={!filters?.county?.value}
                   styles={{
                     control: (base, state) => ({
@@ -1111,67 +1123,50 @@ toast.error("Some issue while filtering")
 
 
         <div style={{ marginTop: '15%' }}>
-          <p className="block text-base font-semibold text-black-600  font-neris">Select a week</p>
-          {loadingAnalysisData ? <>Loading...</> :
-            // <WeekSelector weeks={weeks} />
-            <div className="flex space-x-7">
-              {weeks?.map(({ week_id, week }, index) => (
-                <button
-                  key={week_id}
-                  onClick={() => {
-                    setSelectedWeekId(week_id);
-                    handleApplySelectedWeek(week_id);
-                  }}
-                  disabled={loadingAnalysisData || loadingMapData || index === 3}
-                  className={`px-4 py-2 border rounded transition-colors 
-      ${selectedWeekId === week_id ? "bg-[#3AAD73] text-white" : "border-[#3AAD73] text-gray-700"} 
-      ${index === 3 ? "opacity-50 cursor-not-allowed" : ""}`}
-                >
-                  <p className="text-black text-xs font-medium font-neris">{week}</p>
-                </button>
-              ))}
+          <div className="flex items-center gap-4" style={{ marginTop: '10%' }}>
+            <p className="flex items-center text-base font-semibold text-black-600 font-neris gap-1 m-0 whitespace-nowrap">
+              Litter Prediction Map:
+              <FaInfoCircle
+                className="text-[#3AAD73] cursor-pointer"
+                style={{ marginBottom: '20px' }}
+                title={`The prediction map is powered by a proprietary ML model that analyzes factors such as location, traffic, weather, and population. Litter density is represented on a percentile scale: Very Low (0–20%), Low (20–40%), Medium (40–60%), High (60–80%), and Very High (80–100%)`}
+              />
+            </p>
 
-            </div>
+            {loadingAnalysisData ? (
+              <span className="text-sm text-gray-500">Loading...</span>
+            ) : (
+              <select
+                id="week-select"
+                value={selectedWeekId}
+                onChange={(e) => {
+                  setSelectedWeekId(e.target.value);
+                  handleApplySelectedWeek(e.target.value);
+                }}
+                className="w-full max-w-xs border border-gray-300 rounded px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#5BAA76] font-neris"
+              >
+                <option value="" disabled>Select a Week</option>
+                {weeks
 
-          }
-        </div>
-        <p className="flex items-center text-base font-semibold text-black-600 font-neris gap-2">
-          Litter Prediction Map:
-          <FaInfoCircle
-            className="text-[#3AAD73] cursor-pointer"
-            style={{marginTop:'-12%'}}
-            title={`Prediction map is powered by a Proprietary ML model based on various parameters like location, traffic, weather, population, etc.\nLitter density (0–100% scale): Very Low (0–20%), Low (20–40%), Medium (40–60%), High (60–80%), Very High (80–100%).`}
-          />
-        </p>
-        <div className="flex mt-2" style={{ gap: '32px' }}>
-          <span className="text-sm font-semibold text-gray-400">Litter Density</span>
-          <span className="text-sm text-gray-700">-</span>
- 
-          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#FF0000')}>
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#FF0000' }}></div>
-            <span className="text-xs text-gray-700">Very High</span>
-          </div>
- 
-          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#FF8000')}>
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#FFA500' }}></div>
-            <span className="text-xs text-gray-700">High</span>
-          </div>
- 
-          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#FFFF00')}>
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#FFFF00' }}></div>
-            <span className="text-xs text-gray-700">Medium</span>
-          </div>
- 
-          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#80FF00')}>
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#7CFC00' }}></div>
-            <span className="text-xs text-gray-700">Low</span>
-          </div>
- 
-          <div className="flex items-center gap-1 cursor-pointer" onClick={()=>handleFilterColor('#008000')}>
-            <div className="w-4 h-4 rounded-full" style={{ backgroundColor: '#006400' }}></div>
-            <span className="text-xs text-gray-700">Very Low</span>
+                  ?.filter(({ status }) => status === "enable")
+
+                  .map(({ week_id, week }) => (
+                    <option key={week_id} value={week_id}>
+
+                      {week}
+                    </option>
+
+                  ))}
+
+              </select>
+            )}
           </div>
         </div>
+
+
+
+
+
         <div className="w-full h-96">
           {loadingMapData ? (
             <div className="flex justify-center items-center h-full p-1">
@@ -1182,53 +1177,211 @@ toast.error("Some issue while filtering")
           )}
         </div>
 
-        <div className="mt-1 flex justify-between items-center w-full">
-          {/* Left legend - always shown */}
-          <div className="flex items-center gap-4 mt-2">
-            <span className="text-xs text-gray-400">Lower Litter Density</span>
-            <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
-            <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span>
+        <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', gap: '20px' }}>
+          {/* Litter Density Filter Box*/}
+          <div className="w-[330px] bg-white shadow-md  p-4 border border-gray-200" style={{ width: '46%' }}>
+            <p className="text-xs text-gray-600 font-medium mb-3 whitespace-nowrap text-center">
+              Pick a color to filter the map based on litter density
+            </p>
+
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2">
+              {/* All */}
+              <div
+                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
+        ${selectedColor === '#800080' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+                style={{ width: '68%' }}
+                onClick={() => {
+                  setSelectedColor('#800080');
+                  handleFilterColor('#800080');
+                }}
+              >
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#A9A9A9' }}></div>
+                <span className="text-xs text-gray-700 font-medium">All</span>
+              </div>
+
+              {/* Medium */}
+              <div
+                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
+        ${selectedColor === '#FFFF00' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+                style={{ width: '68%' }}
+                onClick={() => {
+                  setSelectedColor('#FFFF00');
+                  handleFilterColor('#FFFF00');
+                }}
+              >
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700', }}></div>
+                <span className="text-xs text-gray-700 font-medium">Medium</span>
+              </div>
+
+              {/* Very High */}
+              <div
+                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
+        ${selectedColor === '#FF0000' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+                onClick={() => {
+                  setSelectedColor('#FF0000');
+                  handleFilterColor('#FF0000');
+                }}
+              >
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF0000' }}></div>
+                <span className="text-xs text-gray-700 font-medium">Very High</span>
+              </div>
+
+              {/* Low */}
+              <div
+                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
+        ${selectedColor === '#80FF00' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+                style={{ width: '68%' }}
+                onClick={() => {
+                  setSelectedColor('#80FF00');
+                  handleFilterColor('#80FF00');
+                }}
+              >
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#7CFC00' }}></div>
+                <span className="text-xs text-gray-700 font-medium">Low</span>
+              </div>
+
+              {/* High */}
+              <div
+                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
+        ${selectedColor === '#FF8000' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+                style={{ width: '68%' }}
+                onClick={() => {
+                  setSelectedColor('#FF8000');
+                  handleFilterColor('#FF8000');
+                }}
+              >
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFA500' }}></div>
+                <span className="text-xs text-gray-700 font-medium">High</span>
+              </div>
+
+              {/* Very Low */}
+              <div
+                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
+        ${selectedColor === '#008000' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+                style={{ width: '68%' }}
+                onClick={() => {
+                  setSelectedColor('#008000');
+                  handleFilterColor('#008000');
+                }}
+              >
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#006400' }}></div>
+                <span className="text-xs text-gray-700 font-medium">Very Low</span>
+              </div>
+            </div>
           </div>
 
-          {/* Right legend - conditionally rendered */}
-          {switches?.events && (
-            <div className="flex items-center gap-4 mt-2">
-              <span className="text-xs text-gray-400">Low Impact Events</span>
-              <div className="w-20 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
-              <span className="text-xs text-gray-400 whitespace-nowrap">High Impact Events</span>
+          {/* filter checkbox */}
+          <div className="bg-white p-4  shadow-md border " style={{ width: '46%' }} >
+            <p className="text-center text-xs font-medium text-gray-600 mb-4">
+              Toggle map layers
+            </p>
+            <div className="grid grid-cols-2 grid-rows-3 gap-4 text-xs">
+              {loadingEventData ? <>Loading...</> : (
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={switches.events}
+                    onChange={handleChange("events")}
+                    className="appearance-none w-4 h-4 border border-gray-400 rounded-sm checked:bg-[#5BAA76] checked:border-[#5BAA76] checked:text-white text-white flex items-center justify-center checked:after:content-['✔'] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:block"
+                  />
+                  <img src="/Medium.svg" alt="Marker" className="w-1 h-3" />
+                  <span className="text-black">Events</span>
+                </label>
+
+
+              )}
+
+              {loadingBinData ? <>Loading...</> : (
+                <label className="flex items-center gap-2 text-gray-800">
+                  <input
+                    type="checkbox"
+                    checked={switches.bins}
+                    onChange={handleChange("bins")}
+                    className="appearance-none w-4 h-4 border border-gray-400 rounded-sm checked:bg-[#5BAA76] checked:border-[#5BAA76] checked:text-white text-white flex items-center justify-center checked:after:content-['✔'] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:block"
+                  />
+                  <img src="/bins.svg" alt="Marker" className="w-3 h-5" />
+                  Bins
+                </label>
+              )}
+
+              {loadingAmenitiesData ? <>Loading...</> : (
+                <label className="flex items-center gap-1 text-gray-800">
+                  <input
+                    type="checkbox"
+                    checked={switches.transit}
+                    onChange={handleChange("transit")}
+                    className="appearance-none w-4 h-4 border border-gray-400 rounded-sm checked:bg-[#5BAA76] checked:border-[#5BAA76] checked:text-white text-white flex items-center justify-center checked:after:content-['✔'] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:block"
+                  />
+                  <img src="/transit.svg" alt="Marker" className="w-3 h-5" />
+                  Transit
+                </label>
+              )}
+
+              {loadingAmenitiesData ? <>Loading...</> : (
+                <label className="flex items-center gap-2 text-gray-800">
+                  <input
+                    type="checkbox"
+                    checked={switches.retail}
+                    onChange={handleChange("retail")}
+                    className="appearance-none w-4 h-4 border border-gray-400 rounded-sm checked:bg-[#5BAA76] checked:border-[#5BAA76] checked:text-white text-white flex items-center justify-center checked:after:content-['✔'] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:block"
+                  />
+                  <img src="/retail.svg" alt="Marker" className="w-3 h-5" />
+                  Retail + F&B
+                </label>
+              )}
+
+              {loadingAmenitiesData ? <>Loading...</> : (
+                <label className="flex items-center gap-1 text-gray-800">
+                  <input
+                    type="checkbox"
+                    checked={switches.entertainment}
+                    onChange={handleChange("entertainment")}
+                    className="appearance-none w-4 h-4 border border-gray-400 rounded-sm checked:bg-[#5BAA76] checked:border-[#5BAA76] checked:text-white text-white flex items-center justify-center checked:after:content-['✔'] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:block"
+                  />
+                  <img src="/entertainment.svg" alt="Marker" className="w-3 h-5" />
+                  Entertainment
+                </label>
+              )}
+
+              {loadingAmenitiesData ? <>Loading...</> : (
+                <label className="flex items-center gap-2 text-gray-800">
+                  <input
+                    type="checkbox"
+                    checked={switches.education}
+                    onChange={handleChange("education")}
+                    className="appearance-none w-4 h-4 border border-gray-400 rounded-sm checked:bg-[#5BAA76] checked:border-[#5BAA76] checked:text-white text-white flex items-center justify-center checked:after:content-['✔'] checked:after:text-white checked:after:text-xs checked:after:font-bold checked:after:block"
+                  />
+                  <img src="/education.svg" alt="Marker" className="w-3 h-5" />
+                  Education
+                </label>
+              )}
             </div>
-          )}
-        </div>
+            <div className="mt-1 flex justify-between items-center w-full">
+              {/* Left legend - always shown */}
+              <div className="flex items-center gap-4 mt-2">
+                {switches?.events && (
+                  <div className="flex items-center gap-4 mt-2">
+                    <span className="text-xs text-gray-400 whitespace-nowrap">Low Impact Events</span>
+                    <div className="w-10 h-2 bg-gradient-to-r from-[#de9ed8] via-[#bc32ac] to-[#532476] rounded-full"></div>
+                    <span className="text-xs text-gray-400 whitespace-nowrap">High Impact Events</span>
+                  </div>
+                )}
+                {/* <span className="text-xs text-gray-400">Lower Litter Density</span>
+            <div className="w-20 h-2 bg-gradient-to-r from-[#008000] via-[#FFFF00] to-[#FF0000] rounded-full"></div>
+            <span className="text-xs text-gray-400 whitespace-nowrap">Higher Litter Density</span> */}
+              </div>
+            </div>
+          </div>
 
 
 
-        <div className="w-full flex justify-start items-center gap-4 mt-4 text-xs">
-
-
-          {loadingEventData ? <>Loading...</> :
-            <SwitchItem label="Events" checked={switches.events} onChange={handleChange("events")}  />}
-          {loadingBinData ? <>Loading...</> :
-            <SwitchItem label="Bins" checked={switches.bins} onChange={handleChange("bins")} />}
-          {/* {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Amenities" checked={switches.amenities} onChange={handleChange("amenities")} />} */}
-          {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Transit" checked={switches.transit} onChange={handleChange("transit")} />}
-          {loadingAmenitiesData ? <>Loading...</> :
-          
-            <SwitchItem label="Retail + F&B" checked={switches.retail} onChange={handleChange("retail")} />}
-          {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Entertainment" checked={switches.entertainment} onChange={handleChange("entertainment")} />}
-          {loadingAmenitiesData ? <>Loading...</> :
-            <SwitchItem label="Education" checked={switches.education} onChange={handleChange("education")} />}
-          {/* <SwitchItem label="Weather Outlook" checked={switches.weatherOutlook} onChange={handleChange("weatherOutlook")} />
-  <SwitchItem label="Type of Area" checked={switches.typeOfArea} onChange={handleChange("typeOfArea")} /> */}
         </div>
 
 
       </div>
 
 
-      <div className="w-1/5 p-4  space-y-6  bg-white rounded-lg shadow-md" style={{ marginLeft: '2%', position: 'absolute', right: '0px', height: '47rem' }}>
+      <div className="w-1/5 p-4  space-y-6  bg-white rounded-lg shadow-md" style={{ marginLeft: '2%', position: 'absolute', right: '0px', height: '48rem' }}>
 
 
 
@@ -1237,7 +1390,7 @@ toast.error("Some issue while filtering")
           {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
-            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(#)</span></span>
+            <span className="block text-2xl font-bold text-green-700">{predictionData?.total?.["Total Estimated Litter"]}<span className="text-sm text-green-700">(#)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">Predicted Litter Quantity</p>
 
@@ -1249,7 +1402,7 @@ toast.error("Some issue while filtering")
           {loadingAnalysisData ? (
             <span>Loading Data...</span>
           ) : (
-            <span className="block text-xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
+            <span className="block text-2xl font-bold text-green-700">{predictionData?.total?.["Estimated Litter Density"]}<span className="text-sm text-green-700">(# / sq. miles)</span></span>
           )}
           <p className="mt-4 text-black text-base font-semibold font-neris whitespace-nowrap">
             Predicted Litter Density

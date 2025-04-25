@@ -161,16 +161,29 @@ const Header = () => {
                             />
                             <UserIcon src="/usertest.png" username={session?.user?.name} />
                         </div> */}
-                        {(showTooltip || pathname === '/user-profile') && (
+                        {showTooltip && (
                             <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
-                                <div className="bg-white text-center px-6 py-2 border border-gray-300 rounded-lg shadow-md max-w-2xl w-[700px]" style={{marginLeft:'-1%'}}>
-                                    <span className="font-medium italic">
-                                        {pathname === '/prediction' &&
-                                            'Generate weekly litter maps and visualize hotspots, bins, and amenities in real time, allowing for better planning of litter reduction measures'}
-                                        {['/analysis-external', '/analysis-kab'].includes(pathname) &&
-                                            'Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time'}
-                                        {pathname === '/user-profile' &&
-                                            'View your profile details, including your name and last login information.'}
+                                <div style={{ marginLeft: '-1%' }}>
+                                    <span className="font-medium">
+                                        {pathname === '/prediction' && (
+                                            <div className="w-full text-center">
+                                                <p className="text-xl font-bold text-gray-800">Litter Prediction Dashboard</p>
+                                                <p className="text-xs text-gray-600 mt-1 whitespace-nowrap">
+                                                    Generate weekly litter maps and visualize hotspots, bins, and amenities in real time, allowing for better planning of litter reduction measures
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {['/analysis-external', '/analysis-kab'].includes(pathname) && (
+                                            <div className="w-full flex justify-center">
+                                                <div className="text-center">
+                                                    <p className="text-xl font-bold text-gray-800">Litter Analysis Dashboard</p>
+                                                    <p className="text-xs text-gray-600 mt-1 max-w-3xl whitespace-nowrap">
+                                                        Explore detailed trends, stats, and historical patterns to understand how litter in your region changes over time
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </span>
                                 </div>
                             </div>
@@ -180,8 +193,8 @@ const Header = () => {
                         <div onClick={() => router.push("/user-profile")} className="flex items-center gap-2 cursor-pointer" >
                             <FaUserCircle size={40} color="#5BAA76" /> {/* Primary Green */}
                             <span className="ml-2 text-md font-neris text-gray-500">{
-                            // @ts-ignore: Ignore TypeScript error
-                            session?.user?.username}</span>
+                                // @ts-ignore: Ignore TypeScript error
+                                session?.user?.username}</span>
                         </div>
 
 

@@ -526,7 +526,7 @@ const ScenarioModeling = () => {
         </div>
         <div
           className="p-4 rounded-md shadow-sm"
-          style={{ backgroundColor: 'white', marginLeft: '-1%' }}
+          style={{ backgroundColor: 'white', marginLeft: '-1%' ,width:'100%'}}
         >
 
           <p className="font-semibold text-base mb-2">Filter Survey Sites</p>
@@ -534,7 +534,7 @@ const ScenarioModeling = () => {
 
           <div className="flex flex-row gap-4 items-end">
 
-            <div style={{ width: '15rem' }}>
+            <div style={{ width: '18rem' }}>
               <label htmlFor="state" className="block text-base font-medium text-black-600 mb-2 font-neris">
                 State
               </label>
@@ -899,7 +899,7 @@ const ScenarioModeling = () => {
 
       {/* New Sections in the Right Sidebar */}
       <div className="w-1/5 space-y-6" style={{ marginLeft: '2%' }}>
-        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '67rem' }}>
+        <div className="p-4 bg-white shadow-lg rounded-lg space-y-6" style={{ marginTop: "3px", height: '69rem' }}>
 
           {/* Total Estimated Litter: */}
           <div className="flex items-center justify-center p-4 rounded-lg bg-[#DCFCE7] shadow-[0px_4px_6px_-2px_rgba(91,170,118,0.2)]">
@@ -908,7 +908,7 @@ const ScenarioModeling = () => {
               {loadingAnalysisData ? (
                 <span>Loading Data...</span>
               ) : (
-                <span className="text-xl font-bold text-green-700">
+                <span className="text-2xl font-bold text-green-700">
                   {analysisData?.total_estimated_litter}
                   <span className="text-sm text-green-700"> (#)</span>
                 </span>
@@ -938,7 +938,7 @@ const ScenarioModeling = () => {
             {loadingAnalysisData ? (
               <span>Loading Data...</span>
             ) : (
-              <span className="text-xl font-bold text-green-700">
+              <span className="text-2xl font-bold text-green-700">
                 {formatNumber(Math.floor(analysisData?.estimated_litter_density))}
                 <span className="text-sm text-green-700"> (# / sq. miles)</span>
               </span>
