@@ -93,7 +93,7 @@ interface AmenitiesData extends BinData {
 type Week = {
   week_id: number;
   week: string;
- status: string
+  status: string
 };
 
 const Prediction = () => {
@@ -779,13 +779,13 @@ const Prediction = () => {
         County: filters.county?.value || null,
         TRACTID: filters.tract?.value || null,
         week_id: selectedWeekId || null,
-   
+
       };
       if (color !== '#800080') {
         // @ts-ignore: Ignore TypeScript error
         queryParams.colorType = color;
       }
-      
+
       const data = await getPredictionMapNew(queryParams)
       if (data) {
         setMarkers(data?.data);
@@ -1114,7 +1114,7 @@ const Prediction = () => {
                 Apply
               </Button>
               <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
-                Clear
+                Reset
               </Button>
 
             </div>

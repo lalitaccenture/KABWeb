@@ -656,7 +656,7 @@ const ScenarioModeling = () => {
             {/* Buttons */}
             <div className="flex gap-2">
               <Button
-                className="bg-[#3AAD73] text-white hover:bg-[#33a060] px-4 py-2 rounded-md font-medium"
+                className="bg-[#5BAA76] text-white hover:bg-[#5BAA76] px-4 py-2 rounded-md font-medium"
                 disabled={loadingAnalysisData}
                 onClick={handleApply}
               >
@@ -667,7 +667,7 @@ const ScenarioModeling = () => {
                 disabled={!filters.state && !filters.parameter}
                 onClick={handleClear}
               >
-                Clear
+                Reset
               </Button>
             </div>
           </div>
