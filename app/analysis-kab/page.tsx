@@ -405,7 +405,7 @@ const ScenarioModeling = () => {
 
   const handleLogoClick = () => {
     if (status === "authenticated") {
-        router.push("/analysis-external");
+      router.push("/analysis-external");
     } else {
       router.push("/");
     }
@@ -445,12 +445,12 @@ const ScenarioModeling = () => {
         <div className="mt-6">
           <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
           <div className="flex flex-col gap-2">
-            <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full " onClick={()=>router.push("/analysis-external")}>
+            <button className="flex items-center gap-2 p-2 bg-[#DCFCE7] text-green-700 rounded-lg w-full " onClick={() => router.push("/analysis-external")}>
 
               <span className="font-neris text-sm">Analysis</span>
 
             </button>
-            <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful" onClick={()=>router.push("/prediction")} >
+            <button className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-ful" onClick={() => router.push("/prediction")} >
 
               <span className="font-neris text-sm">Prediction</span>
             </button>
@@ -466,7 +466,7 @@ const ScenarioModeling = () => {
         <div className="flex justify-center mb-2">
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#5BAA76]"
             title="Logout"
           >
             <MdLogout size={20} />
@@ -526,7 +526,7 @@ const ScenarioModeling = () => {
         </div>
         <div
           className="p-4 rounded-md shadow-sm"
-          style={{ backgroundColor: 'white', marginLeft: '-1%' ,width:'100%'}}
+          style={{ backgroundColor: 'white', marginLeft: '-1%', width: '100%' }}
         >
 
           <p className="font-semibold text-base mb-2">Filter Survey Sites</p>
@@ -783,51 +783,43 @@ const ScenarioModeling = () => {
             <div style={{ marginTop: '5%' }}>
               <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
                 Correlation Coefficient:
-                <span className="relative inline-block ml-1">
+                <span className="relative inline-block ml-1 group">
                   <b className="text-[#5BAA76] text-sm font-semibold">{coefficientVal?.toFixed(2)}</b>
 
                   {/* Info Button */}
                   <button
-                    className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-pointer"
-                    onClick={() => setShowTooltip(!showTooltip)}
+                    className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-default"
+
                   >
                     i
                   </button>
 
-                  {/* Tooltip Box */}
-                  {/* Tooltip Box */}
-                  {showTooltip && (
-                    <div
-                      ref={tooltipRef}
-                      className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50"
-                      style={{ minWidth: "303px", whiteSpace: "normal", marginLeft: '24px' }}
-                    >
-                      <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
-
-                      {/* Adjusted padding to move bullets slightly left */}
-                      <ul className="mt-3 text-[13px] leading-[1.5] list-disc pl-3" style={{ marginLeft: '-9px' }}>
-                        <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together</li>
-                        <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases</li>
-                        <li>
-                          <span >Strong (±0.7 to ±1.0)</span> |
-                          <span > Moderate (±0.3 to ±0.7)</span> |
-                          <span > Weak (0 to ±0.3)</span>
-                        </li>
-                        <li><span>A value near 0 indicates little to no correlation</span></li>
-                        <li>
-    <span>
-      Correlation values are derived from the 2020 Keep America Beautiful (KAB) survey and may change as more data is collected.
-      <br />
-      Correlation does not imply causation—it indicates a statistical association and should not be interpreted as direct cause-and-effect evidence.
-    </span>
-  </li>
-                      </ul>
-
-                    </div>
-                  )}
-
-
+                  {/* Tooltip appears on hover */}
+                  <div
+                    ref={tooltipRef}
+                    className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-[#5BAA76] text-white text-xs rounded-lg px-4 py-3 shadow-lg z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                    style={{ minWidth: "303px", whiteSpace: "normal", marginLeft: '24px' }}
+                  >
+                    <span className="font-bold text-sm">Interpreting Correlation Coefficient (r)</span>
+                    <ul className="mt-3 text-[13px] leading-[1.5] list-disc pl-3" style={{ marginLeft: '-9px' }}>
+                      <li><span className="font-bold">Positive (0 to +1):</span> Both variables increase together</li>
+                      <li><span className="font-bold">Negative (0 to -1):</span> One variable increases as the other decreases</li>
+                      <li>
+                        <span>Strong (±0.7 to ±1.0)</span> |
+                        <span> Moderate (±0.3 to ±0.7)</span> |
+                        <span> Weak (0 to ±0.3)</span>
+                      </li>
+                      <li><span>A value near 0 indicates little to no correlation</span></li>
+                      <li>
+                        <span>
+                          Correlation values are from the 2020 KAB survey and may change.<br />
+                          Correlation does not imply causation.
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
                 </span>
+
 
               </span>
               {loadingExternalData ?

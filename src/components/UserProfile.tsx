@@ -407,7 +407,7 @@ const UserProfile = () => {
             <div className="flex justify-center mb-2">
               <button
                 onClick={handleLogout}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#5BAA76]"
                 title="Logout"
               >
                 <MdLogout size={20} />

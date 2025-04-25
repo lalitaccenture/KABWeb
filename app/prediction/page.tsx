@@ -1035,7 +1035,7 @@ const Prediction = () => {
             <div style={{
               width: "max-content",
               maxWidth: "21%",
-              minWidth: "16%",
+              minWidth: "14%",
               flex: "0.2",
               whiteSpace: 'nowrap',
               position: 'relative',
@@ -1103,7 +1103,7 @@ const Prediction = () => {
 
 
 
-            <div className="mt-4 flex flex-row gap-4" style={{
+            <div className="mt-5 flex flex-row gap-4" style={{
               width: "max-content",
               maxWidth: "21%",
               minWidth: "21%",
@@ -1113,7 +1113,7 @@ const Prediction = () => {
               <Button className="w-full bg-[#5BAA76] text-white hover:bg-[#5BAA76]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
                 Apply
               </Button>
-              <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
+              <Button className="w-full bg-transparent text-black font-medium border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
                 Reset
               </Button>
 
@@ -1179,9 +1179,9 @@ const Prediction = () => {
 
         <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', gap: '20px' }}>
           {/* Litter Density Filter Box*/}
-          <div className="w-[330px] bg-white shadow-md  p-4 border border-gray-200" style={{ width: '46%' }}>
-            <p className="text-xs text-gray-600 font-medium mb-3 whitespace-nowrap text-center">
-              Pick a color to filter the map based on litter density
+          <div className="w-[330px] bg-white shadow-md  p-4 border rounded-sm border-gray-200" style={{ width: '46%' }}>
+            <p className="text-xs text-gray-600 font-medium mb-3 whitespace-nowrap text-left">
+            Litter Density Filters
             </p>
 
             <div className="grid grid-cols-2 gap-x-3 gap-y-2">
@@ -1271,9 +1271,9 @@ const Prediction = () => {
           </div>
 
           {/* filter checkbox */}
-          <div className="bg-white p-4  shadow-md border " style={{ width: '46%' }} >
-            <p className="text-center text-xs font-medium text-gray-600 mb-4">
-              Toggle map layers
+          <div className="bg-white p-4 rounded-sm  shadow-md border " style={{ width: '46%' }} >
+            <p className="text-left text-xs font-medium text-gray-600 mb-4">
+            Toggle Map Layers
             </p>
             <div className="grid grid-cols-2 grid-rows-3 gap-4 text-xs">
               {loadingEventData ? <>Loading...</> : (

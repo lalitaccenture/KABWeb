@@ -620,7 +620,7 @@ const Analysis = () => {
         <div className="flex justify-center mb-2">
           <button
             onClick={handleLogout}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#4A9463]"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-[#5BAA76] text-white rounded-lg transition-all hover:bg-[#5BAA76]"
             title="Logout"
           >
             <MdLogout size={20} />
@@ -693,7 +693,7 @@ const Analysis = () => {
             </div>
 
             {/* County Dropdown */}
-            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "32%", flex: "0.2", whiteSpace: 'nowrap' }}>
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "39%", flex: "0.2", whiteSpace: 'nowrap' }}>
               <label htmlFor="county" className="block text-base font-medium text-black-600 mb-2 font-neris">City, County</label>
               {loadingAnalysisNewData ? (
                 <div>Loading counties...</div>
@@ -734,7 +734,7 @@ const Analysis = () => {
             </div>
 
             {/* Year Dropdown */}
-            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "21%", flex: "0.2" }}>
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "12%", flex: "0.2" }}>
               <label htmlFor="year" className="block text-base font-medium text-black-600 mb-2 font-neris">Year</label>
               {loadingAnalysisNewData ? (
                 <div>Loading years...</div>
@@ -782,7 +782,7 @@ const Analysis = () => {
               <Button className="w-full bg-[#5BAA76] text-white hover:bg-[#5BAA76]" disabled={loadingAnalysisNewData || loadingAnalysisData} onClick={handleApply}>
                 Apply
               </Button>
-              <Button className="w-full bg-transparent text-black font-bold border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
+              <Button className="w-full bg-transparent text-black font-medium border border-[#5BAA76] rounded-md hover:bg-[#ffffff] hover:text-black transition" disabled={!isClearButtonEnabled} onClick={handleClear}>
                 Reset
               </Button>
             </div>
