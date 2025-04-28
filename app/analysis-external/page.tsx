@@ -693,7 +693,7 @@ const Analysis = () => {
             </div>
 
             {/* County Dropdown */}
-            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "39%", flex: "0.2", whiteSpace: 'nowrap' }}>
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "34%", flex: "0.2", whiteSpace: 'nowrap' }}>
               <label htmlFor="county" className="block text-base font-medium text-black-600 mb-2 font-neris">City, County</label>
               {loadingAnalysisNewData ? (
                 <div>Loading counties...</div>
@@ -734,7 +734,7 @@ const Analysis = () => {
             </div>
 
             {/* Year Dropdown */}
-            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "12%", flex: "0.2" }}>
+            <div style={{ width: "max-content", maxWidth: "21%", minWidth: "17%", flex: "0.2" }}>
               <label htmlFor="year" className="block text-base font-medium text-black-600 mb-2 font-neris">Year</label>
               {loadingAnalysisNewData ? (
                 <div>Loading years...</div>

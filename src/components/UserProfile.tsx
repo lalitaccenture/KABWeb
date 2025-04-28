@@ -355,12 +355,12 @@ const UserProfile = () => {
     }
 ]
   return (
-    <div className="bg-[#5BAA761A] overflow-hidden pt-24">
+    <div className="bg-[#5BAA761A]  pt-24">
 
       <div className="flex w-full max-w-screen-xl m">
 
         {/* Sidebar */}
-        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{marginBottom:'38px', height:'30.5rem'}}>
+        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{marginBottom:'38px', height:'32.5rem'}}>
 
           {/* Top Section */}
           <div>
@@ -434,7 +434,8 @@ const UserProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="w-[80%] flex items-center justify-center h-full" style={{ marginTop: '-7%' }}>
+        <div className="w-[80%] flex items-start justify-start h-full pt-8" style={{marginTop:'-7%' , marginLeft:'4%'}}>
+
 
     
   {/* Profile Card */}
@@ -442,12 +443,12 @@ const UserProfile = () => {
     
     {/* Profile Image Section - now on the left */}
     <div className="relative w-[150px] h-[150px] flex-shrink-0">
-      <div className="w-full h-full flex justify-center items-center">
+      <div className="w-full h-full flex">
         <FaUserCircle size={80} color="#5BAA76" />
       </div>
       <button
         onClick={handleEditClick}
-        className="absolute top-0 right-0 p-2 bg-white rounded-full shadow-lg hover:bg-gray-200"
+        className="absolute top-0  p-2 bg-white rounded-full shadow-lg hover:bg-gray-200"
       >
         <Image src="/edit.png" alt="Edit Icon" width={15} height={15} />
       </button>

@@ -23,7 +23,7 @@ import value from "../../public/KABAnalytics 1.json"
 import { useRouter } from "next/navigation";
 import { convertToIntegers, formatNumber, formatNumberMillion } from "@/utils/common";
 import { signOut, useSession } from "next-auth/react";
-
+import { FaInfoCircle } from "react-icons/fa";
 
 // Define the types for the correlation analysis and selected coefficient
 type CorrelationAnalysis = Record<string, { scatter_plot: { [key: string]: number }[] }>;
@@ -784,15 +784,15 @@ const ScenarioModeling = () => {
               <span className="text-sm font-medium font-neris text-center relative" style={{ marginLeft: '83px' }} >
                 Correlation Coefficient:
                 <span className="relative inline-block ml-1 group">
-                  <b className="text-[#5BAA76] text-sm font-semibold">{coefficientVal?.toFixed(2)}</b>
+                  <FaInfoCircle
+                    className="text-[#3AAD73] cursor-pointer"
 
-                  {/* Info Button */}
-                  <button
-                    className="absolute -top-2 -right-4 text-[#5BAA76] text-[10px] font-bold border border-green-600 rounded-full w-3 h-3 flex items-center justify-center cursor-default"
 
-                  >
-                    i
-                  </button>
+                    title={`The prediction map is powered by a proprietary ML model that analyzes factors such as location, traffic, weather, and population. Litter density is represented on a percentile scale: Very Low (0–20%), Low (20–40%), Medium (40–60%), High (60–80%), and Very High (80–100%)`}
+                  />
+
+                  <b className="text-[#5BAA76] text-sm font-semibold" style={{ marginLeft: '55%' }}>{coefficientVal?.toFixed(2)}</b>
+
 
                   {/* Tooltip appears on hover */}
                   <div
