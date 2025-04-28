@@ -1185,89 +1185,28 @@ const Prediction = () => {
             </p>
 
             <div className="grid grid-cols-2 gap-x-3 gap-y-2">
-              {/* All */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
-        ${selectedColor === '#800080' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
-                style={{ width: '68%' }}
-                onClick={() => {
-                  setSelectedColor('#800080');
-                  handleFilterColor('#800080');
-                }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#A9A9A9' }}></div>
-                <span className="text-xs text-gray-700 font-medium">All</span>
-              </div>
-
-              {/* Medium */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
-        ${selectedColor === '#FFFF00' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
-                style={{ width: '68%' }}
-                onClick={() => {
-                  setSelectedColor('#FFFF00');
-                  handleFilterColor('#FFFF00');
-                }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700', }}></div>
-                <span className="text-xs text-gray-700 font-medium">Medium</span>
-              </div>
-
-              {/* Very High */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
-        ${selectedColor === '#FF0000' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
-                onClick={() => {
-                  setSelectedColor('#FF0000');
-                  handleFilterColor('#FF0000');
-                }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FF0000' }}></div>
-                <span className="text-xs text-gray-700 font-medium">Very High</span>
-              </div>
-
-              {/* Low */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
-        ${selectedColor === '#80FF00' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
-                style={{ width: '68%' }}
-                onClick={() => {
-                  setSelectedColor('#80FF00');
-                  handleFilterColor('#80FF00');
-                }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#7CFC00' }}></div>
-                <span className="text-xs text-gray-700 font-medium">Low</span>
-              </div>
-
-              {/* High */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
-        ${selectedColor === '#FF8000' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
-                style={{ width: '68%' }}
-                onClick={() => {
-                  setSelectedColor('#FF8000');
-                  handleFilterColor('#FF8000');
-                }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFA500' }}></div>
-                <span className="text-xs text-gray-700 font-medium">High</span>
-              </div>
-
-              {/* Very Low */}
-              <div
-                className={`flex items-center gap-2 px-3 py-1 cursor-pointer border border-gray-300 rounded-full w-fit
-        ${selectedColor === '#008000' ? 'bg-[#DCFCE7]' : 'bg-white'}`}
-                style={{ width: '68%' }}
-                onClick={() => {
-                  setSelectedColor('#008000');
-                  handleFilterColor('#008000');
-                }}
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#006400' }}></div>
-                <span className="text-xs text-gray-700 font-medium">Very Low</span>
-              </div>
-            </div>
+  {[
+    { label: 'All', color: '#800080', circleColor: '#A9A9A9' },
+    { label: 'Medium', color: '#FFFF00', circleColor: '#FFD700' },
+    { label: 'Very High', color: '#FF0000', circleColor: '#FF0000' },
+    { label: 'Low', color: '#80FF00', circleColor: '#7CFC00' },
+    { label: 'High', color: '#FF8000', circleColor: '#FFA500' },
+    { label: 'Very Low', color: '#008000', circleColor: '#006400' }
+  ].map(({ label, color, circleColor }) => (
+    <div
+      key={color}
+      className={`flex items-center justify-center gap-2 px-3 py-2 cursor-pointer border border-gray-300 rounded-full w-full h-8
+        ${selectedColor === color ? 'bg-[#DCFCE7]' : 'bg-white'}`}
+      onClick={() => {
+        setSelectedColor(color);
+        handleFilterColor(color);
+      }}
+    >
+      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: circleColor }}></div>
+      <span className="text-xs text-gray-700 font-medium">{label}</span>
+    </div>
+  ))}
+</div>
           </div>
 
           {/* filter checkbox */}
