@@ -8,6 +8,7 @@ import Footer from "@/src/components/Footer";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import AutoLogout from "@/src/components/AutoLogout";
 
 export default function RootLayout({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
       </Head>
       <body className="flex flex-col min-h-screen">
       <SessionProvider>
+        <AutoLogout/>
         <ToastContainer
           position="top-right" 
           autoClose={5000}     
