@@ -102,7 +102,7 @@ const Header = () => {
                                                 <div className="text-center">
                                                     <p className="text-xl font-bold text-gray-800">User Profile Dashboard</p>
                                                     <p className="text-xs text-gray-600 mt-1 max-w-3xl whitespace-nowrap">
-                                                    View your profile details, including your name and last login information.
+                                                    View your profile details, including your name and last login information
 
                                                     </p>
                                                 </div>

@@ -23,8 +23,10 @@ const UserProfile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const { data: session, status } = useSession();
-  const [stateVal,setStateVal] = useState<any>();
+  const [stateVal, setStateVal] = useState<any>();
   const router = useRouter();
+
+
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
@@ -64,9 +66,9 @@ const UserProfile = () => {
       color: '#A0AEC0',
     }),
   };
-  
-  
-  function formatToUSDateTime(isoString:any) {
+
+
+  function formatToUSDateTime(isoString: any) {
     const date = new Date(isoString);
     return date.toLocaleString("en-US", {
       timeZone: "America/New_York", // Adjust as needed
@@ -92,16 +94,16 @@ const UserProfile = () => {
         setRole(data?.role)
         setTarget(data?.target)
       };
-  
+
       fetchData();
     }
   }, [session?.user?.email]);
-  
+
 
   const handleSaveClick = async () => {
     setIsSaving(true);
     try {
-    const payload =   {
+      const payload = {
         "email": email,
         "username": userName,
         "state": stateVal,
@@ -110,15 +112,15 @@ const UserProfile = () => {
         "target": target,
         // "fullOption": "0",
         // "is_verified": "true"
-     }
-     const data = await postEditProfile(payload);
+      }
+      const data = await postEditProfile(payload);
       if (data) {
         useProfileStore.getState().setState(stateVal);
         setSaveSuccess('Profile updated successfully!');
       }
-      
 
-     else {
+
+      else {
         throw new Error('Failed to save the profile');
       }
     } catch (error) {
@@ -150,217 +152,228 @@ const UserProfile = () => {
 
   const regions = [
     {
-        "value": "Alabama",
-        "label": "Alabama"
+      "value": "Alabama",
+      "label": "Alabama"
     },
     {
-        "value": "Alaska",
-        "label": "Alaska"
+      "value": "Alaska",
+      "label": "Alaska"
     },
     {
-        "value": "Arizona",
-        "label": "Arizona"
+      "value": "Arizona",
+      "label": "Arizona"
     },
     {
-        "value": "Arkansas",
-        "label": "Arkansas"
+      "value": "Arkansas",
+      "label": "Arkansas"
     },
     {
-        "value": "California",
-        "label": "California"
+      "value": "California",
+      "label": "California"
     },
     {
-        "value": "Colorado",
-        "label": "Colorado"
+      "value": "Colorado",
+      "label": "Colorado"
     },
     {
-        "value": "Connecticut",
-        "label": "Connecticut"
+      "value": "Connecticut",
+      "label": "Connecticut"
     },
     {
-        "value": "Delaware",
-        "label": "Delaware"
+      "value": "Delaware",
+      "label": "Delaware"
     },
     {
-        "value": "District Of Columbia",
-        "label": "District Of Columbia"
+      "value": "District Of Columbia",
+      "label": "District Of Columbia"
     },
     {
-        "value": "Florida",
-        "label": "Florida"
+      "value": "Florida",
+      "label": "Florida"
     },
     {
-        "value": "Georgia",
-        "label": "Georgia"
+      "value": "Georgia",
+      "label": "Georgia"
     },
     {
-        "value": "Hawaii",
-        "label": "Hawaii"
+      "value": "Hawaii",
+      "label": "Hawaii"
     },
     {
-        "value": "Idaho",
-        "label": "Idaho"
+      "value": "Idaho",
+      "label": "Idaho"
     },
     {
-        "value": "Illinois",
-        "label": "Illinois"
+      "value": "Illinois",
+      "label": "Illinois"
     },
     {
-        "value": "Indiana",
-        "label": "Indiana"
+      "value": "Indiana",
+      "label": "Indiana"
     },
     {
-        "value": "Iowa",
-        "label": "Iowa"
+      "value": "Iowa",
+      "label": "Iowa"
     },
     {
-        "value": "Kansas",
-        "label": "Kansas"
+      "value": "Kansas",
+      "label": "Kansas"
     },
     {
-        "value": "Kentucky",
-        "label": "Kentucky"
+      "value": "Kentucky",
+      "label": "Kentucky"
     },
     {
-        "value": "Louisiana",
-        "label": "Louisiana"
+      "value": "Louisiana",
+      "label": "Louisiana"
     },
     {
-        "value": "Maine",
-        "label": "Maine"
+      "value": "Maine",
+      "label": "Maine"
     },
     {
-        "value": "Maryland",
-        "label": "Maryland"
+      "value": "Maryland",
+      "label": "Maryland"
     },
     {
-        "value": "Massachusetts",
-        "label": "Massachusetts"
+      "value": "Massachusetts",
+      "label": "Massachusetts"
     },
     {
-        "value": "Michigan",
-        "label": "Michigan"
+      "value": "Michigan",
+      "label": "Michigan"
     },
     {
-        "value": "Minnesota",
-        "label": "Minnesota"
+      "value": "Minnesota",
+      "label": "Minnesota"
     },
     {
-        "value": "Mississippi",
-        "label": "Mississippi"
+      "value": "Mississippi",
+      "label": "Mississippi"
     },
     {
-        "value": "Missouri",
-        "label": "Missouri"
+      "value": "Missouri",
+      "label": "Missouri"
     },
     {
-        "value": "Montana",
-        "label": "Montana"
+      "value": "Montana",
+      "label": "Montana"
     },
     {
-        "value": "Nebraska",
-        "label": "Nebraska"
+      "value": "Nebraska",
+      "label": "Nebraska"
     },
     {
-        "value": "Nevada",
-        "label": "Nevada"
+      "value": "Nevada",
+      "label": "Nevada"
     },
     {
-        "value": "New Hampshire",
-        "label": "New Hampshire"
+      "value": "New Hampshire",
+      "label": "New Hampshire"
     },
     {
-        "value": "New Jersey",
-        "label": "New Jersey"
+      "value": "New Jersey",
+      "label": "New Jersey"
     },
     {
-        "value": "New Mexico",
-        "label": "New Mexico"
+      "value": "New Mexico",
+      "label": "New Mexico"
     },
     {
-        "value": "New York",
-        "label": "New York"
+      "value": "New York",
+      "label": "New York"
     },
     {
-        "value": "North Carolina",
-        "label": "North Carolina"
+      "value": "North Carolina",
+      "label": "North Carolina"
     },
     {
-        "value": "North Dakota",
-        "label": "North Dakota"
+      "value": "North Dakota",
+      "label": "North Dakota"
     },
     {
-        "value": "Ohio",
-        "label": "Ohio"
+      "value": "Ohio",
+      "label": "Ohio"
     },
     {
-        "value": "Oklahoma",
-        "label": "Oklahoma"
+      "value": "Oklahoma",
+      "label": "Oklahoma"
     },
     {
-        "value": "Oregon",
-        "label": "Oregon"
+      "value": "Oregon",
+      "label": "Oregon"
     },
     {
-        "value": "Pennsylvania",
-        "label": "Pennsylvania"
+      "value": "Pennsylvania",
+      "label": "Pennsylvania"
     },
     {
-        "value": "Rhode Island",
-        "label": "Rhode Island"
+      "value": "Rhode Island",
+      "label": "Rhode Island"
     },
     {
-        "value": "South Carolina",
-        "label": "South Carolina"
+      "value": "South Carolina",
+      "label": "South Carolina"
     },
     {
-        "value": "South Dakota",
-        "label": "South Dakota"
+      "value": "South Dakota",
+      "label": "South Dakota"
     },
     {
-        "value": "Tennessee",
-        "label": "Tennessee"
+      "value": "Tennessee",
+      "label": "Tennessee"
     },
     {
-        "value": "Texas",
-        "label": "Texas"
+      "value": "Texas",
+      "label": "Texas"
     },
     {
-        "value": "Utah",
-        "label": "Utah"
+      "value": "Utah",
+      "label": "Utah"
     },
     {
-        "value": "Vermont",
-        "label": "Vermont"
+      "value": "Vermont",
+      "label": "Vermont"
     },
     {
-        "value": "Virginia",
-        "label": "Virginia"
+      "value": "Virginia",
+      "label": "Virginia"
     },
     {
-        "value": "Washington",
-        "label": "Washington"
+      "value": "Washington",
+      "label": "Washington"
     },
     {
-        "value": "West Virginia",
-        "label": "West Virginia"
+      "value": "West Virginia",
+      "label": "West Virginia"
     },
     {
-        "value": "Wisconsin",
-        "label": "Wisconsin"
+      "value": "Wisconsin",
+      "label": "Wisconsin"
     },
     {
-        "value": "Wyoming",
-        "label": "Wyoming"
+      "value": "Wyoming",
+      "label": "Wyoming"
     }
-]
+  ]
+
+  const getInitials = (name: string | undefined) => {
+    if (!name) return '';
+    const parts = name.trim().split(' ');
+    const first = parts[0]?.charAt(0).toUpperCase() || '';
+    const last = parts.length > 1 ? parts[1].charAt(0).toUpperCase() : '';
+    return first + last;
+  };
+  
+
+
   return (
     <div className="bg-[#5BAA761A]  pt-24">
 
       <div className="flex w-full max-w-screen-xl m">
 
         {/* Sidebar */}
-        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{marginBottom:'38px', height:'32.5rem'}}>
+        <div className="w-[20%] p-4 bg-white shadow-2xl rounded-lg flex flex-col justify-between  mt-[-12%]" style={{ marginBottom: '38px', height: '30.5rem' }}>
 
           {/* Top Section */}
           <div>
@@ -384,7 +397,7 @@ const UserProfile = () => {
             <div className="mt-6">
               <p className="text-gray-400 text-sm font-semibold mb-2">Menu</p>
               <div className="flex flex-col gap-2">
-              <button
+                <button
                   className="flex items-center gap-2 p-2 bg-gray-100 text-gray-700 rounded-lg w-full"
                   onClick={() => router.push("/analysis-external")}
                 >
@@ -396,7 +409,7 @@ const UserProfile = () => {
                 >
                   <span className="font-neris text-sm">Prediction</span>
                 </button>
-             
+
 
               </div>
             </div>
@@ -434,150 +447,149 @@ const UserProfile = () => {
         </div>
 
         {/* Main Content */}
-        <div className="w-[80%] flex items-start justify-start h-full pt-8" style={{marginTop:'-7%' , marginLeft:'4%'}}>
+        <div className="w-[80%] flex items-start justify-start h-full pt-8" style={{ marginTop: '-7%', marginLeft: '4%' }}>
 
 
-    
-  {/* Profile Card */}
-  <div className="flex flex-col md:flex-row items-start bg-[#f5fdf7] p-8 rounded-md border shadow-md gap-8">
-    
-    {/* Profile Image Section - now on the left */}
-    <div className="relative w-[150px] h-[150px] flex-shrink-0">
-      <div className="w-full h-full flex">
-        <FaUserCircle size={80} color="#5BAA76" />
-      </div>
-      <button
-        onClick={handleEditClick}
-        className="absolute top-0  p-2 bg-white rounded-full shadow-lg hover:bg-gray-200"
-      >
-        <Image src="/edit.png" alt="Edit Icon" width={15} height={15} />
-      </button>
-    </div>
 
-    {/* Info Section */}
-   {/* Info Section */}
-<div className="flex flex-col text-left w-full">
-  {/* Name Input */}
-  <div className="text-3xl font-bold mb-6">
-    {isEditing ? (
-      <div className="w-full">
-        <label htmlFor="username" className="block font-neris text-sm mb-1">User Name:</label>
-        <input
-          id="username"
-          type="text"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          className="text-xl font-bold bg-white border border-gray-300 rounded-md p-2 focus:outline-none w-full"
-        />
-      </div>
-    ) : (
-      <span className="font-neris">{userName}</span>
-    )}
-  </div>
+          {/* Profile Card */}
+          <div className="flex flex-col md:flex-row items-start bg-[#f5fdf7] p-8 rounded-md border shadow-md gap-8">
 
-  {/* Form Grid */}
-  {isEditing ? (
-    <div className="flex flex-col gap-6">
-      {/* Row 1 */}
-      <div className="flex flex-wrap gap-4">
-        {[
-          { label: 'Email', value: email, onChange: setEmail, editable: false },
-          { label: 'Organization', value: organization, onChange: setOrganization, editable: true },
-          { label: 'Role', value: role, onChange: setRole, editable: true },
-        ].map(({ label, value, onChange, editable }) => (
-          <div key={label} className="flex-1 min-w-[200px]">
-            <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
-            <input
-              id={label}
-              type="text"
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              disabled={!editable}
-              className={`rounded-md p-2 w-full focus:outline-none ${
-                editable
-                  ? 'bg-white border border-gray-300 focus:ring-2 focus:ring-[#5BAA76]'
-                  : 'bg-gray-100 border border-gray-300 text-gray-500 cursor-not-allowed'
-              }`}
-            />
+            {/* Profile Image Section - now on the left */}
+            <div className="relative w-[80px] h-[80px] flex-shrink-0">
+              <div className="w-full h-full flex items-center justify-center bg-[#5BAA76] rounded-full text-white text-2xl font-bold">
+                {getInitials(userName)}
+              </div>
+
+              <button
+                onClick={handleEditClick}
+                className="absolute top-0 left-0 p-1 bg-white rounded-full shadow-lg hover:bg-gray-200"
+              >
+                <Image src="/edit.png" alt="Edit Icon" width={12} height={12} />
+              </button>
+            </div>
+
+
+
+            <div className="flex flex-col text-left w-full">
+
+              <div className="text-3xl font-bold mb-6">
+                {isEditing ? (
+                  <div className="w-full">
+                    <label htmlFor="username" className="block font-neris text-sm mb-1">User Name:</label>
+                    <input
+                      id="username"
+                      type="text"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      className="text-xl font-bold bg-white border border-gray-300 rounded-md p-2 focus:outline-none w-full"
+                    />
+                  </div>
+                ) : (
+                  <span className="font-neris">{userName}</span>
+                )}
+              </div>
+
+              {/* Form Grid */}
+              {isEditing ? (
+                <div className="flex flex-col gap-6">
+                  {/* Row 1 */}
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      { label: 'Email', value: email, onChange: setEmail, editable: false },
+                      { label: 'Organization', value: organization, onChange: setOrganization, editable: true },
+                      { label: 'Role', value: role, onChange: setRole, editable: true },
+                    ].map(({ label, value, onChange, editable }) => (
+                      <div key={label} className="flex-1 min-w-[200px]">
+                        <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
+                        <input
+                          id={label}
+                          type="text"
+                          value={value}
+                          onChange={(e) => onChange(e.target.value)}
+                          disabled={!editable}
+                          className={`rounded-md p-2 w-full focus:outline-none ${editable
+                            ? 'bg-white border border-gray-300 focus:ring-2 focus:ring-[#5BAA76]'
+                            : 'bg-gray-100 border border-gray-300 text-gray-500 cursor-not-allowed'
+                            }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Row 2 */}
+                  <div className="flex flex-wrap gap-4">
+                    {[
+                      { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false },
+                      { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
+                      { label: 'Last Login (ET – Eastern Time)', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false },
+                    ].map(({ label, value, onChange, editable, isDropdown }) => (
+                      <div key={label} className="flex-1 min-w-[200px]">
+                        <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
+                        {isDropdown ? (
+                          <Select
+                            id={label}
+                            value={regions.find(option => option.value === stateVal)}
+                            placeholder="Select a State"
+                            onChange={(selectedOption: any) => onChange(selectedOption?.value)}
+                            options={regions}
+                            styles={customSelectStyles}
+                          />
+                        ) : (
+                          <input
+                            id={label}
+                            type="text"
+                            value={value}
+                            onChange={(e) => onChange(e.target.value)}
+                            disabled={!editable}
+                            className={`rounded-md p-2 w-full focus:outline-none ${editable
+                              ? 'bg-white border border-gray-300 focus:ring-2 focus:ring-[#5BAA76]'
+                              : 'bg-gray-100 border border-gray-300 text-gray-500 cursor-not-allowed'
+                              }`}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-lg space-y-2 font-neris">
+                  {[
+                    { label: 'Email', value: email },
+                    { label: 'Organization', value: organization },
+                    { label: 'Role', value: role },
+                    { label: 'Target', value: target },
+                    { label: 'Region', value: stateVal },
+                    { label: 'Last Login (ET – Eastern Time)', value: lastlogin },
+                  ].map(({ label, value }) => (
+                    <div key={label}>
+                      <span className="font-semibold text-medium">{label}:</span> {value}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Save Button */}
+              {isEditing && (
+                <div className="mt-5 text-left">
+                  <button
+                    onClick={handleSaveClick}
+                    disabled={isSaving}
+                    className={`p-2 rounded-md ${isSaving ? 'bg-gray-400' : 'bg-[#3AAD73]'} text-white`}
+                  >
+                    {isSaving ? 'Saving...' : 'Save'}
+                  </button>
+                </div>
+              )}
+
+              {/* Success Message */}
+              {saveSuccess && (
+                <div className={`mt-2 text-lg text-left ${saveSuccess.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
+                  {saveSuccess}
+                </div>
+              )}
+            </div>
+
           </div>
-        ))}
-      </div>
-
-      {/* Row 2 */}
-      <div className="flex flex-wrap gap-4">
-        {[
-          { label: 'Target', value: target, onChange: setTarget, editable: true, isDropdown: false },
-          { label: 'Region', value: stateVal, onChange: setStateVal, editable: true, isDropdown: true },
-          { label: 'Last Login (ET – Eastern Time)', value: lastlogin, onChange: setLastlogin, editable: false, isDropdown: false },
-        ].map(({ label, value, onChange, editable, isDropdown }) => (
-          <div key={label} className="flex-1 min-w-[200px]">
-            <label htmlFor={label} className="block text-sm text-gray-700 mb-1">{label}:</label>
-            {isDropdown ? (
-              <Select
-                id={label}
-                value={regions.find(option => option.value === stateVal)}
-                placeholder="Select a State"
-                onChange={(selectedOption: any) => onChange(selectedOption?.value)}
-                options={regions}
-                styles={customSelectStyles}
-              />
-            ) : (
-              <input
-                id={label}
-                type="text"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={!editable}
-                className={`rounded-md p-2 w-full focus:outline-none ${
-                  editable
-                    ? 'bg-white border border-gray-300 focus:ring-2 focus:ring-[#5BAA76]'
-                    : 'bg-gray-100 border border-gray-300 text-gray-500 cursor-not-allowed'
-                }`}
-              />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  ) : (
-    <div className="text-lg space-y-2 font-neris">
-      {[
-        { label: 'Email', value: email },
-        { label: 'Organization', value: organization },
-        { label: 'Role', value: role },
-        { label: 'Target', value: target },
-        { label: 'Region', value: stateVal },
-        { label: 'Last Login (ET – Eastern Time)', value: lastlogin },
-      ].map(({ label, value }) => (
-        <div key={label}>
-          <span className="font-semibold text-medium">{label}:</span> {value}
-        </div>
-      ))}
-    </div>
-  )}
-
-  {/* Save Button */}
-  {isEditing && (
-    <div className="mt-5 text-left">
-      <button
-        onClick={handleSaveClick}
-        disabled={isSaving}
-        className={`p-2 rounded-md ${isSaving ? 'bg-gray-400' : 'bg-[#3AAD73]'} text-white`}
-      >
-        {isSaving ? 'Saving...' : 'Save'}
-      </button>
-    </div>
-  )}
-
-  {/* Success Message */}
-  {saveSuccess && (
-    <div className={`mt-2 text-lg text-left ${saveSuccess.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>
-      {saveSuccess}
-    </div>
-  )}
-</div>
-
-  </div>
 
 
         </div>
