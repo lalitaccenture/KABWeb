@@ -189,6 +189,7 @@ const SignUp = () => {
                         </button>
                     </div> */}
                     <div >
+                    <a href="https://www.kab.org" target="_blank" rel="noopener noreferrer">
                         <Image
                             src="/kab.png"
                             alt="Keep America Beautiful"
@@ -196,6 +197,7 @@ const SignUp = () => {
                             height={28}
                             className="object-contain"
                         />
+                        </a>
                     </div>
           
 

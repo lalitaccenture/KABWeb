@@ -786,9 +786,6 @@ const ScenarioModeling = () => {
                 <span className="relative inline-block ml-1 group">
                   <FaInfoCircle
                     className="text-[#3AAD73] cursor-pointer"
-
-
-                    title={`The prediction map is powered by a proprietary ML model that analyzes factors such as location, traffic, weather, and population. Litter density is represented on a percentile scale: Very Low (0–20%), Low (20–40%), Medium (40–60%), High (60–80%), and Very High (80–100%)`}
                   />
 
                   <b className="text-[#5BAA76] text-sm font-semibold" style={{ marginLeft: '55%' }}>{coefficientVal?.toFixed(2)}</b>

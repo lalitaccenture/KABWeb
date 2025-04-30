@@ -1128,7 +1128,7 @@ const Prediction = () => {
               Litter Prediction Map:
               <FaInfoCircle
                 className="text-[#3AAD73] cursor-pointer"
-                style={{ marginBottom: '20px', marginLeft:'27%'}}
+                style={{ marginBottom: '20px'}}
                 title={`The prediction map is powered by a proprietary ML model that analyzes factors such as location, traffic, weather, and population. Litter density is represented on a percentile scale: Very Low (0–20%), Low (20–40%), Medium (40–60%), High (60–80%), and Very High (80–100%)`}
               />
             </p>
