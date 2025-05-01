@@ -1041,7 +1041,7 @@ const Prediction = () => {
               position: 'relative',
               zIndex: 1000
             }}>
-              <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Central Tract</label>
+              <label htmlFor="tract" className="block text-sm font-medium text-gray-700">Census Tract</label>
               {loadingAnalysisNewData ? (
                 <div>Loading tracts...</div>
               ) : (
