@@ -80,8 +80,8 @@ const Header = () => {
                                         {pathname === '/prediction' && (
                                             <div className="w-full text-center">
                                                 <p className="text-xl font-bold text-gray-800">Litter Prediction Dashboard</p>
-                                                <p className="text-xs text-gray-600 mt-1 whitespace-nowrap">
-                                                    Generate weekly litter maps and visualize hotspots, bins, and amenities in real time, allowing for better planning of litter reduction measures
+                                                <p className="text-xs text-gray-600 mt-1">
+                                                Generate weekly litter maps with future predictions of litter generation, while also providing insights on hotspots, bins, and amenities to support better planning of litter reduction measures
                                                 </p>
                                             </div>
                                         )}
