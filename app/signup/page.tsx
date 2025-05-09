@@ -62,16 +62,21 @@ const SignUp = () => {
 
     const onSubmit: SubmitHandler<IFormInput> = async (data: { email: string; username: string; password: string }) => {
 
-        if (!data.email.toLowerCase().endsWith('@kab.org')) {
-            toast.error('Sign-up successful! Manual verification needed. Contact admin/KAB ops for access.');
-            return;
-        }
+        // if (!data.email.toLowerCase().endsWith('@kab.org')) {
+        //     toast.error('Sign-up successful! Manual verification needed. Contact admin/KAB ops for access.');
+        //     return;
+        // }
     
         try {
             const response = await signUp(data);
             //response.success
             if (response) {
-                toast.success('Sign-up successful! Please verify your account before logging in');
+                if (!data.email.toLowerCase().endsWith('@kab.org')) {
+                    toast.warning('Sign-up successful! Manual verification needed. Contact admin/KAB ops for access.');
+                }
+                else{
+                    toast.success('Sign-up successful! Please verify your account before logging in');
+                }
                 reset();
                 router.push("/"); 
             } else {
