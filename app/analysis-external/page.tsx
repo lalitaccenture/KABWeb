@@ -849,7 +849,7 @@ const Analysis = () => {
 
             {/* Text Outside the White Box (Aligned to Bottom-Right) */}
             <div className="absolute bottom-[-20px] right-2 text-xs text-gray-500">
-              Source: Cleanswell App
+              Source: Open Source Data
             </div>
           </div>
 

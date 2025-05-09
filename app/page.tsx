@@ -240,7 +240,7 @@ const Login = () => {
                 <div>
                   <h4 className="font-semibold text-base text-[#5BAA76]">Data Sources & Timeframe</h4>
                   <p>
-                  Insights & predictions are based on external data collected between 2015 and 2024, including weather (Open-Meteo), amenities (OpenStreetMap), demographics (US Census), Litter data (Third party data), and survey data (KAB 2020). Completeness may vary depending on source accuracy and availability.
+                  Insights & predictions are based on external data collected between 2015 and 2024, including weather (Open-Meteo), amenities (OpenStreetMap), demographics (US Census), Litter data (Open source data), and survey data (KAB 2020). Completeness may vary depending on source accuracy and availability.
                   </p>
                 </div>
               </div>
