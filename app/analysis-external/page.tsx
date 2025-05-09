@@ -406,6 +406,9 @@ const Analysis = () => {
         title: {
           display: true,
           text: 'Number of Cleanups by Year',
+          padding: {
+            top: 30
+          }
         },
       },
     },
@@ -904,7 +907,7 @@ const Analysis = () => {
                   {/* Text */}
                   <div>
                     <p className="text-base font-medium font-neris">{key}</p>
-                    <p className="text-xs text-gray-500 font-neris">Events:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
+                    <p className="text-xs text-gray-500 font-neris">Events: <span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
                   </div>
                 </div>
               ))}
@@ -932,7 +935,7 @@ const Analysis = () => {
                   {/* Text Content */}
                   <div>
                     <h4 className="text-base font-medium font-neris">{key}</h4>
-                    <p className="text-xs text-gray-500 font-neris">Events:<span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
+                    <p className="text-xs text-gray-500 font-neris">Events: <span className="text-black font-semibold">{formatNumber(Number(value))}</span></p>
                   </div>
                 </div>
               ))}

@@ -975,7 +975,7 @@ const ScenarioModeling = () => {
                       </p>
 
                       <p className="text-xs text-gray-500 font-neris">
-                        Litter Density
+                        Litter Density:
                         <span className="font-semibold text-black ml-1 text-xs">
                           {formatNumber(Math.trunc(state["Litter density"]))}
                         </span>
