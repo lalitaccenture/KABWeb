@@ -182,12 +182,13 @@ const Prediction = () => {
       setStatesData(dropD?.Dropdown);
       setWeeks(dropD?.Weeks);
 
-      const defaultState = dropD?.Dropdown.find((state: { value: string }) => state.value === "California");
+      const defaultState = dropD?.Dropdown.find((state: { value: string }) => state.value === stateFromStore) || { label: 'California', value: 'California' };
+      console.log("defaultState",defaultState)
       if (defaultState) {
         setFilters((prev) => ({ ...prev, state: defaultState }));
       }
       const queryParamsForCounty = {
-        state: 'California',
+        state: defaultState?.value,
       };
       const forCountyPopulate = await predictionNewDropdown(queryParamsForCounty)
       setCountiesData(forCountyPopulate?.Dropdown)
@@ -209,15 +210,15 @@ const Prediction = () => {
         amenitiesTransit,
         amenitiesEducation
       ] = await Promise.allSettled([
-        getDashboardPredictionNew({ State: "California", week_id: weekId }),
-        getPredictionMapNew({ State: "California", week_id: weekId }),
-        getEventPrediction({ State: "California", week_id: weekId }),
-        getBinPrediction({ State: "California" }),
+        getDashboardPredictionNew({ State: defaultState?.value, week_id: weekId }),
+        getPredictionMapNew({ State: defaultState?.value, week_id: weekId }),
+        getEventPrediction({ State: defaultState?.value, week_id: weekId }),
+        getBinPrediction({ State: defaultState?.value }),
         // getAmenitiesPrediction({ State: "California" }),
-        getAmenities({ State: "California", Category: "Retail" }),
-        getAmenities({ State: "California", Category: "Entertainment" }),
-        getAmenities({ State: "California", Category: "Transit" }),
-        getAmenities({ State: "California", Category: "Education" })
+        getAmenities({ State: defaultState?.value, Category: "Retail" }),
+        getAmenities({ State: defaultState?.value, Category: "Entertainment" }),
+        getAmenities({ State: defaultState?.value, Category: "Transit" }),
+        getAmenities({ State: defaultState?.value, Category: "Education" })
       ]);
 
       if (dashboardRes.status === "fulfilled") {
