@@ -191,6 +191,12 @@ const Login = () => {
                 className="object-contain"
               />
             </a>
+            <br></br>
+              <button 
+              className={`w-full py-3 font-semibold text-white rounded-md transition bg-[#4A9A65]`}
+              onClick={() => signIn("azure-ad", { callbackUrl: "/analysis-external?from=login" })}>
+                            &nbsp;&nbsp; Login with Azure AD (SSO) &nbsp;&nbsp;
+                        </button>
           </div>
 
 

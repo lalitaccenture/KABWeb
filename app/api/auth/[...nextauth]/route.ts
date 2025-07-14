@@ -1,2 +1,2 @@
-import auth from "../../../../auth"; 
+import auth from "../../../../auth-latest"; 
 export { auth as GET, auth as POST };
