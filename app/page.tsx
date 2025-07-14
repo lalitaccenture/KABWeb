@@ -109,7 +109,8 @@ const Login = () => {
             <p className="text-xs text-gray-600">The world's first litter prediction tool!</p>
           </div>
 
-          {/* ✅ Toggle Buttons */}
+          {/* ✅ Toggle Buttons}
+          
           <div className="flex bg-gray-200 p-1 rounded-full w-full max-w-sm mb-4">
             <button
               className={`w-1/2 py-2 text-center rounded-full transition-all ${activeTab === "signin" ? "bg-white shadow font-semibold" : "text-gray-500"}`}
@@ -125,7 +126,7 @@ const Login = () => {
             </button>
           </div>
 
-          {/* ✅ Form */}
+          {/* ✅ Form }
           <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm space-y-3">
             <div>
               <label className="block text-sm font-medium">Email</label>
@@ -146,7 +147,7 @@ const Login = () => {
               {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
             </div>
 
-            {/* ✅ Submit Button */}
+            {/* ✅ Submit Button}
             <button
               type="submit"
               className={`w-full py-3 font-semibold text-white rounded-md transition
@@ -157,12 +158,12 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Forgot Password */}
+          {/* Forgot Password }
           <p className="text-xs text-[#5BAA76] cursor-pointer text-right w-full max-w-sm mt-2"
             onClick={() => router.push('/forgot-password')}>
             Forgot password?
           </p>
-
+        {     */}
           {/* ✅ Social Login Section */}
         {/*   <div className="my-3 flex items-center w-full max-w-sm">
             <div className="flex-grow border-t border-gray-300"></div>
