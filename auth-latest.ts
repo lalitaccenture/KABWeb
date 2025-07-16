@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import AzureADProvider from "next-auth/providers/azure-ad";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { login } from "./app/utils/api";
+import { login, firstTimeLogin } from "./app/utils/api";
 
 const DEF_STATE = "California";
 
@@ -42,13 +42,15 @@ export default NextAuth({
       async profile(profile) {
        //  console.log("Profile", profile);
         // Custom profile mapping, you can choose what fields you need.
-        return {
+         let azUser=  {
           id: profile.oid,
           email: profile.preferred_username, // Azure AD uses `preferred_username` as email
-          name: profile.displayName || profile.given_name, // You may also use `given_name` or `displayName`
+          name: profile.displayName || profile.given_name || profile.name, // You may also use `given_name` or `displayName`
           token: "", // Store the access token in the user object
           state : DEF_STATE
         };
+        await firstTimeLogin(azUser);
+        return azUser;
       },
     }),
     CredentialsProvider({
