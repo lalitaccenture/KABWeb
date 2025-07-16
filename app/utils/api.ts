@@ -1,42 +1,6 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'https://example.com';
-const DEF_PASS = "littersense123";
-
-export const firstTimeLogin = async (payload: any) => {
-  try {
-    let { email, name, state } = { ...payload };
-
-    let response;
-    try {
-      response = await getViewProfile({ email: email });
-    } catch (err: any) {
-      if (err.response && err.response.status === 404 && email && name) {
-        console.log("First Time Login - 404 from getViewProfile");
-
-        const user = {
-          email, state,
-          username: name,
-          password: DEF_PASS
-        };
-
-        const register_user = await signUp(user);
-        if (register_user) {
-          console.log("User profile created");
-        }
-
-        return true;
-      } else {
-        throw err; // rethrow for other errors
-      }
-    }
-
-    return true;
-  } catch (error) {
-    console.error("New User to system", error);
-    return false;
-  }
-};
 
 
 export const signUp = async (payload:any) => {
