@@ -3,42 +3,30 @@ name: Deploy Next.js to Azure App Service
 on:
   push:
     branches:
-      - master  # Trigger the workflow on push to the master branch
+      - master
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout code
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Set up Node.js environment
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '22'  # Set the Node.js version to match your app's version
+        node-version: '22'
 
-    # npm ci
-    - name: npm ci
-      run: |
-       npm ci    
+    # OPTIONAL: Validate lockfile
+    - name: Validate lockfile format
+      run: npm ci --dry-run
 
-    # Install dependencies
-    - name: Install dependencies
-      run: |
-        npm install
+    # ✅ Do NOT build here — let Azure build and install
 
-    # Build the Next.js app
-    - name: Build Next.js app
-      run: |
-        npm run build
-
-    # Deploy to Azure Web App (with pre-configured Node.js runtime in Azure)
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: lees1ddoaiwebapp01  # Replace with your Azure App Service name
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}  # Ensure this secret is set
-        package: .  # Deploy everything from the root directory
+        app-name: lees1ddoaiwebapp01
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        package: .  # Push entire source code, not build output
