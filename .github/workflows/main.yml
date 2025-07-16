@@ -20,6 +20,11 @@ jobs:
       with:
         node-version: '22'  # Set the Node.js version to match your app's version
 
+    # Update npm packages
+    - name: Update npm packages
+      run: |
+       npm update    
+
     # Install dependencies
     - name: Install dependencies
       run: |
